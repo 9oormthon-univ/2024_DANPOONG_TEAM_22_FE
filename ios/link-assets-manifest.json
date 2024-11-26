@@ -1,0 +1,41 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/LeeSeoyun-Regular.ttf",
+      "sha1": "9dd2669cd94b1e01f0f0384ce7a7fc8ad0da2548"
+    },
+    {
+      "path": "assets/fonts/Voltaire-Regular.ttf",
+      "sha1": "5cebf0941fd43ece9be23968d1260723f7ee0c9a"
+    },
+    {
+      "path": "assets/fonts/WantedSans-Black.otf",
+      "sha1": "f41805d5614f8b862c3479bfdf56bf019b2bdd2a"
+    },
+    {
+      "path": "assets/fonts/WantedSans-Bold.otf",
+      "sha1": "5ebdcf5addef8b957b5d2c16fc072a945d1fdc77"
+    },
+    {
+      "path": "assets/fonts/WantedSans-ExtraBlack.otf",
+      "sha1": "9f9d77b2a14080c119c9bff0a60e7fb69ecc7b53"
+    },
+    {
+      "path": "assets/fonts/WantedSans-ExtraBold.otf",
+      "sha1": "e516a86935d43b99e2e7513012ba1a8e5630219c"
+    },
+    {
+      "path": "assets/fonts/WantedSans-Medium.otf",
+      "sha1": "b8e0823b93d6ecb6958fffb9f55bf3af15f509d8"
+    },
+    {
+      "path": "assets/fonts/WantedSans-Regular.otf",
+      "sha1": "ab28f7b801274e663071a5a2ae7e7c8e1f539810"
+    },
+    {
+      "path": "assets/fonts/WantedSans-SemiBold.otf",
+      "sha1": "0f2d322f4f3cd625824db9dcc286bb3360438c39"
+    }
+  ]
+}

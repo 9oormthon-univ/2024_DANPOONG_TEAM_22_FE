@@ -1,3 +1,24 @@
+buildscript {
+    ext {
+        buildToolsVersion = "29.0.3"
+        // Note: Below change is necessary for pause / resume audio feature. Not for Kotlin.
+        minSdkVersion = 24
+        compileSdkVersion = 29
+        targetSdkVersion = 29
+        kotlinVersion = '1.6.10'
+        ndkVersion = "20.1.5948944"
+    }
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle:4.2.2")
+    }
+}
+
+
+
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
@@ -116,4 +137,5 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+    implementation project(':react-native-audio-recorder-player')
 }
