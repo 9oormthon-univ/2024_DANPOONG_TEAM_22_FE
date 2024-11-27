@@ -13,8 +13,10 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import AppInner from 'AppInner';
 import {RootStackParamList} from '@type/RootStackParamList';
-import {configurePushNotifications} from '@utils/notificationHandler';
 import messaging from '@react-native-firebase/messaging';
+import {useEffect} from 'react';
+import pushNoti from '@utils/pushNoti';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,13 +28,55 @@ const queryClient = new QueryClient({
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
-messaging().setBackgroundMessageHandler(async remoteMessage => {
-  console.log('Message handled in the background!', remoteMessage);
-});
-
-configurePushNotifications(navigationRef);
-
 function App(): React.JSX.Element {
+  useEffect(() => {
+    // Foreground
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log('Foreground', remoteMessage);
+      pushNoti.displayNoti(remoteMessage);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    requestUserPermission();
+
+    // Check if the app was opened from a notification
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          const {alarmId, script} = remoteMessage.data;
+          // navigateToYouthListenScreen({
+          //   alarmId: Number(alarmId),
+          //   script: script,
+          // });
+          (async () => {
+            await AsyncStorage.setItem('alarmId', alarmId);
+            await AsyncStorage.setItem('script', script);
+          })();
+        }
+      });
+  }, []);
+
+  const requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      return getToken();
+    }
+  };
+
+  const getToken = async () => {
+    const fcmToken = await messaging().getToken();
+    console.log('디바이스 토큰값', fcmToken);
+    // 토큰값 저장
+  };
+
   return (
     <QueryClientProvider client={queryClient}>
       <GestureHandlerRootView style={{flex: 1}}>

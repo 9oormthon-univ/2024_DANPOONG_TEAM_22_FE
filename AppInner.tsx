@@ -8,34 +8,29 @@ import {useEffect, useState} from 'react';
 import {Alert} from 'react-native';
 import {getMember} from '@apis/member';
 import {Role} from '@type/member';
+import {navigationRef} from 'App';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-// font를 가져오는 함수
-// const fetchFonts = () => {
-//   return Font.loadAsync({
-//     'WantedSans-Bold': require('./assets/fonts/WantedSans-Bold.otf'),
-//     'WantedSans-SemiBold': require('./assets/fonts/WantedSans-SemiBold.otf'),
-//     'WantedSans-Regular': require('./assets/fonts/WantedSans-Regular.otf'),
-//     'WantedSans-Medium': require('./assets/fonts/WantedSans-Medium.otf'),
-//     'Voltaire-Regular': require('./assets/fonts/Voltaire-Regular.ttf'),
-//     'LeeSeoyun-Regular': require('./assets/fonts/LeeSeoyun-Regular.ttf'),
-//   });
-// };
+const navigateToYouthListenScreen = ({
+  alarmId,
+  script,
+}: Readonly<{alarmId: number; script: string}>) => {
+  navigationRef.navigate('YouthStackNav', {
+    screen: 'YouthListenScreen',
+    params: {
+      alarmId,
+      script,
+    },
+  });
+};
 
 const AppInner = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [fontsLoaded, setFontsLoaded] = useState(false);
   const [role, setRole] = useState<Role | null>(null);
+  const [isNavigationReady, setIsNavigationReady] = useState(false);
 
   useEffect(() => {
-    //   const loadFonts = async () => {
-    //     await fetchFonts();
-    //     setFontsLoaded(true);
-    //   };
-
-    //   loadFonts();
-
     (async () => {
       try {
         const token = await AsyncStorage.getItem('accessToken');
@@ -57,10 +52,32 @@ const AppInner = () => {
     })();
   }, []);
 
-  // if (!fontsLoaded) {
-  //   // 폰트가 로드되기 전에는 아무것도 렌더링하지 않음
-  //   return null;
-  // }
+  useEffect(() => {
+    if (isLoggedIn && role) {
+      setIsNavigationReady(true);
+    }
+  }, [isLoggedIn, role]);
+
+  useEffect(() => {
+    if (!isNavigationReady || role === 'HELPER') {
+      return;
+    }
+
+    (async () => {
+      const alarmId = await AsyncStorage.getItem('alarmId');
+      const script = await AsyncStorage.getItem('script');
+
+      if (alarmId && script) {
+        navigateToYouthListenScreen({
+          alarmId: Number(alarmId),
+          script: script,
+        });
+
+        await AsyncStorage.removeItem('alarmId');
+        await AsyncStorage.removeItem('script');
+      }
+    })();
+  }, [isNavigationReady, role]);
 
   return (
     <Stack.Navigator
@@ -69,7 +86,7 @@ const AppInner = () => {
       }}>
       {isLoggedIn ? (
         <Stack.Group>
-          {role !== 'HELPER' ? (
+          {role === 'HELPER' ? (
             <Stack.Screen name="AppTabNav" component={AppTabNav} />
           ) : (
             <Stack.Screen name="YouthStackNav" component={YouthStackNav} />
