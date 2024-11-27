@@ -1,33 +1,40 @@
-import { getLetters } from '@apis/providedFile';
-import { getAlarmCategory } from '@apis/alarm';
-import { getTopText } from '@apis/RCDApis/getTopText';
+import {getLetters} from '@apis/providedFile';
+import {getAlarmCategory} from '@apis/alarm';
+// import {getTopText} from '@apis/RCDApis/getTopText';
 import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Body4 from '@components/atom/body/Body4';
 import EmptyText from '@components/atom/EmptyText';
 import Title4 from '@components/atom/title/Title4';
-import { LETTERS_DATA } from '@constants/letter';
-import useGetAlarmCategory from '@hooks/alarm/useGetAlarmCategory';
-import useGetAlarmComfort from '@hooks/alarm/useGetAlarmComfort';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+// import {LETTERS_DATA} from '@constants/letter';
+// import useGetAlarmCategory from '@hooks/alarm/useGetAlarmCategory';
+// import useGetAlarmComfort from '@hooks/alarm/useGetAlarmComfort';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Card from '@screens/LetterList/components/Card';
-import { LetterStackParamList } from '@type/LetterStackParamList';
-import { LetterResponseData } from '@type/providedFile';
-import * as SecureStore from 'expo-secure-store';
-import { useEffect, useState } from 'react';
-import { Alert, Pressable, Text, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {LetterStackParamList} from '@type/LetterStackParamList';
+import {LetterResponseData} from '@type/providedFile';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useEffect, useState} from 'react';
+import {Alert, Pressable, Text, View} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-type LetterProps = NativeStackScreenProps<LetterStackParamList, 'LetterListScreen'>;
+type LetterProps = NativeStackScreenProps<
+  LetterStackParamList,
+  'LetterListScreen'
+>;
 
-const LetterListScreen = ({ navigation }: Readonly<LetterProps>) => {
-  const nickname = SecureStore.getItem('nickname');
+const LetterListScreen = ({navigation}: Readonly<LetterProps>) => {
+  const [nickname, setNickname] = useState('');
   const [selectedFilterIdx, setSelectedFilterIdx] = useState(0);
   // const { data: alarmComfortData, isError: isAlarmComfortError, error: alarmComfortError } = useGetAlarmComfort();
   const [lettersData, setLettersData] = useState<LetterResponseData[]>([]);
-  const [filteredLettersData, setFilteredLettersData] = useState<LetterResponseData[]>([]);
-  const [parentCategories, setParentCategories] = useState<{ id: number; name: string }[]>([]);
+  const [filteredLettersData, setFilteredLettersData] = useState<
+    LetterResponseData[]
+  >([]);
+  const [parentCategories, setParentCategories] = useState<
+    {id: number; name: string}[]
+  >([]);
   // const { data: alarmCategoryData, isError: isAlarmCategoryError, error: alarmCategoryError } = useGetAlarmCategory();
   // console.log('alarmComfortData', alarmComfortData);
 
@@ -47,15 +54,25 @@ const LetterListScreen = ({ navigation }: Readonly<LetterProps>) => {
 
   useEffect(() => {
     (async () => {
+      const nickname = await AsyncStorage.getItem('nickname');
+      setNickname(nickname ?? '');
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
       try {
         const alarmCategoryRes = await getAlarmCategory();
-        const categories = alarmCategoryRes.result.map((item) => ({ id: item.id, name: item.name }));
+        const categories = alarmCategoryRes.result.map(item => ({
+          id: item.id,
+          name: item.name,
+        }));
         console.log('categories', categories);
         setParentCategories(categories);
 
         const res = await getLetters({
           parentCategoryId: 1,
-          pageable: { page: 1, size: 10, sort: 'createdAt,desc' },
+          pageable: {page: 1, size: 10, sort: 'createdAt,desc'},
         });
         console.log(res);
         setLettersData(res.result.content);
@@ -79,7 +96,7 @@ const LetterListScreen = ({ navigation }: Readonly<LetterProps>) => {
   useEffect(() => {
     console.log('lettersData', lettersData);
     const filteredLetters = lettersData.filter(
-      (letter) => letter.alarmType === parentCategories[selectedFilterIdx].name
+      letter => letter.alarmType === parentCategories[selectedFilterIdx].name,
     );
     console.log('filteredLetters', filteredLetters);
     setFilteredLettersData(filteredLetters);
@@ -97,18 +114,28 @@ const LetterListScreen = ({ navigation }: Readonly<LetterProps>) => {
           />
 
           <View>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-[74]">
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              className="mt-[74]">
               <View className="flex-row items-center px-[30] py-[10] h-[36] mt-[20]">
                 {parentCategories.map((menu, index) => (
                   <Pressable
                     key={menu.id}
-                    className={`h-[36] px-[22] items-center justify-center border ${index === selectedFilterIdx ? 'border-tabIcon bg-white/10' : 'border-white10'} mr-[8]`}
-                    style={{ borderRadius: 20 }}
-                    onPress={() => setSelectedFilterIdx(index)}
-                  >
+                    className={`h-[36] px-[22] items-center justify-center border ${
+                      index === selectedFilterIdx
+                        ? 'border-tabIcon bg-white/10'
+                        : 'border-white10'
+                    } mr-[8]`}
+                    style={{borderRadius: 20}}
+                    onPress={() => setSelectedFilterIdx(index)}>
                     <Body4
                       text={menu.name}
-                      className={`${index === selectedFilterIdx ? 'text-yellowPrimary' : 'text-gray300'}`}
+                      className={`${
+                        index === selectedFilterIdx
+                          ? 'text-yellowPrimary'
+                          : 'text-gray300'
+                      }`}
                     />
                   </Pressable>
                 ))}
@@ -123,11 +150,13 @@ const LetterListScreen = ({ navigation }: Readonly<LetterProps>) => {
                 fontSize: 22,
                 fontFamily: 'LeeSeoyun-Regular',
                 lineHeight: 22 * 1.5,
-              }}
-            >
+              }}>
               TO.
             </Text>
-            <Title4 text={nickname ?? ''} className="text-yellowPrimary ml-[7]" />
+            <Title4
+              text={nickname ?? ''}
+              className="text-yellowPrimary ml-[7]"
+            />
           </View>
           {/* 목 데이터 넣은 버전 */}
           {/* <ScrollView>

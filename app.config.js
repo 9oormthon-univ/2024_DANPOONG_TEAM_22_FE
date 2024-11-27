@@ -1,4 +1,4 @@
-export default ({ config }) => ({
+export default ({config}) => ({
   ...config,
   name: '내일모래',
   slug: 'NM',
@@ -50,10 +50,11 @@ export default ({ config }) => ({
       'expo-build-properties',
       {
         android: {
-          extraMavenRepos: ['https://devrepo.kakao.com/nexus/content/groups/public/'],
+          extraMavenRepos: [
+            'https://devrepo.kakao.com/nexus/content/groups/public/',
+          ],
         },
       },
     ],
-    ['expo-secure-store'],
   ],
 });
