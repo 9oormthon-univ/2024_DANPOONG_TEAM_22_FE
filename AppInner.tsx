@@ -1,15 +1,13 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { RootStackParamList } from '@type/RootStackParamList';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {RootStackParamList} from '@type/RootStackParamList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppTabNav from './src/nav/tabNav/App';
 import AuthStackNav from '@stackNav/Auth';
 import YouthStackNav from '@stackNav/Youth';
-import { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
-import { getMember } from '@apis/member';
-import { Role } from '@type/member';
-import useFCM from './src/libs/hooks/fcm/useFCM';
-import messaging from '@react-native-firebase/messaging';
+import {useEffect, useState} from 'react';
+import {Alert} from 'react-native';
+import {getMember} from '@apis/member';
+import {Role} from '@type/member';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -25,37 +23,36 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 //   });
 // };
 
-messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-  console.log('Message handled in the background!', remoteMessage);
-});
-
 const AppInner = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [role, setRole] = useState<Role | null>(null);
 
-  useFCM();
-
   useEffect(() => {
-  //   const loadFonts = async () => {
-  //     await fetchFonts();
-  //     setFontsLoaded(true);
-  //   };
+    //   const loadFonts = async () => {
+    //     await fetchFonts();
+    //     setFontsLoaded(true);
+    //   };
 
-  //   loadFonts();
+    //   loadFonts();
 
     (async () => {
       try {
         const token = await AsyncStorage.getItem('accessToken');
         setIsLoggedIn(!!token);
 
-        if (!token) return;
-        const { result } = await getMember();
+        if (!token) {
+          return;
+        }
+        const {result} = await getMember();
         console.log(result);
         setRole(result.role);
       } catch (error) {
         console.error(error);
-        Alert.alert('오류', `회원 정보를 불러오는 중 오류가 발생했어요\n${error}`);
+        Alert.alert(
+          '오류',
+          `회원 정보를 불러오는 중 오류가 발생했어요\n${error}`,
+        );
       }
     })();
   }, []);
@@ -69,8 +66,7 @@ const AppInner = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-      }}
-    >
+      }}>
       {isLoggedIn ? (
         <Stack.Group>
           {role === 'HELPER' ? (
