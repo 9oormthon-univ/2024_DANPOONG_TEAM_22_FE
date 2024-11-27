@@ -11,7 +11,7 @@ import {
 } from '@react-navigation/native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import AppInner from 'AppInner';
+import AppInner, {navigateToYouthListenScreen} from 'AppInner';
 import {RootStackParamList} from '@type/RootStackParamList';
 import messaging from '@react-native-firebase/messaging';
 import {useEffect} from 'react';
@@ -42,7 +42,7 @@ function App(): React.JSX.Element {
   useEffect(() => {
     requestUserPermission();
 
-    // Check if the app was opened from a notification
+    // Quit -> Foreground : Check if the app was opened from a notification
     messaging()
       .getInitialNotification()
       .then(remoteMessage => {
@@ -58,6 +58,17 @@ function App(): React.JSX.Element {
           })();
         }
       });
+
+    // Background -> Foreground : Check if the app was opened from a notification
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      if (remoteMessage) {
+        const {alarmId, script} = remoteMessage.data;
+        navigateToYouthListenScreen({
+          alarmId: Number(alarmId),
+          script: script,
+        });
+      }
+    });
   }, []);
 
   const requestUserPermission = async () => {

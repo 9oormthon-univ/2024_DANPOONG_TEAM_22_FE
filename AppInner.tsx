@@ -12,7 +12,7 @@ import {navigationRef} from 'App';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const navigateToYouthListenScreen = ({
+export const navigateToYouthListenScreen = ({
   alarmId,
   script,
 }: Readonly<{alarmId: number; script: string}>) => {
