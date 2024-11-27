@@ -1,0 +1,29 @@
+{
+    "project_info": {
+      "project_number": "19510428703",
+      "project_id": "nailmorae",
+      "storage_bucket": "nailmorae.firebasestorage.app"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:19510428703:android:a91a2bd034fcc3b218812a",
+          "android_client_info": {
+            "package_name": "com.nail.morae"
+          }
+        },
+        "oauth_client": [],
+        "api_key": [
+          {
+            "current_key": "AIzaSyCTxIiVu-cAelkDpmauwIvmEg63ZD3VAUU"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": []
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }
