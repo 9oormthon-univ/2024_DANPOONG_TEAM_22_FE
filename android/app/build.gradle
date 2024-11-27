@@ -22,6 +22,7 @@ buildscript {
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
+apply plugin: "com.google.gms.google-services"
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -100,7 +101,7 @@ android {
 
     namespace "com.nm"
     defaultConfig {
-        applicationId "com.nm"
+        applicationId "com.nail.morae"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -138,4 +139,6 @@ dependencies {
         implementation jscFlavor
     }
     implementation project(':react-native-audio-recorder-player')
+    implementation platform('com.google.firebase:firebase-bom:29.0.4')
+    implementation 'com.google.firebase:firebase-analytics'
 }
