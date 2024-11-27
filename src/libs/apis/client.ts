@@ -1,8 +1,8 @@
-import axios from 'axios'
+import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { AuthStackParamList } from '@stackNav/Auth'
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {AuthStackParamList} from '@stackNav/Auth';
 
 // navigation 인스턴스를 저장할 변수
 let navigationRef: any = null;
@@ -13,7 +13,7 @@ export const setNavigator = (nav: any) => {
 };
 
 const client = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_API_URL,
+  baseURL: 'http://nysams.com:8081',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -22,7 +22,7 @@ const client = axios.create({
 // Request Interceptor: 모든 요청 전에 토큰을 헤더에 추가
 client.interceptors.request.use(async config => {
   try {
-    const accessToken = await AsyncStorage.getItem('accessToken')
+    const accessToken = await AsyncStorage.getItem('accessToken');
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
