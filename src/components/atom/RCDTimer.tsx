@@ -1,16 +1,16 @@
 import { View } from 'react-native'
 import Txt from './Txt'
 import { useEffect, useState } from 'react'
-import { Audio } from 'expo-av'
+import AudioRecorderPlayer from 'react-native-audio-recorder-player'
 import useInterval from '@hooks/useInterval'
 
 type RCDTimerProps = {
-  recording: Audio.Recording | undefined
-  isPaused: boolean
+  recording: AudioRecorderPlayer | undefined
+  isPaused: boolean 
   setIsDone: (isDone: boolean) => void
   stop: () => void
   isDone: boolean
-  type:'DAILY' | 'COMFORT'
+  type: 'DAILY' | 'COMFORT'
 }
 
 const RCDTimer = ({

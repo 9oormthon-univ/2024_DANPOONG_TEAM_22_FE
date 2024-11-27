@@ -1,4 +1,4 @@
-import { View, Animated, ImageBackground, Text, ActivityIndicator } from 'react-native'
+import { View, Animated, ImageBackground, ActivityIndicator } from 'react-native'
 import Txt from '@components/atom/Txt'
 import BG from '@components/atom/BG'
 import Button from '@components/atom/button/Button'
@@ -63,7 +63,7 @@ const RCDFeedBackScreen = () => {
           <View className='w-full h-full justify-center items-center'>
             <View className='w-[90%] h-[85%] justify-center items-center'>
               <ImageBackground
-                source={require('@assets/pngs/starsOff.png')}
+                source={require('../../../assets/pngs/starsOff.png')}
                 resizeMode="contain"
                 className='static w-full h-full'
               />
@@ -76,7 +76,7 @@ const RCDFeedBackScreen = () => {
             <View className='w-full h-full justify-center items-center'>
               <View className='w-[90%] h-[85%] justify-center items-center'>
                 <ImageBackground
-                  source={require('@assets/pngs/starsOn.png')}
+                  source={require('../../../assets/pngs/starsOn.png')}
                   resizeMode="contain"
                   className='w-full h-full'
                 />

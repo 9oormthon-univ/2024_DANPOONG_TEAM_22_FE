@@ -1,16 +1,16 @@
 import { View ,TouchableOpacity} from "react-native";
-import StarPNG from '@components/atom/StarPNG'
-import BG from '@components/atom/BG'
-import Txt from '@components/atom/Txt'
-import ShadowView from '@components/atom/ShadowView'
-import BackIcon from '@assets/svgs/Back.svg'
+import StarPNG from '../../components/atom/StarPNG'
+import BG from '../../components/atom/BG'
+import Txt from '../../components/atom/Txt'
+import ShadowView from '../../components/atom/ShadowView'
+import BackIcon from '../../../assets/svgs/Back.svg'
 import { useNavigation, NavigationProp, RouteProp } from "@react-navigation/native";
 import { HomeStackParamList } from "../../types/HomeStackParamList";
-import { getTopText } from "@apis/RCDApis/getTopText";
+import { getTopText } from "../../libs/apis/RCDApis/getTopText";
 import { useEffect, useState } from "react";
-import { postAskGPT,PostAskGPTResponse } from "@apis/RCDApis/postAskGPT";
-import { RCD } from "@apis/RCDApis/getRCDList";
-import AppBar from "@components/atom/AppBar";
+import { postAskGPT,PostAskGPTResponse } from "../../libs/apis/RCDApis/postAskGPT";
+import { RCD } from "../../libs/apis/RCDApis/getRCDList";
+import AppBar from "../../components/atom/AppBar";
 import { ActivityIndicator } from 'react-native'
 
 const SelectButton = ({head,sub,gpt,alarmId,item,type}:{head:string,sub:string,gpt:boolean,alarmId:number,item:RCD,type:'DAILY'|'COMFORT'}) => {
@@ -52,8 +52,8 @@ const RCDSelectText = ({route}:{route:RouteProp<HomeStackParamList,'RCDSelectTex
     const navigation = useNavigation<NavigationProp<HomeStackParamList>>()
     const {item,type} = route.params
     console.log(item)
-    const [subTitle,setSubTitle]=useState<string>()
-    const [alarmId,setAlarmId] = useState<number>();
+    const [subTitle,setSubTitle]=useState<string>('')
+    const [alarmId,setAlarmId] = useState<number>(0);
     useEffect(()=>{
         getTopText(item.categoryId).then((res)=>{
             setSubTitle(res.title);

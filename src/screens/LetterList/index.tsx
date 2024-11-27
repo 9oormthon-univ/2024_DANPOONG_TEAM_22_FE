@@ -13,7 +13,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Card from '@screens/LetterList/components/Card';
 import { LetterStackParamList } from '@type/LetterStackParamList';
 import { LetterResponseData } from '@type/providedFile';
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { Alert, Pressable, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -22,7 +22,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 type LetterProps = NativeStackScreenProps<LetterStackParamList, 'LetterListScreen'>;
 
 const LetterListScreen = ({ navigation }: Readonly<LetterProps>) => {
-  const nickname = SecureStore.getItem('nickname');
+  const nickname = AsyncStorage.getItem('nickname');
   const [selectedFilterIdx, setSelectedFilterIdx] = useState(0);
   // const { data: alarmComfortData, isError: isAlarmComfortError, error: alarmComfortError } = useGetAlarmComfort();
   const [lettersData, setLettersData] = useState<LetterResponseData[]>([]);

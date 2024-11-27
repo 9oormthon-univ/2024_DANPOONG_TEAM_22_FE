@@ -1,6 +1,6 @@
-import { LinearGradient } from 'expo-linear-gradient'
 import { View, Platform } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import LinearGradient from 'react-native-linear-gradient';
 
 const BG = ({
   type,

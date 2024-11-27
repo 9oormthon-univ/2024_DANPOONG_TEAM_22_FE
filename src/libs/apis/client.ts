@@ -1,5 +1,5 @@
 import axios from 'axios'
-import * as SecureStore from 'expo-secure-store'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { AuthStackParamList } from '@stackNav/Auth'
@@ -22,7 +22,7 @@ const client = axios.create({
 // Request Interceptor: 모든 요청 전에 토큰을 헤더에 추가
 client.interceptors.request.use(async (config) => {
   try {
-    const accessToken = await SecureStore.getItemAsync('accessToken')
+    const accessToken = await AsyncStorage.getItem('accessToken')
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`
     }
@@ -42,19 +42,19 @@ client.interceptors.response.use(
         case 401:
           // 인증 에러 처리
           try {
-            const refreshToken = await SecureStore.getItemAsync('refreshToken')
+            const refreshToken = await AsyncStorage.getItem('refreshToken')
             const response = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/api/v1/auth/token/refresh`, {
               refreshToken
             })
             const accessToken = response.data.result.accessToken
-            await SecureStore.setItemAsync('accessToken', accessToken)
+            await AsyncStorage.setItem('accessToken', accessToken)
             // 새로운 토큰으로 원래 요청 재시도
             const originalRequest = error.config
             originalRequest.headers.Authorization = `Bearer ${accessToken}`
             return axios(originalRequest)
           } catch (refreshError) {
             // 토큰 갱신 실패 시 로그아웃 처리 등
-            await SecureStore.deleteItemAsync('accessToken')
+            await AsyncStorage.clear()
             // navigation 참조를 사용하여 리다이렉트
             if (navigationRef) {
               navigationRef.navigate('AuthStackNav')

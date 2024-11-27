@@ -11,13 +11,13 @@ import { StatusBar } from 'react-native';
 import { COLORS } from '../../libs/constants/Colors';
 import { getYouthNum } from '../../libs/apis/RCDApis/getYouthNum';
 import { useEffect, useState } from 'react';
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen = () => {
   const tabBarHeight = useBottomTabBarHeight();
   StatusBar.setBarStyle('light-content');
   StatusBar.setBackgroundColor(COLORS.bgMainPageBack100);
-  const nickname = SecureStore.getItem('nickname');
+  const nickname = AsyncStorage.getItem('nickname');
 
   const [youthNum, setYouthNum] = useState<number>(999);
 

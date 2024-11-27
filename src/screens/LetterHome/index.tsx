@@ -13,8 +13,8 @@ import { Alert, Image, Pressable, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ChevronRightWhiteIcon from '../../../assets/images/youth/chevron_right_white.svg';
-import * as SecureStore from 'expo-secure-store';
-import useGetSummary from '@hooks/providedFile/useGetSummary';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import useGetSummary from '../../libs/hooks/providedFile/useGetSummary';
 import { useEffect } from 'react';
 
 type LetterProps = NativeStackScreenProps<
@@ -23,7 +23,7 @@ type LetterProps = NativeStackScreenProps<
 >;
 
 const LetterHomeScreen = ({ navigation }: Readonly<LetterProps>) => {
-  const nickname = SecureStore.getItem('nickname');
+  const nickname = AsyncStorage.getItem('nickname');
   const {
     data: summaryData,
     isError: isSummaryError,
@@ -98,7 +98,7 @@ const LetterHomeScreen = ({ navigation }: Readonly<LetterProps>) => {
                           />
                           <Body2
                             text={String(
-                              summaryData?.result.reactionsNum[emotion.value]
+                              summaryData?.result.reactionsNum[emotion.value as keyof typeof summaryData.result.reactionsNum]
                             )}
                             // text="33"
                             className="text-gray100 text-center"

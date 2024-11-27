@@ -1,4 +1,3 @@
-
 //babel.config.js
 module.exports = function (api) {
   api.cache(true)
@@ -26,9 +25,12 @@ module.exports = function (api) {
             '@constants': './src/libs/constants',
             '@apis': './src/libs/apis',
             '@utils': './src/libs/utils',
+            '@hooks': './src/libs/hooks',
+            '@api': './src/api',
             '@stackNav': './src/nav/stackNav',
             '@tabNav': './src/nav/tabNav',
             '@screens': './src/screens',
+            '@assets': './assets',
             '@type': './src/types',
           },
         },

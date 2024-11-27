@@ -2,11 +2,11 @@ import { getAlarmCategoryByAlarmCategoryId } from '@apis/alarm';
 import Body3 from '@components/atom/body/Body3';
 import Title2 from '@components/atom/title/Title2';
 import Title3 from '@components/atom/title/Title3';
-import useGetAlarmComfort from '@hooks/alarm/useGetAlarmComfort';
-import useGetHelperNum from '@hooks/member/useGetHelperNum';
+import useGetAlarmComfort from '../../libs/hooks/alarm/useGetAlarmComfort';
+import useGetHelperNum from '../../libs/hooks/member/useGetHelperNum';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { YouthStackParamList } from '@stackNav/Youth';
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { Alert, Image, ImageBackground, Pressable, SafeAreaView, View } from 'react-native';
 import CancelIcon from '../../../assets/images/youth/cancel.svg';
@@ -17,19 +17,27 @@ type YouthProps = NativeStackScreenProps<YouthStackParamList, 'YouthHomeScreen'>
 const YouthHomeScreen = ({ navigation }: Readonly<YouthProps>) => {
   const [clicked, setClicked] = useState(false);
   const { data: helperNumData, isError: isHelperNumError } = useGetHelperNum();
-  const nickname = SecureStore.getItem('nickname');
+  const [nickname, setNickname] = useState<string | null>(null);
   const { data: alarmComfortData, isError: isAlarmComfortError, error: alarmComfortError } = useGetAlarmComfort();
+
+  useEffect(() => {
+    const getNickname = async () => {
+      const storedNickname = await AsyncStorage.getItem('nickname');
+      setNickname(storedNickname);
+    };
+    getNickname();
+  }, []);
 
   const handleButtonClick = (label: string) => {
     if (!alarmComfortData) return;
 
     const alarms = alarmComfortData.result.find((alarm) => alarm.name === label);
     console.log(label, alarms);
-    const alarmCategoryId = alarms.children[0].id;
+    const alarmCategoryId = alarms?.children[0].id;
 
     (async () => {
       try {
-        const { result } = await getAlarmCategoryByAlarmCategoryId({ alarmCategoryId });
+        const { result } = await getAlarmCategoryByAlarmCategoryId({ alarmCategoryId: alarmCategoryId ?? 0 });
         const { alarmId, title } = result;
         console.log('alarmComfortData', alarmComfortData);
         console.log('getAlarmCategory', result);

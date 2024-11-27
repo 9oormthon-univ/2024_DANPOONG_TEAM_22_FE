@@ -6,7 +6,7 @@ import Title3 from '@components/atom/title/Title3';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { YouthStackParamList } from '@stackNav/Youth';
 import { VoiceFileResponseData } from '@type/voiceFile';
-import { AVPlaybackStatus, ResizeMode, Video } from 'expo-av';
+import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import LottieView from 'lottie-react-native';
 import { useEffect, useRef, useState } from 'react';
 import { Alert, Image, Keyboard, Pressable, ScrollView, TextInput, View } from 'react-native';
@@ -20,7 +20,6 @@ import SendIcon from '../../../assets/images/youth/send.svg';
 import SmileIcon from '../../../assets/images/youth/smile.svg';
 import SmileWhiteIcon from '../../../assets/images/youth/smile_white.svg';
 import StopIcon from '../../../assets/images/youth/stop.svg';
-// import { postComment } from '@apis/providedFile';
 import LoadingScreen from '@screens/Loading';
 
 type YouthProps = NativeStackScreenProps<YouthStackParamList, 'YouthListenScreen'>;
@@ -39,8 +38,8 @@ const YouthListenScreen = ({ route, navigation }: Readonly<YouthProps>) => {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const imageUri = null;
   const animation = useRef<LottieView>(null);
-  const [status, setStatus] = useState({} as any);
-  const video = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioPlayer = useRef(new AudioRecorderPlayer());
   const [voiceFile, setVoiceFile] = useState<VoiceFileResponseData>({} as VoiceFileResponseData);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -52,12 +51,12 @@ const YouthListenScreen = ({ route, navigation }: Readonly<YouthProps>) => {
   }, []);
 
   useEffect(() => {
-    if (status.isPlaying) {
+    if (isPlaying) {
       animation.current?.play();
     } else {
       animation.current?.pause();
     }
-  }, [status.isPlaying]);
+  }, [isPlaying]);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => setIsKeyboardVisible(true));
@@ -83,17 +82,14 @@ const YouthListenScreen = ({ route, navigation }: Readonly<YouthProps>) => {
     })();
 
     return () => {
-      if (status.isPlaying) {
-        video.current?.pauseAsync();
+      if (isPlaying) {
+        audioPlayer.current.stopPlayer();
       }
     };
   }, []);
 
   const handleMessageSend = async () => {
-    // if (!voiceFile.providedFileId) return;
-
     try {
-      // await postComment({ providedFileId: voiceFile.providedFileId, message });
       Alert.alert('성공', '편지를 성공적으로 보냈어요');
       setMessage('');
     } catch (error) {
@@ -102,42 +98,24 @@ const YouthListenScreen = ({ route, navigation }: Readonly<YouthProps>) => {
     }
   };
 
-  const handlePlaybackStatusUpdate = (status: AVPlaybackStatus) => {
-    setStatus(() => status);
-  };
-
-  const handlePlayButtonClick = () => {
-    if (!video.current) return;
-
-    if (status.isPlaying) {
-      video.current.pauseAsync();
-    } else {
-      video.current.playAsync();
+  const handlePlayButtonClick = async () => {
+    try {
+      if (isPlaying) {
+        await audioPlayer.current.stopPlayer();
+        setIsPlaying(false);
+      } else {
+        await audioPlayer.current.startPlayer(voiceFile.fileUrl);
+        setIsPlaying(true);
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('오류', '오디오 재생 중 오류가 발생했어요');
     }
   };
 
   if (isLoading) return <LoadingScreen />;
   return (
     <SafeAreaView className="flex-1 bg-solid">
-      <Video
-        ref={video}
-        onLoad={() => video.current?.playAsync()}
-        onError={(error) => {
-          console.error('Video Error:', error);
-          Alert.alert('오류', '오디오를 불러오는 중 오류가 발생했어요');
-        }}
-        isLooping
-        source={
-          voiceFile.fileUrl
-            ? {
-                uri: voiceFile.fileUrl,
-              }
-            : require('../../../assets/audios/mom.mp4')
-        }
-        useNativeControls
-        resizeMode={ResizeMode.CONTAIN}
-        onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-      />
       {!isKeyboardVisible && (
         <View className="absolute left-0 bottom-0 w-full h-full" style={{ transform: [{ scale: 1.1 }] }}>
           <LottieView
@@ -170,7 +148,7 @@ const YouthListenScreen = ({ route, navigation }: Readonly<YouthProps>) => {
           </View>
 
           <Pressable onPress={handlePlayButtonClick} className="mt-[52]">
-            {status.isPlaying ? <StopIcon /> : <PlayIcon />}
+            {isPlaying ? <StopIcon /> : <PlayIcon />}
           </Pressable>
 
           <View className="absolute bottom-0 w-full" style={{ borderTopLeftRadius: 10, borderTopRightRadius: 10 }}>
