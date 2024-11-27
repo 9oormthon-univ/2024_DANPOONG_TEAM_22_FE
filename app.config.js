@@ -1,7 +1,9 @@
+export const name = 'nm';
+
 export default ({config}) => ({
   ...config,
   name: '내일모래',
-  slug: 'NM',
+  slug: 'nm',
   owner: 'obb8923',
   // owner: 'bongjs',
   version: '1.0.0',
