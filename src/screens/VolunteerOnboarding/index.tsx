@@ -3,19 +3,19 @@ import Body2 from '@components/atom/body/Body2';
 import Button from '@components/atom/button/Button';
 import LeeSeoYunText from '@components/atom/LeeSeoyunText';
 import VoltaireText from '@components/atom/VoltaireText';
-import { CompositeScreenProps } from '@react-navigation/native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { AuthStackParamList } from '@stackNav/Auth';
-import { RootStackParamList } from '@type/RootStackParamList';
-import * as SecureStore from 'expo-secure-store';
-import React, { useState } from 'react';
-import { Animated, Dimensions, Image, View } from 'react-native';
-import { SlidingDot } from 'react-native-animated-pagination-dots';
+import {CompositeScreenProps} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {AuthStackParamList} from '@stackNav/Auth';
+import {RootStackParamList} from '@type/RootStackParamList';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {useEffect, useState} from 'react';
+import {Animated, Dimensions, Image, View} from 'react-native';
+import {SlidingDot} from 'react-native-animated-pagination-dots';
 import PagerView, {
   PagerViewOnPageScrollEventData,
   PagerViewOnPageSelectedEvent,
 } from 'react-native-pager-view';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -24,9 +24,13 @@ type AuthProps = NativeStackScreenProps<
 type RootProps = NativeStackScreenProps<RootStackParamList>;
 type Props = CompositeScreenProps<AuthProps, RootProps>;
 
+type PageProps = {
+  nickname: string;
+};
+
 const AnimatedPagerView = Animated.createAnimatedComponent(PagerView);
 
-const Page1 = ({ nickname }) => {
+const Page1 = ({nickname}: Readonly<PageProps>) => {
   return (
     <View className="flex-1 items-center justify-center">
       <Body2
@@ -35,7 +39,7 @@ const Page1 = ({ nickname }) => {
       />
       <VoltaireText text="“" size={48} className="text-yellow200 mt-[26]" />
       <LeeSeoYunText
-        text={`아이 하나를 키우는데\n온 동네가 필요하다`}
+        text={'아이 하나를 키우는데\n온 동네가 필요하다'}
         size={25}
         className="text-yellow200 text-center"
       />
@@ -49,7 +53,9 @@ const Page2 = () => {
   return (
     <View className="flex-1 items-center mt-[80]">
       <Body2
-        text={`홀로서기를 시작한\n자립준비청년은 마치\n사막을 걷는 나그네와 같아요`}
+        text={
+          '홀로서기를 시작한\n자립준비청년은 마치\n사막을 걷는 나그네와 같아요'
+        }
         className="text-gray200 text-center"
       />
       <Image
@@ -60,11 +66,13 @@ const Page2 = () => {
   );
 };
 
-const Page3 = ({ nickname }) => {
+const Page3 = ({nickname}: Readonly<PageProps>) => {
   return (
     <View className="flex-1 items-center mt-[80]">
       <Body2
-        text={`사막의 별처럼,\n${nickname ?? ''} 님의 목소리는\n나그네의 길을 안내할 수 있어요`}
+        text={`사막의 별처럼,\n${
+          nickname ?? ''
+        } 님의 목소리는\n나그네의 길을 안내할 수 있어요`}
         className="text-gray200 text-center"
       />
       <Image
@@ -75,11 +83,13 @@ const Page3 = ({ nickname }) => {
   );
 };
 
-const Page4 = ({ handleNext }: Readonly<{ handleNext: () => void }>) => {
+const Page4 = ({handleNext}: Readonly<{handleNext: () => void}>) => {
   return (
     <View className="flex-1 items-center mt-[80]">
       <Body2
-        text={`내일모래와 함께\n내일도, 모레도,\n청년의 일상을 비추러 가볼래요?`}
+        text={
+          '내일모래와 함께\n내일도, 모레도,\n청년의 일상을 비추러 가볼래요?'
+        }
         className="text-gray200 text-center "
       />
       <Image
@@ -95,9 +105,16 @@ const Page4 = ({ handleNext }: Readonly<{ handleNext: () => void }>) => {
   );
 };
 
-const VolunteerOnboardingScreen = ({ navigation }: Readonly<Props>) => {
+const VolunteerOnboardingScreen = ({navigation}: Readonly<Props>) => {
   const [currentPageIdx, setCurrentPageIdx] = useState(0);
-  const nickname = SecureStore.getItem('nickname');
+  const [nickname, setNickname] = useState('');
+
+  useEffect(() => {
+    (async () => {
+      const nickname = await AsyncStorage.getItem('nickname');
+      setNickname(nickname ?? '');
+    })();
+  }, []);
 
   const handleNext = () => {
     navigation.navigate('AppTabNav');
@@ -111,7 +128,7 @@ const VolunteerOnboardingScreen = ({ navigation }: Readonly<Props>) => {
   const inputRange = [0, PAGE_COUNT];
   const scrollX = Animated.add(
     scrollOffsetAnimatedValue,
-    positionAnimatedValue
+    positionAnimatedValue,
   ).interpolate({
     inputRange,
     outputRange: [0, PAGE_COUNT * width],
@@ -157,10 +174,10 @@ const VolunteerOnboardingScreen = ({ navigation }: Readonly<Props>) => {
         ],
         {
           useNativeDriver: false,
-        }
+        },
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [],
   );
 
   const onPageSelected = (e: PagerViewOnPageSelectedEvent) => {
@@ -175,13 +192,13 @@ const VolunteerOnboardingScreen = ({ navigation }: Readonly<Props>) => {
             <SlidingDot
               testID={'sliding-dot'}
               marginHorizontal={3}
-              containerStyle={{ top: 30 }}
+              containerStyle={{top: 30}}
               data={INTRO_DATA}
               //@ts-ignore
               scrollX={scrollX}
               dotSize={5.926}
-              dotStyle={{ backgroundColor: '#414141' }}
-              slidingIndicatorStyle={{ backgroundColor: '#F9F96C' }}
+              dotStyle={{backgroundColor: '#414141'}}
+              slidingIndicatorStyle={{backgroundColor: '#F9F96C'}}
             />
           </View>
 
@@ -191,16 +208,15 @@ const VolunteerOnboardingScreen = ({ navigation }: Readonly<Props>) => {
             ref={ref}
             className="flex-1"
             onPageScroll={onPageScroll}
-            onPageSelected={onPageSelected}
-          >
+            onPageSelected={onPageSelected}>
             <View key="1" className="flex-1">
-              <Page1 nickname={nickname} />
+              <Page1 nickname={nickname ?? ''} />
             </View>
             <View key="2" className="flex-1">
               <Page2 />
             </View>
             <View key="3" className="flex-1">
-              <Page3 nickname={nickname} />
+              <Page3 nickname={nickname ?? ''} />
             </View>
             <View key="4" className="flex-1">
               <Page4 handleNext={handleNext} />
