@@ -105,7 +105,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
                           />
                           <Body2
                             text={String(
-                              summaryData?.result.reactionsNum[emotion.value],
+                              summaryData?.result.reactionsNum[emotion.value as keyof typeof summaryData.result.reactionsNum],
                             )}
                             // text="33"
                             className="text-gray100 text-center"
