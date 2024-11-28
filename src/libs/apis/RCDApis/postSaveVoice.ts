@@ -23,7 +23,7 @@ export const postSaveVoice = async (voicefileId: number, file: string): Promise<
     );
     return response.data;
   } catch (error) {
-    console.error('음성 파일 저장 오류:', error);
+    console.log('음성 파일 저장 오류:', error);
     throw error;
   }
 }

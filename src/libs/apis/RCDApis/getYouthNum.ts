@@ -14,7 +14,7 @@ export const getYouthNum = async (): Promise<number> => {
     const response = await client.get<YouthNumResponse>('/api/v1/member/youth-num');
     return response.data.result.youthMemberNum;
   } catch (error) {
-    console.error('청년 수 가져오기 오류:', error);
+    console.log('청년 수 가져오기 오류:', error);
     throw error;
   }
 }
