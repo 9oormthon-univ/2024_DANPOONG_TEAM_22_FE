@@ -1,5 +1,5 @@
 import BG from '@components/atom/BG';
-import Button from '@components/atom/button/Button';
+import Button from '@components/atom/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 // import {

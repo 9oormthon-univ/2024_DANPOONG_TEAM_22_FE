@@ -1,5 +1,5 @@
 import BG from '@components/atom/BG';
-import Button from '@components/atom/button/Button';
+import Button from '@components/atom/Button';
 import LeeSeoYunText from '@components/atom/LeeSeoyunText';
 import Txt from '@components/atom/Txt';
 import VoltaireText from '@components/atom/VoltaireText';

@@ -1,7 +1,7 @@
 import {View, ScrollView} from 'react-native';
 import BG from '../../components/atom/BG';
 import Txt from '../../components/atom/Txt';
-import Button from '../../components/atom/button/Button';
+import Button from '../../components/atom/Button';
 import {
   NavigationProp,
   RouteProp,

@@ -6,7 +6,7 @@ import BG from '@components/atom/BG';
 import RCDBtnBar from '@components/molecule/RCDBtnBar';
 import RCDTimer from '@components/atom/RCDTimer';
 import Txt from '@components/atom/Txt';
-import Button from '@components/atom/button/Button';
+import Button from '@components/atom/Button';
 import Notice1 from '../../../assets/svgs/Notice1.svg';
 import Notice2 from '../../../assets/svgs/Notice2.svg';
 import {

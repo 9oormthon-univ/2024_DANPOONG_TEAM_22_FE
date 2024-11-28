@@ -2,7 +2,7 @@ import {TextInput, TouchableOpacity, View} from 'react-native';
 import BG from '@components/atom/BG';
 import StarPNG from '@components/atom/StarPNG';
 import Txt from '@components/atom/Txt';
-import Button from '@components/atom/button/Button';
+import Button from '@components/atom/Button';
 import {
   NavigationProp,
   RouteProp,

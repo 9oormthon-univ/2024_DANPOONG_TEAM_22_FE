@@ -1,7 +1,7 @@
 import {View} from 'react-native';
 import Txt from '../atom/Txt';
 import ShadowView from '../atom/ShadowView';
-import Button from '@components/atom/button/Button';
+import Button from '@components/atom/Button';
 import {ImageBackground} from 'react-native';
 import StarPNG from '@components/atom/StarPNG';
 import {useNavigation, NavigationProp} from '@react-navigation/native';

@@ -1,6 +1,6 @@
 import {postMember} from '@apis/member';
 import BG from '@components/atom/BG';
-import Button from '@components/atom/button/Button';
+import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
