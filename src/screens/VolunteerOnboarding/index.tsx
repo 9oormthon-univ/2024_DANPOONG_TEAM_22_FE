@@ -1,13 +1,13 @@
 import BG from '@components/atom/BG';
-import Body2 from '@components/atom/body/Body2';
-import Button from '@components/atom/button/Button';
+import Button from '@components/atom/Button';
 import LeeSeoYunText from '@components/atom/LeeSeoyunText';
+import Txt from '@components/atom/Txt';
 import VoltaireText from '@components/atom/VoltaireText';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CompositeScreenProps} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {RootStackParamList} from '@type/RootStackParamList';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useEffect, useState} from 'react';
 import {Animated, Dimensions, Image, View} from 'react-native';
 import {SlidingDot} from 'react-native-animated-pagination-dots';
@@ -33,7 +33,8 @@ const AnimatedPagerView = Animated.createAnimatedComponent(PagerView);
 const Page1 = ({nickname}: Readonly<PageProps>) => {
   return (
     <View className="flex-1 items-center justify-center">
-      <Body2
+      <Txt
+        type="body2"
         text={`${nickname ?? ''} 님,\n이런 말 들어본 적 있나요?`}
         className="text-white text-center"
       />
@@ -44,7 +45,7 @@ const Page1 = ({nickname}: Readonly<PageProps>) => {
         className="text-yellow200 text-center"
       />
       <VoltaireText text="”" size={48} className="text-yellow200 mt-[26]" />
-      <Body2 text="라는 말이요" className="text-white text-center" />
+      <Txt type="body2" text="라는 말이요" className="text-white text-center" />
     </View>
   );
 };
@@ -52,7 +53,8 @@ const Page1 = ({nickname}: Readonly<PageProps>) => {
 const Page2 = () => {
   return (
     <View className="flex-1 items-center mt-[80]">
-      <Body2
+      <Txt
+        type="body2"
         text={
           '홀로서기를 시작한\n자립준비청년은 마치\n사막을 걷는 나그네와 같아요'
         }
@@ -69,7 +71,8 @@ const Page2 = () => {
 const Page3 = ({nickname}: Readonly<PageProps>) => {
   return (
     <View className="flex-1 items-center mt-[80]">
-      <Body2
+      <Txt
+        type="body2"
         text={`사막의 별처럼,\n${
           nickname ?? ''
         } 님의 목소리는\n나그네의 길을 안내할 수 있어요`}
@@ -86,7 +89,8 @@ const Page3 = ({nickname}: Readonly<PageProps>) => {
 const Page4 = ({handleNext}: Readonly<{handleNext: () => void}>) => {
   return (
     <View className="flex-1 items-center mt-[80]">
-      <Body2
+      <Txt
+        type="body2"
         text={
           '내일모래와 함께\n내일도, 모레도,\n청년의 일상을 비추러 가볼래요?'
         }

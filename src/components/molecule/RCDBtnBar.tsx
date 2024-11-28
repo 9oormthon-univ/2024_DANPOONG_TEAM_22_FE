@@ -1,27 +1,25 @@
-import { View, TouchableOpacity } from 'react-native'
-import RCDBtn from '@components/atom/RCDBtn'
-import Txt from '@components/atom/Txt'
-import { RCDBtnBarProps } from '../../types/RCDBtnBarType'
+import {View, TouchableOpacity} from 'react-native';
+import RCDBtn from '@components/atom/RCDBtn';
+import Txt from '@components/atom/Txt';
+import {RCDBtnBarProps} from '../../types/RCDBtnBarType';
 
 const TransparentButton = ({
   content,
   color,
   onPress,
 }: {
-  content: string
-  color: string
-  onPress: () => void
+  content: string;
+  color: string;
+  onPress: () => void;
 }) => {
   return (
     <TouchableOpacity
       className="w-auto h-auto justify-center items-center px-btn"
-      onPress={onPress}
-    >
-      <Txt type="body1" content={content} color={color} />
+      onPress={onPress}>
+      <Txt type="body1" text={content} style={{color}} />
     </TouchableOpacity>
-  )
-}
-
+  );
+};
 
 const RCDBtnBar = ({
   record,
@@ -33,14 +31,21 @@ const RCDBtnBar = ({
   isDone,
   recording,
   reflesh,
-  stop
+  stop,
 }: RCDBtnBarProps) => {
-  const justifyType = isDone?'between':'center';
+  const justifyType = isDone ? 'between' : 'center';
   return (
-    <View className={`w-full h-20 flex flex-row justify-${justifyType} items-center`}>
+    <View
+      className={`w-full h-20 flex flex-row justify-${justifyType} items-center`}>
       {isDone && (
-        <TransparentButton content="다시" color="gray_300" 
-        onPress={async ()=>{await reflesh(); await record();}} />
+        <TransparentButton
+          content="다시"
+          color="gray_300"
+          onPress={async () => {
+            await reflesh();
+            await record();
+          }}
+        />
       )}
       <RCDBtn
         record={record}
@@ -56,6 +61,6 @@ const RCDBtnBar = ({
         <TransparentButton content="완료" color="gray_100" onPress={upload} />
       )}
     </View>
-  )
-}
-export default RCDBtnBar
+  );
+};
+export default RCDBtnBar;

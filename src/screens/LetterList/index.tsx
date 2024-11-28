@@ -1,19 +1,18 @@
-import {getLetters} from '@apis/providedFile';
 import {getAlarmCategory} from '@apis/alarm';
+import {getLetters} from '@apis/providedFile';
 // import {getTopText} from '@apis/RCDApis/getTopText';
 import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
-import Body4 from '@components/atom/body/Body4';
 import EmptyText from '@components/atom/EmptyText';
-import Title4 from '@components/atom/title/Title4';
 // import {LETTERS_DATA} from '@constants/letter';
 // import useGetAlarmCategory from '@hooks/alarm/useGetAlarmCategory';
 // import useGetAlarmComfort from '@hooks/alarm/useGetAlarmComfort';
+import Txt from '@components/atom/Txt';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Card from '@screens/LetterList/components/Card';
 import {LetterStackParamList} from '@type/LetterStackParamList';
 import {LetterResponseData} from '@type/providedFile';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useEffect, useState} from 'react';
 import {Alert, Pressable, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -129,7 +128,8 @@ const LetterListScreen = ({navigation}: Readonly<LetterProps>) => {
                     } mr-[8]`}
                     style={{borderRadius: 20}}
                     onPress={() => setSelectedFilterIdx(index)}>
-                    <Body4
+                    <Txt
+                      type="body4"
                       text={menu.name}
                       className={`${
                         index === selectedFilterIdx
@@ -153,7 +153,8 @@ const LetterListScreen = ({navigation}: Readonly<LetterProps>) => {
               }}>
               TO.
             </Text>
-            <Title4
+            <Txt
+              type="title4"
               text={nickname ?? ''}
               className="text-yellowPrimary ml-[7]"
             />

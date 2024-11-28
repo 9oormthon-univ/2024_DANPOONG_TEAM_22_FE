@@ -14,33 +14,36 @@ const RCDListScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDList'>
   const {type} = route.params
   const [rcdList, setRcdList] = useState<RCD[]>([])
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>()
+
   StatusBar.setBarStyle('light-content');
   StatusBar.setBackgroundColor(COLORS.bgSolid);
   useEffect(() => {
-    console.log('list:',rcdList)
-  }, [rcdList])
+    console.log('list:', rcdList);
+  }, [rcdList]);
 
   useEffect(() => {
     const fetchRCDList = async () => {
-      const categoryType: 'DAILY' | 'COMFORT' = type
+      const categoryType: 'DAILY' | 'COMFORT' = type;
       try {
-        const data = await getRCDList(categoryType)
-        setRcdList(data)
+        const data = await getRCDList(categoryType);
+        setRcdList(data);
       } catch (error) {
-        console.log('RCD 목록을 가져오는데 실패했습니다:', error)
-        setRcdList([]) // 에러 발생 시 빈 배열로 초기화
+        console.log('RCD 목록을 가져오는데 실패했습니다:', error);
+        setRcdList([]); // 에러 발생 시 빈 배열로 초기화
       }
-    }
-    
-    fetchRCDList()
-  }, [type])
+    };
+
+    fetchRCDList();
+  }, [type]);
   return (
     <BG type="gradation">
-         <AppBar
-          title={type==='DAILY' ? `일상 알림` : `위로 알림`}
-          goBackCallbackFn={() => {navigation.goBack()}}
-          className="absolute top-[0] w-full"
-        />
+      <AppBar
+        title={type === 'DAILY' ? '일상 알림' : '위로 알림'}
+        goBackCallbackFn={() => {
+          navigation.goBack();
+        }}
+        className="absolute top-[0] w-full"
+      />
       {/* BG Image */}
       <ImageBackground
         source={require('../../../assets/pngs/BGStarTop.png')}
@@ -52,17 +55,25 @@ const RCDListScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDList'>
           height: 130,
         }}
       />
-        <ImageBackground
-          source={type==='DAILY'?require(`../../../assets/pngs/BGStarBottomDAILY.png`):require(`../../../assets/pngs/BGStarBottomCOMFORT.png`)}
-          style={{ position: 'absolute', bottom: 0, width: '100%', height: 258 }}
-        />
+      <ImageBackground
+        source={
+          type === 'DAILY'
+            ? require('../../../assets/pngs/BGStarBottomDAILY.png')
+            : require('../../../assets/pngs/BGStarBottomCOMFORT.png')
+        }
+        style={{position: 'absolute', bottom: 0, width: '100%', height: 258}}
+      />
       {/* content section */}
         {/* header */}
         <View className="w-full mt-[132] px-px mb-[33]">
           <Txt
             type="title2"
-            content={type==='DAILY' ? `청년에게 일상을 응원하는\n녹음을 들려주세요` : `청년에게 위로하는\n목소리를 들려주세요`}
-            color="white"
+            text={
+              type === 'DAILY'
+                ? '청년에게 일상을 응원하는\n녹음을 들려주세요'
+                : '청년에게 위로하는\n목소리를 들려주세요'
+            }
+            className="text-white"
           />
           
         </View>
@@ -73,6 +84,6 @@ const RCDListScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDList'>
         </View>
         : <Carousel entries={rcdList} type={type}/>}
     </BG>
-  )
-}
+  );
+};
 export default RCDListScreen;

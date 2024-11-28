@@ -33,12 +33,12 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
   const [isDone, setIsDone] = useState<boolean>(false)
 
   useEffect(() => {
-    refleshRCDStates()
+    refleshRCDStates();
     return () => {
-      audioRecorderPlayer.stopRecorder()
-      audioRecorderPlayer.stopPlayer()
-    }
-  }, [])
+      audioRecorderPlayer.stopRecorder();
+      audioRecorderPlayer.stopPlayer();
+    };
+  }, []);
 
 
 
@@ -55,7 +55,6 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
       console.log('reflesh!@')
     }catch(e){console.log('reflesh error',e)}
   }
-
  
   const checkPermission = async () => {
     if (Platform.OS === 'android') {
@@ -100,6 +99,7 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
       return
     }
     console.log('checkPermission success')
+
     try {
       // 플랫폼에 따라 파일 경로 설정
       const path = Platform.select({
@@ -148,7 +148,6 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
     }
   }, [isRecording]);
 
-
   const stopRecording = async () => {
     if (!isRecording) {
       console.log('Recording is not in progress, no need to stop')
@@ -163,7 +162,7 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
     } catch (err) {
       console.log('Failed to stop recording', err)
     }
-  }
+  };
 
 
   const playSound = async () => {
@@ -182,57 +181,63 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
         setIsPlaying(false) // 오류 발생 시 재생 상태 해제
       }
     }
-  }
+  };
 
   const uploadRecording = async () => {
     if (uri) {
       try {
-        const file = new FormData()
+        const file = new FormData();
         file.append('file', {
           uri: Platform.OS === 'android' ? `file://${uri}` : uri,
           name: 'recording.wav',
-          type: 'audio/wav'
-        } as any)
+          type: 'audio/wav',
+        } as any);
 
-        const response = await postVoiceAnalysis(file, voiceFileId)
-        console.log('음성 파일 분석 결과:', response)
-        navigation.navigate('RCDFeedBack')
+        const response = await postVoiceAnalysis(file, voiceFileId);
+        console.log('음성 파일 분석 결과:', response);
+        navigation.navigate('RCDFeedBack');
       } catch (error: any) {
-        if(error.response?.data.code === 'ANALYSIS0001') {
-          setIsError(true)
-          setErrType('bad')
-        } else if (error.response?.data.code === 'ANALYSIS0002'){
-          setIsError(true)
-          setErrType('noisy')
+        if (error.response?.data.code === 'ANALYSIS0001') {
+          setIsError(true);
+          setErrType('bad');
+        } else if (error.response?.data.code === 'ANALYSIS0002') {
+          setIsError(true);
+          setErrType('noisy');
         } else {
-          setIsError(true)
-          setErrType('server')
+          setIsError(true);
+          setErrType('server');
         }
-        console.error('음성 파일 업로드 오류:', error)
+        console.error('음성 파일 업로드 오류:', error);
       }
     }
-  }
+  };
 
   return (
     <BG type="solid">
       {!isError ? (
         <>
           <AppBar
-            title=''
-            goBackCallbackFn={() => {navigation.goBack()}}
+            title=""
+            goBackCallbackFn={() => {
+              navigation.goBack();
+            }}
             className="absolute top-[0] w-full"
           />
-          <View className='flex-1 justify-between mt-[65]'>
-            <View className='px-px pt-[0] h-[250]'>
-              <ScrollView className='h-full'>
-                <View className='mt-[53]'/>
-                <Txt type='body4' content='준비한 문장을 시간 내에 또박또박 발음해주세요' color='gray_200'/>
-                <View className='mt-[28]'>
-                  <Txt type='title2' content={content} color='white'/>
+          <View className="flex-1 justify-between mt-[65]">
+            <View className="px-px pt-[0] h-[250]">
+              <ScrollView className="h-full">
+                <View className="mt-[53]" />
+                <Txt
+                  type="body4"
+                  text="준비한 문장을 시간 내에 또박또박 발음해주세요"
+                  className="text-gray200"
+                />
+                <View className="mt-[28]">
+                  <Txt type="title2" text={content} className="text-white" />
                 </View>
               </ScrollView>
             </View>
-            
+
             <View>
               <RCDWave
                 volumeList={volumeList}
@@ -240,8 +245,8 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
                 recording={isRecording}
                 isDone={isDone}
               />
-              <View className='mt-[28]'/>
-              <RCDTimer 
+              <View className="mt-[28]" />
+              <RCDTimer
                 recording={isRecording}
                 stop={stopRecording}
                 type={type}
@@ -264,44 +269,58 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
       ) : (
         <>
           <AppBar
-            title=''
-            exitCallbackFn={() => {navigation.goBack()}}
+            title=""
+            exitCallbackFn={() => {
+              navigation.goBack();
+            }}
             className="absolute top-[0] w-full"
           />
-          <View className='flex-1 items-center justify-between mt-[65]'>
-            <View className='absolute top-[194] items-center'>
-              {errType === 'bad' ? <Notice1/> : <Notice2/>}
-              <View className='mt-[43]'/>
-              <Txt type='title2' 
-                content={errType === 'bad' ? '부적절한 표현이 감지되어\n녹음을 전송할 수 없어요' :
-                  errType === 'noisy' ? '주변 소음이 크게 들려서\n녹음을 전송할 수 없었어요' :
-                  '서버에 문제가 생겨\n녹음을 전송할 수 없었어요'} 
-                color='white' 
-                align='center'/>
-              <View className='mt-[25]'/>
-              <Txt type='body4'
-                content={errType === 'bad' ? '적절한 언어로 다시 녹음해 주시겠어요?' :
-                  errType === 'noisy' ? '조용한 장소에서 다시 녹음해 주시겠어요?' :
-                  '다시 시도해 주시겠어요?'} 
-                color='gray_300' 
-                align='center'/>
+          <View className="flex-1 items-center justify-between mt-[65]">
+            <View className="absolute top-[194] items-center">
+              {errType === 'bad' ? <Notice1 /> : <Notice2 />}
+              <View className="mt-[43]" />
+              <Txt
+                type="title2"
+                text={
+                  errType === 'bad'
+                    ? '부적절한 표현이 감지되어\n녹음을 전송할 수 없어요'
+                    : errType === 'noisy'
+                    ? '주변 소음이 크게 들려서\n녹음을 전송할 수 없었어요'
+                    : '서버에 문제가 생겨\n녹음을 전송할 수 없었어요'
+                }
+                className="text-white text-center"
+              />
+              <View className="mt-[25]" />
+              <Txt
+                type="body4"
+                text={
+                  errType === 'bad'
+                    ? '적절한 언어로 다시 녹음해 주시겠어요?'
+                    : errType === 'noisy'
+                    ? '조용한 장소에서 다시 녹음해 주시겠어요?'
+                    : '다시 시도해 주시겠어요?'
+                }
+                className="text-gray300 text-center"
+              />
             </View>
-            <View className='px-px w-full absolute bottom-[50]'>
-              <Button text='다시 녹음하기' 
+            <View className="px-px w-full absolute bottom-[50]">
+              <Button
+                text="다시 녹음하기"
                 onPress={() => {
-                  if(errType === 'bad'){
-                    navigation.navigate('Home')
+                  if (errType === 'bad') {
+                    navigation.navigate('Home');
                   } else {
-                    navigation.goBack()
+                    navigation.goBack();
                   }
-                }} 
-                disabled={false}/>
+                }}
+                disabled={false}
+              />
             </View>
           </View>
         </>
       )}
     </BG>
-  )
-}
+  );
+};
 
-export default RCDRecordScreen
+export default RCDRecordScreen;

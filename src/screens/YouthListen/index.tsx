@@ -1,12 +1,10 @@
 import {getVoiceFiles} from '@apis/voiceFile';
 import AppBar from '@components/atom/AppBar';
-import Body2 from '@components/atom/body/Body2';
-import Body3 from '@components/atom/body/Body3';
-import Title3 from '@components/atom/title/Title3';
+import Txt from '@components/atom/Txt';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import LoadingScreen from '@screens/Loading';
 import {YouthStackParamList} from '@stackNav/Youth';
 import {VoiceFileResponseData} from '@type/voiceFile';
-import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import LottieView from 'lottie-react-native';
 import {useEffect, useRef, useState} from 'react';
 import {
@@ -18,6 +16,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import FightingIcon from '../../../assets/images/youth/emotion_fighting.svg';
 import LoveIcon from '../../../assets/images/youth/emotion_love.svg';
@@ -28,7 +27,6 @@ import SendIcon from '../../../assets/images/youth/send.svg';
 import SmileIcon from '../../../assets/images/youth/smile.svg';
 import SmileWhiteIcon from '../../../assets/images/youth/smile_white.svg';
 import StopIcon from '../../../assets/images/youth/stop.svg';
-import LoadingScreen from '@screens/Loading';
 
 type YouthProps = NativeStackScreenProps<
   YouthStackParamList,
@@ -174,12 +172,17 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
             />
           </View>
 
-          <Body2
+          <Txt
+            type="body2"
             text="봉사자 닉네임"
             className="text-yellowPrimary mt-[13] mb-[25] text-center"
           />
           <View>
-            <Title3 text={script ?? ''} className="text-gray200 text-center" />
+            <Txt
+              type="title3"
+              text={script ?? ''}
+              className="text-gray200 text-center"
+            />
           </View>
 
           <Pressable onPress={handlePlayButtonClick} className="mt-[52]">
@@ -206,7 +209,8 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
                     } flex-row items-center justify-center`}
                     style={{borderRadius: 50}}>
                     {emotion.icon}
-                    <Body3
+                    <Txt
+                      type="body3"
                       text={emotion.label}
                       className="text-white ml-[10]"
                     />

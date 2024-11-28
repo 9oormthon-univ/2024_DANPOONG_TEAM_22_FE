@@ -1,21 +1,19 @@
 import BG from '@components/atom/BG';
-import Body3 from '@components/atom/body/Body3';
-import Button from '@components/atom/button/Button';
-import Title2 from '@components/atom/title/Title2';
-import Title3 from '@components/atom/title/Title3';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { AuthStackParamList } from '@stackNav/Auth';
-import { Role } from '@type/member';
-import { useState } from 'react';
-import { Alert, Image, Pressable, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import Button from '@components/atom/Button';
+import Txt from '@components/atom/Txt';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {AuthStackParamList} from '@stackNav/Auth';
+import {Role} from '@type/member';
+import {useState} from 'react';
+import {Alert, Image, Pressable, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import VolunteerIcon from '../../../assets/images/login/volunteer.svg';
 import YouthIcon from '../../../assets/images/login/youth.svg';
 
 type AuthProps = NativeStackScreenProps<AuthStackParamList, 'RoleSelectScreen'>;
 
-const RoleSelectScreen = ({ route, navigation }: Readonly<AuthProps>) => {
-  const { nickname, imageUri } = route.params;
+const RoleSelectScreen = ({route, navigation}: Readonly<AuthProps>) => {
+  const {nickname, imageUri} = route.params;
   const [role, setRole] = useState<Role | null>(null);
 
   const handleNext = () => {
@@ -35,12 +33,21 @@ const RoleSelectScreen = ({ route, navigation }: Readonly<AuthProps>) => {
       <BG type="main">
         <>
           <View className="items-center pt-[80]">
-            <Body3 text="이곳은 광활한 사막..." className="text-gray300" />
-            <Title2
+            <Txt
+              type="body3"
+              text="이곳은 광활한 사막..."
+              className="text-gray300"
+            />
+            <Txt
+              type="title2"
               text={`${nickname ?? ''} 님,`}
               className="text-white mt-[26]"
             />
-            <Title2 text="당신은 누구인가요?" className="text-white" />
+            <Txt
+              type="title2"
+              text="당신은 누구인가요?"
+              className="text-white"
+            />
 
             <View className="mt-[30] px-[46] flex-row">
               <Pressable
@@ -49,10 +56,10 @@ const RoleSelectScreen = ({ route, navigation }: Readonly<AuthProps>) => {
                     ? 'bg-white/20 border-yellowPrimary'
                     : 'bg-white/10 border-white/10'
                 }`}
-                style={{ borderRadius: 10 }}
-                onPress={() => setRole('HELPER')}
-              >
-                <Title3
+                style={{borderRadius: 10}}
+                onPress={() => setRole('HELPER')}>
+                <Txt
+                  type="title3"
                   text="조력자"
                   className="text-white mb-[30] text-center"
                 />
@@ -66,10 +73,10 @@ const RoleSelectScreen = ({ route, navigation }: Readonly<AuthProps>) => {
                     ? 'bg-white/20 border-yellowPrimary'
                     : 'bg-white/10 border-white/10'
                 }`}
-                style={{ borderRadius: 10 }}
-                onPress={() => setRole('YOUTH')}
-              >
-                <Title3
+                style={{borderRadius: 10}}
+                onPress={() => setRole('YOUTH')}>
+                <Txt
+                  type="title3"
                   text="청년"
                   className="text-white mb-[30] text-center"
                 />

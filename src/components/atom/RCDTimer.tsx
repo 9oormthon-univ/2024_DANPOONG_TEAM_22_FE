@@ -26,7 +26,7 @@ const RCDTimer = ({
       setRemainingTime(type === 'DAILY' ? 15000 : 30000)
       setIsStopped(false)
     }
-  }, [recording])
+  }, [recording]);
 
   useInterval(() => {
     if (recording && targetTime && !isStopped) {
@@ -40,24 +40,30 @@ const RCDTimer = ({
         setIsStopped(true)
       }
     }
-  }, 10)
+  }, 10);
 
   const formatTime = (milliseconds: number) => {
-    const totalSeconds = Math.floor(Math.max(0, milliseconds) / 1000)
-    const ss = String(totalSeconds).padStart(2, '0')
-    const ms = String(Math.floor(Math.max(0, milliseconds) / 10) % 100).padStart(2, '0')
-    return `${ss}:${ms}`
-  }
+    const totalSeconds = Math.floor(Math.max(0, milliseconds) / 1000);
+    const ss = String(totalSeconds).padStart(2, '0');
+    const ms = String(
+      Math.floor(Math.max(0, milliseconds) / 10) % 100,
+    ).padStart(2, '0');
+    return `${ss}:${ms}`;
+  };
 
   return (
     <View className="w-full h-20 justify-center items-center">
-      <Txt 
-        type="recording" 
-        content={formatTime(remainingTime)} 
-        color={remainingTime < 5000 && remainingTime > 0 ? "recording" : "white"} 
+      <Txt
+        type="recording"
+        text={formatTime(remainingTime)}
+        className={`${
+          remainingTime < 5000 && remainingTime > 0
+            ? 'text-recording'
+            : 'text-white'
+        }`}
       />
     </View>
-  )
-}
+  );
+};
 
-export default RCDTimer
+export default RCDTimer;

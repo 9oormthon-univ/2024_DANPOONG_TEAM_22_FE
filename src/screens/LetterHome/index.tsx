@@ -1,21 +1,16 @@
 import BG from '@components/atom/BG';
-import Body2 from '@components/atom/body/Body2';
-import Body3 from '@components/atom/body/Body3';
-import Body4 from '@components/atom/body/Body4';
-import Caption1 from '@components/atom/caption/Caption1';
 import ShadowView from '@components/atom/ShadowView';
-import Title1 from '@components/atom/title/Title1';
-import Title4 from '@components/atom/title/Title4';
+import Txt from '@components/atom/Txt';
+import useGetSummary from '@hooks/providedFile/useGetSummary';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {emotions} from '@screens/YouthListen';
 import {LetterStackParamList} from '@type/LetterStackParamList';
+import {useEffect, useState} from 'react';
 import {Alert, Image, Pressable, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import ChevronRightWhiteIcon from '../../../assets/images/youth/chevron_right_white.svg';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import useGetSummary from '@hooks/providedFile/useGetSummary';
-import {useEffect, useState} from 'react';
 
 type LetterProps = NativeStackScreenProps<
   LetterStackParamList,
@@ -58,16 +53,22 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
             </View>
 
             <View className="mt-[24] px-[37]">
-              <Body3
+              <Txt
+                type="body3"
                 text={`청년들이 ${nickname ?? ''} 님의 목소리를`}
                 className="text-white"
               />
               <View className="flex-row mt-[9] items-center">
-                <Title1
+                <Txt
+                  type="title1"
                   text={String(summaryData?.result.totalListeners)}
                   className="text-yellowPrimary"
                 />
-                <Body2 text="&nbsp;번 청취했어요" className="text-white" />
+                <Txt
+                  type="bobu"
+                  text="&nbsp;번 청취했어요"
+                  className="text-white"
+                />
               </View>
             </View>
 
@@ -77,8 +78,13 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
               <ShadowView>
                 <View className="py-[18] px-[24] flex-row justify-between items-center">
                   <View>
-                    <Title4 text="청년의 편지" className="text-yellowPrimary" />
-                    <Body4
+                    <Txt
+                      type="title4"
+                      text="청년의 편지"
+                      className="text-yellowPrimary"
+                    />
+                    <Txt
+                      type="body4"
                       text="자립준비 청년의 감사 편지를 확인해요"
                       className="text-gray200 mt-[3]"
                     />
@@ -99,13 +105,17 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
                         )}
                         <View className="justify-center items-center flex-1">
                           {emotion.icon}
-                          <Caption1
+                          <Txt
+                            type="caption1"
                             text={emotion.label}
                             className="text-gray300 mt-[4] text-center"
                           />
-                          <Body2
+                          <Txt
+                            type="body2"
                             text={String(
-                              summaryData?.result.reactionsNum[emotion.value as keyof typeof summaryData.result.reactionsNum],
+                              summaryData?.result.reactionsNum[
+                                emotion.value as keyof typeof summaryData.result.reactionsNum
+                              ],
                             )}
                             // text="33"
                             className="text-gray100 text-center"

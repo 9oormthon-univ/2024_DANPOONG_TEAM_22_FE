@@ -1,28 +1,29 @@
-import { postMember } from '@apis/member';
+import {postMember} from '@apis/member';
 import BG from '@components/atom/BG';
-import Button from '@components/atom/button/Button';
-import Title2 from '@components/atom/title/Title2';
-import Title3 from '@components/atom/title/Title3';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { AuthStackParamList } from '@stackNav/Auth';
-import { Gender, MemberRequestData, Role } from '@type/member';
+import Button from '@components/atom/Button';
+import Txt from '@components/atom/Txt';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useState } from 'react';
-import { Alert, Image, Pressable, TextInput, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {AuthStackParamList} from '@stackNav/Auth';
+import {Gender, MemberRequestData, Role} from '@type/member';
+import {useState} from 'react';
+import {Alert, Image, Pressable, TextInput, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'MemberInfoWriteScreen'
 >;
 
-const MemberInfoWriteScreen = ({ route, navigation }: Readonly<AuthProps>) => {
-  const { nickname, imageUri, role } = route.params;
+const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
+  const {nickname, imageUri, role} = route.params;
   const [birthday, setBirthday] = useState('');
   const [gender, setGender] = useState<Gender | null>(null);
 
   const handleNext = async () => {
-    if (!gender) return;
+    if (!gender) {
+      return;
+    }
 
     const year = birthday.slice(0, 4);
     const month = birthday.slice(4, 6);
@@ -36,7 +37,7 @@ const MemberInfoWriteScreen = ({ route, navigation }: Readonly<AuthProps>) => {
       birth: new Date(`${year}-${month}-${day}`).toISOString(),
     };
     try {
-      const { result } = await postMember(data);
+      const {result} = await postMember(data);
       console.log(result);
 
       await AsyncStorage.setItem('nickname', nickname);
@@ -52,11 +53,16 @@ const MemberInfoWriteScreen = ({ route, navigation }: Readonly<AuthProps>) => {
       <BG type="main">
         <>
           <View className="items-center pt-[80]">
-            <Title2
+            <Txt
+              type="title2"
               text={`${nickname ?? ''} 님,`}
               className="text-white mt-[26]"
             />
-            <Title2 text="당신에 대해 알려주세요" className="text-white" />
+            <Txt
+              type="title2"
+              text="당신에 대해 알려주세요"
+              className="text-white"
+            />
 
             <View className="mt-[30] px-[46] w-full">
               <TextInput
@@ -69,7 +75,7 @@ const MemberInfoWriteScreen = ({ route, navigation }: Readonly<AuthProps>) => {
                     ? 'border-yellow200 bg-white/20'
                     : 'border-white/10 bg-white/10'
                 } mt-[31]`}
-                style={{ fontSize: 16, borderRadius: 10 }}
+                style={{fontSize: 16, borderRadius: 10}}
               />
 
               <View className="mt-[28] flex-row">
@@ -79,10 +85,13 @@ const MemberInfoWriteScreen = ({ route, navigation }: Readonly<AuthProps>) => {
                       ? 'bg-white/20 border-yellowPrimary'
                       : 'bg-white/10 border-white/10'
                   }`}
-                  style={{ borderRadius: 10 }}
-                  onPress={() => setGender('MALE')}
-                >
-                  <Title3 text="남성" className="text-white text-center" />
+                  style={{borderRadius: 10}}
+                  onPress={() => setGender('MALE')}>
+                  <Txt
+                    type="title3"
+                    text="남성"
+                    className="text-white text-center"
+                  />
                 </Pressable>
                 <Pressable
                   className={`flex-1 h-[121] items-center justify-center border ${
@@ -90,10 +99,13 @@ const MemberInfoWriteScreen = ({ route, navigation }: Readonly<AuthProps>) => {
                       ? 'bg-white/20 border-yellowPrimary'
                       : 'bg-white/10 border-white/10'
                   }`}
-                  style={{ borderRadius: 10 }}
-                  onPress={() => setGender('FEMALE')}
-                >
-                  <Title3 text="여성" className="text-white text-center" />
+                  style={{borderRadius: 10}}
+                  onPress={() => setGender('FEMALE')}>
+                  <Txt
+                    type="title3"
+                    text="여성"
+                    className="text-white text-center"
+                  />
                 </Pressable>
               </View>
             </View>
