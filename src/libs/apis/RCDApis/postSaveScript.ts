@@ -26,7 +26,7 @@ export const postSaveScript = async (alarmId: number, content: string): Promise<
     );
     return response.data;
   } catch (error) {
-    console.error('스크립트 저장 오류:', error);
+    console.log('스크립트 저장 오류:', error);
     throw error;
   }
 }

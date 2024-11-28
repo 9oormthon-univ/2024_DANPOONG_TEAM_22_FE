@@ -1,4 +1,3 @@
-import { Audio } from 'expo-av'
 
 export type RCDBtnBarProps = {
     record: () => void
@@ -8,7 +7,7 @@ export type RCDBtnBarProps = {
     isPlaying: boolean
     // isPaused: boolean
     isDone: boolean
-    recording: Audio.Recording | undefined
+    recording: boolean
     reflesh : ()=>void
     stop: ()=>void
   }

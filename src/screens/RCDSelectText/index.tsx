@@ -13,7 +13,16 @@ import { RCD } from "../../libs/apis/RCDApis/getRCDList";
 import AppBar from "../../components/atom/AppBar";
 import { ActivityIndicator } from 'react-native'
 
-const SelectButton = ({head,sub,gpt,alarmId,item,type}:{head:string,sub:string,gpt:boolean,alarmId:number,item:RCD,type:'DAILY'|'COMFORT'}) => {
+type SelectButtonProps = {
+    head:string,
+    sub:string,
+    gpt:boolean,
+    alarmId:number,
+    item:RCD,
+    type:'DAILY'|'COMFORT'
+}
+
+const SelectButton = ({head,sub,gpt,alarmId,item,type}:SelectButtonProps) => {
     const navigation = useNavigation<NavigationProp<HomeStackParamList>>()
     const [isLoading,setIsLoading] = useState(false)
     const gptApiHandler=async()=>{
@@ -51,14 +60,15 @@ const SelectButton = ({head,sub,gpt,alarmId,item,type}:{head:string,sub:string,g
 const RCDSelectText = ({route}:{route:RouteProp<HomeStackParamList,'RCDSelectText'>}) => {
     const navigation = useNavigation<NavigationProp<HomeStackParamList>>()
     const {item,type} = route.params
-    console.log(item)
     const [subTitle,setSubTitle]=useState<string>('')
     const [alarmId,setAlarmId] = useState<number>(0);
     useEffect(()=>{
-        getTopText(item.categoryId).then((res)=>{
+        const getTopTextHandler = async()=>{
+            const res = await getTopText(item.alarmCategory);
             setSubTitle(res.title);
             setAlarmId(res.alarmId);
-        })
+        }
+        getTopTextHandler();
     },[])
     return (
         <BG type='solid'>

@@ -25,7 +25,7 @@ export const postVoiceAnalysis = async (file: FormData, voiceFileId: number): Pr
     );
     return response.data;
   } catch (error) {
-    console.error('음성 파일 분석 오류:', error);
+    console.log('음성 파일 분석 오류:', error);
     throw error;
   }
 }

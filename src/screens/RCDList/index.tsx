@@ -9,6 +9,7 @@ import { getRCDList, RCD } from '@apis/RCDApis/getRCDList'
 import { useState, useEffect } from 'react'
 import AppBar from '@components/atom/AppBar'
 import { COLORS } from '@constants/Colors'
+import { ActivityIndicator } from 'react-native'
 const RCDListScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDList'>}) => {
   const {type} = route.params
   const [rcdList, setRcdList] = useState<RCD[]>([])
@@ -66,7 +67,11 @@ const RCDListScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDList'>
           
         </View>
         {/* list */}
-        <Carousel entries={rcdList} type={type}/>
+        {rcdList.length === 0 ? 
+        <View className="h-[40vh] justify-center items-center">
+        <ActivityIndicator size="large" color={COLORS.white} /> 
+        </View>
+        : <Carousel entries={rcdList} type={type}/>}
     </BG>
   )
 }

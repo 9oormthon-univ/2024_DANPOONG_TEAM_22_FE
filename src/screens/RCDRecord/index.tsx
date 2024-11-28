@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { ScrollView, View, Platform, PermissionsAndroid } from 'react-native'
-import AudioRecorderPlayer from 'react-native-audio-recorder-player'
+import { ScrollView, View, Platform, PermissionsAndroid, Linking, Alert } from 'react-native'
+import AudioRecorderPlayer, { AudioEncoderAndroidType, AudioSet, AudioSourceAndroidType, AVEncoderAudioQualityIOSType, AVEncodingOption, AVModeIOSOption } from 'react-native-audio-recorder-player'
 import RCDWave from '@components/atom/RCDWave'
 import BG from '@components/atom/BG'
 import RCDBtnBar from '@components/molecule/RCDBtnBar'
@@ -13,12 +13,15 @@ import { NavigationProp, RouteProp, useNavigation } from '@react-navigation/nati
 import { HomeStackParamList } from '../../types/HomeStackParamList'
 import { postVoiceAnalysis } from '@apis/RCDApis/postVoiceAnalysis'
 import AppBar from '@components/atom/AppBar'
+import RNFS from 'react-native-fs';
 
 const audioRecorderPlayer = new AudioRecorderPlayer()
 
 const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDRecord'>}) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>()
-  const {item,gptRes,alarmId,voiceFileId,content,type} = route.params;
+  // const {item,gptRes,alarmId,voiceFileId,content,type} = route.params;
+  const {type, ...rest} = route.params;
+  const {item = null, gptRes = null, alarmId = 0, voiceFileId = 0, content = ''} = 'item' in route.params ? route.params : {};
   const [isError,setIsError] = useState<boolean>(false)
   const [errType,setErrType] = useState<'bad'|'noisy'|'server'>('bad')
   
@@ -37,84 +40,146 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
     }
   }, [])
 
+
+
   const refleshRCDStates = () => {
-    setIsDone(false)
-    setIsPaused(false) 
-    setIsPlaying(false)
-    setVolumeList([])
-    setIsRecording(false)
-    setUri(null)
+    try{
+      audioRecorderPlayer.stopRecorder()
+      audioRecorderPlayer.stopPlayer()
+      setIsDone(false)
+      setIsPaused(false) 
+      setIsPlaying(false)
+      setVolumeList([])
+      setIsRecording(false)
+      setUri(null)
+      console.log('reflesh!@')
+    }catch(e){console.log('reflesh error',e)}
   }
 
+ 
   const checkPermission = async () => {
     if (Platform.OS === 'android') {
       try {
-        const grants = await PermissionsAndroid.requestMultiple([
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-        ])
+        const permission = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
+        );
 
-        const granted = Object.values(grants).every(
-          permission => permission === PermissionsAndroid.RESULTS.GRANTED
-        )
+        if (permission === PermissionsAndroid.RESULTS.GRANTED) {
+          return true;
+        } else {
+          const hasNeverAskAgain = permission === 'never_ask_again';
 
-        return granted
+          if (hasNeverAskAgain) {
+            Alert.alert(
+              '권한 필요',
+              '녹음을 위해 마이크 권한이 필요합니다. 설정에서 권한을 활성화해주세요.',
+              [
+                { text: '취소', style: 'cancel' },
+                { 
+                  text: '설정으로 이동', 
+                  onPress: () => Linking.openSettings() 
+                }
+              ]
+            );
+          }
+          return false;
+        }
       } catch (err) {
-        console.warn(err)
-        return false
+        console.log('checkPermission error', err);
+        return false;
       }
-    } else {
-      return true
     }
+    return true;
   }
 
+
   const startRecording = async () => {
+    console.log('startRecording')
+    // 권한 확인
     if (!await checkPermission()) {
       return
     }
-    
+    console.log('checkPermission success')
     try {
+      // 플랫폼에 따라 파일 경로 설정
       const path = Platform.select({
         ios: 'recording.m4a',
-        android: 'sdcard/recording.wav',
+        android: `${RNFS.DocumentDirectoryPath}/recording.wav`,
       })
-      
-      const result = await audioRecorderPlayer.startRecorder(path)
-      audioRecorderPlayer.addRecordBackListener((e) => {
-        setVolumeList(prev => [...prev, e.currentMetering || 0])
-      })
-      setUri(result)
-      setIsRecording(true)
+      console.log('path', path)
+      try {
+        const audioSet: AudioSet = {
+          AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
+          AudioSourceAndroid: AudioSourceAndroidType.MIC,
+          AVModeIOS: AVModeIOSOption.measurement,
+          AVEncoderAudioQualityKeyIOS: AVEncoderAudioQualityIOSType.high,
+          AVNumberOfChannelsKeyIOS: 2,
+          AVFormatIDKeyIOS: AVEncodingOption.aac,
+        };
+        // 녹음 시작
+        const result = await audioRecorderPlayer.startRecorder(path, audioSet, true)
+        audioRecorderPlayer.setSubscriptionDuration(0.1);
+        console.log('result', result)
+        // 녹음 파일의 URI 저장
+        setUri(result)
+        // 녹음 상태 업데이트
+        setIsRecording(true)
+      } catch (e) {
+        console.log('e', e)
+      }
     } catch (err) {
-      console.error('Failed to start recording', err)
+      console.log('Failed to start recording', err)
     }
   }
+  useEffect(() => {
+    if (isRecording) {
+    
+      audioRecorderPlayer.addRecordBackListener((e) => {
+        const currentMetering = e.currentMetering;
+        // console.log('currentMetering', currentMetering)
+        if (currentMetering !== undefined) {
+          setVolumeList(prev => [...prev, currentMetering]);
+        }
+        return;
+      });
+      return () => {
+        audioRecorderPlayer.removeRecordBackListener();
+      };
+    }
+  }, [isRecording]);
+
 
   const stopRecording = async () => {
+    if (!isRecording) {
+      console.log('Recording is not in progress, no need to stop')
+      return
+    }
     try {
       await audioRecorderPlayer.stopRecorder()
       audioRecorderPlayer.removeRecordBackListener()
       setIsRecording(false)
       setIsDone(true)
+      console.log('stopRecording')
     } catch (err) {
-      console.error('Failed to stop recording', err)
+      console.log('Failed to stop recording', err)
     }
   }
 
+
   const playSound = async () => {
+    // 녹음된 파일의 URI가 존재하고, 현재 재생 중이 아닐 때만 실행
     if (uri && !isPlaying) {
       try {
-        setIsPlaying(true)
-        await audioRecorderPlayer.startPlayer(uri)
-        audioRecorderPlayer.addPlayBackListener(() => {})
-        await new Promise(resolve => setTimeout(resolve, volumeList.length * 100))
-        await audioRecorderPlayer.stopPlayer()
-        audioRecorderPlayer.removePlayBackListener()
-        setIsPlaying(false)
+        setIsPlaying(true) // 재생 상태로 설정
+        await audioRecorderPlayer.startPlayer(uri) // 녹음 파일 재생 시작
+        audioRecorderPlayer.addPlayBackListener(() => {}) // 재생 중 이벤트 리스너 추가
+        await new Promise(resolve => setTimeout(resolve, volumeList.length * 100)) // 볼륨 리스트 길이에 따라 재생 시간 조정
+        await audioRecorderPlayer.stopPlayer() // 재생 중지
+        audioRecorderPlayer.removePlayBackListener() // 재생 이벤트 리스너 제거
+        setIsPlaying(false) // 재생 상태 해제
       } catch (err) {
-        console.error('Failed to play sound', err)
-        setIsPlaying(false)
+        console.log('Failed to play sound', err) // 오류 로그 출력
+        setIsPlaying(false) // 오류 발생 시 재생 상태 해제
       }
     }
   }
@@ -178,9 +243,6 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
               <View className='mt-[28]'/>
               <RCDTimer 
                 recording={isRecording}
-                isPaused={isPaused}
-                isDone={isDone}
-                setIsDone={setIsDone}
                 stop={stopRecording}
                 type={type}
               />

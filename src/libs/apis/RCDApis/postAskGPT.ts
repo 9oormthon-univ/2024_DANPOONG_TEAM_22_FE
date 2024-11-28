@@ -19,7 +19,7 @@ export const postAskGPT = async (alarmId: number): Promise<PostAskGPTResponse> =
     console.log(response.data)
     return response.data;
   } catch (error) {
-    console.error('GPT 요청 오류:', error);
+    console.log('GPT 요청 오류:', error);
     throw error;
   }
 }
