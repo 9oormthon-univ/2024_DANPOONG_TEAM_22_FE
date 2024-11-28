@@ -84,9 +84,18 @@ const RCDSelectText = ({route}:{route:RouteProp<HomeStackParamList,'RCDSelectTex
           goBackCallbackFn={() => {navigation.goBack()}}
           className="absolute top-[0] w-full"
         />
-      </View>
-    </BG>
-  );
-};
-
+       <View className='flex-1 px-px mt-[100] pt-[52] items-center'>
+                <StarPNG />
+                <View className='mt-[29]  mb-[52]  items-center'>
+                    <Txt type='title2' text={item.title} className='text-white text-center' />
+                    <View className='mt-[19]'>
+                        <Txt type='body3' text={subTitle} className='text-gray_300 text-center' />
+                    </View>
+                </View>
+                <SelectButton head='준비된 문장 읽기' sub='제시되는 문장을 수정하고 녹음하기' gpt={true} alarmId={alarmId} item={item} type={type}/>
+                <SelectButton head='직접 작성하기' sub='하고싶은 말을 직접 작성하고 녹음하기' gpt={false} alarmId={alarmId} item={item} type={type}/>
+            </View>
+        </BG>
+    )
+}
 export default RCDSelectText;
