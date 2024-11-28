@@ -48,21 +48,21 @@ const HomeScreen = () => {
         <View className="w-full mb-[46]">
           <Txt
             type="title3"
-            content={`${nickname ?? ''}님, 반가워요!`}
-            color="gray_300"
+            text={`${nickname ?? ''}님, 반가워요!`}
+            className="text-gray300"
           />
           <View className="flex flex-row mt-[9]">
             <Txt
               type="title2"
-              content={`${youthNum}명의 청년들`}
-              color="primary"
+              text={`${youthNum}명의 청년들`}
+              className="text-yellowPrimary"
             />
-            <Txt type="title2" content="이" color="white" />
+            <Txt type="title2" text="이" className="text-white" />
           </View>
           <Txt
             type="title2"
-            content={'당신의 목소리를 기다리고 있어요'}
-            color="white"
+            text={'당신의 목소리를 기다리고 있어요'}
+            className="text-white"
           />
         </View>
         {/* button section*/}
@@ -93,12 +93,12 @@ const SelectBtn = ({type}: {type: 'DAILY' | 'COMFORT'}) => {
         {/* text */}
         <Txt
           type="title3"
-          content={`${type === 'DAILY' ? '일상' : '위로'} 녹음`}
-          color="white"
+          text={`${type === 'DAILY' ? '일상' : '위로'} 녹음`}
+          className="text-white"
         />
       </View>
       <View className="flex flex-row w-full justify-between items-center">
-        <Txt type="button" content="녹음하기" color="primary" />
+        <Txt type="button" text="녹음하기" className="text-yellowPrimary" />
         <Main3 />
       </View>
     </TouchableOpacity>

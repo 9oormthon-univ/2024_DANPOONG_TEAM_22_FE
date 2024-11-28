@@ -1,17 +1,17 @@
-import { Pressable, View, ViewStyle } from 'react-native'
-import ChevronLeftWhiteIcon from '../../../assets/images/appBar/chevron_left_white.svg'
-import ExitWhiteIcon from '../../../assets/images/appBar/exit_white.svg'
-import ButtonText from '@components/atom/etc/ButtonText'
+import Txt from '@components/atom/Txt';
+import {Pressable, View, ViewStyle} from 'react-native';
+import ChevronLeftWhiteIcon from '../../../assets/images/appBar/chevron_left_white.svg';
+import ExitWhiteIcon from '../../../assets/images/appBar/exit_white.svg';
 
 type AppBarProps = {
-  title?: string
+  title?: string;
   // goBack?: boolean;
   // exit?: boolean;
-  goBackCallbackFn?: () => void
-  exitCallbackFn?: () => void
-  className?: string
-  style?: ViewStyle | ViewStyle[]
-}
+  goBackCallbackFn?: () => void;
+  exitCallbackFn?: () => void;
+  className?: string;
+  style?: ViewStyle | ViewStyle[];
+};
 
 const AppBar = ({
   title,
@@ -23,8 +23,7 @@ const AppBar = ({
     <View
       {...props}
       className={`flex-row items-center justify-between px-[16] border-b border-b-white/5 ${props.className}`}
-      style={props.style}
-    >
+      style={props.style}>
       {goBackCallbackFn ? (
         <Pressable className="flex-1 py-[18]" onPress={goBackCallbackFn}>
           <ChevronLeftWhiteIcon />
@@ -33,7 +32,8 @@ const AppBar = ({
         <View className="flex-1" />
       )}
       {title ? (
-        <ButtonText
+        <Txt
+          type="button"
           text={title}
           className="text-white text-center flex-1 py-[18]"
         />
@@ -43,15 +43,14 @@ const AppBar = ({
       {exitCallbackFn ? (
         <Pressable
           className="flex-1 py-[18] flex-row justify-end"
-          onPress={exitCallbackFn}
-        >
+          onPress={exitCallbackFn}>
           <ExitWhiteIcon />
         </Pressable>
       ) : (
         <View className="flex-1" />
       )}
     </View>
-  )
-}
+  );
+};
 
-export default AppBar
+export default AppBar;

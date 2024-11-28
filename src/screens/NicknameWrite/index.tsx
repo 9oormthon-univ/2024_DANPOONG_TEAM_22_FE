@@ -1,6 +1,5 @@
 import BG from '@components/atom/BG';
 import Button from '@components/atom/button/Button';
-import Title2 from '@components/atom/title/Title2';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 // import {
@@ -8,6 +7,7 @@ import {AuthStackParamList} from '@stackNav/Auth';
 //   MediaTypeOptions,
 //   requestMediaLibraryPermissionsAsync,
 // } from 'expo-image-picker';
+import Txt from '@components/atom/Txt';
 import {useState} from 'react';
 import {Image, Pressable, TextInput, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -49,8 +49,12 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
       <BG type="main">
         <>
           <View className="items-center pt-[80]">
-            <Title2 text="내일모래가 당신을" className="text-white" />
-            <Title2 text="어떻게 부를까요?" className="text-white" />
+            <Txt
+              type="title2"
+              text="내일모래가 당신을"
+              className="text-white"
+            />
+            <Txt type="title2" text="어떻게 부를까요?" className="text-white" />
 
             <Pressable onPress={selectImage} className="mt-[30] relative">
               {imageUri ? (

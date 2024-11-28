@@ -1,51 +1,61 @@
-import { View,ScrollView } from 'react-native'
-import BG from '../../components/atom/BG'
-import Txt from '../../components/atom/Txt'
-import Button from '../../components/atom/button/Button'
-import { NavigationProp, RouteProp, useNavigation } from '@react-navigation/native'
-import Notice1 from '../../../assets/svgs/Notice1.svg'
-import Notice2 from '../../../assets/svgs/Notice2.svg'
-import { HomeStackParamList } from '../../types/HomeStackParamList'
-import AppBar from '@components/atom/AppBar'
+import {View, ScrollView} from 'react-native';
+import BG from '../../components/atom/BG';
+import Txt from '../../components/atom/Txt';
+import Button from '../../components/atom/button/Button';
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+} from '@react-navigation/native';
+import Notice1 from '../../../assets/svgs/Notice1.svg';
+import Notice2 from '../../../assets/svgs/Notice2.svg';
+import {HomeStackParamList} from '../../types/HomeStackParamList';
+import AppBar from '@components/atom/AppBar';
 
 const Section = ({
   seq,
   title,
   content,
 }: {
-  seq: number
-  title: string
-  content: string
+  seq: number;
+  title: string;
+  content: string;
 }) => {
   return (
     <View className="w-full h-auto mt-[37]">
       {seq === 1 ? <Notice1 /> : <Notice2 />}
       <View className="mt-[20]" />
-      <Txt type="title4" content={title} color="primary" />
+      <Txt type="title4" text={title} className="text-yellowPrimary" />
       <View className="mt-[10]" />
-      <Txt type="body4" content={content} color="gray_200" />
+      <Txt type="body4" text={content} className="text-gray200" />
     </View>
-  )
-}
+  );
+};
 
-const RCDNoticeScreen = ({route}:{route:RouteProp<HomeStackParamList,'RCDNotice'>}) => {
-  const navigation = useNavigation<NavigationProp<HomeStackParamList>>()
-const {item,type}  = route.params
+const RCDNoticeScreen = ({
+  route,
+}: {
+  route: RouteProp<HomeStackParamList, 'RCDNotice'>;
+}) => {
+  const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
+  const {item, type} = route.params;
   return (
     <BG type="solid">
       <AppBar
-          title='주의 사항'
-          goBackCallbackFn={() => {navigation.goBack()}}
-          className="absolute top-[0] w-full"
-        />
+        title="주의 사항"
+        goBackCallbackFn={() => {
+          navigation.goBack();
+        }}
+        className="absolute top-[0] w-full"
+      />
       <ScrollView className="flex-1 px-px mt-[64]">
         <View className="flex-1">
           {/* header */}
-          <View className='mt-[63]'/>
+          <View className="mt-[63]" />
           <Txt
             type="title2"
-            content={`녹음 전에,\n꼭 확인해주세요!`}
-            color="white"
+            text={'녹음 전에,\n꼭 확인해주세요!'}
+            className="text-white"
           />
           {/* section */}
           <Section
@@ -65,12 +75,12 @@ const {item,type}  = route.params
             text="확인했어요"
             disabled={false}
             onPress={() => {
-              navigation.navigate('RCDSelectText',{type,item})
+              navigation.navigate('RCDSelectText', {type, item});
             }}
           />
         </View>
       </ScrollView>
     </BG>
-  )
-}
-export default RCDNoticeScreen
+  );
+};
+export default RCDNoticeScreen;
