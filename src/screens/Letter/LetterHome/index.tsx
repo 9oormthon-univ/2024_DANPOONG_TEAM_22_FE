@@ -4,13 +4,13 @@ import Txt from '@components/atom/Txt';
 import useGetSummary from '@hooks/providedFile/useGetSummary';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {emotions} from '@screens/YouthListen';
 import {LetterStackParamList} from '@type/LetterStackParamList';
 import {useEffect, useState} from 'react';
 import {Alert, Image, Pressable, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import ChevronRightWhiteIcon from '@assets/svgs/chevron/chevron_right_white.svg';
+import {EMOTION_OPTIONS} from '@screens/Youth/YouthListen';
 
 type LetterProps = NativeStackScreenProps<
   LetterStackParamList,
@@ -47,7 +47,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
           <View className="flex-1 pt-[50] pb-[110]">
             <View className="w-full items-center px-[35]">
               <Image
-                source={require('../../../assets/pngs/bookdo.png')}
+                source={require('../../../../assets/pngs/bookdo.png')}
                 className="w-[310] h-[305]"
               />
             </View>
@@ -97,7 +97,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
             <View className="mt-[22] h-[113] px-[30]">
               <ShadowView>
                 <View className="flex-row items-center flex-1 h-[113]">
-                  {emotions.map((emotion, index) => (
+                  {EMOTION_OPTIONS.map((emotion, index) => (
                     <Pressable key={emotion.label} className="flex-1">
                       <View className="flex-row items-center">
                         {index > 0 && (

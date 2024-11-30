@@ -33,7 +33,7 @@ type YouthProps = NativeStackScreenProps<
   'YouthListenScreen'
 >;
 
-export const emotions = [
+export const EMOTION_OPTIONS = [
   {icon: <StarIcon />, label: '고마워요', value: 'THANK_YOU'},
   {icon: <ThumbIcon />, label: '응원해요', value: 'HELPFUL'},
   {icon: <FightingIcon />, label: '화이팅', value: 'MOTIVATED'},
@@ -161,7 +161,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
               source={
                 imageUri
                   ? {uri: imageUri}
-                  : require('@assets/images/logo/app/app_logo_yellow.png')
+                  : require('../../../../assets/pngs/logo/app/app_logo_yellow.png')
               }
               className="w-[70] h-[70]"
               style={{borderRadius: 35}}
@@ -201,11 +201,13 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
                   alignItems: 'center',
                 }}
                 className="pl-[25] w-full mb-[27]">
-                {emotions.map((emotion, index) => (
+                {EMOTION_OPTIONS.map((emotion, index) => (
                   <Pressable
                     key={emotion.label}
                     className={`bg-tabIcon py-[9] pl-[14] pr-[19] ${
-                      index === emotions.length - 1 ? 'mr-[50]' : 'mr-[10]'
+                      index === EMOTION_OPTIONS.length - 1
+                        ? 'mr-[50]'
+                        : 'mr-[10]'
                     } flex-row items-center justify-center`}
                     style={{borderRadius: 50}}>
                     {emotion.icon}

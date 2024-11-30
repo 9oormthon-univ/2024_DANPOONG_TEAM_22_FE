@@ -1,9 +1,9 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from '@screens/Login';
-import MemberInfoWriteScreen from '@screens/MemberInfoWrite';
-import NicknameWriteScreen from '@screens/NicknameWrite';
-import RoleSelectScreen from '@screens/RoleSelect';
-import VolunteerOnboardingScreen from '@screens/VolunteerOnboarding';
+import MemberInfoWriteScreen from '@screens/Login/MemberInfoWrite';
+import NicknameWriteScreen from '@screens/Login/NicknameWrite';
+import RoleSelectScreen from '@screens/Login/RoleSelect';
+import VolunteerOnboardingScreen from '@screens/Login/VolunteerOnboarding';
 
 export type AuthStackParamList = {
   LoginScreen: undefined;

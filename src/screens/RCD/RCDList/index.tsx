@@ -58,7 +58,7 @@ const RCDListScreen = ({
       />
       {/* BG Image */}
       <ImageBackground
-        source={require('../../../assets/pngs/BGStarTop.png')}
+        source={require('../../../../assets/pngs/BGStarTop.png')}
         style={{
           position: 'absolute',
           top: 100,
@@ -70,8 +70,8 @@ const RCDListScreen = ({
       <ImageBackground
         source={
           type === 'DAILY'
-            ? require('../../../assets/pngs/BGStarBottomDAILY.png')
-            : require('../../../assets/pngs/BGStarBottomCOMFORT.png')
+            ? require('../../../../assets/pngs/BGStarBottomDAILY.png')
+            : require('../../../../assets/pngs/BGStarBottomCOMFORT.png')
         }
         style={{position: 'absolute', bottom: 0, width: '100%', height: 258}}
       />

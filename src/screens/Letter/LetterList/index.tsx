@@ -9,7 +9,7 @@ import BG from '@components/atom/BG';
 import Txt from '@components/atom/Txt';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import Card from '@screens/LetterList/components/Card';
+import LetterCard from '@screens/Letter/LetterList/components/LetterCard';
 import {LetterStackParamList} from '@type/LetterStackParamList';
 import {LetterResponseData} from '@type/providedFile';
 import {useEffect, useState} from 'react';
@@ -184,7 +184,7 @@ const LetterListScreen = ({navigation}: Readonly<LetterProps>) => {
               <View className="pt-[22] px-[30] pb-[110]">
                 {filteredLettersData.map((letter, idx) => (
                   <View key={idx}>
-                    <Card letter={letter} idx={idx} />
+                    <LetterCard letter={letter} idx={idx} />
                     <View className="mb-[30]" />
                   </View>
                 ))}

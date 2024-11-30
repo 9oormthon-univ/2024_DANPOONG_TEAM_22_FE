@@ -1,10 +1,10 @@
 import HomeScreen from '@screens/Home';
-import RCDFeedBackScreen from '@screens/RCDFeedBack';
-import RCDListScreen from '@screens/RCDList';
-import RCDNoticeScreen from '@screens/RCDNotice';
-import RCDRecordScreen from '@screens/RCDRecord';
-import RCDTextScreen from '@screens/RCDText';
-import RCDSelectTextScreen from '@screens/RCDSelectText';
+import RCDFeedBackScreen from '@screens/RCD/RCDFeedBack';
+import RCDListScreen from '@screens/RCD/RCDList';
+import RCDNoticeScreen from '@screens/RCD/RCDNotice';
+import RCDRecordScreen from '@screens/RCD/RCDRecord';
+import RCDTextScreen from '@screens/RCD/RCDText';
+import RCDSelectTextScreen from '@screens/RCD/RCDSelectText';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {HomeStackParamList} from '@type/HomeStackParamList';
 import {

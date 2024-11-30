@@ -4,12 +4,12 @@ import {LetterResponseData} from '@type/providedFile';
 import formatDate from '@utils/formatDate';
 import {Image, Pressable, View} from 'react-native';
 
-type CardProps = {
+type LetterCardProps = {
   letter: LetterResponseData;
   idx: number;
 };
 
-const Card = ({letter, idx}: Readonly<CardProps>) => {
+const LetterCard = ({letter, idx}: Readonly<LetterCardProps>) => {
   const imageUri = null;
 
   return (
@@ -60,7 +60,7 @@ const Card = ({letter, idx}: Readonly<CardProps>) => {
               source={
                 imageUri
                   ? {uri: imageUri}
-                  : require('../../../../assets/images/logo/app/app_logo_yellow.png')
+                  : require('../../../../../assets/pngs/logo/app/app_logo_yellow.png')
               }
               className="w-[27] h-[27]"
               style={{borderRadius: 50}}
@@ -72,4 +72,4 @@ const Card = ({letter, idx}: Readonly<CardProps>) => {
   );
 };
 
-export default Card;
+export default LetterCard;

@@ -1,6 +1,6 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import YouthHomeScreen from '@screens/YouthHome';
-import YouthListenScreen from '@screens/YouthListen';
+import YouthHomeScreen from '@screens/Youth/YouthHome';
+import YouthListenScreen from '@screens/Youth/YouthListen';
 
 export type YouthStackParamList = {
   YouthHomeScreen: undefined;

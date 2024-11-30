@@ -87,7 +87,7 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
   return (
     <SafeAreaView className="flex-1">
       <ImageBackground
-        source={require('../../../assets/pngs/background/background_youth1.png')}
+        source={require('../../../../assets/pngs/background/background_youth1.png')}
         className="flex-1 items-center">
         <View className="self-start">
           <Txt
@@ -170,7 +170,7 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
                 <CancelIcon />
               ) : (
                 <Image
-                  source={require('../../../assets/images/logo/vector/vector_logo_white.png')}
+                  source={require('../../../../assets/pngs/logo/vector/vector_logo_white.png')}
                   className="w-[43] h-[43]"
                 />
               )}
