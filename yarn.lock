@@ -7691,6 +7691,11 @@ react-native-audio-recorder-player@^3.6.12:
   dependencies:
     hyochan-welcome "^1.0.0"
 
+react-native-device-info@^14.0.1:
+  version "14.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-14.0.1.tgz#88b0246be7b5eec00f16843306ac95244b23ceb9"
+  integrity sha512-/ygggNdYgddjEnWxaNOwrL8bT9u8iJXCdz/CKpQi61SptIMmlCXmn125ey4rr0CTK/YIVpL6kZhVFInnNo+Q3w==
+
 react-native-fs@^2.20.0:
   version "2.20.0"
   resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.20.0.tgz#05a9362b473bfc0910772c0acbb73a78dbc810f6"

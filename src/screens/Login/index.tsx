@@ -8,17 +8,21 @@ import {AuthStackParamList} from '@stackNav/Auth';
 import {Image, Pressable, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import KakaoIcon from '@assets/svgs/kakao.svg';
+import DeviceInfo from 'react-native-device-info';
 
 type AuthProps = NativeStackScreenProps<AuthStackParamList, 'LoginScreen'>;
 
 const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
-  const handleKakaoLogin = async () => {
+  const handleLogin = async ({loginType}: {loginType: string}) => {
     try {
       const token: KakaoOAuthToken = await login();
-
+      const deviceId = DeviceInfo.getDeviceId();
+      const macAddress = await DeviceInfo.getMacAddress(); // iOS에서는 macAddress를 가져오는 것이 정책상 허용되지 않음
+      console.log('deviceId', deviceId);
+      console.log('macAddress', macAddress);
       const {result} = await postLogin({
-        accessToken: token.accessToken,
-        loginType: 'KAKAO',
+        accessToken: loginType ? deviceId + macAddress : token.accessToken,
+        loginType,
       });
 
       const {accessToken, refreshToken, memberId, serviceMember} = result;
@@ -30,12 +34,8 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
 
       navigation.navigate('NicknameWriteScreen');
     } catch (error) {
-      console.error('Kakao login error:', error);
+      console.error('login error:', error);
     }
-  };
-
-  const handleUseWithoutLogin = () => {
-    console.log('Use without login');
   };
 
   return (
@@ -62,7 +62,7 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
             <Pressable
               className="h-[52.8] bg-[#FEE500] justify-center items-center flex-row"
               style={{borderRadius: 7}}
-              onPress={handleKakaoLogin}>
+              onPress={() => handleLogin({loginType: 'KAKAO'})}>
               <KakaoIcon />
               <Txt
                 type="body3"
@@ -71,7 +71,7 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
                 style={{fontSize: 17.6}}
               />
             </Pressable>
-            <Pressable onPress={handleUseWithoutLogin}>
+            <Pressable onPress={() => handleLogin({loginType: 'ANOYMOUS'})}>
               <Txt
                 type="body4"
                 text="가입 없이 써볼래요"

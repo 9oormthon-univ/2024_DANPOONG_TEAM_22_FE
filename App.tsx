@@ -85,7 +85,7 @@ function App(): React.JSX.Element {
   const getToken = async () => {
     const fcmToken = await messaging().getToken();
     console.log('디바이스 토큰값', fcmToken);
-    // 토큰값 저장
+    await AsyncStorage.setItem('fcmToken', fcmToken);
   };
 
   return (
