@@ -1,19 +1,31 @@
-import { StatusBar, View } from 'react-native'
-import BG from '../../components/atom/BG'
-import Txt from '../../components/atom/Txt'
-import Carousel from '../../components/molecule/Carousel'
-import { ImageBackground } from 'react-native'
-import { NavigationProp, RouteProp, useNavigation } from '@react-navigation/native'
-import { HomeStackParamList } from '../../types/HomeStackParamList'
-import { getRCDList, RCD } from '@apis/RCDApis/getRCDList'
-import { useState, useEffect } from 'react'
-import AppBar from '@components/atom/AppBar'
-import { COLORS } from '@constants/Colors'
-import { ActivityIndicator } from 'react-native'
-const RCDListScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDList'>}) => {
-  const {type} = route.params
-  const [rcdList, setRcdList] = useState<RCD[]>([])
-  const navigation = useNavigation<NavigationProp<HomeStackParamList>>()
+import {
+  StatusBar,
+  View,
+  ImageBackground,
+  ActivityIndicator,
+} from 'react-native';
+import BG from '@components/atom/BG';
+import Txt from '@components/atom/Txt';
+import Carousel from '@components/molecule/Carousel';
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+} from '@react-navigation/native';
+import {HomeStackParamList} from '@type/HomeStackParamList';
+import {getRCDList, RCD} from '@apis/RCDApis/getRCDList';
+import {useState, useEffect} from 'react';
+import AppBar from '@components/atom/AppBar';
+import {COLORS} from '@constants/Colors';
+
+const RCDListScreen = ({
+  route,
+}: {
+  route: RouteProp<HomeStackParamList, 'RCDList'>;
+}) => {
+  const {type} = route.params;
+  const [rcdList, setRcdList] = useState<RCD[]>([]);
+  const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
 
   StatusBar.setBarStyle('light-content');
   StatusBar.setBackgroundColor(COLORS.bgSolid);
@@ -64,25 +76,26 @@ const RCDListScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDList'>
         style={{position: 'absolute', bottom: 0, width: '100%', height: 258}}
       />
       {/* content section */}
-        {/* header */}
-        <View className="w-full mt-[132] px-px mb-[33]">
-          <Txt
-            type="title2"
-            text={
-              type === 'DAILY'
-                ? '청년에게 일상을 응원하는\n녹음을 들려주세요'
-                : '청년에게 위로하는\n목소리를 들려주세요'
-            }
-            className="text-white"
-          />
-          
-        </View>
-        {/* list */}
-        {rcdList.length === 0 ? 
+      {/* header */}
+      <View className="w-full mt-[132] px-px mb-[33]">
+        <Txt
+          type="title2"
+          text={
+            type === 'DAILY'
+              ? '청년에게 일상을 응원하는\n녹음을 들려주세요'
+              : '청년에게 위로하는\n목소리를 들려주세요'
+          }
+          className="text-white"
+        />
+      </View>
+      {/* list */}
+      {rcdList.length === 0 ? (
         <View className="h-[40vh] justify-center items-center">
-        <ActivityIndicator size="large" color={COLORS.white} /> 
+          <ActivityIndicator size="large" color={COLORS.white} />
         </View>
-        : <Carousel entries={rcdList} type={type}/>}
+      ) : (
+        <Carousel entries={rcdList} type={type} />
+      )}
     </BG>
   );
 };

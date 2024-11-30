@@ -1,15 +1,15 @@
 import {View, ScrollView} from 'react-native';
-import BG from '../../components/atom/BG';
-import Txt from '../../components/atom/Txt';
-import Button from '../../components/atom/Button';
+import BG from '@components/atom/BG';
+import Txt from '@components/atom/Txt';
+import Button from '@components/atom/Button';
 import {
   NavigationProp,
   RouteProp,
   useNavigation,
 } from '@react-navigation/native';
-import Notice1 from '../../../assets/svgs/Notice1.svg';
-import Notice2 from '../../../assets/svgs/Notice2.svg';
-import {HomeStackParamList} from '../../types/HomeStackParamList';
+import Notice1 from '@assets/svgs/Notice1.svg';
+import Notice2 from '@assets/svgs/Notice2.svg';
+import {HomeStackParamList} from '@type/HomeStackParamList';
 import AppBar from '@components/atom/AppBar';
 
 const Section = ({

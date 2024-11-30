@@ -1,40 +1,47 @@
 import React from 'react';
-import { Dimensions } from 'react-native';
-import Card from './Card';
-import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
-import { RCD } from '@apis/RCDApis/getRCDList';
-const Carousel= ({entries,type}:{entries:RCD[],type:'DAILY'|'COMFORT'})=>{
-    const pageWidth = Dimensions.get('window').width-60
-    //gap + offset = 30 이 되어야 함
-    const gap = 14
-    const offset = 16
-    return (
-    <GestureHandlerRootView style={{width:Dimensions.get('window').width,height:333}} >
-        <FlatList
-        style={{width:'100%',height:'100%'}}
+import {Dimensions} from 'react-native';
+import Card from '@components/molecule/Card';
+import {FlatList, GestureHandlerRootView} from 'react-native-gesture-handler';
+import {RCD} from '@apis/RCDApis/getRCDList';
+
+const Carousel = ({
+  entries,
+  type,
+}: {
+  entries: RCD[];
+  type: 'DAILY' | 'COMFORT';
+}) => {
+  const pageWidth = Dimensions.get('window').width - 60;
+  //gap + offset = 30 이 되어야 함
+  const gap = 14;
+  const offset = 16;
+  return (
+    <GestureHandlerRootView
+      style={{width: Dimensions.get('window').width, height: 333}}>
+      <FlatList
+        style={{width: '100%', height: '100%'}}
         automaticallyAdjustContentInsets={false}
         contentContainerStyle={{
-            justifyContent:'center',
-            alignItems:'center',
-            paddingHorizontal: offset + gap / 2
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingHorizontal: offset + gap / 2,
         }}
         data={entries}
         decelerationRate="fast"
         horizontal
         pagingEnabled
-        renderItem={({item,index})=>{
-            return <Card key={index} item={item} gap={gap} type={type}/>
-        }}        
+        renderItem={({item, index}) => {
+          return <Card key={index} item={item} gap={gap} type={type} />;
+        }}
         snapToInterval={pageWidth + gap}
         snapToAlignment="start"
         showsHorizontalScrollIndicator={false}
-        />
+      />
     </GestureHandlerRootView>
-     )
-}
+  );
+};
 
 export default Carousel;
-
 
 // import React from 'react';
 // import { Dimensions } from 'react-native';

@@ -11,7 +11,7 @@ import Txt from '@components/atom/Txt';
 import {useState} from 'react';
 import {Image, Pressable, TextInput, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import PencilIcon from '../../../assets/images/login/pencil.svg';
+import PencilIcon from '@assets/svgs/pencil.svg';
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -88,7 +88,7 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
             />
           </View>
           <Image
-            source={require('../../../assets/images/login/background2.png')}
+            source={require('../../../assets/pngs/background/background2.png')}
             className="w-full h-auto flex-1 mt-[79]"
           />
           <View className="absolute left-0 bottom-[30] w-full px-[40]">

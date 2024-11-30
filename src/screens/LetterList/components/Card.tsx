@@ -1,4 +1,3 @@
-import LeeSeoYunText from '@components/atom/LeeSeoyunText';
 import ShadowView from '@components/atom/ShadowView';
 import Txt from '@components/atom/Txt';
 import {LetterResponseData} from '@type/providedFile';
@@ -18,9 +17,10 @@ const Card = ({letter, idx}: Readonly<CardProps>) => {
       <ShadowView>
         <View className="px-[22] py-[14] justify-between flex-1">
           <View>
-            <LeeSeoYunText
+            <Txt
+              type="body4"
               text={formatDate(letter.createdAt)}
-              className="text-gray300"
+              className="text-gray300 font-[LeeSeoyun-Regular]"
             />
             <Txt
               type="body4"
@@ -29,15 +29,28 @@ const Card = ({letter, idx}: Readonly<CardProps>) => {
             />
           </View>
           <View className="flex-row items-center self-end">
-            <LeeSeoYunText text="from." className="text-white mr-[8]" />
-            <LeeSeoYunText
+            <Txt
+              type="body4"
+              text="from."
+              className="text-white mr-[8] font-[LeeSeoyun-Regular]"
+            />
+            <Txt
+              type="body4"
               text={letter.alarmType}
-              className="text-yellowPrimary"
+              className="text-yellowPrimary font-[LeeSeoyun-Regular]"
             />
             {letter.alarmType !== '위로' && (
-              <LeeSeoYunText text="&nbsp;알림" className="text-white" />
+              <Txt
+                type="body4"
+                text="&nbsp;알림"
+                className="text-white font-[LeeSeoyun-Regular]"
+              />
             )}
-            <LeeSeoYunText text="&nbsp;받은" className="text-white mr-[5]" />
+            <Txt
+              type="body4"
+              text="&nbsp;받은"
+              className="text-white mr-[5] font-[LeeSeoyun-Regular]"
+            />
             <Txt
               type="body4"
               text={`청년${idx + 1}`}

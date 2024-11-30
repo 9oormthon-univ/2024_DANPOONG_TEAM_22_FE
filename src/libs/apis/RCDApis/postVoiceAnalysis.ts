@@ -1,4 +1,4 @@
-import client from '../client'
+import client from '@apis/client';
 
 interface PostVoiceAnalysisResponse {
   timestamp: string;
@@ -12,20 +12,23 @@ export interface VoiceAnalysisErrorResponse {
   message: string;
 }
 
-export const postVoiceAnalysis = async (file: FormData, voiceFileId: number): Promise<PostVoiceAnalysisResponse> => {
+export const postVoiceAnalysis = async (
+  file: FormData,
+  voiceFileId: number,
+): Promise<PostVoiceAnalysisResponse> => {
   try {
     const response = await client.post<PostVoiceAnalysisResponse>(
       `/api/v1/voicefiles/${voiceFileId}`,
       file,
       {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
+          'Content-Type': 'multipart/form-data',
+        },
+      },
     );
     return response.data;
   } catch (error) {
     console.log('음성 파일 분석 오류:', error);
     throw error;
   }
-}
+};

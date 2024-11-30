@@ -1,6 +1,6 @@
 import {View, Animated} from 'react-native';
-import Txt from './Txt';
-import Bang from '../../../assets/svgs/Bang.svg';
+import Txt from '@components/atom/Txt';
+import Bang from '@assets/svgs/Bang.svg';
 import {useEffect} from 'react';
 
 const Toast = ({

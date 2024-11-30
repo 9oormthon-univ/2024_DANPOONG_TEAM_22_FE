@@ -18,15 +18,15 @@ import {
 } from 'react-native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import FightingIcon from '../../../assets/images/youth/emotion_fighting.svg';
-import LoveIcon from '../../../assets/images/youth/emotion_love.svg';
-import StarIcon from '../../../assets/images/youth/emotion_star.svg';
-import ThumbIcon from '../../../assets/images/youth/emotion_thumb.svg';
-import PlayIcon from '../../../assets/images/youth/play.svg';
-import SendIcon from '../../../assets/images/youth/send.svg';
-import SmileIcon from '../../../assets/images/youth/smile.svg';
-import SmileWhiteIcon from '../../../assets/images/youth/smile_white.svg';
-import StopIcon from '../../../assets/images/youth/stop.svg';
+import FightingIcon from '@assets/svgs/emotion/emotion_fighting.svg';
+import LoveIcon from '@assets/svgs/emotion/emotion_love.svg';
+import StarIcon from '@assets/svgs/emotion/emotion_star.svg';
+import ThumbIcon from '@assets/svgs/emotion/emotion_thumb.svg';
+import PlayIcon from '@assets/svgs/play_youth.svg';
+import SendIcon from '@assets/svgs/send.svg';
+import SmileIcon from '@assets/svgs/smile.svg';
+import SmileWhiteIcon from '@assets/svgs/smile_white.svg';
+import StopIcon from '@assets/svgs/stop.svg';
 
 type YouthProps = NativeStackScreenProps<
   YouthStackParamList,
@@ -146,7 +146,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
             style={{
               flex: 1,
             }}
-            source={require('../../../assets/lottie/voice.json')}
+            source={require('@assets/lottie/voice.json')}
           />
         </View>
       )}
@@ -161,7 +161,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
               source={
                 imageUri
                   ? {uri: imageUri}
-                  : require('../../../assets/images/logo/app/app_logo_yellow.png')
+                  : require('@assets/images/logo/app/app_logo_yellow.png')
               }
               className="w-[70] h-[70]"
               style={{borderRadius: 35}}

@@ -1,8 +1,6 @@
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
-import LeeSeoYunText from '@components/atom/LeeSeoyunText';
 import Txt from '@components/atom/Txt';
-import VoltaireText from '@components/atom/VoltaireText';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CompositeScreenProps} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -38,13 +36,23 @@ const Page1 = ({nickname}: Readonly<PageProps>) => {
         text={`${nickname ?? ''} 님,\n이런 말 들어본 적 있나요?`}
         className="text-white text-center"
       />
-      <VoltaireText text="“" size={48} className="text-yellow200 mt-[26]" />
-      <LeeSeoYunText
-        text={'아이 하나를 키우는데\n온 동네가 필요하다'}
-        size={25}
-        className="text-yellow200 text-center"
+      <Txt
+        type="title1"
+        text="“"
+        className="text-yellow200 mt-[26] font-[LeeSeoYun-Regular]"
+        style={{fontSize: 48}}
       />
-      <VoltaireText text="”" size={48} className="text-yellow200 mt-[26]" />
+      <Txt
+        type="title2"
+        text={'아이 하나를 키우는데\n온 동네가 필요하다'}
+        className="text-yellow200 text-center font-[LeeSeoYun-Regular]"
+      />
+      <Txt
+        type="body1"
+        text="”"
+        className="text-yellow200 mt-[26] font-[Voltaire-Regular]"
+        style={{fontSize: 48}}
+      />
       <Txt type="body2" text="라는 말이요" className="text-white text-center" />
     </View>
   );
@@ -61,7 +69,7 @@ const Page2 = () => {
         className="text-gray200 text-center"
       />
       <Image
-        source={require('../../../assets/images/login/background3.png')}
+        source={require('../../../assets/pngs/background/background3.png')}
         className="w-full h-[466] absolute bottom-0"
       />
     </View>
@@ -79,7 +87,7 @@ const Page3 = ({nickname}: Readonly<PageProps>) => {
         className="text-gray200 text-center"
       />
       <Image
-        source={require('../../../assets/images/login/background1.png')}
+        source={require('../../../assets/pngs/background/background1.png')}
         className="w-full h-auto"
       />
     </View>
@@ -97,7 +105,7 @@ const Page4 = ({handleNext}: Readonly<{handleNext: () => void}>) => {
         className="text-gray200 text-center "
       />
       <Image
-        source={require('../../../assets/images/login/constellation.png')}
+        source={require('../../../assets/pngs/constellation.png')}
         width={274}
         height={269.5}
         className="w-[274] h-[269.5] mt-[100]"

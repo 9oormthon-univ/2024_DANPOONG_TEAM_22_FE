@@ -7,8 +7,8 @@ import {Role} from '@type/member';
 import {useState} from 'react';
 import {Alert, Image, Pressable, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import VolunteerIcon from '../../../assets/images/login/volunteer.svg';
-import YouthIcon from '../../../assets/images/login/youth.svg';
+import VolunteerIcon from '@assets/svgs/volunteer.svg';
+import YouthIcon from '@assets/svgs/youth.svg';
 
 type AuthProps = NativeStackScreenProps<AuthStackParamList, 'RoleSelectScreen'>;
 
@@ -87,7 +87,7 @@ const RoleSelectScreen = ({route, navigation}: Readonly<AuthProps>) => {
             </View>
           </View>
           <Image
-            source={require('../../../assets/images/login/background2.png')}
+            source={require('../../../assets/pngs/background/background2.png')}
             className="w-full h-auto flex-1 mt-[54]"
           />
           <View className="absolute left-0 bottom-[30] w-full px-[40]">

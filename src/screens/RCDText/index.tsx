@@ -10,11 +10,12 @@ import {
 } from '@react-navigation/native';
 import ShadowView from '@components/atom/ShadowView';
 import {useState, useRef, useEffect} from 'react';
-import {HomeStackParamList} from '../../types/HomeStackParamList';
+import {HomeStackParamList} from '@type/HomeStackParamList';
 import {ScrollView} from 'react-native-gesture-handler';
 import {postSaveScript} from '@apis/RCDApis/postSaveScript';
 import Toast from '@components/atom/Toast';
 import AppBar from '@components/atom/AppBar';
+
 const RCDTextScreen = ({
   route,
 }: {

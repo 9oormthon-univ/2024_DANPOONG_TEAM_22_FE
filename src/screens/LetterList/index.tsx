@@ -3,7 +3,6 @@ import {getLetters} from '@apis/providedFile';
 // import {getTopText} from '@apis/RCDApis/getTopText';
 import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
-import EmptyText from '@components/atom/EmptyText';
 // import {LETTERS_DATA} from '@constants/letter';
 // import useGetAlarmCategory from '@hooks/alarm/useGetAlarmCategory';
 // import useGetAlarmComfort from '@hooks/alarm/useGetAlarmComfort';
@@ -174,7 +173,11 @@ const LetterListScreen = ({navigation}: Readonly<LetterProps>) => {
           </ScrollView> */}
           {!filteredLettersData || filteredLettersData.length === 0 ? (
             <View className="flex-1 items-center justify-center">
-              <EmptyText text="아직 편지가 없어요" />
+              <Txt
+                type="caption1"
+                text="아직 편지가 없어요"
+                className="text-gray300"
+              />
             </View>
           ) : (
             <ScrollView>

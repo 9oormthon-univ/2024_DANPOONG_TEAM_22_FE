@@ -1,8 +1,5 @@
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {AuthStackParamList} from '@stackNav/Auth';
+import axios from 'axios';
 
 // navigation 인스턴스를 저장할 변수
 let navigationRef: any = null;

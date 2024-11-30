@@ -1,14 +1,11 @@
-import {View, Animated, ImageBackground, ActivityIndicator} from 'react-native';
-import Txt from '@components/atom/Txt';
 import BG from '@components/atom/BG';
-import Button from '@components/atom/Button';
+import Txt from '@components/atom/Txt';
+import {ActivityIndicator, Animated, ImageBackground, View} from 'react-native';
 //import { BarIndicator, DotIndicator } from 'react-native-indicators'
-import {NavigationProp} from '@react-navigation/native';
-import {useNavigation} from '@react-navigation/native';
-
-import {useState, useEffect, useRef} from 'react';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import AppBar from '@components/atom/AppBar';
 import {HomeStackParamList} from '@type/HomeStackParamList';
+import {useEffect, useRef, useState} from 'react';
 
 const RCDFeedBackScreen = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);

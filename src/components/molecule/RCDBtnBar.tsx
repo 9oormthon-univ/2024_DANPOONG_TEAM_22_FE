@@ -1,7 +1,7 @@
 import {View, TouchableOpacity} from 'react-native';
 import RCDBtn from '@components/atom/RCDBtn';
 import Txt from '@components/atom/Txt';
-import {RCDBtnBarProps} from '../../types/RCDBtnBarType';
+import {RCDBtnBarProps} from '@type/RCDBtnBarType';
 
 const TransparentButton = ({
   content,

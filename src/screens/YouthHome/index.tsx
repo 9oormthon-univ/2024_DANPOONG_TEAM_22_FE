@@ -14,7 +14,7 @@ import {
   SafeAreaView,
   View,
 } from 'react-native';
-import CancelIcon from '../../../assets/images/youth/cancel.svg';
+import CancelIcon from '@assets/svgs/cancel.svg';
 
 type YouthProps = NativeStackScreenProps<
   YouthStackParamList,
@@ -87,7 +87,7 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
   return (
     <SafeAreaView className="flex-1">
       <ImageBackground
-        source={require('../../../assets/images/youth/background1.png')}
+        source={require('../../../assets/pngs/background/background_youth1.png')}
         className="flex-1 items-center">
         <View className="self-start">
           <Txt
