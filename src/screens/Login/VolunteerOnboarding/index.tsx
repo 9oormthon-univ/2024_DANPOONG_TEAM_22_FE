@@ -2,10 +2,8 @@ import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {CompositeScreenProps} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {RootStackParamList} from '@type/nav/RootStackParamList';
 import React, {useEffect, useState} from 'react';
 import {Animated, Dimensions, Image, Text, View} from 'react-native';
 import {SlidingDot} from 'react-native-animated-pagination-dots';
@@ -19,8 +17,6 @@ type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'VolunteerOnboardingScreen'
 >;
-type RootProps = NativeStackScreenProps<RootStackParamList>;
-type Props = CompositeScreenProps<AuthProps, RootProps>;
 
 type PageProps = {
   nickname: string;
@@ -121,7 +117,7 @@ const Page4 = ({handleNext}: Readonly<{handleNext: () => void}>) => {
   );
 };
 
-const VolunteerOnboardingScreen = ({navigation}: Readonly<Props>) => {
+const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
   const [currentPageIdx, setCurrentPageIdx] = useState(0);
   const [nickname, setNickname] = useState('');
 
@@ -133,7 +129,7 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<Props>) => {
   }, []);
 
   const handleNext = () => {
-    navigation.navigate('AppTabNav');
+    navigation.navigate('VolunteerNoticeScreen');
   };
 
   const PAGE_COUNT = 4;
