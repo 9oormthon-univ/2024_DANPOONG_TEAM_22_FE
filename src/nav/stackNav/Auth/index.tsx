@@ -5,8 +5,11 @@ import NicknameWriteScreen from '@screens/Login/NicknameWrite';
 import RoleSelectScreen from '@screens/Login/RoleSelect';
 import VolunteerNoticeScreen from '@screens/Login/VolunteerNotice';
 import VolunteerOnboardingScreen from '@screens/Login/VolunteerOnboarding';
+import YouthEatScreen from '@screens/Login/YouthEat';
 import YouthMemberInfoWriteScreen from '@screens/Login/YouthMemberInfoWrite';
 import YouthOnboardingScreen from '@screens/Login/YouthOnboarding';
+import YouthSleepTimeScreen from '@screens/Login/YouthSleepTime';
+import YouthWakeUpTimeScreen from '@screens/Login/YouthWakeUpTime';
 
 export type AuthStackParamList = {
   LoginScreen: undefined;
@@ -20,6 +23,32 @@ export type AuthStackParamList = {
     nickname: string;
     imageUri: string;
     role: string;
+  };
+  YouthWakeUpTimeScreen: {
+    nickname: string;
+    imageUri: string;
+    role: string;
+    birthday: string;
+    gender: string;
+  };
+  YouthEatScreen: {
+    nickname: string;
+    imageUri: string;
+    role: string;
+    birthday: string;
+    gender: string;
+    wakeUpTime: string;
+  };
+  YouthSleepTimeScreen: {
+    nickname: string;
+    imageUri: string;
+    role: string;
+    birthday: string;
+    gender: string;
+    wakeUpTime: string;
+    breakfast: string;
+    lunch: string;
+    dinner: string;
   };
 };
 
@@ -67,6 +96,21 @@ const AuthStackNav = () => {
         name="YouthMemberInfoWriteScreen"
         component={YouthMemberInfoWriteScreen}
         options={{title: '청년 정보 입력'}}
+      />
+      <AuthStack.Screen
+        name="YouthWakeUpTimeScreen"
+        component={YouthWakeUpTimeScreen}
+        options={{title: '청년 기상 정보 입력'}}
+      />
+      <AuthStack.Screen
+        name="YouthEatScreen"
+        component={YouthEatScreen}
+        options={{title: '청년 식사 정보 입력'}}
+      />
+      <AuthStack.Screen
+        name="YouthSleepTimeScreen"
+        component={YouthSleepTimeScreen}
+        options={{title: '청년 취침 정보 입력'}}
       />
     </AuthStack.Navigator>
   );

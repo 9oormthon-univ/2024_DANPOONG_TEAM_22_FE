@@ -1,3 +1,4 @@
+import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
@@ -21,22 +22,32 @@ const YouthMemberInfoWriteScreen = ({
   const [birthday, setBirthday] = useState('');
   const [gender, setGender] = useState<Gender | null>(null);
 
-  const handleNext = async () => {};
+  const handleNext = async () => {
+    navigation.navigate('YouthWakeUpTimeScreen', {
+      nickname,
+      imageUri,
+      role,
+      birthday,
+      gender: gender!,
+    });
+  };
 
   return (
-    <SafeAreaView className="flex-1 justify-center items-center">
+    <SafeAreaView className="flex-1">
       <BG type="main">
-        <>
+        <AppBar
+          goBackCallbackFn={() => {
+            navigation.goBack();
+          }}
+          className="absolute top-[0] w-full"
+        />
+        <View className="w-[25%] h-[3] bg-yellowPrimary absolute top-[63]" />
+        <View className="flex-1 mt-[50]">
           <View className="items-center pt-[80]">
             <Txt
               type="title2"
-              text={`${nickname ?? ''} 님,`}
+              text={`${nickname ?? ''} 님,\n당신에 대해 알려주세요`}
               className="text-white mt-[26]"
-            />
-            <Txt
-              type="title2"
-              text="당신에 대해 알려주세요"
-              className="text-white"
             />
 
             <View className="mt-[30] px-[46] w-full">
@@ -85,18 +96,18 @@ const YouthMemberInfoWriteScreen = ({
               </View>
             </View>
           </View>
-          <Image
-            source={require('../../../../assets/pngs/background/background2.png')}
-            className="w-full h-auto flex-1 mt-[54]"
+        </View>
+        <Image
+          source={require('@assets/pngs/background/background_youth5.png')}
+          className="w-full h-auto flex-1 mt-[177]"
+        />
+        <View className="absolute left-0 bottom-[30] w-full px-[40]">
+          <Button
+            text="다음"
+            onPress={handleNext}
+            disabled={!birthday || !gender}
           />
-          <View className="absolute left-0 bottom-[30] w-full px-[40]">
-            <Button
-              text="다음"
-              onPress={handleNext}
-              disabled={!birthday || !gender}
-            />
-          </View>
-        </>
+        </View>
       </BG>
     </SafeAreaView>
   );
