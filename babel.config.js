@@ -1,6 +1,6 @@
 //babel.config.js
 module.exports = function (api) {
-  api.cache(true)
+  api.cache(true);
   return {
     presets: ['module:@react-native/babel-preset'],
     plugins: [
@@ -32,9 +32,10 @@ module.exports = function (api) {
             '@screens': './src/screens',
             '@assets': './assets',
             '@type': './src/types',
+            '@config': './src/config',
           },
         },
       ],
     ],
-  }
-}
+  };
+};

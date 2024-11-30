@@ -23,6 +23,15 @@ client.interceptors.request.use(async config => {
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
+
+    // 요청 로그 출력
+    console.log('Request:', {
+      url: config.url,
+      method: config.method,
+      headers: config.headers,
+      data: config.data,
+    });
+
     return config;
   } catch (error) {
     console.error('토큰 가져오기 실패:', error);
@@ -32,9 +41,24 @@ client.interceptors.request.use(async config => {
 
 // Response Interceptor: API 응답 처리 및 에러 핸들링
 client.interceptors.response.use(
-  response => response,
+  response => {
+    // 응답 로그 출력
+    console.log('Response:', {
+      url: response.config.url,
+      status: response.status,
+      data: response.data,
+    });
+    return response;
+  },
   async error => {
     if (error.response) {
+      // 응답 에러 로그 출력
+      console.error('Response Error:', {
+        url: error.config.url,
+        status: error.response.status,
+        data: error.response.data,
+      });
+
       switch (error.response.status) {
         case 401:
           // 인증 에러 처리

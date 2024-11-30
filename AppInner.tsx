@@ -33,6 +33,7 @@ const AppInner = () => {
   useEffect(() => {
     (async () => {
       try {
+        // await AsyncStorage.removeItem('accessToken');
         const token = await AsyncStorage.getItem('accessToken');
         setIsLoggedIn(!!token);
 

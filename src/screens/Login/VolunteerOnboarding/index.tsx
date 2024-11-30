@@ -2,12 +2,10 @@ import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {CompositeScreenProps} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {RootStackParamList} from '@type/nav/RootStackParamList';
 import React, {useEffect, useState} from 'react';
-import {Animated, Dimensions, Image, View} from 'react-native';
+import {Animated, Dimensions, Image, Text, View} from 'react-native';
 import {SlidingDot} from 'react-native-animated-pagination-dots';
 import PagerView, {
   PagerViewOnPageScrollEventData,
@@ -19,8 +17,6 @@ type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'VolunteerOnboardingScreen'
 >;
-type RootProps = NativeStackScreenProps<RootStackParamList>;
-type Props = CompositeScreenProps<AuthProps, RootProps>;
 
 type PageProps = {
   nickname: string;
@@ -34,25 +30,23 @@ const Page1 = ({nickname}: Readonly<PageProps>) => {
       <Txt
         type="body2"
         text={`${nickname ?? ''} 님,\n이런 말 들어본 적 있나요?`}
-        className="text-white text-center"
+        className="text-white text-center mb-[26]"
       />
-      <Txt
-        type="title1"
-        text="“"
-        className="text-yellow200 mt-[26] font-[LeeSeoYun-Regular]"
-        style={{fontSize: 48}}
-      />
-      <Txt
-        type="title2"
-        text={'아이 하나를 키우는데\n온 동네가 필요하다'}
-        className="text-yellow200 text-center font-[LeeSeoYun-Regular]"
-      />
-      <Txt
-        type="body1"
-        text="”"
-        className="text-yellow200 mt-[26] font-[Voltaire-Regular]"
-        style={{fontSize: 48}}
-      />
+      <Text
+        className="text-yellow200 font-[Voltaire-Regular]"
+        style={{fontSize: 48}}>
+        “
+      </Text>
+      <Text
+        className="text-yellow200 text-center font-[LeeSeoyun-Regular] mb-[26]"
+        style={{fontSize: 25, lineHeight: 25 * 1.5}}>
+        {'아이 하나를 키우는데\n온 동네가 필요하다'}
+      </Text>
+      <Text
+        className="text-yellow200 font-[Voltaire-Regular]"
+        style={{fontSize: 48}}>
+        ”
+      </Text>
       <Txt type="body2" text="라는 말이요" className="text-white text-center" />
     </View>
   );
@@ -60,7 +54,7 @@ const Page1 = ({nickname}: Readonly<PageProps>) => {
 
 const Page2 = () => {
   return (
-    <View className="flex-1 items-center mt-[80]">
+    <View className="flex-1 items-center mt-[189]">
       <Txt
         type="body2"
         text={
@@ -70,7 +64,7 @@ const Page2 = () => {
       />
       <Image
         source={require('../../../../assets/pngs/background/background3.png')}
-        className="w-full h-[466] absolute bottom-0"
+        className="w-full h-auto mt-[173]"
       />
     </View>
   );
@@ -78,7 +72,7 @@ const Page2 = () => {
 
 const Page3 = ({nickname}: Readonly<PageProps>) => {
   return (
-    <View className="flex-1 items-center mt-[80]">
+    <View className="flex-1 items-center mt-[189]">
       <Txt
         type="body2"
         text={`사막의 별처럼,\n${
@@ -88,7 +82,7 @@ const Page3 = ({nickname}: Readonly<PageProps>) => {
       />
       <Image
         source={require('../../../../assets/pngs/background/background1.png')}
-        className="w-full h-auto"
+        className="w-full h-auto mt-[234]"
       />
     </View>
   );
@@ -96,13 +90,19 @@ const Page3 = ({nickname}: Readonly<PageProps>) => {
 
 const Page4 = ({handleNext}: Readonly<{handleNext: () => void}>) => {
   return (
-    <View className="flex-1 items-center mt-[80]">
+    <View className="flex-1 items-center mt-[189]">
       <Txt
         type="body2"
         text={
           '내일모래와 함께\n내일도, 모레도,\n청년의 일상을 비추러 가볼래요?'
         }
         className="text-gray200 text-center "
+      />
+      <Image
+        source={require('../../../../assets/pngs/marginalStars.png')}
+        width={274}
+        height={269.5}
+        className="w-[300] h-auto absolute bottom-[30]"
       />
       <Image
         source={require('../../../../assets/pngs/constellation.png')}
@@ -117,7 +117,7 @@ const Page4 = ({handleNext}: Readonly<{handleNext: () => void}>) => {
   );
 };
 
-const VolunteerOnboardingScreen = ({navigation}: Readonly<Props>) => {
+const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
   const [currentPageIdx, setCurrentPageIdx] = useState(0);
   const [nickname, setNickname] = useState('');
 
@@ -129,7 +129,7 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<Props>) => {
   }, []);
 
   const handleNext = () => {
-    navigation.navigate('AppTabNav');
+    navigation.navigate('VolunteerNoticeScreen');
   };
 
   const PAGE_COUNT = 4;
@@ -220,7 +220,8 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<Props>) => {
             ref={ref}
             className="flex-1"
             onPageScroll={onPageScroll}
-            onPageSelected={onPageSelected}>
+            onPageSelected={onPageSelected}
+            style={{marginTop: -85}}>
             <View key="1" className="flex-1">
               <Page1 nickname={nickname ?? ''} />
             </View>

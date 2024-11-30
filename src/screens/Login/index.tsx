@@ -1,4 +1,5 @@
 import {postLogin} from '@apis/auth';
+import KakaoIcon from '@assets/svgs/kakao.svg';
 import BG from '@components/atom/BG';
 import Txt from '@components/atom/Txt';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -6,19 +7,22 @@ import {KakaoOAuthToken, login} from '@react-native-seoul/kakao-login';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {Image, Pressable, View} from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import KakaoIcon from '@assets/svgs/kakao.svg';
 
 type AuthProps = NativeStackScreenProps<AuthStackParamList, 'LoginScreen'>;
 
 const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
-  const handleKakaoLogin = async () => {
+  const handleLogin = async ({loginType}: {loginType: string}) => {
     try {
       const token: KakaoOAuthToken = await login();
-
+      const deviceId = DeviceInfo.getDeviceId();
+      const macAddress = await DeviceInfo.getMacAddress(); // iOS에서는 macAddress를 가져오는 것이 정책상 허용되지 않음
+      console.log('deviceId', deviceId);
+      console.log('macAddress', macAddress);
       const {result} = await postLogin({
-        accessToken: token.accessToken,
-        loginType: 'KAKAO',
+        accessToken: loginType ? deviceId + macAddress : token.accessToken,
+        loginType,
       });
 
       const {accessToken, refreshToken, memberId, serviceMember} = result;
@@ -30,19 +34,15 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
 
       navigation.navigate('NicknameWriteScreen');
     } catch (error) {
-      console.error('Kakao login error:', error);
+      console.error('login error:', error);
     }
-  };
-
-  const handleUseWithoutLogin = () => {
-    console.log('Use without login');
   };
 
   return (
     <SafeAreaView className="flex-1 justify-center items-center">
       <BG type="main">
         <View className="flex-1">
-          <View className="items-center pt-[165]">
+          <View className="items-center mt-[185]">
             <Txt type="body4" text="내일도 모레도," className="text-gray300" />
             <Txt
               type="body4"
@@ -56,21 +56,22 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
           </View>
           <Image
             source={require('../../../assets/pngs/background/background1.png')}
-            className="w-full h-auto flex-1"
+            className="w-full h-auto flex-1 mt-[124]"
           />
           <View className="absolute left-0 bottom-[72] w-full px-[40]">
             <Pressable
               className="h-[52.8] bg-[#FEE500] justify-center items-center flex-row"
               style={{borderRadius: 7}}
-              onPress={handleKakaoLogin}>
+              onPress={() => handleLogin({loginType: 'KAKAO'})}>
               <KakaoIcon />
               <Txt
                 type="body3"
                 text="카카오 로그인"
-                className="ml-[9.39] font-sb"
+                className="ml-[9.39] font-[AppleSDGothicNeoR]"
+                style={{fontSize: 17.6}}
               />
             </Pressable>
-            <Pressable onPress={handleUseWithoutLogin}>
+            <Pressable onPress={() => handleLogin({loginType: 'ANOYMOUS'})}>
               <Txt
                 type="body4"
                 text="가입 없이 써볼래요"
