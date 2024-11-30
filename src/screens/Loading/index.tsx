@@ -14,7 +14,7 @@ const LoadingScreen = () => {
               style={{
                 flex: 1,
               }}
-              source={require('../../../assets/lottie/loadingDots.json')}
+              source={require('@assets/lottie/loadingDots.json')}
               autoPlay
               loop
             />

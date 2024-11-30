@@ -13,7 +13,7 @@ const ShadowView = ({
       className={`w-full h-full rounded-card overflow-hidden ${className}`}
       style={{backgroundColor: 'rgba(250,250,250,0.1)'}}>
       <ImageBackground
-        source={require('../../../assets/pngs/ShadowBox.png')}
+        source={require('@assets/pngs/ShadowBox.png')}
         className="w-full h-full"
         resizeMode="cover">
         {children}

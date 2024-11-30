@@ -60,7 +60,7 @@ const LetterCard = ({letter, idx}: Readonly<LetterCardProps>) => {
               source={
                 imageUri
                   ? {uri: imageUri}
-                  : require('../../../../../assets/pngs/logo/app/app_logo_yellow.png')
+                  : require('@assets/pngs/logo/app/app_logo_yellow.png')
               }
               className="w-[27] h-[27]"
               style={{borderRadius: 50}}

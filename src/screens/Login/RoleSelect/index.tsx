@@ -126,7 +126,7 @@ const RoleSelectScreen = ({route, navigation}: Readonly<AuthProps>) => {
             </View>
           </View>
           <Image
-            source={require('../../../../assets/pngs/background/background2.png')}
+            source={require('@assets/pngs/background/background2.png')}
             className="w-full h-auto flex-1 mt-[54]"
           />
           <View className="absolute left-0 bottom-[30] w-full px-[40]">

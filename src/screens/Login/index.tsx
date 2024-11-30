@@ -50,12 +50,12 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
               className="text-gray300"
             />
             <Image
-              source={require('../../../assets/pngs/logo/typo/typo_logo_white.png')}
+              source={require('@assets/pngs/logo/typo/typo_logo_white.png')}
               style={{width: 200, height: 72, marginTop: 16}}
             />
           </View>
           <Image
-            source={require('../../../assets/pngs/background/background1.png')}
+            source={require('@assets/pngs/background/background1.png')}
             className="w-full h-auto flex-1 mt-[124]"
           />
           <View className="absolute left-0 bottom-[72] w-full px-[40]">
