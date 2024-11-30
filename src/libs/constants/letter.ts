@@ -1,4 +1,4 @@
-import { LetterResponseData } from '@type/providedFile';
+import {LetterResponseData} from '@type/api/providedFile';
 
 const currentDate = new Date().toISOString();
 
@@ -19,9 +19,10 @@ const LETTERS_DATA: LetterResponseData[] = [
   {
     providedFileId: 3,
     createdAt: currentDate,
-    thanksMessage: '일 하느라 바쁜 일상이었는데 덕분에 힘 내서 할 수 있었어요. 감사해요.',
+    thanksMessage:
+      '일 하느라 바쁜 일상이었는데 덕분에 힘 내서 할 수 있었어요. 감사해요.',
     alarmType: '식사',
   },
 ];
 
-export { LETTERS_DATA };
+export {LETTERS_DATA};

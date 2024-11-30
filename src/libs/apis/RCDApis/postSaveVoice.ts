@@ -1,4 +1,4 @@
-import client from '../client'
+import client from '@apis/client';
 
 interface PostSaveVoiceResponse {
   timestamp: string;
@@ -7,11 +7,14 @@ interface PostSaveVoiceResponse {
   result: string;
 }
 
-export const postSaveVoice = async (voicefileId: number, file: string): Promise<PostSaveVoiceResponse> => {
+export const postSaveVoice = async (
+  voicefileId: number,
+  file: string,
+): Promise<PostSaveVoiceResponse> => {
   try {
     const formData = new FormData();
     formData.append('file', file);
-    
+
     const response = await client.post<PostSaveVoiceResponse>(
       `/api/v1/voicefiles/${voicefileId}/voice`,
       formData,
@@ -19,11 +22,11 @@ export const postSaveVoice = async (voicefileId: number, file: string): Promise<
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      }
+      },
     );
     return response.data;
   } catch (error) {
     console.log('음성 파일 저장 오류:', error);
     throw error;
   }
-}
+};

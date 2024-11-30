@@ -1,7 +1,7 @@
 import {View} from 'react-native';
-import BackIcon from '../../../assets/svgs/Back.svg';
-import BG from '../../components/atom/BG';
-import Txt from '../../components/atom/Txt';
+import BackIcon from '@assets/svgs/Back.svg';
+import BG from '@components/atom/BG';
+import Txt from '@components/atom/Txt';
 
 const SystemScreen = () => {
   return (

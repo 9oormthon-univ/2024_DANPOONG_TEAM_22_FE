@@ -1,5 +1,5 @@
-import { getAlarmCategory } from '@apis/alarm';
-import { useQuery } from '@tanstack/react-query';
+import {getAlarmCategory} from '@apis/alarm';
+import {useQuery} from '@tanstack/react-query';
 
 const useGetAlarmCategory = () => {
   return useQuery({

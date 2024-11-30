@@ -1,18 +1,18 @@
-import client from '@apis/client'
-import { ResultResponseData } from '@type/common'
+import client from '@apis/client';
+import {ResultResponseData} from '@type/api/common';
 import {
   HelperNumResponseData,
   MemberInfoResponseData,
   MemberRequestData,
   MemberResponseData,
-} from '@type/member'
+} from '@type/api/member';
 
 const getHelperNum = async () => {
   const res = await client.get<ResultResponseData<HelperNumResponseData>>(
-    `/api/v1/member/helper-num`
-  )
-  return res.data
-}
+    '/api/v1/member/helper-num',
+  );
+  return res.data;
+};
 
 const postMember = async ({
   name,
@@ -22,24 +22,23 @@ const postMember = async ({
   birth,
 }: Readonly<MemberRequestData>) => {
   const res = await client.post<ResultResponseData<MemberResponseData>>(
-    `/api/v1/member`,
+    '/api/v1/member',
     {
       name,
       gender,
       profileImage,
       role,
       birth,
-    }
-  )
-  return res.data
-}
+    },
+  );
+  return res.data;
+};
 
 const getMember = async () => {
-  const res =
-    await client.get<ResultResponseData<MemberInfoResponseData>>(
-      `/api/v1/member`
-    )
-  return res.data
-}
+  const res = await client.get<ResultResponseData<MemberInfoResponseData>>(
+    '/api/v1/member',
+  );
+  return res.data;
+};
 
-export { getHelperNum, postMember, getMember }
+export {getHelperNum, postMember, getMember};

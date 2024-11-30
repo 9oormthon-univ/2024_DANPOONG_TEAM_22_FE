@@ -1,20 +1,17 @@
-import {View, TouchableOpacity, ImageBackground} from 'react-native';
+import {View, TouchableOpacity, ImageBackground, StatusBar} from 'react-native';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
-import Txt from '../../components/atom/Txt';
-import BG from '../../components/atom/BG';
-import {HomeStackParamList} from '../../types/HomeStackParamList';
-import Main1 from '../../../assets/svgs/main1.svg';
-import Main2 from '../../../assets/svgs/main2.svg';
-import Main3 from '../../../assets/svgs/main3.svg';
-// import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import {StatusBar} from 'react-native';
-import {COLORS} from '../../libs/constants/Colors';
-import {getYouthNum} from '../../libs/apis/RCDApis/getYouthNum';
+import Txt from '@components/atom/Txt';
+import BG from '@components/atom/BG';
+import {HomeStackParamList} from '@type/nav/HomeStackParamList';
+import Main1 from '@assets/svgs/main1.svg';
+import Main2 from '@assets/svgs/main2.svg';
+import Main3 from '@assets/svgs/main3.svg';
+import {COLORS} from '@constants/Colors';
+import {getYouthNum} from '@apis/RCDApis/getYouthNum';
 import {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen = () => {
-  // const tabBarHeight = useBottomTabBarHeight();
   StatusBar.setBarStyle('light-content');
   StatusBar.setBackgroundColor(COLORS.bgMainPageBack100);
   const [nickname, setNickname] = useState('');
@@ -39,7 +36,7 @@ const HomeScreen = () => {
     <BG type="main">
       {/* 배경 이미지 */}
       <ImageBackground
-        source={require('../../../assets/pngs/mainBG.png')}
+        source={require('@assets/pngs/mainBG.png')}
         style={{position: 'absolute', bottom: 0, width: '100%', height: 762}}
       />
       {/* 전체 frame */}

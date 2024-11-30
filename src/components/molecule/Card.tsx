@@ -1,12 +1,12 @@
-import {View} from 'react-native';
-import Txt from '../atom/Txt';
-import ShadowView from '../atom/ShadowView';
-import Button from '@components/atom/Button';
-import {ImageBackground} from 'react-native';
-import StarPNG from '@components/atom/StarPNG';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {HomeStackParamList} from '../../types/HomeStackParamList';
 import {RCD} from '@apis/RCDApis/getRCDList';
+import Button from '@components/atom/Button';
+import StarPNG from '@components/atom/StarPNG';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {View} from 'react-native';
+import {HomeStackParamList} from '@type/nav/HomeStackParamList';
+import ShadowView from '@components/atom/ShadowView';
+import Txt from '@components/atom/Txt';
+
 const Card = ({
   item,
   gap,

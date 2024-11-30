@@ -1,5 +1,6 @@
 import Txt from '@components/atom/Txt';
 import {Pressable} from 'react-native';
+
 type ButtonProps = {
   text: string;
   onPress: () => void;

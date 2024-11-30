@@ -23,4 +23,4 @@ export const COLORS = {
   yellow600: '#c7c756',
 
   recording: '#f13a1e',
-}
+};

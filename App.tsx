@@ -12,7 +12,7 @@ import {
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import AppInner, {navigateToYouthListenScreen} from 'AppInner';
-import {RootStackParamList} from '@type/RootStackParamList';
+import {RootStackParamList} from '@type/nav/RootStackParamList';
 import messaging from '@react-native-firebase/messaging';
 import {useEffect} from 'react';
 import pushNoti from '@utils/pushNoti';

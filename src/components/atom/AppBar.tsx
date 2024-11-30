@@ -1,7 +1,7 @@
 import Txt from '@components/atom/Txt';
 import {Pressable, View, ViewStyle} from 'react-native';
-import ChevronLeftWhiteIcon from '../../../assets/images/appBar/chevron_left_white.svg';
-import ExitWhiteIcon from '../../../assets/images/appBar/exit_white.svg';
+import ChevronLeftWhiteIcon from '@assets/svgs/chevron/chevron_left_white.svg';
+import ExitWhiteIcon from '@assets/svgs/exit_white.svg';
 
 type AppBarProps = {
   title?: string;
