@@ -34,6 +34,28 @@ const postMember = async ({
   return res.data;
 };
 
+const postMemberYouth = async ({
+  name,
+  gender,
+  profileImage,
+  role,
+  birth,
+  youthMemberInfoDto: {wakeUpTime, sleepTime, breakfast, lunch, dinner},
+}: Readonly<MemberInfoResponseData>) => {
+  const res = await client.post<ResultResponseData<MemberResponseData>>(
+    '/api/v1/member',
+    {
+      name,
+      gender,
+      profileImage,
+      role,
+      birth,
+      youthMemberInfoDto: {wakeUpTime, sleepTime, breakfast, lunch, dinner},
+    },
+  );
+  return res.data;
+};
+
 const getMember = async () => {
   const res = await client.get<ResultResponseData<MemberInfoResponseData>>(
     '/api/v1/member',
@@ -41,4 +63,4 @@ const getMember = async () => {
   return res.data;
 };
 
-export {getHelperNum, postMember, getMember};
+export {getHelperNum, postMember, postMemberYouth, getMember};

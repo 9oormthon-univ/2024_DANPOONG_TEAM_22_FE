@@ -47,7 +47,7 @@ const YouthMemberInfoWriteScreen = ({
             <Txt
               type="title2"
               text={`${nickname ?? ''} 님,\n당신에 대해 알려주세요`}
-              className="text-white mt-[26]"
+              className="text-white mt-[26] text-center"
             />
 
             <View className="mt-[30] px-[46] w-full">

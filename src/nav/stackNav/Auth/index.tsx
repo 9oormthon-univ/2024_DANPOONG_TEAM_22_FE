@@ -7,6 +7,7 @@ import VolunteerNoticeScreen from '@screens/Login/VolunteerNotice';
 import VolunteerOnboardingScreen from '@screens/Login/VolunteerOnboarding';
 import YouthEatScreen from '@screens/Login/YouthEat';
 import YouthMemberInfoWriteScreen from '@screens/Login/YouthMemberInfoWrite';
+import YouthNoticeScreen from '@screens/Login/YouthNotice';
 import YouthOnboardingScreen from '@screens/Login/YouthOnboarding';
 import YouthSleepTimeScreen from '@screens/Login/YouthSleepTime';
 import YouthWakeUpTimeScreen from '@screens/Login/YouthWakeUpTime';
@@ -50,6 +51,7 @@ export type AuthStackParamList = {
     lunch: string;
     dinner: string;
   };
+  YouthNoticeScreen: undefined;
 };
 
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
@@ -111,6 +113,11 @@ const AuthStackNav = () => {
         name="YouthSleepTimeScreen"
         component={YouthSleepTimeScreen}
         options={{title: '청년 취침 정보 입력'}}
+      />
+      <AuthStack.Screen
+        name="YouthNoticeScreen"
+        component={YouthNoticeScreen}
+        options={{title: '청년 주의사항'}}
       />
     </AuthStack.Navigator>
   );

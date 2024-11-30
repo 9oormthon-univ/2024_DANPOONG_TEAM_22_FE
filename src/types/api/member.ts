@@ -4,20 +4,15 @@ type Role = 'ADMIN' | 'YOUTH' | 'HELPER';
 
 type MemberRequestData = {
   name: string;
-  gender?: Gender;
-  profileImage: string;
-  role: Role;
-  birth?: string;
-};
-
-type MemberResponseData = {memberId: number};
-
-type MemberInfoResponseData = {
-  name: string;
   gender: Gender;
   profileImage: string;
   role: Role;
   birth: string;
+};
+
+type MemberResponseData = {memberId: number};
+
+interface MemberInfoResponseData extends MemberRequestData {
   youthMemberInfoDto: {
     wakeUpTime: string;
     sleepTime: string;
@@ -25,7 +20,7 @@ type MemberInfoResponseData = {
     lunch: string;
     dinner: string;
   };
-};
+}
 
 type HelperNumResponseData = {
   youthMemberNum: number;

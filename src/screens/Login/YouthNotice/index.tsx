@@ -1,5 +1,4 @@
-import MoraeCircleIcon from '@assets/svgs/moraeCircle.svg';
-import VoiceCircleIcon from '@assets/svgs/voiceCircle.svg';
+import AlarmCircleIcon from '@assets/svgs/alarmCircle.svg';
 import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
@@ -12,25 +11,24 @@ import {ScrollView, View} from 'react-native';
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
-  'VolunteerNoticeScreen'
+  'YouthNoticeScreen'
 >;
 type RootProps = NativeStackScreenProps<RootStackParamList>;
 type Props = CompositeScreenProps<AuthProps, RootProps>;
 
 const NOTICE_CONTENTS = [
   {
-    icon: <VoiceCircleIcon />,
-    content: '청년의 일상에 도착할\n다정한 한 마디를 전할 수 있어요',
-  },
-  {
-    icon: <MoraeCircleIcon />,
-    content: '청년의 삶에 건네줄\n위로와 조언의 이야기를 전할 수 있어요',
+    icon: <AlarmCircleIcon />,
+    content: '일상에 따뜻한 한 마디가 필요할 때\n알림을 받을 수 있어요',
   },
 ];
 
-const VolunteerNoticeScreen = ({navigation}: Readonly<Props>) => {
+const YouthNoticeScreen = ({navigation}: Readonly<Props>) => {
   const handleNext = () => {
-    navigation.navigate('AppTabNav');
+    navigation.navigate('YouthStackNav', {
+      screen: 'YouthHomeScreen',
+      params: {},
+    });
   };
 
   return (
@@ -49,7 +47,7 @@ const VolunteerNoticeScreen = ({navigation}: Readonly<Props>) => {
           <Txt
             type="title2"
             text={
-              '시작하기에 앞서,\n청년에게 목소리를 전하기 위해\n오디오 녹음 동의가 필요해요'
+              '시작하기에 앞서,\n원활한 서비스를 위해\n알람 수신 동의가 필요해요'
             }
             className="text-white"
           />
@@ -71,4 +69,4 @@ const VolunteerNoticeScreen = ({navigation}: Readonly<Props>) => {
     </BG>
   );
 };
-export default VolunteerNoticeScreen;
+export default YouthNoticeScreen;
