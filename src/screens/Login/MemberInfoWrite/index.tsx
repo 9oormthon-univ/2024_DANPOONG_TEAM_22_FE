@@ -9,6 +9,11 @@ import {Gender, MemberRequestData, Role} from '@type/api/member';
 import {useState} from 'react';
 import {Alert, Image, Pressable, TextInput, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import AWS from 'aws-sdk';
+import RNFS from 'react-native-fs';
+import {Buffer} from 'buffer';
+import S3Config from '@config/S3config';
+import useLoading from '@hooks/useLoading';
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -19,22 +24,67 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const {nickname, imageUri, role} = route.params;
   const [birthday, setBirthday] = useState('');
   const [gender, setGender] = useState<Gender | null>(null);
+  const {isLoading, setIsLoading} = useLoading();
+
+  const uploadImageToS3 = async () => {
+    if (!imageUri) {
+      return;
+    }
+
+    setIsLoading(true);
+    return new Promise(async (resolve, reject) => {
+      const fileData = await RNFS.readFile(imageUri, 'base64');
+
+      const params = {
+        Bucket: S3Config.bucket,
+        Key: new Date().toISOString(), // File name you want to save as in S3
+        Body: Buffer.from(fileData, 'base64'),
+        ContentType: 'image/jpeg',
+      };
+
+      const s3 = new AWS.S3({
+        accessKeyId: S3Config.accessKeyID,
+        secretAccessKey: S3Config.secretAccessKey,
+        region: S3Config.region,
+      });
+
+      // Uploading files to the bucket
+      s3.upload(params, function (err, data) {
+        if (err) {
+          console.log(err);
+          setIsLoading(false);
+          reject(err);
+        } else {
+          console.log(`File uploaded successfully. ${data.Location}`);
+          setIsLoading(false);
+          resolve(data.Location);
+        }
+      });
+    });
+  };
+
+  const formatBirth = (birthday: string) => {
+    const year = birthday.slice(0, 4);
+    const month = birthday.slice(4, 6);
+    const day = birthday.slice(6, 8);
+
+    return new Date(`${year}-${month}-${day}`).toISOString();
+  };
 
   const handleNext = async () => {
     if (!gender) {
       return;
     }
 
-    const year = birthday.slice(0, 4);
-    const month = birthday.slice(4, 6);
-    const day = birthday.slice(6, 8);
+    const imageLocation = await uploadImageToS3();
+    console.log('imageLocation', imageLocation);
 
     const data: MemberRequestData = {
       gender,
       name: nickname,
-      profileImage: imageUri ?? '',
+      profileImage: (imageLocation as string) ?? '',
       role: role as Role,
-      birth: new Date(`${year}-${month}-${day}`).toISOString(),
+      birth: formatBirth(birthday),
     };
     try {
       const {result} = await postMember(data);
@@ -118,7 +168,8 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
             <Button
               text="다음"
               onPress={handleNext}
-              disabled={!birthday || !gender}
+              disabled={!birthday || !gender || isLoading}
+              isLoading={isLoading}
             />
           </View>
         </>

@@ -51,7 +51,10 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
   };
 
   const handleNext = () => {
-    navigation.navigate('RoleSelectScreen', {nickname, imageUri: ''});
+    navigation.navigate('RoleSelectScreen', {
+      nickname,
+      imageUri: imageUri ?? '',
+    });
   };
 
   return (

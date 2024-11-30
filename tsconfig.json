@@ -14,7 +14,8 @@
       "@tabNav/*": ["./src/nav/tabNav/*"],
       "@screens/*": ["./src/screens/*"],
       "@assets/*": ["./assets/*"],
-      "@type/*": ["./src/types/*"]
+      "@type/*": ["./src/types/*"],
+      "@config/*": ["./src/config/*"]
     }
   }
 }
