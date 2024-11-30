@@ -12,7 +12,7 @@ import {
   RouteProp,
   useNavigation,
 } from '@react-navigation/native';
-import {HomeStackParamList} from '@type/HomeStackParamList';
+import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {useEffect, useState} from 'react';
 import {ActivityIndicator, TouchableOpacity, View} from 'react-native';
 

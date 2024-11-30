@@ -4,8 +4,8 @@ import {
   AlarmCategoryResponseData,
   AlarmComfortResponseData,
   AlarmData,
-} from '@type/alarm';
-import {ResultResponseData} from '@type/common';
+} from '@type/api/alarm';
+import {ResultResponseData} from '@type/api/common';
 
 const getAlarmComfort = async () => {
   const res = await client.get<ResultResponseData<AlarmComfortResponseData[]>>(

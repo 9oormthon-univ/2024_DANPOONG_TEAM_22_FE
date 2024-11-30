@@ -3,7 +3,7 @@ import Button from '@components/atom/Button';
 import StarPNG from '@components/atom/StarPNG';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {View} from 'react-native';
-import {HomeStackParamList} from '@type/HomeStackParamList';
+import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import ShadowView from '@components/atom/ShadowView';
 import Txt from '@components/atom/Txt';
 

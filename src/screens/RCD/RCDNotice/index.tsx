@@ -9,7 +9,7 @@ import {
 } from '@react-navigation/native';
 import Notice1 from '@assets/svgs/Notice1.svg';
 import Notice2 from '@assets/svgs/Notice2.svg';
-import {HomeStackParamList} from '@type/HomeStackParamList';
+import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import AppBar from '@components/atom/AppBar';
 
 const Section = ({

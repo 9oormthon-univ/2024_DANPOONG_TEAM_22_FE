@@ -5,7 +5,7 @@ import Txt from '@components/atom/Txt';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {Gender, MemberRequestData, Role} from '@type/member';
+import {Gender, MemberRequestData, Role} from '@type/api/member';
 import {useState} from 'react';
 import {Alert, Image, Pressable, TextInput, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';

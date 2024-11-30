@@ -2,7 +2,7 @@ import {View, TouchableOpacity, ImageBackground, StatusBar} from 'react-native';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
 import Txt from '@components/atom/Txt';
 import BG from '@components/atom/BG';
-import {HomeStackParamList} from '@type/HomeStackParamList';
+import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import Main1 from '@assets/svgs/main1.svg';
 import Main2 from '@assets/svgs/main2.svg';
 import Main3 from '@assets/svgs/main3.svg';

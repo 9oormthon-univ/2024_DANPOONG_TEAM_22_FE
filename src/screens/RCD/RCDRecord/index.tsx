@@ -28,7 +28,7 @@ import {
   RouteProp,
   useNavigation,
 } from '@react-navigation/native';
-import {HomeStackParamList} from '@type/HomeStackParamList';
+import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {postVoiceAnalysis} from '@apis/RCDApis/postVoiceAnalysis';
 import AppBar from '@components/atom/AppBar';
 import RNFS from 'react-native-fs';

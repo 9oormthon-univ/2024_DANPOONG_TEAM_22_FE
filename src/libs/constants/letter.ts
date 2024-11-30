@@ -1,4 +1,4 @@
-import {LetterResponseData} from '@type/providedFile';
+import {LetterResponseData} from '@type/api/providedFile';
 
 const currentDate = new Date().toISOString();
 

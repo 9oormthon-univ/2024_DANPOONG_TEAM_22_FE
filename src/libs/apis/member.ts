@@ -1,11 +1,11 @@
 import client from '@apis/client';
-import {ResultResponseData} from '@type/common';
+import {ResultResponseData} from '@type/api/common';
 import {
   HelperNumResponseData,
   MemberInfoResponseData,
   MemberRequestData,
   MemberResponseData,
-} from '@type/member';
+} from '@type/api/member';
 
 const getHelperNum = async () => {
   const res = await client.get<ResultResponseData<HelperNumResponseData>>(

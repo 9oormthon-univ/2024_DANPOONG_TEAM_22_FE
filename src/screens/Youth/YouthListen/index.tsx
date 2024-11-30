@@ -4,7 +4,7 @@ import Txt from '@components/atom/Txt';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import LoadingScreen from '@screens/Loading';
 import {YouthStackParamList} from '@stackNav/Youth';
-import {VoiceFileResponseData} from '@type/voiceFile';
+import {VoiceFileResponseData} from '@type/api/voiceFile';
 import LottieView from 'lottie-react-native';
 import {useEffect, useRef, useState} from 'react';
 import {

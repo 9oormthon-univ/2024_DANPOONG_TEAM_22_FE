@@ -1,11 +1,11 @@
 import client from '@apis/client';
-import {ResultResponseData} from '@type/common';
+import {ResultResponseData} from '@type/api/common';
 import {
   CommentRequestData,
   LettersRequestData,
   LettersResponseData,
   SummaryResponseData,
-} from '@type/providedFile';
+} from '@type/api/providedFile';
 
 const postComment = async ({
   providedFileId,

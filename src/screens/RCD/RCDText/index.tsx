@@ -10,7 +10,7 @@ import {
 } from '@react-navigation/native';
 import ShadowView from '@components/atom/ShadowView';
 import {useState, useRef, useEffect} from 'react';
-import {HomeStackParamList} from '@type/HomeStackParamList';
+import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {ScrollView} from 'react-native-gesture-handler';
 import {postSaveScript} from '@apis/RCDApis/postSaveScript';
 import Toast from '@components/atom/Toast';

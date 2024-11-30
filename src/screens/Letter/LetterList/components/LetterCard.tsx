@@ -1,6 +1,6 @@
 import ShadowView from '@components/atom/ShadowView';
 import Txt from '@components/atom/Txt';
-import {LetterResponseData} from '@type/providedFile';
+import {LetterResponseData} from '@type/api/providedFile';
 import formatDate from '@utils/formatDate';
 import {Image, Pressable, View} from 'react-native';
 

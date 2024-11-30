@@ -1,5 +1,5 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {LetterStackParamList} from '@type/LetterStackParamList';
+import {LetterStackParamList} from '@type/nav/LetterStackParamList';
 import LetterHomeScreen from '@screens/Letter/LetterHome';
 import LetterListScreen from '@screens/Letter/LetterList';
 

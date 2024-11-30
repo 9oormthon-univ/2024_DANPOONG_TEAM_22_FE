@@ -4,7 +4,7 @@ import {ActivityIndicator, Animated, ImageBackground, View} from 'react-native';
 //import { BarIndicator, DotIndicator } from 'react-native-indicators'
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import AppBar from '@components/atom/AppBar';
-import {HomeStackParamList} from '@type/HomeStackParamList';
+import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {useEffect, useRef, useState} from 'react';
 
 const RCDFeedBackScreen = () => {

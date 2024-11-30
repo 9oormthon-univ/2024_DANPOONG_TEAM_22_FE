@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, TextStyle} from 'react-native';
-import {TxtProps} from '@type/TxtType';
+import {TxtProps} from '@type/component/TxtType';
 
 const getStyle = (type: string): TextStyle => {
   const fontStyles = {

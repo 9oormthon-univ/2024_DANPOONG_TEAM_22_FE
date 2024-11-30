@@ -4,7 +4,7 @@ import {TouchableOpacity} from 'react-native';
 import Circle from '@assets/svgs/Circle.svg';
 import Halt from '@assets/svgs/Halt.svg';
 import {useEffect, useState} from 'react';
-import {RCDBtnProps} from '@type/RCDBtnType';
+import {RCDBtnProps} from '@type/component/RCDBtnType';
 
 const RCDBtn = ({
   record,

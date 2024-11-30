@@ -1,5 +1,5 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {RootStackParamList} from '@type/RootStackParamList';
+import {RootStackParamList} from '@type/nav/RootStackParamList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppTabNav from './src/nav/tabNav/App';
 import AuthStackNav from '@stackNav/Auth';
@@ -7,7 +7,7 @@ import YouthStackNav from '@stackNav/Youth';
 import {useEffect, useState} from 'react';
 import {Alert} from 'react-native';
 import {getMember} from '@apis/member';
-import {Role} from '@type/member';
+import {Role} from '@type/api/member';
 import {navigationRef} from 'App';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

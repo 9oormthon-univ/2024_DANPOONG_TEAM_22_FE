@@ -1,5 +1,5 @@
-import {LoginRequestData, LoginResponseData} from '@type/auth';
-import {ResultResponseData} from '@type/common';
+import {LoginRequestData, LoginResponseData} from '@type/api/auth';
+import {ResultResponseData} from '@type/api/common';
 import axios from 'axios';
 
 const postLogin = async ({

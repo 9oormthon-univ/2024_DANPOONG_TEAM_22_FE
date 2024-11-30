@@ -12,7 +12,7 @@ import {
   RouteProp,
   useNavigation,
 } from '@react-navigation/native';
-import {HomeStackParamList} from '@type/HomeStackParamList';
+import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {getRCDList, RCD} from '@apis/RCDApis/getRCDList';
 import {useState, useEffect} from 'react';
 import AppBar from '@components/atom/AppBar';

@@ -6,7 +6,7 @@ import RCDRecordScreen from '@screens/RCD/RCDRecord';
 import RCDTextScreen from '@screens/RCD/RCDText';
 import RCDSelectTextScreen from '@screens/RCD/RCDSelectText';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {HomeStackParamList} from '@type/HomeStackParamList';
+import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {
   getFocusedRouteNameFromRoute,
   NavigationProp,

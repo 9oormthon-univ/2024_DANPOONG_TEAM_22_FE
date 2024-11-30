@@ -3,7 +3,7 @@ import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {Role} from '@type/member';
+import {Role} from '@type/api/member';
 import {useState} from 'react';
 import {Alert, Image, Pressable, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';

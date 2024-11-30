@@ -4,7 +4,7 @@ import Txt from '@components/atom/Txt';
 import useGetSummary from '@hooks/providedFile/useGetSummary';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {LetterStackParamList} from '@type/LetterStackParamList';
+import {LetterStackParamList} from '@type/nav/LetterStackParamList';
 import {useEffect, useState} from 'react';
 import {Alert, Image, Pressable, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';

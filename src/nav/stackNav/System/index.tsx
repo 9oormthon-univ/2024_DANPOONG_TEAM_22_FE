@@ -1,5 +1,5 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {SystemStackParamList} from '@type/SystemStackParamList';
+import {SystemStackParamList} from '@type/nav/SystemStackParamList';
 import SystemScreen from '@screens/System';
 
 const Stack = createNativeStackNavigator<SystemStackParamList>();

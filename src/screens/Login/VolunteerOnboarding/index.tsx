@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CompositeScreenProps} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {RootStackParamList} from '@type/RootStackParamList';
+import {RootStackParamList} from '@type/nav/RootStackParamList';
 import React, {useEffect, useState} from 'react';
 import {Animated, Dimensions, Image, View} from 'react-native';
 import {SlidingDot} from 'react-native-animated-pagination-dots';

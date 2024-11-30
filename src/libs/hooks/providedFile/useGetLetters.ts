@@ -1,6 +1,6 @@
 import {getLetters} from '@apis/providedFile';
 import {useQuery} from '@tanstack/react-query';
-import {LettersRequestData} from '@type/providedFile';
+import {LettersRequestData} from '@type/api/providedFile';
 
 const useGetLetters = ({
   parentCategoryId,
