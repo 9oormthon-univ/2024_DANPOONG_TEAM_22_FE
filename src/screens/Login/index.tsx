@@ -42,7 +42,7 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
     <SafeAreaView className="flex-1 justify-center items-center">
       <BG type="main">
         <View className="flex-1">
-          <View className="items-center pt-[165]">
+          <View className="items-center mt-[185]">
             <Txt type="body4" text="내일도 모레도," className="text-gray300" />
             <Txt
               type="body4"
@@ -56,7 +56,7 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
           </View>
           <Image
             source={require('../../../assets/pngs/background/background1.png')}
-            className="w-full h-auto flex-1"
+            className="w-full h-auto flex-1 mt-[124]"
           />
           <View className="absolute left-0 bottom-[72] w-full px-[40]">
             <Pressable
@@ -67,7 +67,8 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
               <Txt
                 type="body3"
                 text="카카오 로그인"
-                className="ml-[9.39] font-sb"
+                className="ml-[9.39] font-[AppleSDGothicNeoR]"
+                style={{fontSize: 17.6}}
               />
             </Pressable>
             <Pressable onPress={handleUseWithoutLogin}>
