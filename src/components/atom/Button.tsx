@@ -26,9 +26,10 @@ const Button = ({
       {isLoading ? (
         <LottieView
           style={{
-            flex: 1,
+            width: 240,
+            height: 240,
           }}
-          source={require('../../../assets/lottie/loadingDots.json')}
+          source={require('@assets/lottie/loadingDots.json')}
           autoPlay
           loop
         />

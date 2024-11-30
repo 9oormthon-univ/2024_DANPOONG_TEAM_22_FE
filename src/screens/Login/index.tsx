@@ -1,4 +1,5 @@
 import {postLogin} from '@apis/auth';
+import KakaoIcon from '@assets/svgs/kakao.svg';
 import BG from '@components/atom/BG';
 import Txt from '@components/atom/Txt';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -6,9 +7,8 @@ import {KakaoOAuthToken, login} from '@react-native-seoul/kakao-login';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {Image, Pressable, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import KakaoIcon from '@assets/svgs/kakao.svg';
 import DeviceInfo from 'react-native-device-info';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 type AuthProps = NativeStackScreenProps<AuthStackParamList, 'LoginScreen'>;
 

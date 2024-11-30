@@ -1,63 +1,27 @@
-import {postMember} from '@apis/member';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {Gender, MemberRequestData, Role} from '@type/api/member';
+import {Gender} from '@type/api/member';
 import {useState} from 'react';
-import {Alert, Image, Pressable, TextInput, View} from 'react-native';
+import {Image, Pressable, TextInput, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import useLoading from '@hooks/useLoading';
-import uploadImageToS3 from '@apis/util';
-import formatBirth from '@utils/formatBirth';
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
-  'MemberInfoWriteScreen'
+  'YouthMemberInfoWriteScreen'
 >;
 
-const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
+const YouthMemberInfoWriteScreen = ({
+  route,
+  navigation,
+}: Readonly<AuthProps>) => {
   const {nickname, imageUri, role} = route.params;
   const [birthday, setBirthday] = useState('');
   const [gender, setGender] = useState<Gender | null>(null);
-  const {isLoading, setIsLoading} = useLoading();
 
-  const handleNext = async () => {
-    if (!gender) {
-      return;
-    }
-
-    let imageLocation;
-    try {
-      setIsLoading(true);
-      imageLocation = (await uploadImageToS3(imageUri)) as string;
-      console.log('imageLocation', imageLocation);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-
-    const data: MemberRequestData = {
-      gender,
-      name: nickname,
-      profileImage: imageLocation ?? '',
-      role: role as Role,
-      birth: formatBirth(birthday),
-    };
-    try {
-      const {result} = await postMember(data);
-      console.log(result);
-
-      await AsyncStorage.setItem('nickname', nickname);
-      navigation.navigate('VolunteerOnboardingScreen');
-    } catch (error) {
-      console.log(error);
-      Alert.alert('오류', '회원가입 중 오류가 발생했어요');
-    }
-  };
+  const handleNext = async () => {};
 
   return (
     <SafeAreaView className="flex-1 justify-center items-center">
@@ -129,8 +93,7 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
             <Button
               text="다음"
               onPress={handleNext}
-              disabled={!birthday || !gender || isLoading}
-              isLoading={isLoading}
+              disabled={!birthday || !gender}
             />
           </View>
         </>
@@ -139,4 +102,4 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   );
 };
 
-export default MemberInfoWriteScreen;
+export default YouthMemberInfoWriteScreen;

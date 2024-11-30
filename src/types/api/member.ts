@@ -1,35 +1,35 @@
-type Gender = 'MALE' | 'FEMALE'
+type Gender = 'MALE' | 'FEMALE';
 
-type Role = 'ADMIN' | 'YOUTH' | 'HELPER'
+type Role = 'ADMIN' | 'YOUTH' | 'HELPER';
 
 type MemberRequestData = {
-  name: string
-  gender: Gender
-  profileImage: string
-  role: Role
-  birth: string
-}
+  name: string;
+  gender?: Gender;
+  profileImage: string;
+  role: Role;
+  birth?: string;
+};
 
-type MemberResponseData = { memberId: number }
+type MemberResponseData = {memberId: number};
 
 type MemberInfoResponseData = {
-  name: string
-  gender: Gender
-  profileImage: string
-  role: Role
-  birth: string
+  name: string;
+  gender: Gender;
+  profileImage: string;
+  role: Role;
+  birth: string;
   youthMemberInfoDto: {
-    wakeUpTime: string
-    sleepTime: string
-    breakfast: string
-    lunch: string
-    dinner: string
-  }
-}
+    wakeUpTime: string;
+    sleepTime: string;
+    breakfast: string;
+    lunch: string;
+    dinner: string;
+  };
+};
 
 type HelperNumResponseData = {
-  youthMemberNum: number
-}
+  youthMemberNum: number;
+};
 
 export type {
   Gender,
@@ -38,4 +38,4 @@ export type {
   MemberRequestData,
   MemberResponseData,
   Role,
-}
+};

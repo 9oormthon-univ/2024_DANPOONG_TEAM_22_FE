@@ -5,6 +5,8 @@ import NicknameWriteScreen from '@screens/Login/NicknameWrite';
 import RoleSelectScreen from '@screens/Login/RoleSelect';
 import VolunteerNoticeScreen from '@screens/Login/VolunteerNotice';
 import VolunteerOnboardingScreen from '@screens/Login/VolunteerOnboarding';
+import YouthMemberInfoWriteScreen from '@screens/Login/YouthMemberInfoWrite';
+import YouthOnboardingScreen from '@screens/Login/YouthOnboarding';
 
 export type AuthStackParamList = {
   LoginScreen: undefined;
@@ -13,6 +15,12 @@ export type AuthStackParamList = {
   MemberInfoWriteScreen: {nickname: string; imageUri: string; role: string};
   VolunteerOnboardingScreen: undefined;
   VolunteerNoticeScreen: undefined;
+  YouthOnboardingScreen: {nickname: string; imageUri: string; role: string};
+  YouthMemberInfoWriteScreen: {
+    nickname: string;
+    imageUri: string;
+    role: string;
+  };
 };
 
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
@@ -38,17 +46,27 @@ const AuthStackNav = () => {
       <AuthStack.Screen
         name="MemberInfoWriteScreen"
         component={MemberInfoWriteScreen}
-        options={{title: '정보 입력'}}
+        options={{title: '조력자 정보 입력'}}
       />
       <AuthStack.Screen
         name="VolunteerOnboardingScreen"
         component={VolunteerOnboardingScreen}
-        options={{title: '온보딩'}}
+        options={{title: '조력자 온보딩'}}
       />
       <AuthStack.Screen
         name="VolunteerNoticeScreen"
         component={VolunteerNoticeScreen}
-        options={{title: '주의사항'}}
+        options={{title: '조력자 주의사항'}}
+      />
+      <AuthStack.Screen
+        name="YouthOnboardingScreen"
+        component={YouthOnboardingScreen}
+        options={{title: '청년 온보딩'}}
+      />
+      <AuthStack.Screen
+        name="YouthMemberInfoWriteScreen"
+        component={YouthMemberInfoWriteScreen}
+        options={{title: '청년 정보 입력'}}
       />
     </AuthStack.Navigator>
   );

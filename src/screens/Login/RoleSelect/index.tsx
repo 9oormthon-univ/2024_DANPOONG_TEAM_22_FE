@@ -5,27 +5,66 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {Role} from '@type/api/member';
 import {useState} from 'react';
-import {Alert, Image, Pressable, View} from 'react-native';
+import {Image, Pressable, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import VolunteerIcon from '@assets/svgs/volunteer.svg';
 import YouthIcon from '@assets/svgs/youth.svg';
+// import {postMember} from '@apis/member';
+// import useLoading from '@hooks/useLoading';
+// import uploadImageToS3 from '@apis/util';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type AuthProps = NativeStackScreenProps<AuthStackParamList, 'RoleSelectScreen'>;
 
 const RoleSelectScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const {nickname, imageUri} = route.params;
   const [role, setRole] = useState<Role | null>(null);
+  // const {isLoading, setIsLoading} = useLoading();
 
   const handleNext = () => {
+    if (!role) {
+      return;
+    }
+
     if (role === 'HELPER') {
       navigation.navigate('MemberInfoWriteScreen', {
         nickname,
         imageUri,
         role,
       });
-    } else {
-      Alert.alert('알림', '청년은 아직 준비 중이에요');
+      return;
     }
+
+    // (async () => {
+    //   setIsLoading(true);
+    //   try {
+    //     const imageLocation = imageUri
+    //       ? ((await uploadImageToS3(imageUri)) as string)
+    //       : '';
+    //     console.log('imageLocation', imageLocation);
+
+    //     const data = {
+    //       name: nickname,
+    //       profileImage: imageLocation ?? '',
+    //       role,
+    //     };
+    //     const {result} = await postMember(data);
+    //     console.log(result);
+
+    //     await AsyncStorage.setItem('nickname', nickname);
+    //     navigation.navigate('YouthOnboardingScreen');
+    //   } catch (error) {
+    //     console.log(error);
+    //     Alert.alert('오류', '회원가입 중 오류가 발생했어요');
+    //   } finally {
+    //     setIsLoading(false);
+    //   }
+    // })();
+    navigation.navigate('YouthOnboardingScreen', {
+      nickname,
+      imageUri,
+      role,
+    });
   };
 
   return (
@@ -91,7 +130,13 @@ const RoleSelectScreen = ({route, navigation}: Readonly<AuthProps>) => {
             className="w-full h-auto flex-1 mt-[54]"
           />
           <View className="absolute left-0 bottom-[30] w-full px-[40]">
-            <Button text="다음" onPress={handleNext} disabled={!role} />
+            <Button
+              text="다음"
+              onPress={handleNext}
+              disabled={!role}
+              // disabled={!role || isLoading}
+              // isLoading={isLoading}
+            />
           </View>
         </>
       </BG>
