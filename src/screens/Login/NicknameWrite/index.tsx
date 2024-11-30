@@ -48,15 +48,14 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
     <SafeAreaView className="flex-1 justify-center items-center">
       <BG type="main">
         <>
-          <View className="items-center pt-[80]">
+          <View className="items-center mt-[149]">
             <Txt
               type="title2"
-              text="내일모래가 당신을"
-              className="text-white"
+              text={'내일모래가 당신을\n어떻게 부를까요?'}
+              className="text-white text-center"
             />
-            <Txt type="title2" text="어떻게 부를까요?" className="text-white" />
 
-            <Pressable onPress={selectImage} className="mt-[30] relative">
+            <Pressable onPress={selectImage} className="mt-[50] relative">
               {imageUri ? (
                 <Image
                   source={{uri: imageUri}}
@@ -87,10 +86,12 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
               style={{fontSize: 22}}
             />
           </View>
+
           <Image
             source={require('../../../../assets/pngs/background/background2.png')}
-            className="w-full h-auto flex-1 mt-[79]"
+            className="w-full h-auto flex-1 mt-[89]"
           />
+
           <View className="absolute left-0 bottom-[30] w-full px-[40]">
             <Button text="다음" onPress={handleNext} disabled={!nickname} />
           </View>
