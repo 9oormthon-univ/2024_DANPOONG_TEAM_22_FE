@@ -47,7 +47,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
           <View className="flex-1 pt-[50] pb-[110]">
             <View className="w-full items-center px-[35]">
               <Image
-                source={require('../../../../assets/pngs/bookdo.png')}
+                source={require('@assets/pngs/bookdo.png')}
                 className="w-[310] h-[305]"
               />
             </View>

@@ -161,7 +161,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
               source={
                 imageUri
                   ? {uri: imageUri}
-                  : require('../../../../assets/pngs/logo/app/app_logo_yellow.png')
+                  : require('@assets/pngs/logo/app/app_logo_yellow.png')
               }
               className="w-[70] h-[70]"
               style={{borderRadius: 35}}

@@ -63,7 +63,7 @@ const Page2 = () => {
         className="text-gray200 text-center"
       />
       <Image
-        source={require('../../../../assets/pngs/background/background3.png')}
+        source={require('@assets/pngs/background/background3.png')}
         className="w-full h-auto mt-[173]"
       />
     </View>
@@ -81,7 +81,7 @@ const Page3 = ({nickname}: Readonly<PageProps>) => {
         className="text-gray200 text-center"
       />
       <Image
-        source={require('../../../../assets/pngs/background/background1.png')}
+        source={require('@assets/pngs/background/background1.png')}
         className="w-full h-auto mt-[234]"
       />
     </View>
@@ -99,13 +99,13 @@ const Page4 = ({handleNext}: Readonly<{handleNext: () => void}>) => {
         className="text-gray200 text-center "
       />
       <Image
-        source={require('../../../../assets/pngs/marginalStars.png')}
+        source={require('@assets/pngs/marginalStars.png')}
         width={274}
         height={269.5}
         className="w-[300] h-auto absolute bottom-[30]"
       />
       <Image
-        source={require('../../../../assets/pngs/constellation.png')}
+        source={require('@assets/pngs/constellation.png')}
         width={274}
         height={269.5}
         className="w-[274] h-[269.5] mt-[100]"
