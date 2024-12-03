@@ -65,7 +65,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
                   className="text-yellowPrimary"
                 />
                 <Txt
-                  type="bobu"
+                  type="body2"
                   text="&nbsp;번 청취했어요"
                   className="text-white"
                 />
