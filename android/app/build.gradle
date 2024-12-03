@@ -1,12 +1,12 @@
 buildscript {
     ext {
-        buildToolsVersion = "29.0.3"
+        buildToolsVersion = "35.0.0"
         // Note: Below change is necessary for pause / resume audio feature. Not for Kotlin.
         minSdkVersion = 24
-        compileSdkVersion = 32
-        targetSdkVersion = 32
-        kotlinVersion = '1.6.10'
-        ndkVersion = "20.1.5948944"
+        compileSdkVersion = 35
+        targetSdkVersion = 34
+        kotlinVersion = "1.9.24"
+        ndkVersion = "26.1.10909125"
     }
     repositories {
         google()
@@ -114,6 +114,12 @@ android {
             storePassword 'android'
             keyAlias 'androiddebugkey'
             keyPassword 'android'
+        }
+        release {
+            storeFile file('C:\\Users\\hp.JB\\my-release-key.keystore')
+            storePassword 'qkrwjdqls000325'
+            keyAlias 'my-release-key'
+            keyPassword 'qkrwjdqls000325'
         }
     }
     buildTypes {

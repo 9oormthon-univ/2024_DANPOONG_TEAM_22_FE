@@ -17,6 +17,7 @@ import messaging from '@react-native-firebase/messaging';
 import {useEffect} from 'react';
 import pushNoti from '@utils/pushNoti';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SplashScreen from 'react-native-splash-screen';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -69,6 +70,9 @@ function App(): React.JSX.Element {
         });
       }
     });
+
+    // 앱이 로드되면 스플래시 화면을 숨깁니다.
+    SplashScreen.hide();
   }, []);
 
   const requestUserPermission = async () => {
