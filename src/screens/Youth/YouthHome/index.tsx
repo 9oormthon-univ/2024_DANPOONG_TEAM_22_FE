@@ -85,7 +85,7 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
 
   useEffect(() => {
     if (isAlarmComfortError) {
-      console.error(alarmComfortError);
+      console.log(alarmComfortError);
       Alert.alert('오류', '위로 알람을 불러오는 중 오류가 발생했어요');
     }
   }, [isAlarmComfortError, alarmComfortError]);

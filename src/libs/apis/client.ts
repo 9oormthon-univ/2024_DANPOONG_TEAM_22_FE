@@ -34,7 +34,7 @@ client.interceptors.request.use(async config => {
 
     return config;
   } catch (error) {
-    console.error('토큰 가져오기 실패:', error);
+    console.log('토큰 가져오기 실패:', error);
     return config;
   }
 });
@@ -53,7 +53,7 @@ client.interceptors.response.use(
   async error => {
     if (error.response) {
       // 응답 에러 로그 출력
-      console.error('Response Error:', {
+      console.log('Response Error:', {
         url: error.config.url,
         status: error.response.status,
         data: error.response.data,

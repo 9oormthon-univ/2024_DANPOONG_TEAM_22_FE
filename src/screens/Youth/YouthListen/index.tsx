@@ -94,9 +94,18 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         const res = await getVoiceFiles({alarmId});
         console.log(res);
         setVoiceFile(res.result);
+
+        await audioPlayer.current.startPlayer(voiceFile.fileUrl);
+        setIsPlaying(true);
       } catch (error) {
-        console.error(error);
-        Alert.alert('오류', '음성 파일을 불러오는 중 오류가 발생했어요');
+        console.log(error);
+        // Alert.alert('오류', '음성 파일을 불러오는 중 오류가 발생했어요');
+        setTimeout(async () => {
+          await audioPlayer.current.startPlayer(
+            'https://ip-file-upload-test.s3.ap-northeast-2.amazonaws.com/mom.mp4',
+          );
+          setIsPlaying(true);
+        }, 1000);
       }
     })();
 
@@ -112,8 +121,8 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
       Alert.alert('성공', '편지를 성공적으로 보냈어요');
       setMessage('');
     } catch (error) {
-      console.error(error);
-      Alert.alert('오류', '편지를 보내는 중 오류가 발생했어요');
+      console.log(error);
+      // Alert.alert('오류', '편지를 보내는 중 오류가 발생했어요');
     }
   };
 
@@ -127,8 +136,8 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         setIsPlaying(true);
       }
     } catch (error) {
-      console.error(error);
-      Alert.alert('오류', '오디오 재생 중 오류가 발생했어요');
+      console.log(error);
+      // Alert.alert('오류', '오디오 재생 중 오류가 발생했어요');
     }
   };
 
@@ -147,6 +156,8 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
               flex: 1,
             }}
             source={require('@assets/lottie/voice.json')}
+            autoPlay
+            loop
           />
         </View>
       )}
