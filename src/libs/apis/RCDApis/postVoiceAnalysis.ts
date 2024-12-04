@@ -1,30 +1,18 @@
 import client from '@apis/client';
 
 interface PostVoiceAnalysisResponse {
-  timestamp: string;
-  code: string;
-  message: string;
-  result: string;
-}
-export interface VoiceAnalysisErrorResponse {
-  timestamp: string;
-  code: string;
-  message: string;
+    timestamp: string;
+    code: string;
+    message: string;
+    result: string;
 }
 
 export const postVoiceAnalysis = async (
-  file: FormData,
   voiceFileId: number,
 ): Promise<PostVoiceAnalysisResponse> => {
   try {
     const response = await client.post<PostVoiceAnalysisResponse>(
-      `/api/v1/voicefiles/${voiceFileId}`,
-      file,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      },
+      `/api/v1/voicefiles/analysis/${voiceFileId}`,
     );
     return response.data;
   } catch (error) {

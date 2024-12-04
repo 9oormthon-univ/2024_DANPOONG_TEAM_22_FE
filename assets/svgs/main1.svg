@@ -1,15 +1,15 @@
-<svg width="34" height="31" viewBox="0 0 34 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Frame 2087327523">
+<svg width="30" height="33" viewBox="0 0 30 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 2085665359">
 <g id="Group 100">
-<line id="Line 30" x1="0.75" y1="12.6819" x2="0.750003" y2="18.3182" stroke="#FAFAFA" stroke-width="1.5"/>
-<line id="Line 32" x1="8.75" y1="4.22729" x2="8.75" y2="26.7728" stroke="#FAFAFA" stroke-width="1.5"/>
-<line id="Line 33" x1="24.75" y1="6.48193" x2="24.75" y2="24.5183" stroke="#FAFAFA" stroke-width="1.5"/>
-<line id="Line 45" x1="28.75" y1="9.86377" x2="28.75" y2="21.1365" stroke="#FAFAFA" stroke-width="1.5"/>
-<line id="Line 46" x1="4.75" y1="9.86377" x2="4.75" y2="21.1365" stroke="#FAFAFA" stroke-width="1.5"/>
-<line id="Line 37" x1="32.75" y1="8.45459" x2="32.75" y2="22.5455" stroke="#FAFAFA" stroke-width="1.5"/>
-<line id="Line 42" x1="16.75" y1="5.63623" x2="16.75" y2="25.3635" stroke="#FAFAFA" stroke-width="1.5"/>
-<line id="Line 43" x1="12.75" y1="-3.57639e-08" x2="12.75" y2="31" stroke="#FAFAFA" stroke-width="1.5"/>
-<line id="Line 44" x1="20.75" y1="2.81812" x2="20.75" y2="28.1818" stroke="#FAFAFA" stroke-width="1.5"/>
+<path id="Line 30" d="M1 13.6819L1 19.3182" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
+<path id="Line 32" d="M8 5.22729L8 27.7728" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
+<path id="Line 33" d="M22 7.48193L22 25.5183" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
+<path id="Line 45" d="M25.5 10.8638L25.5 22.1365" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
+<path id="Line 46" d="M4.5 10.8638L4.5 22.1365" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
+<path id="Line 37" d="M29 9.45459L29 23.5455" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
+<path id="Line 42" d="M15 6.63623L15 26.3635" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
+<path id="Line 43" d="M11.5 1L11.5 32" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
+<path id="Line 44" d="M18.5 3.81812L18.5 29.1818" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
 </g>
 </g>
 </svg>

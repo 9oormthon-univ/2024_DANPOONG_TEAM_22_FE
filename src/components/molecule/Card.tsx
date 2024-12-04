@@ -6,7 +6,7 @@ import {View} from 'react-native';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import ShadowView from '@components/atom/ShadowView';
 import Txt from '@components/atom/Txt';
-
+import {RecordType} from '@type/RecordType';
 const Card = ({
   item,
   gap,
@@ -14,7 +14,7 @@ const Card = ({
 }: {
   item: RCD;
   gap: number;
-  type: 'DAILY' | 'COMFORT';
+  type: RecordType;
 }) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
   return (

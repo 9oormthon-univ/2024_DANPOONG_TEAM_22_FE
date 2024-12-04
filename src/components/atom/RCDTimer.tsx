@@ -2,11 +2,11 @@ import {View} from 'react-native';
 import Txt from './Txt';
 import {useEffect, useState} from 'react';
 import useInterval from '@hooks/useInterval';
-
+import {RecordType} from '@type/RecordType';
 type RCDTimerProps = {
   recording: boolean; // 녹음 중 여부를 따져 타이머를 시작시키기 위함
   stop: () => void; //시간이 되면 녹음을 중지
-  type: 'DAILY' | 'COMFORT'; //타이머 초를 결정하기 위함
+  type: RecordType; //타이머 초를 결정하기 위함
 };
 
 const RCDTimer = ({recording, stop, type}: RCDTimerProps) => {

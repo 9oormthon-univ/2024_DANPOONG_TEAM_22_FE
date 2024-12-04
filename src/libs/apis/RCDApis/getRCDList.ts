@@ -1,5 +1,5 @@
 import client from '@apis/client';
-
+import { RecordType } from '@type/RecordType';
 interface RCDResponse {
   timestamp: string;
   code: string;
@@ -21,7 +21,7 @@ export interface RCD {
 }
 
 export const getRCDList = async (
-  categoryType: 'DAILY' | 'COMFORT',
+  categoryType: RecordType,
 ): Promise<RCD[]> => {
   try {
     const response = await client.get<RCDResponse>(

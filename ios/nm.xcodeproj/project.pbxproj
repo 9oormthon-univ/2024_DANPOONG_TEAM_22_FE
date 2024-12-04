@@ -23,6 +23,7 @@
 		361745C714A34022A514D7EF /* WantedSans-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 50F00B26392248F5BDED8C9D /* WantedSans-SemiBold.otf */; };
 		9ABA48C5F4024BEF89B2240C /* LeeSeoyun-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 327A15E313DA4905A4B22066 /* LeeSeoyun-Regular.ttf */; };
 		55D75AF4B39045A5A1CDB47F /* Voltaire-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5E396AB4C3454F718924D651 /* Voltaire-Regular.ttf */; };
+		4F36F58023BD46DFAE59CC0A /* AppleSDGothicNeoR.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E5C57CB58F24CF6975B3B60 /* AppleSDGothicNeoR.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		50F00B26392248F5BDED8C9D /* WantedSans-SemiBold.otf */ = {isa = PBXFileReference; name = "WantedSans-SemiBold.otf"; path = "../assets/fonts/WantedSans-SemiBold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		327A15E313DA4905A4B22066 /* LeeSeoyun-Regular.ttf */ = {isa = PBXFileReference; name = "LeeSeoyun-Regular.ttf"; path = "../assets/fonts/LeeSeoyun-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		5E396AB4C3454F718924D651 /* Voltaire-Regular.ttf */ = {isa = PBXFileReference; name = "Voltaire-Regular.ttf"; path = "../assets/fonts/Voltaire-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6E5C57CB58F24CF6975B3B60 /* AppleSDGothicNeoR.ttf */ = {isa = PBXFileReference; name = "AppleSDGothicNeoR.ttf"; path = "../assets/fonts/AppleSDGothicNeoR.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +183,7 @@
 				50F00B26392248F5BDED8C9D /* WantedSans-SemiBold.otf */,
 				327A15E313DA4905A4B22066 /* LeeSeoyun-Regular.ttf */,
 				5E396AB4C3454F718924D651 /* Voltaire-Regular.ttf */,
+				6E5C57CB58F24CF6975B3B60 /* AppleSDGothicNeoR.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 				361745C714A34022A514D7EF /* WantedSans-SemiBold.otf in Resources */,
 				9ABA48C5F4024BEF89B2240C /* LeeSeoyun-Regular.ttf in Resources */,
 				55D75AF4B39045A5A1CDB47F /* Voltaire-Regular.ttf in Resources */,
+				4F36F58023BD46DFAE59CC0A /* AppleSDGothicNeoR.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
