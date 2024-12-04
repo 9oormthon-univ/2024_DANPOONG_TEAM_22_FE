@@ -16,7 +16,7 @@ const TransparentButton = ({
     <TouchableOpacity
       className="w-auto h-auto justify-center items-center px-btn"
       onPress={onPress}>
-      <Txt type="body1" text={content} style={{color}} />
+      <Txt type="body1" text={content} className={`text-${color}`} />
     </TouchableOpacity>
   );
 };
@@ -40,7 +40,7 @@ const RCDBtnBar = ({
       {isDone && (
         <TransparentButton
           content="다시"
-          color="gray_300"
+          color="gray300"
           onPress={async () => {
             await reflesh();
             await record();
@@ -58,7 +58,7 @@ const RCDBtnBar = ({
         stop={stop}
       />
       {isDone && (
-        <TransparentButton content="완료" color="gray_100" onPress={upload} />
+        <TransparentButton content="완료" color="gray100" onPress={upload} />
       )}
     </View>
   );
