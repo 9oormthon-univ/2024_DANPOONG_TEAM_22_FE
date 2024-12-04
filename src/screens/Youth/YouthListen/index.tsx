@@ -27,6 +27,7 @@ import SendIcon from '@assets/svgs/send.svg';
 import SmileIcon from '@assets/svgs/smile.svg';
 import SmileWhiteIcon from '@assets/svgs/smile_white.svg';
 import StopIcon from '@assets/svgs/stop.svg';
+import {postComment} from '@apis/providedFile';
 
 type YouthProps = NativeStackScreenProps<
   YouthStackParamList,
@@ -117,6 +118,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
 
   const handleMessageSend = async () => {
     try {
+      await postComment({providedFileId: voiceFile.providedFileId, message});
       Alert.alert('성공', '편지를 성공적으로 보냈어요');
       setMessage('');
     } catch (error) {
