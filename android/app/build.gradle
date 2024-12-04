@@ -1,3 +1,17 @@
+apply plugin: "com.android.application"
+apply plugin: "org.jetbrains.kotlin.android"
+apply plugin: "com.facebook.react"
+apply plugin: "com.google.gms.google-services"
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
+project.ext.envConfigFiles = [
+    developdebug: "env/.env.development",
+    developrelease: "env/.env.development", 
+    productdebug: "env/.env.production",    
+    productrelease: "env/.env.production",
+    anothercustombuild: ".env",
+]
+
 buildscript {
     ext {
         buildToolsVersion = "35.0.0"
@@ -17,13 +31,6 @@ buildscript {
         classpath("com.android.tools.build:gradle:4.2.2")
     }
 }
-
-
-
-apply plugin: "com.android.application"
-apply plugin: "org.jetbrains.kotlin.android"
-apply plugin: "com.facebook.react"
-apply plugin: "com.google.gms.google-services"
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -132,6 +139,13 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+    }
+    flavorDimensions "version"
+    productFlavors {
+        development {
+        }
+        production {
         }
     }
 }

@@ -3,7 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// 네비게이션 스택 컴포넌트 임포트 
+// 네비게이션 스택 컴포넌트 임포트
 import AppTabNav from './src/nav/tabNav/App';
 import AuthStackNav from '@stackNav/Auth';
 import YouthStackNav from '@stackNav/Youth';
@@ -20,7 +20,6 @@ import {navigationRef} from 'App';
 // 네비게이션 스택 생성
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-// 청년 리스닝 화면으로 이동하는 함수
 export const navigateToYouthListenScreen = ({
   alarmId,
   script,
@@ -44,7 +43,7 @@ const AppInner = () => {
   useEffect(() => {
     (async () => {
       try {
-        // 토큰 확인
+        // await AsyncStorage.removeItem('accessToken');
         const token = await AsyncStorage.getItem('accessToken');
         setIsLoggedIn(!!token);
 
