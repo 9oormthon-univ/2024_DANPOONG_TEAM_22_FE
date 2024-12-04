@@ -1,4 +1,4 @@
-import HomeScreen from '@screens/Home';
+import HomeScreen from '@screens/RCD/Home';
 import RCDFeedBackScreen from '@screens/RCD/RCDFeedBack';
 import RCDListScreen from '@screens/RCD/RCDList';
 import RCDNoticeScreen from '@screens/RCD/RCDNotice';

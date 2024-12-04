@@ -3,9 +3,11 @@ import {useNavigation, NavigationProp} from '@react-navigation/native';
 import Txt from '@components/atom/Txt';
 import BG from '@components/atom/BG';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
-import Main1 from '@assets/svgs/main1.svg';
-import Main2 from '@assets/svgs/main2.svg';
-import Main3 from '@assets/svgs/main3.svg';
+import Main1 from '@assets/svgs/Main1.svg';
+import Main2 from '@assets/svgs/Main2.svg';
+import Main3 from '@assets/svgs/Main3.svg';
+import MainArrow from '@assets/svgs/MainArrow.svg';
+import {RecordType} from '@type/RecordType';
 import {COLORS} from '@constants/Colors';
 import {getYouthNum} from '@apis/RCDApis/getYouthNum';
 import {useEffect, useState} from 'react';
@@ -15,7 +17,6 @@ const HomeScreen = () => {
   StatusBar.setBarStyle('light-content');
   StatusBar.setBackgroundColor(COLORS.bgMainPageBack100);
   const [nickname, setNickname] = useState('');
-
   const [youthNum, setYouthNum] = useState<number>(999);
 
   useEffect(() => {
@@ -63,9 +64,10 @@ const HomeScreen = () => {
           />
         </View>
         {/* button section*/}
-        <View className="w-full h-[207] flex-row justify-between">
-          <SelectBtn type="DAILY" />
-          <SelectBtn type="COMFORT" />
+        <View className="w-full h-[253] relative">
+          {(['DAILY', 'COMFORT', 'INFO'] as RecordType[]).map((type) => (
+            <SelectBtn key={type} type={type} />
+          ))}
         </View>
       </View>
     </BG>
@@ -73,31 +75,44 @@ const HomeScreen = () => {
 };
 export default HomeScreen;
 
-const SelectBtn = ({type}: {type: 'DAILY' | 'COMFORT'}) => {
+const SelectBtn = ({type}: {type: RecordType}) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
+  const addaptivePosition = 
+  type === 'DAILY' ? 'top-[0] left-[0]' : 
+    type === 'COMFORT'
+      ? 'bottom-[0] left-[0]'
+      : 'top-[0] right-[0]';
   return (
     <TouchableOpacity
       onPress={() => {
         navigation.navigate('RCDList', {type});
       }}
-      className="w-[168] h-[207] px-[25] py-[24] bg-solid border border-white/10 justify-between"
+      className={`w-[168] h-[116] px-[25] py-[20] bg-solid border border-white/10 justify-between absolute ${addaptivePosition}`}
       style={{borderRadius: 10}}>
       {/* svg */}
-      <View>
-        <View className="pb-[19]">
-          {type === 'DAILY' ? <Main1 /> : <Main2 />}
+        <View className="absolute top-[18] left-[27]">
+          {type === 'DAILY' ? <Main1 /> : type === 'COMFORT' ? <Main2 /> : <Main3 />}
         </View>
         {/* text */}
-        <Txt
+        <View className="absolute bottom-[18] left-[27] flex flex-row items-center justify-between w-[120]">
+          <View className="flex flex-row items-center">        
+            <Txt
           type="title3"
-          text={`${type === 'DAILY' ? '일상' : '위로'} 녹음`}
-          className="text-white"
+          text={`${type === 'DAILY' ? '일상' : type === 'COMFORT' ? '위로' : '정보'}`}
+          className="text-yellowPrimary"
         />
-      </View>
-      <View className="flex flex-row w-full justify-between items-center">
-        <Txt type="button" text="녹음하기" className="text-yellowPrimary" />
-        <Main3 />
-      </View>
+         <Txt
+          type="title3"
+          text={`${type === 'COMFORT' ? '의 말' : ' 알림'}`}
+          className="text-white "
+        />
+        </View>
+
+        <View className="">
+          <MainArrow />
+        </View>
+        </View>
+
     </TouchableOpacity>
   );
 };

@@ -2,6 +2,10 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "assets/fonts/AppleSDGothicNeoR.ttf",
+      "sha1": "50bc48829f4ecfc932b4524256236bd45b1dc74b"
+    },
+    {
       "path": "assets/fonts/LeeSeoyun-Regular.ttf",
       "sha1": "9dd2669cd94b1e01f0f0384ce7a7fc8ad0da2548"
     },
