@@ -1,5 +1,4 @@
 import {
-  StatusBar,
   View,
   ImageBackground,
   ActivityIndicator,
@@ -29,11 +28,10 @@ const RCDListScreen = ({
   const [rcdList, setRcdList] = useState<RCD[]>([]);
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
   const [isLoading, setIsLoading] = useState(false);
-  StatusBar.setBarStyle('light-content');
-  StatusBar.setBackgroundColor(COLORS.bgSolid);
-  useEffect(() => {
-    console.log('list:', rcdList);
-  }, [rcdList]);
+
+  // useEffect(() => {
+  //   console.log('list:', rcdList);
+  // }, [rcdList]);
 
   useEffect(() => {
     const fetchRCDList = async () => {
