@@ -20,19 +20,19 @@ import BG from '@components/atom/BG';
 import RCDBtnBar from '@components/molecule/RCDBtnBar';
 import RCDTimer from '@components/atom/RCDTimer';
 import Txt from '@components/atom/Txt';
-import Button from '@components/atom/Button';
-import Notice1 from '@assets/svgs/Notice1.svg';
-import Notice2 from '@assets/svgs/Notice2.svg';
+
 import {
   NavigationProp,
   RouteProp,
   useNavigation,
 } from '@react-navigation/native';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
-import {postVoiceAnalysis} from '@apis/RCDApis/postVoiceAnalysis';
+// import {postVoiceAnalysis} from '@apis/RCDApis/postVoiceAnalysis';
+import {postSaveVoice} from '@apis/RCDApis/postSaveVoice';
 import AppBar from '@components/atom/AppBar';
 import RNFS from 'react-native-fs';
-
+import { postVoiceAnalysis } from '@apis/RCDApis/postVoiceAnalysis';
+import { ActivityIndicator } from 'react-native';
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
 const RCDRecordScreen = ({
@@ -59,7 +59,7 @@ const RCDRecordScreen = ({
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isDone, setIsDone] = useState<boolean>(false);
-
+  const [isUploading, setIsUploading] = useState<boolean>(false);
   useEffect(() => {
     refleshRCDStates();
     return () => {
@@ -78,7 +78,7 @@ const RCDRecordScreen = ({
       setVolumeList([]);
       setIsRecording(false);
       setUri(null);
-      console.log('reflesh!@');
+      console.log('refleshRCDStates!@');
     } catch (e) {
       console.log('reflesh error', e);
     }
@@ -120,12 +120,12 @@ const RCDRecordScreen = ({
   };
 
   const startRecording = async () => {
-    console.log('startRecording');
+    // console.log('startRecording');
     // 권한 확인
     if (!(await checkPermission())) {
       return;
     }
-    console.log('checkPermission success');
+    // console.log('checkPermission success');
 
     try {
       // 플랫폼에 따라 파일 경로 설정
@@ -133,7 +133,7 @@ const RCDRecordScreen = ({
         ios: 'recording.m4a',
         android: `${RNFS.DocumentDirectoryPath}/recording.wav`,
       });
-      console.log('path', path);
+      // console.log('path', path);
       try {
         const audioSet: AudioSet = {
           AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
@@ -150,7 +150,7 @@ const RCDRecordScreen = ({
           true,
         );
         audioRecorderPlayer.setSubscriptionDuration(0.1);
-        console.log('result', result);
+        // console.log('result', result);
         // 녹음 파일의 URI 저장
         setUri(result);
         // 녹음 상태 업데이트
@@ -188,7 +188,7 @@ const RCDRecordScreen = ({
       audioRecorderPlayer.removeRecordBackListener();
       setIsRecording(false);
       setIsDone(true);
-      console.log('stopRecording');
+      // console.log('stopRecording');
     } catch (err) {
       console.log('Failed to stop recording', err);
     }
@@ -215,37 +215,53 @@ const RCDRecordScreen = ({
   };
 
   const uploadRecording = async () => {
-    if (uri) {
-      try {
-        const file = new FormData();
-        file.append('file', {
-          uri: Platform.OS === 'android' ? `file://${uri}` : uri,
-          name: 'recording.wav',
-          type: 'audio/wav',
-        } as any);
+    if (!uri) return;
+    setIsUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', {
+        uri: Platform.OS === 'android' ? `file://${uri}` : uri,
+        name: 'recording.wav', 
+        type: 'audio/wav',
+      } as any);
 
-        const response = await postVoiceAnalysis(file, voiceFileId);
-        console.log('음성 파일 분석 결과:', response);
-        navigation.navigate('RCDFeedBack');
-      } catch (error: any) {
-        if (error.response?.data.code === 'ANALYSIS0001') {
-          setIsError(true);
-          setErrType('bad');
-        } else if (error.response?.data.code === 'ANALYSIS0002') {
-          setIsError(true);
-          setErrType('noisy');
-        } else {
-          setIsError(true);
-          setErrType('server');
-        }
-        console.error('음성 파일 업로드 오류:', error);
+      await postSaveVoice(voiceFileId, formData);
+      await uploadAnalysis();
+    } catch (error: any) {
+      console.log('음성 파일 업로드 오류:', error);
+    }
+  };
+
+  const uploadAnalysis = async () => {
+    try {
+      await postVoiceAnalysis(voiceFileId);
+    } catch (error: any) {
+      console.log('음성 파일 분석 오류:', error);
+
+      const errorCode = error.response?.data.code;
+      
+      switch(errorCode) {
+        case 'ANALYSIS001':
+          // 분석 중인 경우 1초 후 재시도
+          setTimeout(uploadAnalysis, 1000);
+          break;
+        case 'ANALYSIS002':
+          // 분석 실패 - 노이즈
+          navigation.navigate('RCDError', {type: 'noisy'});
+          break;
+        default:
+          // 서버 오류
+          navigation.navigate('RCDError', {type: 'server'});
+          break;
       }
+    } finally {
+      setIsUploading(false);
     }
   };
 
   return (
     <BG type="solid">
-      {!isError ? (
+      {!isUploading ? (
         <>
           <AppBar
             title=""
@@ -299,54 +315,13 @@ const RCDRecordScreen = ({
         </>
       ) : (
         <>
-          <AppBar
-            title=""
-            exitCallbackFn={() => {
-              navigation.goBack();
-            }}
-            className="absolute top-[0] w-full"
-          />
-          <View className="flex-1 items-center justify-between mt-[65]">
-            <View className="absolute top-[194] items-center">
-              {errType === 'bad' ? <Notice1 /> : <Notice2 />}
-              <View className="mt-[43]" />
-              <Txt
-                type="title2"
-                text={
-                  errType === 'bad'
-                    ? '부적절한 표현이 감지되어\n녹음을 전송할 수 없어요'
-                    : errType === 'noisy'
-                    ? '주변 소음이 크게 들려서\n녹음을 전송할 수 없었어요'
-                    : '서버에 문제가 생겨\n녹음을 전송할 수 없었어요'
-                }
-                className="text-white text-center"
-              />
-              <View className="mt-[25]" />
-              <Txt
-                type="body4"
-                text={
-                  errType === 'bad'
-                    ? '적절한 언어로 다시 녹음해 주시겠어요?'
-                    : errType === 'noisy'
-                    ? '조용한 장소에서 다시 녹음해 주시겠어요?'
-                    : '다시 시도해 주시겠어요?'
-                }
-                className="text-gray300 text-center"
-              />
-            </View>
-            <View className="px-px w-full absolute bottom-[50]">
-              <Button
-                text="다시 녹음하기"
-                onPress={() => {
-                  if (errType === 'bad') {
-                    navigation.navigate('Home');
-                  } else {
-                    navigation.goBack();
-                  }
-                }}
-                disabled={false}
-              />
-            </View>
+          <View className="flex-1 justify-center items-center">
+       
+            <Txt type="title1" text="듣고 있어요..." className="text-white" />
+            <View className="mt-[23]"/>
+            <Txt type="body3" text={`세심한 확인이 필요할 때는\n시간이 조금 더 소요될 수 있어요`} className="text-gray200 text-center" />
+            <View className="mt-[54]"/>
+            <ActivityIndicator size="large" color="#f9f96c" />
           </View>
         </>
       )}

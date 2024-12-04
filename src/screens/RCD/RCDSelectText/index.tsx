@@ -94,7 +94,9 @@ const RCDSelectText = ({
   const [alarmId, setAlarmId] = useState<number>(0);
   useEffect(() => {
     const getTopTextHandler = async () => {
-      const res = await getTopText(item.alarmCategory);
+      console.log('@@item:', item);
+
+      const res = await getTopText(item.children[0]);
       setSubTitle(res.title);
       setAlarmId(res.alarmId);
     };
@@ -121,7 +123,7 @@ const RCDSelectText = ({
             <Txt
               type="body3"
               text={subTitle}
-              className="text-gray_300 text-center"
+              className="text-gray300 text-center"
             />
           </View>
         </View>

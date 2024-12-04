@@ -29,7 +29,9 @@ const RCDTextScreen = ({
   const [isError, setIsError] = useState(false);
   const [isToast, setIsToast] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
+    // 초기 스크립트 설정
     setText(gptRes?.result.content || '');
   }, []);
 
@@ -135,6 +137,7 @@ const RCDTextScreen = ({
             text="녹음하기"
             onPress={scriptSubmitHandler}
             disabled={text.length === 0}
+            isLoading={isLoading}
           />
         </View>
       </ScrollView>

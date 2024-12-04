@@ -8,4 +8,5 @@ export type HomeStackParamList = {
     RCDText: {type: 'DAILY' | 'COMFORT',item:RCD,gptRes:PostAskGPTResponse|null,alarmId:number};
     RCDRecord: {type: 'DAILY' | 'COMFORT',item:RCD,gptRes:PostAskGPTResponse|null,alarmId:number,voiceFileId:number,content:string};
     RCDFeedBack: undefined;
+    RCDError: {type: 'bad' | 'noisy' | 'server'};
   };
