@@ -17,10 +17,10 @@ export interface TopText {
   title: string;
 }
 
-export const getTopText = async (alarmCategory: string): Promise<TopText> => {
+export const getTopText = async (childrenAlarmCategory: string): Promise<TopText> => {
   try {
     const response = await client.get<TopTextResponse>(
-      `/api/v1/alarm/alarm-category/${alarmCategory}/detail`,
+      `/api/v1/alarm/alarm-category/${childrenAlarmCategory}/detail`,
     );
     return response.data.result;
   } catch (error) {
