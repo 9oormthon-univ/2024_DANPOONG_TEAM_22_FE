@@ -1,10 +1,10 @@
 type AlarmType = 'DAILY' | 'COMFORT';
 
 type AlarmData = {
-  id: number;
-  name: string;
   title: string;
   categoryType: AlarmType;
+  alarmCategory: string;
+  alarmCategoryKoreanName: string;
 };
 
 interface AlarmComfortResponseData extends AlarmData {
@@ -20,4 +20,22 @@ type AlarmCategoryResponseData = {
   title: string;
 };
 
-export type { AlarmType, AlarmData, AlarmComfortResponseData, AlarmCategoryRequestData, AlarmCategoryResponseData };
+type AlarmCategoryDetailRequestData = {
+  childrenAlarmCategory: string;
+};
+
+type AlarmCategoryDetailResponseData = {
+  alarmId: number;
+  alarmCategory: string;
+  title: string;
+};
+
+export type {
+  AlarmType,
+  AlarmData,
+  AlarmComfortResponseData,
+  AlarmCategoryRequestData,
+  AlarmCategoryResponseData,
+  AlarmCategoryDetailRequestData,
+  AlarmCategoryDetailResponseData,
+};

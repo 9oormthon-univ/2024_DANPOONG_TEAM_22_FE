@@ -25,16 +25,16 @@ client.interceptors.request.use(async config => {
     }
 
     // 요청 로그 출력
-    console.log('Request:', {
-      url: config.url,
-      method: config.method,
-      headers: config.headers,
-      data: config.data,
-    });
+    // console.log('Request:', {
+    //   url: config.url,
+    //   method: config.method,
+    //   headers: config.headers,
+    //   data: config.data,
+    // });
 
     return config;
   } catch (error) {
-    console.error('토큰 가져오기 실패:', error);
+    console.log('토큰 가져오기 실패:', error);
     return config;
   }
 });
@@ -43,17 +43,17 @@ client.interceptors.request.use(async config => {
 client.interceptors.response.use(
   response => {
     // 응답 로그 출력
-    console.log('Response:', {
-      url: response.config.url,
-      status: response.status,
-      data: response.data,
-    });
+    // console.log('Response:', {
+    //   url: response.config.url,
+    //   status: response.status,
+    //   data: response.data,
+    // });
     return response;
   },
   async error => {
     if (error.response) {
       // 응답 에러 로그 출력
-      console.error('Response Error:', {
+      console.log('Response Error:', {
         url: error.config.url,
         status: error.response.status,
         data: error.response.data,

@@ -1,26 +1,42 @@
+// 커스텀 컴포넌트 import
 import BG from '@components/atom/BG';
 import Txt from '@components/atom/Txt';
-import {ActivityIndicator, Animated, ImageBackground, View} from 'react-native';
-//import { BarIndicator, DotIndicator } from 'react-native-indicators'
-import {NavigationProp, useNavigation} from '@react-navigation/native';
 import AppBar from '@components/atom/AppBar';
+
+// React Native 기본 컴포넌트 import
+import {ActivityIndicator, Animated, ImageBackground, View} from 'react-native';
+
+// React Navigation 관련 import
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
+
+// React Hooks import
 import {useEffect, useRef, useState} from 'react';
 
+/**
+ * RCD 피드백 화면 컴포넌트
+ * 녹음 완료 후 로딩 및 완료 상태를 보여주는 화면
+ */
 const RCDFeedBackScreen = () => {
+  // 로딩 상태 관리
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  // 애니메이션 값 관리
   const opValue = useRef(new Animated.Value(0)).current;
   const subColor = useRef(new Animated.Value(0)).current;
+  // 네비게이션 객체
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
 
+  // 로딩이 끝나면 애니메이션 시작
   useEffect(() => {
     if (!isLoading) {
+      // 투명도 애니메이션
       Animated.timing(opValue, {
         toValue: 1,
         duration: 1000,
         useNativeDriver: true,
       }).start();
 
+      // 색상 애니메이션
       Animated.timing(subColor, {
         toValue: 1,
         duration: 1000,
@@ -29,6 +45,7 @@ const RCDFeedBackScreen = () => {
     }
   }, [isLoading]);
 
+  // 서브텍스트 색상 보간 값이 0일 때는 #a0a0a0, 1일 때는 #d0d0d0
   const interpolatedColor = subColor.interpolate({
     inputRange: [0, 1],
     outputRange: ['#a0a0a0', '#d0d0d0'],
@@ -38,15 +55,14 @@ const RCDFeedBackScreen = () => {
     <View className="flex-1">
       {isLoading ? (
         <>
-          {/* loading */}
+          {/* 로딩 화면 */}
           <BG type="solid">
-            {/* content section */}
+            {/* 콘텐츠 섹션 */}
             <View className="absolute pt-[233] w-full">
               <Txt
                 type="title1"
-                content="듣고 있어요..."
-                color="gray_100"
-                align="center"
+                text="듣고 있어요..."
+                className="text-gray_100 text-center"
               />
               <View className="mb-[23]" />
               <Animated.Text
@@ -62,8 +78,8 @@ const RCDFeedBackScreen = () => {
         </>
       ) : (
         <>
-          {/* 배경 section */}
-          {/* 불 꺼진 배경 */}
+          {/* 배경 섹션 - 불꺼진 배경에서 불 켜진 배경으로 애니메이션 효과 */}
+          {/* 불 꺼진 배경 - 기본 상태 */}
           <BG type="solid">
             <View className="w-full h-full justify-center items-center">
               <View className="w-[90%] h-[85%] justify-center items-center">
@@ -75,7 +91,7 @@ const RCDFeedBackScreen = () => {
               </View>
             </View>
           </BG>
-          {/* 불 켜진 배경 */}
+          {/* 불 켜진 배경 - 애니메이션 효과 */}
           <Animated.View
             className="absolute w-full h-full justify-center items-center"
             style={{opacity: opValue}}>
@@ -91,7 +107,7 @@ const RCDFeedBackScreen = () => {
               </View>
             </BG>
           </Animated.View>
-          {/* appbar section */}
+          {/* 상단 앱바 섹션 */}
           <AppBar
             title=""
             exitCallbackFn={() => {
@@ -100,13 +116,12 @@ const RCDFeedBackScreen = () => {
             className="absolute top-[0] w-full"
           />
 
-          {/* content section */}
+          {/* 콘텐츠 섹션 - 메인 텍스트 */}
           <View className="absolute pt-[292] w-full">
             <Txt
               type="title1"
-              content="녹음 완료"
-              color="gray_100"
-              align="center"
+              text="녹음 완료"
+              className="text-gray_100 text-center"
             />
             <View className="mb-[23]" />
             <Animated.Text

@@ -1,12 +1,26 @@
+apply plugin: "com.android.application"
+apply plugin: "org.jetbrains.kotlin.android"
+apply plugin: "com.facebook.react"
+apply plugin: "com.google.gms.google-services"
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
+project.ext.envConfigFiles = [
+    developdebug: "env/.env.development",
+    developrelease: "env/.env.development", 
+    productdebug: "env/.env.production",    
+    productrelease: "env/.env.production",
+    anothercustombuild: ".env",
+]
+
 buildscript {
     ext {
-        buildToolsVersion = "29.0.3"
+        buildToolsVersion = "35.0.0"
         // Note: Below change is necessary for pause / resume audio feature. Not for Kotlin.
         minSdkVersion = 24
-        compileSdkVersion = 32
-        targetSdkVersion = 32
-        kotlinVersion = '1.6.10'
-        ndkVersion = "20.1.5948944"
+        compileSdkVersion = 35
+        targetSdkVersion = 34
+        kotlinVersion = "1.9.24"
+        ndkVersion = "26.1.10909125"
     }
     repositories {
         google()
@@ -17,13 +31,6 @@ buildscript {
         classpath("com.android.tools.build:gradle:4.2.2")
     }
 }
-
-
-
-apply plugin: "com.android.application"
-apply plugin: "org.jetbrains.kotlin.android"
-apply plugin: "com.facebook.react"
-apply plugin: "com.google.gms.google-services"
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -115,6 +122,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('C:\\Users\\hp.JB\\my-release-key.keystore')
+            storePassword 'qkrwjdqls000325'
+            keyAlias 'my-release-key'
+            keyPassword 'qkrwjdqls000325'
+        }
     }
     buildTypes {
         debug {
@@ -126,6 +139,13 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+    }
+    flavorDimensions "version"
+    productFlavors {
+        development {
+        }
+        production {
         }
     }
 }

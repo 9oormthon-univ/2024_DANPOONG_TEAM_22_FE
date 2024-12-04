@@ -27,6 +27,7 @@ import SendIcon from '@assets/svgs/send.svg';
 import SmileIcon from '@assets/svgs/smile.svg';
 import SmileWhiteIcon from '@assets/svgs/smile_white.svg';
 import StopIcon from '@assets/svgs/stop.svg';
+import {postComment} from '@apis/providedFile';
 
 type YouthProps = NativeStackScreenProps<
   YouthStackParamList,
@@ -48,11 +49,11 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
   const imageUri = null;
   const animation = useRef<LottieView>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioPlayer = useRef(new AudioRecorderPlayer());
   const [voiceFile, setVoiceFile] = useState<VoiceFileResponseData>(
     {} as VoiceFileResponseData,
   );
   const [isLoading, setIsLoading] = useState(true);
+  const audioPlayer = useRef(new AudioRecorderPlayer());
 
   useEffect(() => {
     setIsLoading(true);
@@ -94,9 +95,17 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         const res = await getVoiceFiles({alarmId});
         console.log(res);
         setVoiceFile(res.result);
+        await audioPlayer.current.startPlayer(res.result.fileUrl);
+        setIsPlaying(true);
       } catch (error) {
-        console.error(error);
-        Alert.alert('오류', '음성 파일을 불러오는 중 오류가 발생했어요');
+        console.log(error);
+        // Alert.alert('오류', '음성 파일을 불러오는 중 오류가 발생했어요');
+        setTimeout(async () => {
+          await audioPlayer.current.startPlayer(
+            'https://ip-file-upload-test.s3.ap-northeast-2.amazonaws.com/mom.mp4',
+          );
+          setIsPlaying(true);
+        }, 1000);
       }
     })();
 
@@ -109,11 +118,12 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
 
   const handleMessageSend = async () => {
     try {
+      await postComment({providedFileId: voiceFile.providedFileId, message});
       Alert.alert('성공', '편지를 성공적으로 보냈어요');
       setMessage('');
     } catch (error) {
-      console.error(error);
-      Alert.alert('오류', '편지를 보내는 중 오류가 발생했어요');
+      console.log(error);
+      // Alert.alert('오류', '편지를 보내는 중 오류가 발생했어요');
     }
   };
 
@@ -127,8 +137,8 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         setIsPlaying(true);
       }
     } catch (error) {
-      console.error(error);
-      Alert.alert('오류', '오디오 재생 중 오류가 발생했어요');
+      console.log(error);
+      // Alert.alert('오류', '오디오 재생 중 오류가 발생했어요');
     }
   };
 
@@ -147,6 +157,8 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
               flex: 1,
             }}
             source={require('@assets/lottie/voice.json')}
+            autoPlay
+            loop
           />
         </View>
       )}
@@ -177,7 +189,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
             text="봉사자 닉네임"
             className="text-yellowPrimary mt-[13] mb-[25] text-center"
           />
-          <View>
+          <View className="px-[32]">
             <Txt
               type="title3"
               text={script ?? ''}

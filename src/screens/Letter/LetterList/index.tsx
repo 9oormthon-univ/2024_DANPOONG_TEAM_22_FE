@@ -31,7 +31,7 @@ const LetterListScreen = ({navigation}: Readonly<LetterProps>) => {
     LetterResponseData[]
   >([]);
   const [parentCategories, setParentCategories] = useState<
-    {id: number; name: string}[]
+    {category: string; label: string}[]
   >([]);
   // const { data: alarmCategoryData, isError: isAlarmCategoryError, error: alarmCategoryError } = useGetAlarmCategory();
   // console.log('alarmComfortData', alarmComfortData);
@@ -61,16 +61,16 @@ const LetterListScreen = ({navigation}: Readonly<LetterProps>) => {
     (async () => {
       try {
         const alarmCategoryRes = await getAlarmCategory();
+        console.log(alarmCategoryRes.result);
         const categories = alarmCategoryRes.result.map(item => ({
-          id: item.id,
-          name: item.name,
+          category: item.alarmCategory,
+          label: item.alarmCategoryKoreanName,
         }));
-        console.log('categories', categories);
         setParentCategories(categories);
 
         const res = await getLetters({
           parentCategoryId: 1,
-          pageable: {page: 1, size: 10, sort: 'createdAt,desc'},
+          pageable: {page: 0, size: 10, sort: 'createdAt,desc'},
         });
         console.log(res);
         setLettersData(res.result.content);
@@ -94,7 +94,7 @@ const LetterListScreen = ({navigation}: Readonly<LetterProps>) => {
   useEffect(() => {
     console.log('lettersData', lettersData);
     const filteredLetters = lettersData.filter(
-      letter => letter.alarmType === parentCategories[selectedFilterIdx].name,
+      letter => letter.alarmType === parentCategories[selectedFilterIdx].label,
     );
     console.log('filteredLetters', filteredLetters);
     setFilteredLettersData(filteredLetters);
@@ -129,7 +129,7 @@ const LetterListScreen = ({navigation}: Readonly<LetterProps>) => {
                     onPress={() => setSelectedFilterIdx(index)}>
                     <Txt
                       type="body4"
-                      text={menu.name}
+                      text={menu.label}
                       className={`${
                         index === selectedFilterIdx
                           ? 'text-yellowPrimary'

@@ -1,5 +1,7 @@
 import client from '@apis/client';
 import {
+  AlarmCategoryDetailRequestData,
+  AlarmCategoryDetailResponseData,
   AlarmCategoryRequestData,
   AlarmCategoryResponseData,
   AlarmComfortResponseData,
@@ -30,4 +32,18 @@ const getAlarmCategory = async () => {
   return res.data;
 };
 
-export {getAlarmComfort, getAlarmCategoryByAlarmCategoryId, getAlarmCategory};
+const getAlarmCategoryDetail = async ({
+  childrenAlarmCategory,
+}: Readonly<AlarmCategoryDetailRequestData>) => {
+  const res = await client.get<
+    ResultResponseData<AlarmCategoryDetailResponseData>
+  >(`/api/v1/alarm/alarm-category/${childrenAlarmCategory}/detail`);
+  return res.data;
+};
+
+export {
+  getAlarmComfort,
+  getAlarmCategoryByAlarmCategoryId,
+  getAlarmCategory,
+  getAlarmCategoryDetail,
+};

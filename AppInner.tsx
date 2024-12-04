@@ -1,15 +1,23 @@
+// 네비게이션 관련 라이브러리 및 타입 임포트
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// 네비게이션 스택 컴포넌트 임포트
 import AppTabNav from './src/nav/tabNav/App';
 import AuthStackNav from '@stackNav/Auth';
 import YouthStackNav from '@stackNav/Youth';
+
+// React 관련 임포트
 import {useEffect, useState} from 'react';
 import {Alert} from 'react-native';
+
+// API 및 타입 임포트
 import {getMember} from '@apis/member';
 import {Role} from '@type/api/member';
 import {navigationRef} from 'App';
 
+// 네비게이션 스택 생성
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const navigateToYouthListenScreen = ({
@@ -26,10 +34,12 @@ export const navigateToYouthListenScreen = ({
 };
 
 const AppInner = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [role, setRole] = useState<Role | null>(null);
-  const [isNavigationReady, setIsNavigationReady] = useState(false);
+  // 상태 관리
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태
+  const [role, setRole] = useState<Role | null>(null); // 사용자 역할
+  const [isNavigationReady, setIsNavigationReady] = useState(false); // 네비게이션 준비 상태
 
+  // 로그인 상태 및 사용자 정보 확인
   useEffect(() => {
     (async () => {
       try {
@@ -40,6 +50,7 @@ const AppInner = () => {
         if (!token) {
           return;
         }
+        // 사용자 정보 가져오기
         const {result} = await getMember();
         console.log(result);
         setRole(result.role);
@@ -53,47 +64,57 @@ const AppInner = () => {
     })();
   }, []);
 
+  // 네비게이션 준비 상태 설정
   useEffect(() => {
     if (isLoggedIn && role) {
       setIsNavigationReady(true);
     }
   }, [isLoggedIn, role]);
 
+  // 알람 처리 및 청년 리스닝 화면 이동
   useEffect(() => {
     if (!isNavigationReady || role === 'HELPER') {
       return;
     }
 
     (async () => {
+      // 알람 관련 데이터 가져오기
       const alarmId = await AsyncStorage.getItem('alarmId');
       const script = await AsyncStorage.getItem('script');
 
       if (alarmId && script) {
+        // 청년 리스닝 화면으로 이동
         navigateToYouthListenScreen({
           alarmId: Number(alarmId),
           script: script,
         });
 
+        // 알람 데이터 삭제
         await AsyncStorage.removeItem('alarmId');
         await AsyncStorage.removeItem('script');
       }
     })();
   }, [isNavigationReady, role]);
 
+  // 네비게이션 스택 렌더링
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}>
       {isLoggedIn ? (
+        // 로그인 상태일 때
         <Stack.Group>
           {role === 'HELPER' ? (
+            // 헬퍼인 경우
             <Stack.Screen name="AppTabNav" component={AppTabNav} />
           ) : (
+            // 청년인 경우
             <Stack.Screen name="YouthStackNav" component={YouthStackNav} />
           )}
         </Stack.Group>
       ) : (
+        // 비로그인 상태일 때
         <Stack.Group>
           <Stack.Screen name="AuthStackNav" component={AuthStackNav} />
           <Stack.Screen name="AppTabNav" component={AppTabNav} />

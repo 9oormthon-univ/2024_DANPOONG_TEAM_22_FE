@@ -1,10 +1,11 @@
-import HomeScreen from '@screens/Home';
+import HomeScreen from '@screens/RCD/Home';
 import RCDFeedBackScreen from '@screens/RCD/RCDFeedBack';
 import RCDListScreen from '@screens/RCD/RCDList';
 import RCDNoticeScreen from '@screens/RCD/RCDNotice';
 import RCDRecordScreen from '@screens/RCD/RCDRecord';
 import RCDTextScreen from '@screens/RCD/RCDText';
 import RCDSelectTextScreen from '@screens/RCD/RCDSelectText';
+import RCDErrorScreen from '@screens/RCD/RCDError';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {
@@ -50,6 +51,7 @@ const HomeStackNav = () => {
       <Stack.Screen name="RCDRecord" component={RCDRecordScreen} />
       <Stack.Screen name="RCDText" component={RCDTextScreen} />
       <Stack.Screen name="RCDSelectText" component={RCDSelectTextScreen} />
+      <Stack.Screen name="RCDError" component={RCDErrorScreen} />
     </Stack.Navigator>
   );
 };
