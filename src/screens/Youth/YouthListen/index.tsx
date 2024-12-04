@@ -48,11 +48,11 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
   const imageUri = null;
   const animation = useRef<LottieView>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioPlayer = useRef(new AudioRecorderPlayer());
   const [voiceFile, setVoiceFile] = useState<VoiceFileResponseData>(
     {} as VoiceFileResponseData,
   );
   const [isLoading, setIsLoading] = useState(true);
+  const audioPlayer = useRef(new AudioRecorderPlayer());
 
   useEffect(() => {
     setIsLoading(true);
@@ -94,8 +94,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         const res = await getVoiceFiles({alarmId});
         console.log(res);
         setVoiceFile(res.result);
-
-        await audioPlayer.current.startPlayer(voiceFile.fileUrl);
+        await audioPlayer.current.startPlayer(res.result.fileUrl);
         setIsPlaying(true);
       } catch (error) {
         console.log(error);
@@ -188,7 +187,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
             text="봉사자 닉네임"
             className="text-yellowPrimary mt-[13] mb-[25] text-center"
           />
-          <View>
+          <View className="px-[32]">
             <Txt
               type="title3"
               text={script ?? ''}

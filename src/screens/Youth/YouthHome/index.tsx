@@ -52,7 +52,7 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
     const alarms = alarmComfortData.result.find(
       alarm => alarm.alarmCategory === alarmCategory,
     );
-    console.log(alarmCategory, alarms?.children[0]);
+    console.log('children', alarms?.children);
     const childrenAlarmCategory = alarms?.children[0].alarmCategory;
 
     (async () => {
