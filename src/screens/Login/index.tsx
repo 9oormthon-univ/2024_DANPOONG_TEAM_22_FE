@@ -16,12 +16,14 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
   const handleLogin = async ({loginType}: {loginType: string}) => {
     try {
       const token: KakaoOAuthToken = await login();
-      const deviceId = DeviceInfo.getDeviceId();
-      const macAddress = await DeviceInfo.getMacAddress(); // iOS에서는 macAddress를 가져오는 것이 정책상 허용되지 않음
-      console.log('deviceId', deviceId);
-      console.log('macAddress', macAddress);
+      console.log('token', token);
+
+      // iOS에서는 macAddress를 가져오는 것이 정책상 허용되지 않음
       const {result} = await postLogin({
-        accessToken: loginType ? deviceId + macAddress : token.accessToken,
+        accessToken:
+          loginType === 'ANOYMOUS'
+            ? DeviceInfo.getDeviceId() + (await DeviceInfo.getMacAddress())
+            : token.accessToken,
         loginType,
       });
 
