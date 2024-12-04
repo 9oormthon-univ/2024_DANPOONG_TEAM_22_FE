@@ -1,38 +1,54 @@
+// React Native 기본 컴포넌트 import
 import {
   View,
   ImageBackground,
   ActivityIndicator,
 } from 'react-native';
+
+// 커스텀 컴포넌트 import
 import BG from '@components/atom/BG';
 import Txt from '@components/atom/Txt';
 import Carousel from '@components/molecule/Carousel';
+import AppBar from '@components/atom/AppBar';
+
+// React Navigation 관련 import
 import {
   NavigationProp,
   RouteProp,
   useNavigation,
 } from '@react-navigation/native';
+
+// 타입 및 상수 import
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {getRCDList, RCD} from '@apis/RCDApis/getRCDList';
-import {useState, useEffect} from 'react';
-import AppBar from '@components/atom/AppBar';
-import {COLORS} from '@constants/Colors';
 import {RecordType} from '@type/RecordType';
 import {RCDListHeader} from '@constants/RCDListHeader';
 import {RCDListAppBar} from '@constants/RCDListAppBar';
+import {COLORS} from '@constants/Colors';
+
+// React Hooks import
+import {useState, useEffect} from 'react';
+
+/**
+ * RCD 목록을 보여주는 스크린 컴포넌트
+ * @param route - 네비게이션 라우트 파라미터 (RCD 타입 정보 포함)
+ */
 const RCDListScreen = ({
   route,
 }: {
   route: RouteProp<HomeStackParamList, 'RCDList'>;
 }) => {
+  // 라우트에서 RCD 타입 추출
   const {type} = route.params;
-  const [rcdList, setRcdList] = useState<RCD[]>([]);
+  
+  // 상태 관리
+  const [rcdList, setRcdList] = useState<RCD[]>([]); // RCD 목록 상태
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태
+  
+  // 네비게이션 객체
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
-  const [isLoading, setIsLoading] = useState(false);
 
-  // useEffect(() => {
-  //   console.log('list:', rcdList);
-  // }, [rcdList]);
-
+  // RCD 목록 데이터 가져오기
   useEffect(() => {
     const fetchRCDList = async () => {
       const categoryType: RecordType = type;
@@ -49,8 +65,10 @@ const RCDListScreen = ({
 
     fetchRCDList();
   }, [type]);
+
   return (
     <BG type="gradation">
+      {/* 상단 앱바 */}
       <AppBar
         title={RCDListAppBar[type]}
         goBackCallbackFn={() => {
@@ -58,7 +76,8 @@ const RCDListScreen = ({
         }}
         className="absolute top-[0] w-full"
       />
-      {/* BG Image */}
+      
+      {/* 상단 배경 이미지 */}
       <ImageBackground
         source={require('@assets/pngs/BGStarTop.png')}
         style={{
@@ -69,6 +88,8 @@ const RCDListScreen = ({
           height: 130,
         }}
       />
+      
+      {/* 하단 배경 이미지 - RCD 타입에 따라 다른 이미지 사용 */}
       <ImageBackground
         source={
           type === 'DAILY'
@@ -77,8 +98,8 @@ const RCDListScreen = ({
         }
         style={{position: 'absolute', bottom: 0, width: '100%', height: 258}}
       />
-      {/* content section */}
-      {/* header */}
+      
+      {/* 헤더 섹션 */}
       <View className="w-full mt-[132] px-px mb-[33]">
         <Txt
           type="title2"
@@ -86,7 +107,8 @@ const RCDListScreen = ({
           className="text-white"
         />
       </View>
-      {/* list */}
+      
+      {/* RCD 목록 섹션 - 로딩 중이면 로딩 인디케이터 표시, 아니면 캐러셀 표시 */}
       {isLoading ? (
         <View className="h-[40vh] justify-center items-center">
           <ActivityIndicator size="large" color={COLORS.white} />
@@ -97,4 +119,5 @@ const RCDListScreen = ({
     </BG>
   );
 };
+
 export default RCDListScreen;

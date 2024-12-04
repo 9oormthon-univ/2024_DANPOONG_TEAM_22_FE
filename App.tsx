@@ -1,8 +1,10 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
+ * 앱의 메인 컴포넌트
+ * 
+ * 주요 기능:
+ * - 네비게이션 설정
+ * - 푸시 알림 처리
+ * - 쿼리 클라이언트 설정
  */
 
 import {
@@ -19,19 +21,21 @@ import pushNoti from '@utils/pushNoti';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from 'react-native-splash-screen';
 
+// 쿼리 클라이언트 설정
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 30,
+      staleTime: 1000 * 30, // 30초 동안 데이터를 신선한 상태로 유지
     },
   },
 });
 
+// 네비게이션 참조 생성
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
 function App(): React.JSX.Element {
+  // 포그라운드 상태에서 푸시 알림 처리
   useEffect(() => {
-    // Foreground
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       console.log('Foreground', remoteMessage);
       pushNoti.displayNoti(remoteMessage);
@@ -40,19 +44,17 @@ function App(): React.JSX.Element {
     return unsubscribe;
   }, []);
 
+  // 앱 초기화 및 푸시 알림 설정
   useEffect(() => {
     requestUserPermission();
 
-    // Quit -> Foreground : Check if the app was opened from a notification
+    // 종료 상태에서 알림을 통해 앱이 실행된 경우
     messaging()
       .getInitialNotification()
       .then(remoteMessage => {
         if (remoteMessage) {
           const {alarmId, script} = remoteMessage.data;
-          // navigateToYouthListenScreen({
-          //   alarmId: Number(alarmId),
-          //   script: script,
-          // });
+          // AsyncStorage에 알림 데이터 저장
           (async () => {
             await AsyncStorage.setItem('alarmId', alarmId);
             await AsyncStorage.setItem('script', script);
@@ -60,7 +62,7 @@ function App(): React.JSX.Element {
         }
       });
 
-    // Background -> Foreground : Check if the app was opened from a notification
+    // 백그라운드에서 알림을 통해 앱이 실행된 경우
     messaging().onNotificationOpenedApp(remoteMessage => {
       if (remoteMessage) {
         const {alarmId, script} = remoteMessage.data;
@@ -71,10 +73,11 @@ function App(): React.JSX.Element {
       }
     });
 
-    // 앱이 로드되면 스플래시 화면을 숨깁니다.
+    // 스플래시 스크린 숨기기
     SplashScreen.hide();
   }, []);
 
+  //푸시 알림 권한 요청 함수
   const requestUserPermission = async () => {
     const authStatus = await messaging().requestPermission();
     const enabled =
@@ -86,6 +89,9 @@ function App(): React.JSX.Element {
     }
   };
 
+  /**
+   * FCM 토큰 가져오기 및 저장
+   */
   const getToken = async () => {
     const fcmToken = await messaging().getToken();
     console.log('디바이스 토큰값', fcmToken);
