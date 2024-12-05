@@ -62,22 +62,12 @@ const RCDRecordScreen = ({
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
   
   // 라우트 파라미터 추출
-  const {type, ...rest} = route.params;
-  const {
-    item = null,
-    gptRes = null,
-    alarmId = 0,
-    voiceFileId = 0,
-    content = '',
-  } = 'item' in route.params ? route.params : {};
+  const {type, voiceFileId, content} = route.params;
 
   // 상태 관리
-  const [isError, setIsError] = useState<boolean>(false);
-  const [errType, setErrType] = useState<'bad' | 'noisy' | 'server'>('bad');
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [uri, setUri] = useState<string | null>(null);
   const [volumeList, setVolumeList] = useState<number[]>([]);
-  const [isPaused, setIsPaused] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isDone, setIsDone] = useState<boolean>(false);
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -97,7 +87,6 @@ const RCDRecordScreen = ({
       audioRecorderPlayer.stopRecorder();
       audioRecorderPlayer.stopPlayer();
       setIsDone(false);
-      setIsPaused(false);
       setIsPlaying(false);
       setVolumeList([]);
       setIsRecording(false);

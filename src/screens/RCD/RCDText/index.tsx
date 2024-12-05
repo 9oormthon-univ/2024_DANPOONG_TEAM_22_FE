@@ -65,9 +65,6 @@ const RCDTextScreen = ({
       const voiceFileId = res.result.voiceFileId;
       navigation.navigate('RCDRecord', {
         type,
-        item,
-        gptRes,
-        alarmId,
         voiceFileId,
         content,
       });
@@ -154,7 +151,7 @@ const RCDTextScreen = ({
           <Button
             text="녹음하기"
             onPress={scriptSubmitHandler}
-            disabled={text.length === 0}
+            disabled={text.length === 0 || isLoading}
             isLoading={isLoading}
           />
         </View>

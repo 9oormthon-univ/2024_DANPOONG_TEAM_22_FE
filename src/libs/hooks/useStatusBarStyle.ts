@@ -1,9 +1,9 @@
 import {StatusBar} from 'react-native';
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
-
+import { BackType } from "@type/BackType";
 // 상태바 스타일 설정을 위한 커스텀 훅
-export const useStatusBarStyle = (type: 'gradation' | 'solid' | 'main') => {
+export const useStatusBarStyle = (type: BackType) => {
   const color = {
     gradation: '#252738',
     solid: '#252738', 

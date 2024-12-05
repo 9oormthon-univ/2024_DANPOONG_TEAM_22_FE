@@ -1,17 +1,17 @@
 import client from '@apis/client';
-
+import { RecordType } from '@type/RecordType';
 interface CategoryTypeResponse {
   timestamp: string;
   code: string;
   message: string;
   result: {
-    categoryType: 'DAILY' | 'COMFORT';
+    categoryType: RecordType;
     koreanName: string;
   }[];
 }
 
 export interface CategoryType {
-  categoryType: 'DAILY' | 'COMFORT';
+  categoryType: RecordType;
   koreanName: string;
 }
 

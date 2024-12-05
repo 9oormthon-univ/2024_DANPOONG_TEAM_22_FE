@@ -11,7 +11,7 @@ import ShadowView from '@components/atom/ShadowView';
 import StarPNG from '@components/atom/StarPNG';
 import Txt from '@components/atom/Txt';
 import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
-
+import { RCDSelectButtonConstant } from '@constants/RCDSelectButtonConstant';
 // React Navigation 관련 import
 import {
   NavigationProp,
@@ -116,6 +116,7 @@ const RCDSelectText = ({
    const BackColorType = 'solid';
    useStatusBarStyle(BackColorType);
    
+  
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
   const {item, type} = route.params;
   const [subTitle, setSubTitle] = useState<string>('');
@@ -160,22 +161,17 @@ const RCDSelectText = ({
           </View>
         </View>
         {/* 선택 버튼 섹션 */}
-        <SelectButton
-          head="준비된 문장 읽기"
-          sub="제시되는 문장을 수정하고 녹음하기"
-          gpt={true}
-          alarmId={alarmId}
-          item={item}
-          type={type}
-        />
-        <SelectButton
-          head="직접 작성하기"
-          sub="하고싶은 말을 직접 작성하고 녹음하기"
-          gpt={false}
-          alarmId={alarmId}
-          item={item}
-          type={type}
-        />
+        {RCDSelectButtonConstant.map((button) => (
+          <SelectButton
+            key={button.head}
+            head={button.head}  
+            sub={button.sub}
+            gpt={button.gpt}
+            alarmId={alarmId}
+            item={item}
+            type={type}
+          />
+        ))}
       </View>
     </BG>
   );

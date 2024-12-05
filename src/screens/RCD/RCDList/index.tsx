@@ -25,7 +25,7 @@ import {RecordType} from '@type/RecordType';
 import {RCDListHeader} from '@constants/RCDListHeader';
 import {RCDListAppBar} from '@constants/RCDListAppBar';
 import {COLORS} from '@constants/Colors';
-
+import {RecordTypeConstant} from '@constants/RecordType';
 // React Hooks import
 import {useState, useEffect} from 'react';
 import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
@@ -41,10 +41,10 @@ const RCDListScreen = ({
 }) => {
   // 라우트에서 RCD 타입 추출
   const {type} = route.params;
-    // 상태바 스타일 설정
-    const BackColorType = 'gradation';
-    useStatusBarStyle(BackColorType);
-  
+  // 상태바 스타일 설정
+  const BackColorType = 'gradation';
+  useStatusBarStyle(BackColorType);
+
   // 상태 관리
   const [rcdList, setRcdList] = useState<RCD[]>([]); // RCD 목록 상태
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
@@ -83,22 +83,28 @@ const RCDListScreen = ({
       
       {/* 상단 배경 이미지 */}
       <ImageBackground
-        source={require('@assets/pngs/BGStarTop.png')}
+        source={
+          type === RecordTypeConstant.INFO
+            ? require('@assets/pngs/BGStarTopINFO.png')
+            : require('@assets/pngs/BGStarTop.png')
+        }
         style={{
           position: 'absolute',
           top: 100,
-          right: 0,
-          width: 161,
-          height: 130,
+          right: type === RecordTypeConstant.INFO ? 31 : 0,
+          width: type === RecordTypeConstant.INFO ? 338 : 161,
+          height: type === RecordTypeConstant.INFO ? 53 : 130,
         }}
       />
       
       {/* 하단 배경 이미지 - RCD 타입에 따라 다른 이미지 사용 */}
       <ImageBackground
         source={
-          type === 'DAILY'
+          type === RecordTypeConstant.DAILY
             ? require('@assets/pngs/BGStarBottomDAILY.png')
-            : require('@assets/pngs/BGStarBottomCOMFORT.png')
+            : type === RecordTypeConstant.COMFORT
+            ? require('@assets/pngs/BGStarBottomCOMFORT.png')
+            : require('@assets/pngs/BGStarBottomINFO.png')
         }
         style={{position: 'absolute', bottom: 0, width: '100%', height: 258}}
       />

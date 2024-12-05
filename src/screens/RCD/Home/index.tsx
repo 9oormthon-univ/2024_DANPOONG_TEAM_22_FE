@@ -9,7 +9,7 @@ import BG from '@components/atom/BG';
 // 타입 및 상수 임포트
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {RecordType} from '@type/RecordType';
-
+import {RecordTypeConstant} from '@constants/RecordType';
 // SVG 아이콘 임포트
 import Main1 from '@assets/svgs/Main1.svg';
 import Main2 from '@assets/svgs/Main2.svg';
@@ -83,7 +83,7 @@ const HomeScreen = () => {
         </View>
         {/* button section*/}
         <View className="w-full h-[253] relative">
-          {(['DAILY', 'COMFORT', 'INFO'] as RecordType[]).map((type) => (
+          {Object.values(RecordTypeConstant).map((type) => (
             <SelectBtn key={type} type={type} />
           ))}
         </View>
@@ -102,8 +102,8 @@ const SelectBtn = ({type}: {type: RecordType}) => {
   
   // 버튼 위치 설정
   const addaptivePosition = 
-  type === 'DAILY' ? 'top-[0] left-[0]' : 
-    type === 'COMFORT'
+  type === RecordTypeConstant.DAILY ? 'top-[0] left-[0]' : 
+    type === RecordTypeConstant.COMFORT
       ? 'bottom-[0] left-[0]'
       : 'top-[0] right-[0]';
       
@@ -116,26 +116,23 @@ const SelectBtn = ({type}: {type: RecordType}) => {
       style={{borderRadius: 10}}>
       {/* 아이콘 */}
         <View className="absolute top-[18] left-[27]">
-          {type === 'DAILY' ? <Main1 /> : type === 'COMFORT' ? <Main2 /> : <Main3 />}
+          {type === RecordTypeConstant.DAILY ? <Main1 /> : type === RecordTypeConstant.COMFORT ? <Main2 /> : <Main3 />}
         </View>
         {/* 텍스트와 화살표 */}
         <View className="absolute bottom-[18] left-[27] flex flex-row items-center justify-between w-[120]">
           <View className="flex flex-row items-center">        
             <Txt
           type="title3"
-          text={`${type === 'DAILY' ? '일상' : type === 'COMFORT' ? '위로' : '정보'}`}
+          text={`${type === RecordTypeConstant.DAILY ? '일상' : type === RecordTypeConstant.COMFORT ? '위로' : '정보'}`}
           className="text-yellowPrimary"
         />
          <Txt
           type="title3"
-          text={`${type === 'COMFORT' ? '의 말' : ' 알림'}`}
+          text={`${type === RecordTypeConstant.COMFORT ? '의 말' : ' 알림'}`}
           className="text-white "
-        />
+          />
         </View>
-
-        <View className="">
-          <MainArrow />
-        </View>
+        <MainArrow />
         </View>
 
     </TouchableOpacity>
