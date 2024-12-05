@@ -10,6 +10,7 @@ import BG from '@components/atom/BG';
 import ShadowView from '@components/atom/ShadowView';
 import StarPNG from '@components/atom/StarPNG';
 import Txt from '@components/atom/Txt';
+import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
 
 // React Navigation 관련 import
 import {
@@ -111,6 +112,10 @@ const RCDSelectText = ({
 }: {
   route: RouteProp<HomeStackParamList, 'RCDSelectText'>;
 }) => {
+   // 상태바 스타일 설정
+   const BackColorType = 'solid';
+   useStatusBarStyle(BackColorType);
+   
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
   const {item, type} = route.params;
   const [subTitle, setSubTitle] = useState<string>('');
@@ -127,7 +132,7 @@ const RCDSelectText = ({
   }, []);
 
   return (
-    <BG type="solid">
+    <BG type={BackColorType}>
       {/* 상단 앱바 */}
       <AppBar
         title="녹음 내용 작성"

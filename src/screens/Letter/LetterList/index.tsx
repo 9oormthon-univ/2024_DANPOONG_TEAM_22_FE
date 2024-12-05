@@ -3,6 +3,7 @@ import {getLetters} from '@apis/providedFile';
 // import {getTopText} from '@apis/RCDApis/getTopText';
 import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
+import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 // import {LETTERS_DATA} from '@constants/letter';
 // import useGetAlarmCategory from '@hooks/alarm/useGetAlarmCategory';
 // import useGetAlarmComfort from '@hooks/alarm/useGetAlarmComfort';
@@ -23,6 +24,10 @@ type LetterProps = NativeStackScreenProps<
 >;
 
 const LetterListScreen = ({navigation}: Readonly<LetterProps>) => {
+  // 상태바 스타일 설정
+  const BackColorType = 'main';
+  useStatusBarStyle(BackColorType);
+
   const [nickname, setNickname] = useState('');
   const [selectedFilterIdx, setSelectedFilterIdx] = useState(0);
   // const { data: alarmComfortData, isError: isAlarmComfortError, error: alarmComfortError } = useGetAlarmComfort();
@@ -102,7 +107,7 @@ const LetterListScreen = ({navigation}: Readonly<LetterProps>) => {
 
   return (
     <SafeAreaView className="flex-1">
-      <BG type="main">
+      <BG type={BackColorType}>
         <View className="flex-1">
           {/* AppBar는 flex-1 컨테이너 안에 넣어야 함 */}
           <AppBar

@@ -21,11 +21,16 @@ import {getYouthNum} from '@apis/RCDApis/getYouthNum';
 import {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 /**
  * 홈 화면 컴포넌트
  * 청년들의 수를 표시하고 녹음 유형을 선택할 수 있는 메인 화면
  */
 const HomeScreen = () => {
+  // 상태바 스타일 설정
+  const BackColorType = 'main';
+  useStatusBarStyle(BackColorType);
+  
   // 상태 관리
   const [nickname, setNickname] = useState('');
   const [youthNum, setYouthNum] = useState<number>(999);
@@ -47,7 +52,7 @@ const HomeScreen = () => {
   }, []);
 
   return (
-    <BG type="main">
+    <BG type={BackColorType}>
       {/* 배경 이미지 */}
       <ImageBackground
         source={require('@assets/pngs/mainBG.png')}

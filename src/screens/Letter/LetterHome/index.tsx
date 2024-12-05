@@ -2,6 +2,7 @@ import BG from '@components/atom/BG';
 import ShadowView from '@components/atom/ShadowView';
 import Txt from '@components/atom/Txt';
 import useGetSummary from '@hooks/providedFile/useGetSummary';
+import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {LetterStackParamList} from '@type/nav/LetterStackParamList';
@@ -40,9 +41,13 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
     })();
   }, []);
 
+  // 상태바 스타일 설정
+  const BackColorType = 'main';
+  useStatusBarStyle(BackColorType);
+
   return (
     <SafeAreaView className="flex-1">
-      <BG type="main">
+      <BG type={BackColorType}>
         <ScrollView className="flex-1">
           <View className="flex-1 pt-[50] pb-[110]">
             <View className="w-full items-center px-[35]">

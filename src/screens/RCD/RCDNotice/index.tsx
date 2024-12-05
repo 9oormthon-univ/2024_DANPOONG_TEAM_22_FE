@@ -15,6 +15,7 @@ import Notice2 from '@assets/svgs/Notice2.svg';
 // 타입 임포트
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import AppBar from '@components/atom/AppBar';
+import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
 
 /**
  * 주의사항 섹션 컴포넌트
@@ -31,6 +32,7 @@ const Section = ({
   title: string;
   content: string;
 }) => {
+  
   return (
     <View className="w-full h-auto mt-[37]">
       {seq === 1 ? <Notice1 /> : <Notice2 />}
@@ -51,10 +53,14 @@ const RCDNoticeScreen = ({
 }: {
   route: RouteProp<HomeStackParamList, 'RCDNotice'>;
 }) => {
+  // 상태바 스타일 설정
+  const BackColorType = 'solid';
+  useStatusBarStyle(BackColorType);
+  
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
   const {item, type} = route.params;
   return (
-    <BG type="solid">
+    <BG type={BackColorType}>
       {/* 상단 앱바 */}
       <AppBar
         title="주의 사항"

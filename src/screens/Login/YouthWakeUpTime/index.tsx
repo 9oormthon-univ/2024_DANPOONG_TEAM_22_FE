@@ -2,6 +2,7 @@ import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
+import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker';
@@ -21,6 +22,10 @@ const YouthWakeUpTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const [wakeUpTime, setWakeUpTime] = useState(new Date());
   const [wakeUpTimeString, setWakeUpTimeString] = useState('');
   const [show, setShow] = useState(false);
+
+  // 상태바 스타일 설정
+  const BackColorType = 'main';
+  useStatusBarStyle(BackColorType);
 
   const onChangeDate = (event: DateTimePickerEvent, selectedDate?: Date) => {
     const currentDate = selectedDate || wakeUpTime;
@@ -57,7 +62,7 @@ const YouthWakeUpTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
 
   return (
     <SafeAreaView className="flex-1">
-      <BG type="main">
+      <BG type={BackColorType}>
         <>
           <AppBar
             goBackCallbackFn={() => {

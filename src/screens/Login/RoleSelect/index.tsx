@@ -9,6 +9,7 @@ import {Image, Pressable, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import VolunteerIcon from '@assets/svgs/volunteer.svg';
 import YouthIcon from '@assets/svgs/youth.svg';
+import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
 // import {postMember} from '@apis/member';
 // import useLoading from '@hooks/useLoading';
 // import uploadImageToS3 from '@apis/util';
@@ -17,6 +18,10 @@ import YouthIcon from '@assets/svgs/youth.svg';
 type AuthProps = NativeStackScreenProps<AuthStackParamList, 'RoleSelectScreen'>;
 
 const RoleSelectScreen = ({route, navigation}: Readonly<AuthProps>) => {
+  // 상태바 스타일 설정 
+  const BackColorType = 'main';
+  useStatusBarStyle(BackColorType);
+
   const {nickname, imageUri} = route.params;
   const [role, setRole] = useState<Role | null>(null);
   // const {isLoading, setIsLoading} = useLoading();
@@ -69,7 +74,7 @@ const RoleSelectScreen = ({route, navigation}: Readonly<AuthProps>) => {
 
   return (
     <SafeAreaView className="flex-1 justify-center items-center">
-      <BG type="main">
+      <BG type={BackColorType}>
         <>
           <View className="items-center pt-[80]">
             <Txt

@@ -16,7 +16,7 @@ import {Gender, MemberInfoResponseData, Role} from '@type/api/member';
 import formatBirth from '@utils/formatBirth';
 import {postMemberYouth} from '@apis/member';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'YouthSleepTimeScreen'
@@ -39,6 +39,11 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const [show, setShow] = useState(false);
   const {isLoading, setIsLoading} = useLoading();
 
+  // 상태바 스타일 설정
+  const BackColorType = 'main';
+  useStatusBarStyle(BackColorType);
+
+  // 시간 선택 함수
   const onChangeDate = (event: DateTimePickerEvent, selectedDate?: Date) => {
     const currentDate = selectedDate || sleepTime;
     if (!currentDate) {
@@ -97,7 +102,7 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
 
   return (
     <SafeAreaView className="flex-1">
-      <BG type="main">
+      <BG type={BackColorType}>
         <>
           <AppBar
             goBackCallbackFn={() => {

@@ -1,6 +1,7 @@
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
+import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
@@ -118,9 +119,18 @@ const Page4 = ({handleNext}: Readonly<{handleNext: () => void}>) => {
 };
 
 const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
+
   const [currentPageIdx, setCurrentPageIdx] = useState(0);
   const [nickname, setNickname] = useState('');
 
+  // 상태바 스타일 설정
+  const [BackColorType, setBackColorType] = useState<'gradation' | 'main'>('main');
+  useEffect(()=>{
+    setBackColorType(currentPageIdx === 3 ? 'gradation' : 'main');
+  },[currentPageIdx])
+  useStatusBarStyle(BackColorType);
+
+  // 닉네임 가져오기
   useEffect(() => {
     (async () => {
       const nickname = await AsyncStorage.getItem('nickname');
@@ -198,7 +208,7 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
 
   return (
     <SafeAreaView className="flex-1">
-      <BG type={currentPageIdx === 3 ? 'gradation' : 'main'}>
+      <BG type={BackColorType}>
         <>
           <View className="justify-center items-center mt-[85]">
             <SlidingDot

@@ -1,0 +1,1 @@
+export type BackType = 'gradation' | 'solid' | 'main';

@@ -15,7 +15,8 @@ import Notice2 from '@assets/svgs/Notice2.svg';
 
 // 타입 임포트
 import { HomeStackParamList } from '@type/nav/HomeStackParamList';
-
+// 커스텀 훅 임포트
+import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
 /**
  * 녹음 오류 화면 컴포넌트
  * @param route - 라우트 객체 (오류 타입 정보 포함)
@@ -25,11 +26,15 @@ const RCDErrorScreen = ({
 }: {
   route: RouteProp<HomeStackParamList, 'RCDError'>;
 }) => {
+  // 상태바 스타일 설정
+  const BackColorType = 'solid';
+  useStatusBarStyle(BackColorType);
+
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
   const {type} = route.params;
 
   return (
-    <BG type="solid">
+    <BG type={BackColorType}>
       {/* 상단 앱바 */}
       <AppBar
         title=""

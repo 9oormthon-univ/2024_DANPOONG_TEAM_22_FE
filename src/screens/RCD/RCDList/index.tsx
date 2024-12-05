@@ -28,6 +28,7 @@ import {COLORS} from '@constants/Colors';
 
 // React Hooks import
 import {useState, useEffect} from 'react';
+import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
 
 /**
  * RCD 목록을 보여주는 스크린 컴포넌트
@@ -40,6 +41,9 @@ const RCDListScreen = ({
 }) => {
   // 라우트에서 RCD 타입 추출
   const {type} = route.params;
+    // 상태바 스타일 설정
+    const BackColorType = 'gradation';
+    useStatusBarStyle(BackColorType);
   
   // 상태 관리
   const [rcdList, setRcdList] = useState<RCD[]>([]); // RCD 목록 상태
@@ -67,7 +71,7 @@ const RCDListScreen = ({
   }, [type]);
 
   return (
-    <BG type="gradation">
+    <BG type={BackColorType}>
       {/* 상단 앱바 */}
       <AppBar
         title={RCDListAppBar[type]}

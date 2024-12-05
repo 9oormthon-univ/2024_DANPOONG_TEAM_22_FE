@@ -2,6 +2,7 @@ import {postLogin} from '@apis/auth';
 import KakaoIcon from '@assets/svgs/kakao.svg';
 import BG from '@components/atom/BG';
 import Txt from '@components/atom/Txt';
+import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {KakaoOAuthToken, login} from '@react-native-seoul/kakao-login';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -12,7 +13,11 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 
 type AuthProps = NativeStackScreenProps<AuthStackParamList, 'LoginScreen'>;
 
-const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
+const LoginScreen = ({navigation}: Readonly<AuthProps>) => {  
+  // 상태바 스타일 설정
+  const BackColorType = 'main';
+  useStatusBarStyle(BackColorType);
+
   const handleLogin = async ({loginType}: {loginType: string}) => {
     try {
       const token: KakaoOAuthToken = await login();
@@ -42,7 +47,7 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
 
   return (
     <SafeAreaView className="flex-1 justify-center items-center">
-      <BG type="main">
+      <BG type={BackColorType}>
         <View className="flex-1">
           <View className="items-center mt-[185]">
             <Txt type="body4" text="내일도 모레도," className="text-gray300" />

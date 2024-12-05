@@ -3,11 +3,16 @@
 import BackIcon from '@assets/svgs/Back.svg';
 import BG from '@components/atom/BG';
 import Txt from '@components/atom/Txt';
+import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
 
 // 시스템 화면 컴포넌트
 const SystemScreen = () => {
+  // 상태바 스타일 설정
+  const BackColorType = 'main';
+  useStatusBarStyle(BackColorType);
+
   return (
-    <BG type="main">
+    <BG type={BackColorType}>
       {/* 메인 컨테이너 */}
       <View className="flex-1 items-center pt-[35] px-px">
         {/* 시스템 메뉴 버튼들 */}
