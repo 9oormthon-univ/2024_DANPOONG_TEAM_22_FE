@@ -91,7 +91,7 @@ const RCDRecordScreen = ({
       setVolumeList([]);
       setIsRecording(false);
       setUri(null);
-      console.log('refleshRCDStates!@');
+      // console.log('refleshRCDStates!@');
     } catch (e) {
       console.log('reflesh error', e);
     }
@@ -287,7 +287,7 @@ const RCDRecordScreen = ({
                 <View className="mt-[53]" />
                 <Txt
                   type="body4"
-                  text="준비한 문장을 시간 내에 또박또박 발음해주세요"
+                  text={type === 'INFO' ? '준비된 문장을 시간 내에 또박또박 발음해주세요' : '준비한 문장을 시간 내에 또박또박 발음해주세요'}
                   className="text-gray200"
                 />
                 <View className="mt-[28]">

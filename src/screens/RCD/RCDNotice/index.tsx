@@ -19,6 +19,9 @@ import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
 import { RCDNoticeSectionConstant } from '@constants/RCDNoticeSectionConstant';
 import { useState } from 'react';
 import { NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
+import { getTopText } from '@apis/RCDApis/getTopText';
+import { postAskGPT } from '@apis/RCDApis/postAskGPT';
+import { postSaveScript } from '@apis/RCDApis/postSaveScript';
 
 /**
  * 주의사항 섹션 컴포넌트
@@ -62,7 +65,7 @@ const RCDNoticeScreen = ({
   
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
   const {item, type} = route.params;
-  
+  const [isLoading, setIsLoading] = useState(false);
   // 스크롤 끝에 도달 여부 상태
   const [isScrollEnd, setIsScrollEnd] = useState(false);
 
@@ -72,6 +75,24 @@ const RCDNoticeScreen = ({
     const isEnd = layoutMeasurement.height + contentOffset.y >= contentSize.height;
     setIsScrollEnd(isEnd);
   };
+  
+  const handleNavigate = async () => {
+    if(type === 'INFO'){
+      try{
+        setIsLoading(true);
+        const alarmId = (await getTopText(item.children[0])).alarmId;
+        const script = (await postAskGPT(alarmId)).result.content;
+        const voiceFileId = (await postSaveScript(alarmId, script)).result.voiceFileId;
+        navigation.navigate('RCDRecord', {type, voiceFileId, content: script});
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setIsLoading(false);
+      }
+    }else{
+      navigation.navigate('RCDSelectText', {type, item});
+    }
+  }
 
   return (
     <BG type={BackColorType}>
@@ -111,10 +132,9 @@ const RCDNoticeScreen = ({
       <View className="absolute bottom-[53] w-full px-px">
         <Button
           text="확인했어요"
-          disabled={!isScrollEnd} // 스크롤 끝에 도달하지 않으면 비활성화
-          onPress={() => {
-            navigation.navigate('RCDSelectText', {type, item});
-          }}
+          disabled={!isScrollEnd || isLoading} // 스크롤 끝에 도달하지 않으면 비활성화
+          onPress={handleNavigate}
+          isLoading={isLoading}
         />
       </View>
     </BG>

@@ -3,6 +3,7 @@ import Txt from './Txt';
 import {useEffect, useState} from 'react';
 import useInterval from '@hooks/useInterval';
 import {RecordType} from '@type/RecordType';
+
 type RCDTimerProps = {
   recording: boolean; // 녹음 중 여부를 따져 타이머를 시작시키기 위함
   stop: () => void; //시간이 되면 녹음을 중지
@@ -12,16 +13,16 @@ type RCDTimerProps = {
 const RCDTimer = ({recording, stop, type}: RCDTimerProps) => {
   const [targetTime, setTargetTime] = useState<Date | null>(null);
   const [remainingTime, setRemainingTime] = useState(
-    type === 'DAILY' ? 15000 : 30000,
+    type === 'COMFORT' ? 30000 : 15000,
   );
   const [isStopped, setIsStopped] = useState(false);
 
   useEffect(() => {
     if (recording) {
       const target = new Date();
-      target.setSeconds(target.getSeconds() + (type === 'DAILY' ? 15 : 30));
+      target.setSeconds(target.getSeconds() + (type === 'COMFORT' ? 30 : 15));
       setTargetTime(target);
-      setRemainingTime(type === 'DAILY' ? 15000 : 30000);
+      setRemainingTime(type === 'COMFORT' ? 30000 : 15000);
       setIsStopped(false);
     }
   }, [recording]);
