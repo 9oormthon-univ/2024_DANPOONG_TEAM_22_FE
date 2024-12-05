@@ -19,7 +19,6 @@ import messaging from '@react-native-firebase/messaging';
 import {useEffect} from 'react';
 import pushNoti from '@utils/pushNoti';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SplashScreen from 'react-native-splash-screen';
 
 // 쿼리 클라이언트 설정
 const queryClient = new QueryClient({
@@ -73,8 +72,7 @@ function App(): React.JSX.Element {
       }
     });
 
-    // 스플래시 스크린 숨기기
-    SplashScreen.hide();
+    
   }, []);
 
   //푸시 알림 권한 요청 함수

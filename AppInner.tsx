@@ -16,6 +16,7 @@ import {Alert} from 'react-native';
 import {getMember} from '@apis/member';
 import {Role} from '@type/api/member';
 import {navigationRef} from 'App';
+import SplashScreen from 'react-native-splash-screen';
 
 // 네비게이션 스택 생성
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -50,9 +51,10 @@ const AppInner = () => {
         if (!token) {
           return;
         }
+
         // 사용자 정보 가져오기
         const {result} = await getMember();
-        console.log(result);
+        console.log('getMember(): ',result);
         setRole(result.role);
       } catch (error) {
         console.error(error);
@@ -70,6 +72,13 @@ const AppInner = () => {
       setIsNavigationReady(true);
     }
   }, [isLoggedIn, role]);
+
+  // 네비게이션 준비 완료 후 스플래시 스크린 숨기기
+  useEffect(() => {
+    if (isNavigationReady) {
+      SplashScreen.hide();
+    }
+  }, [isNavigationReady]);
 
   // 알람 처리 및 청년 리스닝 화면 이동
   useEffect(() => {
