@@ -26,7 +26,7 @@ const AnimatedPagerView = Animated.createAnimatedComponent(PagerView);
 const Page1 = ({nickname}: Readonly<PageProps>) => {
   return (
     <ImageBackground
-      source={require('@assets/pngs/mainBG.png')}
+      source={require('@assets/pngs/BGmain.png')}
       className="flex-1 items-center">
       <View className="flex-1 items-center mt-[189]">
         <Txt

@@ -55,7 +55,7 @@ const HomeScreen = () => {
     <BG type={BackColorType}>
       {/* 배경 이미지 */}
       <ImageBackground
-        source={require('@assets/pngs/mainBG.png')}
+        source={require('@assets/pngs/BGmain.png')}
         style={{position: 'absolute', bottom: 0, width: '100%', height: 762}}
       />
       {/* 전체 frame */}
