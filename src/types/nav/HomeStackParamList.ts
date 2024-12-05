@@ -7,7 +7,7 @@ export type HomeStackParamList = {
     RCDNotice: {type: RecordType,item:RCD};
     RCDSelectText:{type: RecordType,item:RCD};
     RCDText: {type: RecordType,item:RCD,gptRes:PostAskGPTResponse|null,alarmId:number};
-    RCDRecord: {type: RecordType,item:RCD,gptRes:PostAskGPTResponse|null,alarmId:number,voiceFileId:number,content:string};
+    RCDRecord: {type: RecordType,voiceFileId:number,content:string};
     RCDFeedBack: undefined;
     RCDError: {type: 'bad' | 'noisy' | 'server'};
   };

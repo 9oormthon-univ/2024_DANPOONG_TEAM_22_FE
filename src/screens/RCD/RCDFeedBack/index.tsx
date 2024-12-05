@@ -12,7 +12,7 @@ import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 
 // React Hooks import
 import {useEffect, useRef, useState} from 'react';
-
+import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
 /**
  * RCD 피드백 화면 컴포넌트
  * 녹음 완료 후 로딩 및 완료 상태를 보여주는 화면
@@ -25,6 +25,10 @@ const RCDFeedBackScreen = () => {
   const subColor = useRef(new Animated.Value(0)).current;
   // 네비게이션 객체
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
+
+  // 상태바 스타일 설정
+  const BackColorType = 'solid';
+  useStatusBarStyle(BackColorType);
 
   // 로딩이 끝나면 애니메이션 시작
   useEffect(() => {

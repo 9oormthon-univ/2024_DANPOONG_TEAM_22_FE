@@ -1,12 +1,12 @@
 import {View, Platform} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
-
+import {BackType} from '@type/BackType';
 const BG = ({
   type,
   children,
 }: {
-  type: 'gradation' | 'solid' | 'main';
+  type: BackType;
   children?: React.ReactNode;
 }) => {
   const Container = Platform.OS === 'android' ? View : SafeAreaView;

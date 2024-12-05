@@ -3,11 +3,15 @@ import Txt from '@components/atom/Txt';
 import LottieView from 'lottie-react-native';
 import {View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-
+import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 const LoadingScreen = () => {
+  // 상태바 스타일 설정
+  const BackColorType = 'solid';
+  useStatusBarStyle(BackColorType);
+
   return (
     <SafeAreaView className="flex-1">
-      <BG type="solid">
+      <BG type={BackColorType}>
         <View className="flex-1 justify-center items-center">
           <View className="absolute top-[-100] w-full h-full">
             <LottieView

@@ -2,6 +2,7 @@ import PencilIcon from '@assets/svgs/pencil.svg';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
+import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {useState} from 'react';
@@ -19,6 +20,10 @@ type AuthProps = NativeStackScreenProps<
 >;
 
 const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
+  // 상태바 스타일 설정
+  const BackColorType = 'main';
+  useStatusBarStyle(BackColorType);
+  
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [nickname, setNickname] = useState('');
 
@@ -59,7 +64,7 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
 
   return (
     <SafeAreaView className="flex-1 justify-center items-center">
-      <BG type="main">
+      <BG type={BackColorType}>
         <>
           <View className="items-center mt-[149]">
             <Txt

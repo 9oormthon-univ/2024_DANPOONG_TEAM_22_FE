@@ -8,7 +8,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
 import {ScrollView, View} from 'react-native';
-
+import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'YouthNoticeScreen'
@@ -24,6 +24,10 @@ const NOTICE_CONTENTS = [
 ];
 
 const YouthNoticeScreen = ({navigation}: Readonly<Props>) => {
+  // 상태바 스타일 설정
+  const BackColorType = 'solid';
+  useStatusBarStyle(BackColorType);
+
   const handleNext = () => {
     navigation.navigate('YouthStackNav', {
       screen: 'YouthHomeScreen',
@@ -32,7 +36,7 @@ const YouthNoticeScreen = ({navigation}: Readonly<Props>) => {
   };
 
   return (
-    <BG type="solid">
+    <BG type={BackColorType}>
       <AppBar
         title="주의사항"
         goBackCallbackFn={() => {

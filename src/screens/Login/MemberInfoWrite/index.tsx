@@ -12,13 +12,17 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import useLoading from '@hooks/useLoading';
 import uploadImageToS3 from '@apis/util';
 import formatBirth from '@utils/formatBirth';
-
+import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'MemberInfoWriteScreen'
 >;
 
 const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
+  // 상태바 스타일 설정
+  const BackColorType = 'main';
+  useStatusBarStyle(BackColorType);
+
   const {nickname, imageUri, role} = route.params;
   const [birthday, setBirthday] = useState('');
   const [gender, setGender] = useState<Gender | null>(null);
@@ -61,7 +65,7 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
 
   return (
     <SafeAreaView className="flex-1 justify-center items-center">
-      <BG type="main">
+      <BG type={BackColorType}>
         <>
           <View className="items-center pt-[80]">
             <Txt

@@ -1,1 +1,3 @@
-export type RecordType = 'DAILY' | 'COMFORT' | 'INFO';
+import { RecordTypeConstant } from '@constants/RecordType';
+
+export type RecordType = typeof RecordTypeConstant[keyof typeof RecordTypeConstant];

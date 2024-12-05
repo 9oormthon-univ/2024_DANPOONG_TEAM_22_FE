@@ -20,6 +20,9 @@ const RCDWave = ({volumeList, isPlaying, recording, isDone}: RCDWaveProps) => {
     paddingRight: width / 2,
   });
 
+  // useEffect(() => {
+  //   console.log('volumeList', volumeList);
+  // }, [volumeList]);
   // 녹음 시작 시 웨이브 초기화
   useEffect(() => {
     if (recording) {
@@ -55,12 +58,12 @@ const RCDWave = ({volumeList, isPlaying, recording, isDone}: RCDWaveProps) => {
   }, [isPlaying, volumeList.length]);
 
   const calculate_height = (item: number) => {
-    if (item <= -110) {
-      // 구간 1: -160 ~ -110 -> 1% ~ 10%
-      return ((item + 160) / 50) * 9 + 1;
+    if (item <= -50) {
+      // 구간 1: -160 ~ -50 -> 1% ~ 10%
+      return ((item + 50) / 50) * 9 + 1;
     } else {
-      // 구간 2: -110 ~ 0 -> 10% ~ 70%
-      return ((item + 110) / 110) * 60 + 10;
+      // 구간 2: -50 ~ 0 -> 10% ~ 70%
+      return ((item + 50) / 50) * 60 + 10;
     }
   };
 
