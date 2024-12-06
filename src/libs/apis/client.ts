@@ -26,12 +26,12 @@ client.interceptors.request.use(async config => {
     }
 
     // 요청 로그 출력
-    // console.log('Request:', {
-    //   url: config.url,
-    //   method: config.method,
-    //   headers: config.headers,
-    //   data: config.data,
-    // });
+    console.log('Request:', {
+      url: config.url,
+      method: config.method,
+      headers: config.headers,
+      data: config.data,
+    });
 
     return config;
   } catch (error) {

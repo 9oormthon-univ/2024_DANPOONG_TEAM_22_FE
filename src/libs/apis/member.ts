@@ -43,7 +43,7 @@ const postMemberYouth = async ({
   role,
   birth,
   fcmToken,
-  youthMemberInfoDto: {wakeUpTime, sleepTime, breakfast, lunch, dinner},
+  youthMemberInfoDto,
 }: Readonly<MemberInfoResponseData>) => {
   const res = await client.post<ResultResponseData<MemberResponseData>>(
     '/api/v1/member',
@@ -54,7 +54,7 @@ const postMemberYouth = async ({
       role,
       birth,
       fcmToken,
-      youthMemberInfoDto: {wakeUpTime, sleepTime, breakfast, lunch, dinner},
+      youthMemberInfoDto,
     },
   );
   return res.data;
