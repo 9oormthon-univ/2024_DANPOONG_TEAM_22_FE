@@ -85,8 +85,8 @@ const RCDListScreen = ({
       <ImageBackground
         source={
           type === RecordTypeConstant.INFO
-            ? require('@assets/pngs/BGStarTopINFO.png')
-            : require('@assets/pngs/BGStarTop.png')
+            ? require('@assets/webps/BGStarTopINFO.webp')
+            : require('@assets/webps/BGStarTop.webp')
         }
         style={{
           position: 'absolute',

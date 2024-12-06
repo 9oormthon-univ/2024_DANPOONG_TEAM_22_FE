@@ -68,14 +68,18 @@ const AppInner = () => {
 
   // 네비게이션 준비 상태 설정
   useEffect(() => {
+    // console.log('isLoggedIn: ', isLoggedIn);
+    // console.log('role: ', role);
     if (isLoggedIn && role) {
       setIsNavigationReady(true);
     }
   }, [isLoggedIn, role]);
 
-  // 네비게이션 준비 완료 후 스플래시 스크린 숨기기
+  // 스플래시 스크린 숨기기
   useEffect(() => {
-    if (isNavigationReady) {
+    // 로그인된 상태여서 네비게이션 준비 완료 상태일 때 스플래시 스크린 숨기기
+    // 또는 로그인되지 않은 상태여서 role이 null일 때 스플래시 스크린 숨기기
+    if (isNavigationReady || (!isLoggedIn && !role)) {
       SplashScreen.hide();
     }
   }, [isNavigationReady]);

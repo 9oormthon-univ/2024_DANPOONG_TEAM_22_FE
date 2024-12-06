@@ -79,3 +79,6 @@ env/
 
 # aws
 S3config.ts
+
+# keystore
+*.keystore

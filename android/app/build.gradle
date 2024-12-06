@@ -123,9 +123,9 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile file('C:\\Users\\hp.JB\\my-release-key.keystore')
+            storeFile file('my-release-key.keystore')
             storePassword 'qkrwjdqls000325'
-            keyAlias 'my-release-key'
+            keyAlias 'my-key-alias'
             keyPassword 'qkrwjdqls000325'
         }
     }
@@ -137,16 +137,15 @@ android {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.debug
+            // signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
     flavorDimensions "version"
     productFlavors {
-        development {
-        }
-        production {
-        }
+       
+       
     }
 }
 
