@@ -1,3 +1,4 @@
+// 필요한 API 및 컴포넌트 import
 import {getVoiceFiles} from '@apis/voiceFile';
 import AppBar from '@components/atom/AppBar';
 import Txt from '@components/atom/Txt';
@@ -18,6 +19,8 @@ import {
 } from 'react-native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import {SafeAreaView} from 'react-native-safe-area-context';
+
+// 아이콘 import
 import FightingIcon from '@assets/svgs/emotion/emotion_fighting.svg';
 import LoveIcon from '@assets/svgs/emotion/emotion_love.svg';
 import StarIcon from '@assets/svgs/emotion/emotion_star.svg';
@@ -29,11 +32,13 @@ import SmileWhiteIcon from '@assets/svgs/smile_white.svg';
 import StopIcon from '@assets/svgs/stop.svg';
 import {postComment} from '@apis/providedFile';
 
+// 네비게이션 Props 타입 정의
 type YouthProps = NativeStackScreenProps<
   YouthStackParamList,
   'YouthListenScreen'
 >;
 
+// 감정 표현 옵션 상수
 export const EMOTION_OPTIONS = [
   {icon: <StarIcon />, label: '고마워요', value: 'THANK_YOU'},
   {icon: <ThumbIcon />, label: '응원해요', value: 'HELPFUL'},
@@ -41,20 +46,23 @@ export const EMOTION_OPTIONS = [
   {icon: <LoveIcon />, label: '사랑해요', value: 'LOVE'},
 ];
 
+// 청년 리스닝 화면 컴포넌트
 const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
+  // route params에서 필요한 값 추출
   const {alarmId, script} = route.params;
-  const [message, setMessage] = useState('');
-  const [isClickedEmotion, setIsClickedEmotion] = useState(false);
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  const imageUri = null;
-  const animation = useRef<LottieView>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [voiceFile, setVoiceFile] = useState<VoiceFileResponseData>(
-    {} as VoiceFileResponseData,
-  );
-  const [isLoading, setIsLoading] = useState(true);
-  const audioPlayer = useRef(new AudioRecorderPlayer());
 
+  // 상태 관리
+  const [message, setMessage] = useState(''); // 메시지 입력값
+  const [isClickedEmotion, setIsClickedEmotion] = useState(false); // 감정 표현 클릭 여부
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false); // 키보드 표시 여부
+  const imageUri = null; // 프로필 이미지 URI
+  const animation = useRef<LottieView>(null); // 애니메이션 ref
+  const [isPlaying, setIsPlaying] = useState(false); // 오디오 재생 여부
+  const [voiceFile, setVoiceFile] = useState<VoiceFileResponseData>({} as VoiceFileResponseData); // 음성 파일 데이터
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태
+  const audioPlayer = useRef(new AudioRecorderPlayer()); // 오디오 플레이어 ref
+
+  // 초기 로딩 처리
   useEffect(() => {
     setIsLoading(true);
     const timer = setTimeout(() => {
@@ -64,6 +72,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
     return () => clearTimeout(timer);
   }, []);
 
+  // 애니메이션 재생/정지 처리
   useEffect(() => {
     if (isPlaying) {
       animation.current?.play();
@@ -72,6 +81,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
     }
   }, [isPlaying]);
 
+  // 키보드 이벤트 리스너 설정
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
       setIsKeyboardVisible(true),
@@ -86,6 +96,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
     };
   }, []);
 
+  // 음성 파일 로드 및 재생
   useEffect(() => {
     (async () => {
       if (!alarmId) {
@@ -116,6 +127,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
     };
   }, []);
 
+  // 메시지 전송 처리
   const handleMessageSend = async () => {
     try {
       await postComment({providedFileId: voiceFile.providedFileId, message});
@@ -127,6 +139,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
     }
   };
 
+  // 재생/정지 버튼 클릭 처리
   const handlePlayButtonClick = async () => {
     try {
       if (isPlaying) {
@@ -142,9 +155,12 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
     }
   };
 
+  // 로딩 중일 때 로딩 화면 표시
   if (isLoading) {
     return <LoadingScreen />;
   }
+
+  // 메인 UI 렌더링
   return (
     <SafeAreaView className="flex-1 bg-solid">
       {!isKeyboardVisible && (
@@ -168,6 +184,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
           className="absolute top-[6] w-full"
         />
         <View className="pt-[149] flex-1 items-center">
+          {/* 프로필 이미지 영역 */}
           <View className="relative w-[78] h-[78] justify-center items-center">
             <Image
               source={
@@ -184,6 +201,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
             />
           </View>
 
+          {/* 봉사자 정보 및 스크립트 */}
           <Txt
             type="body2"
             text="봉사자 닉네임"
@@ -197,13 +215,16 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
             />
           </View>
 
+          {/* 재생/정지 버튼 */}
           <Pressable onPress={handlePlayButtonClick} className="mt-[52]">
             {isPlaying ? <StopIcon /> : <PlayIcon />}
           </Pressable>
 
+          {/* 하단 입력 영역 */}
           <View
             className="absolute bottom-0 w-full"
             style={{borderTopLeftRadius: 10, borderTopRightRadius: 10}}>
+            {/* 감정 표현 옵션 */}
             {isClickedEmotion && (
               <ScrollView
                 horizontal
@@ -232,6 +253,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
                 ))}
               </ScrollView>
             )}
+            {/* 메시지 입력 영역 */}
             <View className="h-[86] px-[25] bg-bottomNavigation flex-row items-center relative">
               <TextInput
                 value={message}
