@@ -33,7 +33,7 @@ type YouthProps = NativeStackScreenProps<
 >;
 
 const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
-  const {alarmId, script} = route.params;
+  const {alarmId} = route.params;
   const [message, setMessage] = useState('');
   const [isClickedEmotion, setIsClickedEmotion] = useState(false);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
@@ -195,12 +195,17 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
             text="봉사자 닉네임"
             className="text-yellowPrimary mt-[13] mb-[25] text-center"
           />
-          <View className="px-[32]">
-            <Txt
-              type="title3"
-              text={script ?? ''}
-              className="text-gray200 text-center"
-            />
+          <View className="px-[32] h-[110]">
+            <ScrollView>
+              <Txt
+                type="title3"
+                text={
+                  voiceFile.content ??
+                  '아침 거르고 빈속으로 있으면 힘들어요\n가볍게라도 꼭 챙겨 드시길 바라요'
+                }
+                className="text-gray200 text-center"
+              />
+            </ScrollView>
           </View>
 
           <Pressable onPress={handlePlayButtonClick} className="mt-[52]">

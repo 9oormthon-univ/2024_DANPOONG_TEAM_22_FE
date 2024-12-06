@@ -1,6 +1,6 @@
 /**
  * 앱의 메인 컴포넌트
- * 
+ *
  * 주요 기능:
  * - 네비게이션 설정
  * - 푸시 알림 처리
@@ -52,11 +52,10 @@ function App(): React.JSX.Element {
       .getInitialNotification()
       .then(remoteMessage => {
         if (remoteMessage) {
-          const {alarmId, script} = remoteMessage.data;
+          const {alarmId} = remoteMessage.data;
           // AsyncStorage에 알림 데이터 저장
           (async () => {
             await AsyncStorage.setItem('alarmId', alarmId);
-            await AsyncStorage.setItem('script', script);
           })();
         }
       });
@@ -64,15 +63,12 @@ function App(): React.JSX.Element {
     // 백그라운드에서 알림을 통해 앱이 실행된 경우
     messaging().onNotificationOpenedApp(remoteMessage => {
       if (remoteMessage) {
-        const {alarmId, script} = remoteMessage.data;
+        const {alarmId} = remoteMessage.data;
         navigateToYouthListenScreen({
           alarmId: Number(alarmId),
-          script: script,
         });
       }
     });
-
-    
   }, []);
 
   //푸시 알림 권한 요청 함수

@@ -4,7 +4,7 @@ import YouthListenScreen from '@screens/Youth/YouthListen';
 
 export type YouthStackParamList = {
   YouthHomeScreen: undefined;
-  YouthListenScreen: {alarmId: number; script: string};
+  YouthListenScreen: {alarmId: number};
 };
 
 const YouthStack = createNativeStackNavigator<YouthStackParamList>();

@@ -1,12 +1,12 @@
 // 네비게이션 관련 라이브러리 및 타입 임포트
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // 네비게이션 스택 컴포넌트 임포트
-import AppTabNav from './src/nav/tabNav/App';
 import AuthStackNav from '@stackNav/Auth';
 import YouthStackNav from '@stackNav/Youth';
+import AppTabNav from './src/nav/tabNav/App';
 
 // React 관련 임포트
 import {useEffect, useState} from 'react';
@@ -23,13 +23,11 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const navigateToYouthListenScreen = ({
   alarmId,
-  script,
-}: Readonly<{alarmId: number; script: string}>) => {
+}: Readonly<{alarmId: number}>) => {
   navigationRef.navigate('YouthStackNav', {
     screen: 'YouthListenScreen',
     params: {
       alarmId,
-      script,
     },
   });
 };
@@ -93,18 +91,15 @@ const AppInner = () => {
     (async () => {
       // 알람 관련 데이터 가져오기
       const alarmId = await AsyncStorage.getItem('alarmId');
-      const script = await AsyncStorage.getItem('script');
 
-      if (alarmId && script) {
+      if (alarmId) {
         // 청년 리스닝 화면으로 이동
         navigateToYouthListenScreen({
           alarmId: Number(alarmId),
-          script: script,
         });
 
         // 알람 데이터 삭제
         await AsyncStorage.removeItem('alarmId');
-        await AsyncStorage.removeItem('script');
       }
     })();
   }, [isNavigationReady, role]);

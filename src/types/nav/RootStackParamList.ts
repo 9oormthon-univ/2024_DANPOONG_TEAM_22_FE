@@ -3,6 +3,6 @@ export type RootStackParamList = {
   AppTabNav: undefined;
   YouthStackNav: {
     screen: 'YouthListenScreen' | 'YouthHomeScreen';
-    params: {alarmId?: number; script?: string};
+    params: {alarmId?: number};
   };
 };
