@@ -16,6 +16,7 @@
       "@assets/*": ["./assets/*"],
       "@type/*": ["./src/types/*"],
       "@config/*": ["./src/config/*"]
-    }
+    },
+    "jsx": "react"
   }
 }

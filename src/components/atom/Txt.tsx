@@ -48,9 +48,9 @@ const getStyle = (type: string): TextStyle => {
     },
     body4: {
       fontFamily: 'WantedSans-Regular',
-      fontSize: 16,
-      lineHeight: 16 * 1.5,
-      letterSpacing: 16 * -0.025,
+      fontSize: 15,
+      lineHeight: 15 * 1.5,
+      letterSpacing: 15 * -0.025,
     },
     recording: {
       fontFamily: 'WantedSans-Regular',
@@ -60,9 +60,9 @@ const getStyle = (type: string): TextStyle => {
     },
     button: {
       fontFamily: 'WantedSans-Medium',
-      fontSize: 20,
-      lineHeight: 20 * 1.5,
-      letterSpacing: 20 * -0.025,
+      fontSize: 18,
+      lineHeight: 18 * 1.5,
+      letterSpacing: 18 * -0.025,
     },
     caption1: {
       fontFamily: 'WantedSans-Medium',
