@@ -12,9 +12,9 @@ import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {RecordType} from '@type/RecordType';
 import {RecordTypeConstant} from '@constants/RecordType';
 // SVG 아이콘 임포트
-import Main1 from '@assets/svgs/Main1.svg';
-import Main2 from '@assets/svgs/Main2.svg';
-import Main3 from '@assets/svgs/Main3.svg';
+import Main1 from '@assets/svgs/main1.svg';
+import Main2 from '@assets/svgs/main2.svg';
+import Main3 from '@assets/svgs/main3.svg';
 import MainArrow from '@assets/svgs/MainArrow.svg';
 
 // API 및 스토리지 관련 임포트
