@@ -88,7 +88,7 @@ const RCDFeedBackScreen = () => {
             <View className="w-full h-full justify-center items-center">
               <View className="w-[90%] h-[85%] justify-center items-center">
                 <ImageBackground
-                  source={require('@assets/pngs/starsOff.png')}
+                  source={require('@assets/webps/starsOff.webp')}
                   resizeMode="contain"
                   className="static w-full h-full"
                 />
@@ -103,7 +103,7 @@ const RCDFeedBackScreen = () => {
               <View className="w-full h-full justify-center items-center">
                 <View className="w-[90%] h-[85%] justify-center items-center">
                   <ImageBackground
-                    source={require('@assets/pngs/starsOn.png')}
+                    source={require('@assets/webps/starsOn.webp')}
                     resizeMode="contain"
                     className="w-full h-full"
                   />
@@ -125,7 +125,7 @@ const RCDFeedBackScreen = () => {
             <Txt
               type="title1"
               text="녹음 완료"
-              className="text-gray_100 text-center"
+              className="text-white text-center"
             />
             <View className="mb-[23]" />
             <Animated.Text

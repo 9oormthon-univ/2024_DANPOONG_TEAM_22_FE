@@ -5,8 +5,11 @@ import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
 import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
-import {CompositeScreenProps} from '@react-navigation/native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {CompositeScreenProps, useNavigation} from '@react-navigation/native';
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
 import {ScrollView, View} from 'react-native';
@@ -34,8 +37,13 @@ const VolunteerNoticeScreen = ({navigation}: Readonly<Props>) => {
   const BackColorType = 'solid';
   useStatusBarStyle(BackColorType);
 
+  const tabNavigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const handleNext = () => {
-    navigation.navigate('AppTabNav');
+    tabNavigation.reset({
+      index: 0,
+      routes: [{name: 'AppTabNav'}],
+    });
   };
 
   return (

@@ -100,13 +100,13 @@ const Page4 = ({handleNext}: Readonly<{handleNext: () => void}>) => {
         className="text-gray200 text-center "
       />
       <Image
-        source={require('@assets/pngs/marginalStars.png')}
+        source={require('@assets/webps/marginalStars.webp')}
         width={274}
         height={269.5}
         className="w-[300] h-auto absolute bottom-[30]"
       />
       <Image
-        source={require('@assets/pngs/constellation.png')}
+        source={require('@assets/webps/constellation.webp')}
         width={274}
         height={269.5}
         className="w-[274] h-[269.5] mt-[100]"
