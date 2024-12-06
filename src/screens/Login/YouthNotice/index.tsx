@@ -150,6 +150,7 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
       console.log(result);
 
       await AsyncStorage.setItem('nickname', nickname);
+      await AsyncStorage.setItem('role', role);
 
       navigation.navigate('YouthStackNav', {
         screen: 'YouthHomeScreen',

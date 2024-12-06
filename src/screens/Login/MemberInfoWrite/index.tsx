@@ -77,6 +77,7 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
       console.log(result);
 
       await AsyncStorage.setItem('nickname', nickname);
+      await AsyncStorage.setItem('role', role);
       navigation.navigate('VolunteerOnboardingScreen');
     } catch (error) {
       console.log(error);

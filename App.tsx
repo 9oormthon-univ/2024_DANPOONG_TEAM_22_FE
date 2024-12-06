@@ -17,7 +17,7 @@ import AppInner, {navigateToYouthListenScreen} from 'AppInner';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
 import messaging from '@react-native-firebase/messaging';
 import {useEffect} from 'react';
-import pushNoti from '@utils/pushNoti';
+// import pushNoti from '@utils/pushNoti';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // 쿼리 클라이언트 설정
@@ -37,7 +37,7 @@ function App(): React.JSX.Element {
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       console.log('Foreground', remoteMessage);
-      pushNoti.displayNoti(remoteMessage);
+      // pushNoti.displayNoti(remoteMessage);
     });
 
     return unsubscribe;
@@ -51,23 +51,27 @@ function App(): React.JSX.Element {
     messaging()
       .getInitialNotification()
       .then(remoteMessage => {
-        if (remoteMessage) {
-          const {alarmId} = remoteMessage.data;
-          // AsyncStorage에 알림 데이터 저장
-          (async () => {
+        (async () => {
+          const role = await AsyncStorage.getItem('role');
+          if (remoteMessage && role === 'YOUTH') {
+            const {alarmId} = remoteMessage.data;
+            // AsyncStorage에 알림 데이터 저장
             await AsyncStorage.setItem('alarmId', alarmId);
-          })();
-        }
+          }
+        })();
       });
 
     // 백그라운드에서 알림을 통해 앱이 실행된 경우
     messaging().onNotificationOpenedApp(remoteMessage => {
-      if (remoteMessage) {
-        const {alarmId} = remoteMessage.data;
-        navigateToYouthListenScreen({
-          alarmId: Number(alarmId),
-        });
-      }
+      (async () => {
+        const role = await AsyncStorage.getItem('role');
+        if (remoteMessage && role === 'YOUTH') {
+          const {alarmId} = remoteMessage.data;
+          navigateToYouthListenScreen({
+            alarmId: Number(alarmId),
+          });
+        }
+      })();
     });
   }, []);
 
