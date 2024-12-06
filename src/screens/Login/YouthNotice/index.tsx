@@ -23,14 +23,7 @@ import {
   ScrollView,
   View,
 } from 'react-native';
-import {
-  clearWatch,
-  GeoCoordinates,
-  getCurrentPosition,
-  requestAuthorization,
-  watchPosition,
-} from 'react-native-geolocation-service';
-// import Geolocation from 'react-native-geolocation-service';
+import Geolocation from '@react-native-community/geolocation';
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -49,6 +42,8 @@ const NOTICE_CONTENTS = [
     content: '지자체의 자립 지원 통계 및 보고에\n소중한 위치 정보가 제공돼요',
   },
 ];
+
+Geolocation.setRNConfiguration({skipPermissionRequests: false});
 
 const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
   const {
@@ -74,10 +69,6 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
 
   const requestPermission = async () => {
     try {
-      if (Platform.OS === 'ios') {
-        return await requestAuthorization('always');
-      }
-      // 안드로이드 위치 정보 수집 권한 요청
       if (Platform.OS === 'android') {
         return await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -96,41 +87,22 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
         return;
       }
 
-      const watchId = watchPosition(
-        position => {
-          console.log('position', position);
-          setCurrentLocation(position.coords);
+      Geolocation.getCurrentPosition(
+        pos => {
+          console.log('pos', pos);
+          setCurrentLocation(pos.coords);
         },
         error => {
-          console.log(error);
+          console.log('error', error);
         },
         {
-          // enableHighAccuracy: true, // 배터리를 더 소모하여 보다 정확한 위치 추적
-          // interval: 100,
-          // distanceFilter: 1,
+          enableHighAccuracy: true,
+          timeout: 3600,
         },
       );
-      console.log('watchId', watchId);
-      return () => {
-        clearWatch(watchId);
-      };
-      // getCurrentPosition(
-      //   pos => {
-      //     console.log(pos);
-      //   },
-      //   error => {
-      //     console.log(error);
-      //   },
-      //   {
-      //     // enableHighAccuracy: true,
-      //     timeout: 3600,
-      //     maximumAge: 3600,
-      //   },
-      // );
     })();
   }, []);
 
-  console.log('currentLocation', currentLocation);
   const handleNext = async () => {
     navigation.navigate('YouthStackNav', {
       screen: 'YouthHomeScreen',
@@ -166,10 +138,10 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
         lunch,
         dinner,
         sleepTime,
-        // latitude: currentLocation.latitude,
-        // longitude: currentLocation.longitude,
-        latitude: 37.2750791,
-        longitude: 127.047405,
+        latitude: currentLocation.latitude,
+        longitude: currentLocation.longitude,
+        // latitude: 37.2750791,
+        // longitude: 127.047405,
       },
     };
 
