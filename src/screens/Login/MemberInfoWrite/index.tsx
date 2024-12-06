@@ -44,12 +44,15 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
       setIsLoading(false);
     }
 
+    const fcmToken = await AsyncStorage.getItem('fcmToken');
+
     const data: MemberRequestData = {
       gender,
       name: nickname,
       profileImage: imageLocation ?? '',
       role: role as Role,
       birth: formatBirth(birthday),
+      fcmToken,
     };
     try {
       const {result} = await postMember(data);

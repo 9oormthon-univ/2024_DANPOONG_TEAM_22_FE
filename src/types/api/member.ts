@@ -8,6 +8,7 @@ type MemberRequestData = {
   profileImage: string;
   role: Role;
   birth: string;
+  fcmToken: string;
 };
 
 type MemberResponseData = {memberId: number};

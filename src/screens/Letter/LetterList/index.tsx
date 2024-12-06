@@ -124,7 +124,7 @@ const LetterListScreen = ({navigation}: Readonly<LetterProps>) => {
               <View className="flex-row items-center px-[30] py-[10] h-[36] mt-[20]">
                 {parentCategories.map((menu, index) => (
                   <Pressable
-                    key={menu.id}
+                    key={`${menu.id}-parentCategories`}
                     className={`h-[36] px-[22] items-center justify-center border ${
                       index === selectedFilterIdx
                         ? 'border-tabIcon bg-white/10'
@@ -188,7 +188,8 @@ const LetterListScreen = ({navigation}: Readonly<LetterProps>) => {
             <ScrollView>
               <View className="pt-[22] px-[30] pb-[110]">
                 {filteredLettersData.map((letter, idx) => (
-                  <View key={idx}>
+                  <View
+                    key={`${letter.createdAt}-${letter.providedFileId}-filteredLettersData`}>
                     <LetterCard letter={letter} idx={idx} />
                     <View className="mb-[30]" />
                   </View>
