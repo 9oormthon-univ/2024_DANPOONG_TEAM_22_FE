@@ -24,9 +24,11 @@ import {
   View,
 } from 'react-native';
 import {
+  clearWatch,
   GeoCoordinates,
   getCurrentPosition,
   requestAuthorization,
+  watchPosition,
 } from 'react-native-geolocation-service';
 // import Geolocation from 'react-native-geolocation-service';
 
@@ -62,9 +64,10 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
     sleepTime,
   } = route.params;
   const {isLoading, setIsLoading} = useLoading();
-  const [currentLocation, setCurrentLocation] = useState<GeoCoordinates | null>(
-    null,
-  );
+  const [currentLocation, setCurrentLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
   // 상태바 스타일 설정
   const BackColorType = 'solid';
   useStatusBarStyle(BackColorType);
@@ -86,27 +89,53 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
   };
 
   useEffect(() => {
-    requestPermission().then(result => {
-      console.log({result});
-      if (result === 'granted') {
-        getCurrentPosition(
-          pos => {
-            setCurrentLocation(pos.coords);
-          },
-          error => {
-            console.log(error);
-          },
-          {
-            enableHighAccuracy: true,
-            timeout: 3600,
-            maximumAge: 3600,
-          },
-        );
+    (async () => {
+      const permission = await requestPermission();
+      console.log({permission});
+      if (permission !== 'granted') {
+        return;
       }
-    });
+
+      const watchId = watchPosition(
+        position => {
+          console.log('position', position);
+          setCurrentLocation(position.coords);
+        },
+        error => {
+          console.log(error);
+        },
+        {
+          // enableHighAccuracy: true, // 배터리를 더 소모하여 보다 정확한 위치 추적
+          // interval: 100,
+          // distanceFilter: 1,
+        },
+      );
+      console.log('watchId', watchId);
+      return () => {
+        clearWatch(watchId);
+      };
+      // getCurrentPosition(
+      //   pos => {
+      //     console.log(pos);
+      //   },
+      //   error => {
+      //     console.log(error);
+      //   },
+      //   {
+      //     // enableHighAccuracy: true,
+      //     timeout: 3600,
+      //     maximumAge: 3600,
+      //   },
+      // );
+    })();
   }, []);
 
+  console.log('currentLocation', currentLocation);
   const handleNext = async () => {
+    navigation.navigate('YouthStackNav', {
+      screen: 'YouthHomeScreen',
+      params: {},
+    });
     if (!currentLocation) {
       return;
     }
@@ -137,8 +166,10 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
         lunch,
         dinner,
         sleepTime,
-        latitude: currentLocation.latitude,
-        longitude: currentLocation.longitude,
+        // latitude: currentLocation.latitude,
+        // longitude: currentLocation.longitude,
+        latitude: 37.2750791,
+        longitude: 127.047405,
       },
     };
 
@@ -194,7 +225,7 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
         <Button
           text="시작하기"
           onPress={handleNext}
-          disabled={isLoading || !currentLocation}
+          // disabled={isLoading || !currentLocation}
           isLoading={isLoading}
         />
       </View>
