@@ -1,4 +1,5 @@
-// React Native 및 Navigation 관련 임포트
+// React 및 React Native 관련 임포트
+import React from 'react';
 import {View, TouchableOpacity, ImageBackground} from 'react-native';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
 

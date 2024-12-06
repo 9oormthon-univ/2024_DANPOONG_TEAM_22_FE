@@ -2,21 +2,15 @@ import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {AuthStackParamList} from '@stackNav/Auth';
-import {useState} from 'react';
-import {Alert, Image, Pressable, TextInput, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker';
-import useLoading from '@hooks/useLoading';
-import uploadImageToS3 from '@apis/util';
-import {Gender, MemberInfoResponseData, Role} from '@type/api/member';
-import formatBirth from '@utils/formatBirth';
-import {postMemberYouth} from '@apis/member';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {AuthStackParamList} from '@stackNav/Auth';
+import {useState} from 'react';
+import {Image, Pressable, TextInput, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'YouthSleepTimeScreen'
@@ -37,7 +31,6 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const [sleepTime, setSleepTime] = useState(new Date());
   const [sleepTimeString, setSleepTimeString] = useState('');
   const [show, setShow] = useState(false);
-  const {isLoading, setIsLoading} = useLoading();
 
   // 상태바 스타일 설정
   const BackColorType = 'main';
@@ -62,45 +55,18 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
   };
 
   const handleNext = async () => {
-    let imageLocation;
-    try {
-      setIsLoading(true);
-      imageLocation = (await uploadImageToS3(imageUri)) as string;
-      console.log('imageLocation', imageLocation);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-
-    const fcmToken = await AsyncStorage.getItem('fcmToken');
-
-    const data: MemberInfoResponseData = {
-      gender: gender as Gender,
-      name: nickname,
-      profileImage: imageLocation ?? '',
-      role: role as Role,
-      birth: formatBirth(birthday),
-      fcmToken,
-      youthMemberInfoDto: {
-        wakeUpTime,
-        breakfast,
-        lunch,
-        dinner,
-        sleepTime: sleepTime.toISOString(),
-      },
-    };
-
-    try {
-      const {result} = await postMemberYouth(data);
-      console.log(result);
-
-      await AsyncStorage.setItem('nickname', nickname);
-      navigation.navigate('YouthNoticeScreen');
-    } catch (error) {
-      console.log(error);
-      Alert.alert('오류', '회원가입 중 오류가 발생했어요');
-    }
+    navigation.navigate('YouthNoticeScreen', {
+      nickname,
+      imageUri,
+      role,
+      birthday,
+      gender,
+      wakeUpTime,
+      breakfast,
+      lunch,
+      dinner,
+      sleepTime: sleepTime.toISOString(),
+    });
   };
 
   return (
@@ -158,12 +124,7 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
               className="w-full h-auto flex-1 mt-[177]"
             />
             <View className="absolute left-0 bottom-[30] w-full px-[40]">
-              <Button
-                text="다음"
-                onPress={handleNext}
-                disabled={!wakeUpTime || isLoading}
-                isLoading={isLoading}
-              />
+              <Button text="다음" onPress={handleNext} disabled={!wakeUpTime} />
             </View>
           </View>
         </>

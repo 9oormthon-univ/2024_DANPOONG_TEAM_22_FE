@@ -51,7 +51,18 @@ export type AuthStackParamList = {
     lunch: string;
     dinner: string;
   };
-  YouthNoticeScreen: undefined;
+  YouthNoticeScreen: {
+    nickname: string;
+    imageUri: string;
+    role: string;
+    birthday: string;
+    gender: string;
+    wakeUpTime: string;
+    breakfast: string;
+    lunch: string;
+    dinner: string;
+    sleepTime: string;
+  };
 };
 
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();

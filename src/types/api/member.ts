@@ -20,6 +20,8 @@ interface MemberInfoResponseData extends MemberRequestData {
     breakfast: string;
     lunch: string;
     dinner: string;
+    latitude: number;
+    longitude: number;
   };
 }
 

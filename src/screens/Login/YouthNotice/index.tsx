@@ -1,14 +1,34 @@
+import {postMemberYouth} from '@apis/member';
+import uploadImageToS3 from '@apis/util';
 import AlarmCircleIcon from '@assets/svgs/alarmCircle.svg';
+import LocationCircleIcon from '@assets/svgs/locationCircle.svg';
 import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
+import useLoading from '@hooks/useLoading';
+import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CompositeScreenProps} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
+import {Gender, MemberInfoResponseData, Role} from '@type/api/member';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
-import {ScrollView, View} from 'react-native';
-import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
+import formatBirth from '@utils/formatBirth';
+import {useEffect, useState} from 'react';
+import {
+  Alert,
+  PermissionsAndroid,
+  Platform,
+  ScrollView,
+  View,
+} from 'react-native';
+import {
+  getCurrentPosition,
+  requestAuthorization,
+} from 'react-native-geolocation-service';
+// import Geolocation from 'react-native-geolocation-service';
+
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'YouthNoticeScreen'
@@ -21,18 +41,118 @@ const NOTICE_CONTENTS = [
     icon: <AlarmCircleIcon />,
     content: '일상에 따뜻한 한 마디가 필요할 때\n알림을 받을 수 있어요',
   },
+  {
+    icon: <LocationCircleIcon />,
+    content: '지자체의 자립 지원 통계 및 보고에\n소중한 위치 정보가 제공돼요',
+  },
 ];
 
-const YouthNoticeScreen = ({navigation}: Readonly<Props>) => {
+const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
+  const {
+    nickname,
+    imageUri,
+    role,
+    birthday,
+    gender,
+    wakeUpTime,
+    breakfast,
+    lunch,
+    dinner,
+    sleepTime,
+  } = route.params;
+  const {isLoading, setIsLoading} = useLoading();
+  const [currentLocation, setCurrentLocation] = useState(null);
   // 상태바 스타일 설정
   const BackColorType = 'solid';
   useStatusBarStyle(BackColorType);
 
-  const handleNext = () => {
-    navigation.navigate('YouthStackNav', {
-      screen: 'YouthHomeScreen',
-      params: {},
+  const requestPermission = async () => {
+    try {
+      if (Platform.OS === 'ios') {
+        return await requestAuthorization('always');
+      }
+      // 안드로이드 위치 정보 수집 권한 요청
+      if (Platform.OS === 'android') {
+        return await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        );
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    requestPermission().then(result => {
+      console.log({result});
+      if (result === 'granted') {
+        getCurrentPosition(
+          pos => {
+            setCurrentLocation(pos.coords);
+          },
+          error => {
+            console.log(error);
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 3600,
+            maximumAge: 3600,
+          },
+        );
+      }
     });
+  }, []);
+
+  const handleNext = async () => {
+    if (!currentLocation) {
+      return;
+    }
+
+    let imageLocation;
+    try {
+      setIsLoading(true);
+      imageLocation = (await uploadImageToS3(imageUri)) as string;
+      console.log('imageLocation', imageLocation);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+
+    const fcmToken = await AsyncStorage.getItem('fcmToken');
+
+    const data: MemberInfoResponseData = {
+      gender: gender as Gender,
+      name: nickname,
+      profileImage: imageLocation ?? '',
+      role: role as Role,
+      birth: formatBirth(birthday),
+      fcmToken,
+      youthMemberInfoDto: {
+        wakeUpTime,
+        breakfast,
+        lunch,
+        dinner,
+        sleepTime,
+        latitude: currentLocation.latitude,
+        longitude: currentLocation.longitude,
+      },
+    };
+
+    try {
+      const {result} = await postMemberYouth(data);
+      console.log(result);
+
+      await AsyncStorage.setItem('nickname', nickname);
+
+      navigation.navigate('YouthStackNav', {
+        screen: 'YouthHomeScreen',
+        params: {},
+      });
+    } catch (error) {
+      console.log(error);
+      Alert.alert('오류', '회원가입 중 오류가 발생했어요');
+    }
   };
 
   return (
@@ -51,7 +171,7 @@ const YouthNoticeScreen = ({navigation}: Readonly<Props>) => {
           <Txt
             type="title2"
             text={
-              '시작하기에 앞서,\n원활한 서비스를 위해\n알람 수신 동의가 필요해요'
+              '시작하기에 앞서,\n원활한 서비스를 위해\n권한 동의가 필요해요'
             }
             className="text-white"
           />
@@ -68,7 +188,12 @@ const YouthNoticeScreen = ({navigation}: Readonly<Props>) => {
       </ScrollView>
 
       <View className="absolute left-0 bottom-[30] w-full px-[40]">
-        <Button text="시작하기" onPress={handleNext} />
+        <Button
+          text="시작하기"
+          onPress={handleNext}
+          disabled={isLoading || !currentLocation}
+          isLoading={isLoading}
+        />
       </View>
     </BG>
   );
