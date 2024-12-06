@@ -6,10 +6,8 @@ import {AuthStackParamList} from '@stackNav/Auth';
 import {Role} from '@type/api/member';
 import {useState} from 'react';
 import {Image, Pressable, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import VolunteerIcon from '@assets/svgs/volunteer.svg';
 import YouthIcon from '@assets/svgs/youth.svg';
-import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
 // import {postMember} from '@apis/member';
 // import useLoading from '@hooks/useLoading';
 // import uploadImageToS3 from '@apis/util';
@@ -18,9 +16,6 @@ import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
 type AuthProps = NativeStackScreenProps<AuthStackParamList, 'RoleSelectScreen'>;
 
 const RoleSelectScreen = ({route, navigation}: Readonly<AuthProps>) => {
-  // 상태바 스타일 설정 
-  const BackColorType = 'main';
-  useStatusBarStyle(BackColorType);
 
   const {nickname, imageUri} = route.params;
   const [role, setRole] = useState<Role | null>(null);
@@ -73,10 +68,8 @@ const RoleSelectScreen = ({route, navigation}: Readonly<AuthProps>) => {
   };
 
   return (
-    <SafeAreaView className="flex-1 justify-center items-center">
-      <BG type={BackColorType}>
-        <>
-          <View className="items-center pt-[80]">
+      <BG type="main">
+          <View className="items-center pt-[110]">
             <Txt
               type="body3"
               text="이곳은 광활한 사막..."
@@ -143,9 +136,7 @@ const RoleSelectScreen = ({route, navigation}: Readonly<AuthProps>) => {
               // isLoading={isLoading}
             />
           </View>
-        </>
       </BG>
-    </SafeAreaView>
   );
 };
 

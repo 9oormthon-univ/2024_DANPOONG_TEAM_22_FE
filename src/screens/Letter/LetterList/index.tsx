@@ -3,7 +3,6 @@ import {getLetters} from '@apis/providedFile';
 // import {getTopText} from '@apis/RCDApis/getTopText';
 import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
-import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 // import {LETTERS_DATA} from '@constants/letter';
 // import useGetAlarmCategory from '@hooks/alarm/useGetAlarmCategory';
 // import useGetAlarmComfort from '@hooks/alarm/useGetAlarmComfort';
@@ -16,8 +15,6 @@ import {LetterResponseData} from '@type/api/providedFile';
 import {useEffect, useState} from 'react';
 import {Alert, Pressable, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import {SafeAreaView} from 'react-native-safe-area-context';
-
 type LetterProps = NativeStackScreenProps<
   LetterStackParamList,
   'LetterListScreen'
@@ -25,8 +22,6 @@ type LetterProps = NativeStackScreenProps<
 
 const LetterListScreen = ({navigation}: Readonly<LetterProps>) => {
   // 상태바 스타일 설정
-  const BackColorType = 'main';
-  useStatusBarStyle(BackColorType);
 
   const [nickname, setNickname] = useState('');
   const [selectedFilterIdx, setSelectedFilterIdx] = useState(0);
@@ -106,8 +101,7 @@ const LetterListScreen = ({navigation}: Readonly<LetterProps>) => {
   }, [selectedFilterIdx]);
 
   return (
-    <SafeAreaView className="flex-1">
-      <BG type={BackColorType}>
+      <BG type="main">
         <View className="flex-1">
           {/* AppBar는 flex-1 컨테이너 안에 넣어야 함 */}
           <AppBar
@@ -199,7 +193,6 @@ const LetterListScreen = ({navigation}: Readonly<LetterProps>) => {
           )}
         </View>
       </BG>
-    </SafeAreaView>
   );
 };
 

@@ -2,7 +2,6 @@ import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
-import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker';
@@ -10,7 +9,6 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {useState} from 'react';
 import {Image, Pressable, TextInput, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'YouthSleepTimeScreen'
@@ -31,10 +29,6 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const [sleepTime, setSleepTime] = useState(new Date());
   const [sleepTimeString, setSleepTimeString] = useState('');
   const [show, setShow] = useState(false);
-
-  // 상태바 스타일 설정
-  const BackColorType = 'main';
-  useStatusBarStyle(BackColorType);
 
   // 시간 선택 함수
   const onChangeDate = (event: DateTimePickerEvent, selectedDate?: Date) => {
@@ -70,8 +64,7 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
   };
 
   return (
-    <SafeAreaView className="flex-1">
-      <BG type={BackColorType}>
+      <BG type="main">
         <>
           <AppBar
             goBackCallbackFn={() => {
@@ -79,7 +72,7 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
             }}
             className="absolute top-[0] w-full"
           />
-          <View className="w-[50%] h-[3] bg-yellowPrimary absolute top-[63]" />
+          <View className="w-[50%] h-[3] bg-yellowPrimary absolute top-[93]" />
           <View className="flex-1 mt-[50]">
             <View className="items-center pt-[100]">
               <Txt
@@ -133,7 +126,6 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
           </View>
         </>
       </BG>
-    </SafeAreaView>
   );
 };
 

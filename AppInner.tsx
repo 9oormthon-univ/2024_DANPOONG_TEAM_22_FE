@@ -79,12 +79,10 @@ const AppInner = () => {
 
   // 스플래시 스크린 숨기기
   useEffect(() => {
-    // 로그인된 상태여서 네비게이션 준비 완료 상태일 때 스플래시 스크린 숨기기
-    // 또는 로그인되지 않은 상태여서 role이 null일 때 스플래시 스크린 숨기기
-    if (isNavigationReady || (!isLoggedIn && !role)) {
+    if (isNavigationReady && role) {
       SplashScreen.hide();
     }
-  }, [isNavigationReady]);
+  }, [isNavigationReady, role]);
 
   // 알람 처리 및 청년 리스닝 화면 이동
   useEffect(() => {

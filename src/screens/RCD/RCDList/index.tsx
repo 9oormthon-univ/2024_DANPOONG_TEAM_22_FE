@@ -10,7 +10,7 @@ import BG from '@components/atom/BG';
 import Txt from '@components/atom/Txt';
 import Carousel from '@components/molecule/Carousel';
 import AppBar from '@components/atom/AppBar';
-
+import StatusBarGap from '@components/atom/StatusBarGap';
 // React Navigation 관련 import
 import {
   NavigationProp,
@@ -28,8 +28,6 @@ import {COLORS} from '@constants/Colors';
 import {RecordTypeConstant} from '@constants/RecordType';
 // React Hooks import
 import {useState, useEffect} from 'react';
-import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
-
 /**
  * RCD 목록을 보여주는 스크린 컴포넌트
  * @param route - 네비게이션 라우트 파라미터 (RCD 타입 정보 포함)
@@ -41,9 +39,6 @@ const RCDListScreen = ({
 }) => {
   // 라우트에서 RCD 타입 추출
   const {type} = route.params;
-  // 상태바 스타일 설정
-  const BackColorType = 'gradation';
-  useStatusBarStyle(BackColorType);
 
   // 상태 관리
   const [rcdList, setRcdList] = useState<RCD[]>([]); // RCD 목록 상태
@@ -71,7 +66,7 @@ const RCDListScreen = ({
   }, [type]);
 
   return (
-    <BG type={BackColorType}>
+    <BG type="gradation">
       {/* 상단 앱바 */}
       <AppBar
         title={RCDListAppBar[type]}
@@ -80,7 +75,9 @@ const RCDListScreen = ({
         }}
         className="absolute top-[0] w-full"
       />
-      
+      <StatusBarGap times={2} />
+
+
       {/* 상단 배경 이미지 */}
       <ImageBackground
         source={
@@ -90,7 +87,7 @@ const RCDListScreen = ({
         }
         style={{
           position: 'absolute',
-          top: 100,
+          top: 130,
           right: type === RecordTypeConstant.INFO ? 31 : 0,
           width: type === RecordTypeConstant.INFO ? 338 : 161,
           height: type === RecordTypeConstant.INFO ? 53 : 130,
