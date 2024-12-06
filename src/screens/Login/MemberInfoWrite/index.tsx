@@ -8,11 +8,9 @@ import {AuthStackParamList} from '@stackNav/Auth';
 import {Gender, MemberRequestData, Role} from '@type/api/member';
 import {useEffect, useState} from 'react';
 import {Alert, Image, Keyboard, Pressable, TextInput, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import useLoading from '@hooks/useLoading';
 import uploadImageToS3 from '@apis/util';
 import formatBirth from '@utils/formatBirth';
-import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'MemberInfoWriteScreen'
@@ -21,8 +19,6 @@ type AuthProps = NativeStackScreenProps<
 const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   // 상태바 스타일 설정
-  const BackColorType = 'main';
-  useStatusBarStyle(BackColorType);
 
   const {nickname, imageUri, role} = route.params;
   const [birthday, setBirthday] = useState('');
@@ -84,10 +80,9 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   };
 
   return (
-    <SafeAreaView className="flex-1 justify-center items-center">
-      <BG type={BackColorType}>
+      <BG type="main">
         <>
-          <View className="items-center pt-[80]">
+          <View className="items-center pt-[110]">
             <Txt
               type="title2"
               text={`${nickname ?? ''} 님,`}
@@ -162,7 +157,6 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
           </View>
         </>
       </BG>
-    </SafeAreaView>
   );
 };
 

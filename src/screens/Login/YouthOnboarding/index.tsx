@@ -10,8 +10,6 @@ import PagerView, {
   PagerViewOnPageScrollEventData,
   PagerViewOnPageSelectedEvent,
 } from 'react-native-pager-view';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'YouthOnboardingScreen'
@@ -116,16 +114,6 @@ const Page5 = ({handleNext}: Readonly<{handleNext: () => void}>) => {
 const YouthOnboardingScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const {nickname, imageUri, role} = route.params;
   const [currentPageIdx, setCurrentPageIdx] = useState(0);
-  // 상태바 스타일 설정
-  const [BackColorType, setBackColorType] = useState<'gradation' | 'main'>(
-    'main',
-  );
-  useStatusBarStyle(BackColorType);
-  useEffect(() => {
-    setBackColorType(
-      currentPageIdx === 3 || currentPageIdx === 4 ? 'gradation' : 'main',
-    );
-  }, [currentPageIdx]);
 
   //
   const handleNext = () => {
@@ -202,8 +190,7 @@ const YouthOnboardingScreen = ({route, navigation}: Readonly<AuthProps>) => {
   };
 
   return (
-    <SafeAreaView className="flex-1">
-      <BG type={BackColorType}>
+      <BG type={currentPageIdx === 3 || currentPageIdx === 4 ? 'gradation' : 'main'}>
         <>
           <View className="justify-center items-center mt-[85]">
             <SlidingDot
@@ -245,7 +232,6 @@ const YouthOnboardingScreen = ({route, navigation}: Readonly<AuthProps>) => {
           </AnimatedPagerView>
         </>
       </BG>
-    </SafeAreaView>
   );
 };
 

@@ -7,7 +7,6 @@ import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
 import useLoading from '@hooks/useLoading';
-import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CompositeScreenProps} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -65,9 +64,6 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
   const [currentLocation, setCurrentLocation] = useState<GeoCoordinates | null>(
     null,
   );
-  // 상태바 스타일 설정
-  const BackColorType = 'solid';
-  useStatusBarStyle(BackColorType);
 
   const requestPermission = async () => {
     try {
@@ -159,7 +155,7 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
   };
 
   return (
-    <BG type={BackColorType}>
+    <BG type="solid">
       <AppBar
         title="주의사항"
         goBackCallbackFn={() => {

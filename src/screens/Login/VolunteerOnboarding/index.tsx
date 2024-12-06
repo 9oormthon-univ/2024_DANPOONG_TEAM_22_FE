@@ -1,7 +1,6 @@
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
-import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
@@ -12,7 +11,6 @@ import PagerView, {
   PagerViewOnPageScrollEventData,
   PagerViewOnPageSelectedEvent,
 } from 'react-native-pager-view';
-import {SafeAreaView} from 'react-native-safe-area-context';
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -123,13 +121,6 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
   const [currentPageIdx, setCurrentPageIdx] = useState(0);
   const [nickname, setNickname] = useState('');
 
-  // 상태바 스타일 설정
-  const [BackColorType, setBackColorType] = useState<'gradation' | 'main'>('main');
-  useEffect(()=>{
-    setBackColorType(currentPageIdx === 3 ? 'gradation' : 'main');
-  },[currentPageIdx])
-  useStatusBarStyle(BackColorType);
-
   // 닉네임 가져오기
   useEffect(() => {
     (async () => {
@@ -207,8 +198,7 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
   };
 
   return (
-    <SafeAreaView className="flex-1">
-      <BG type={BackColorType}>
+      <BG type={currentPageIdx === 3 ? 'gradation' : 'main'}>
         <>
           <View className="justify-center items-center mt-[85]">
             <SlidingDot
@@ -247,7 +237,6 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
           </AnimatedPagerView>
         </>
       </BG>
-    </SafeAreaView>
   );
 };
 

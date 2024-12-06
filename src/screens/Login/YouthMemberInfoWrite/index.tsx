@@ -7,8 +7,6 @@ import {AuthStackParamList} from '@stackNav/Auth';
 import {Gender} from '@type/api/member';
 import {useEffect, useState} from 'react';
 import {Image, Keyboard, Pressable, TextInput, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'YouthMemberInfoWriteScreen'
@@ -19,9 +17,6 @@ const YouthMemberInfoWriteScreen = ({
   navigation,
 }: Readonly<AuthProps>) => {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  // 상태바 스타일 설정
-  const BackColorType = 'main';
-  useStatusBarStyle(BackColorType);
 
   const {nickname, imageUri, role} = route.params;
   const [birthday, setBirthday] = useState('');
@@ -54,15 +49,14 @@ const YouthMemberInfoWriteScreen = ({
   };
 
   return (
-    <SafeAreaView className="flex-1">
-      <BG type={BackColorType}>
+      <BG type="main">
         <AppBar
           goBackCallbackFn={() => {
             navigation.goBack();
           }}
           className="absolute top-[0] w-full"
         />
-        <View className="w-[25%] h-[3] bg-yellowPrimary absolute top-[63]" />
+        <View className="w-[25%] h-[3] bg-yellowPrimary absolute top-[93]" />
         <View className="flex-1 mt-[50]">
           <View className="items-center pt-[80]">
             <Txt
@@ -135,7 +129,6 @@ const YouthMemberInfoWriteScreen = ({
           />
         </View>
       </BG>
-    </SafeAreaView>
   );
 };
 

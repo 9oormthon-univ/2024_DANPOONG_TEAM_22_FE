@@ -17,7 +17,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {postSaveScript} from '@apis/RCDApis/postSaveScript';
 import Toast from '@components/atom/Toast';
 import AppBar from '@components/atom/AppBar';
-import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
+import StatusBarGap from '@components/atom/StatusBarGap';
 /**
  * RCD 텍스트 입력 화면 컴포넌트
  * @param route - 네비게이션 라우트 파라미터
@@ -27,9 +27,6 @@ const RCDTextScreen = ({
 }: {
   route: RouteProp<HomeStackParamList, 'RCDText'>;
 }) => {
-  // 상태바 스타일 설정
-  const BackColorType = 'solid';
-  useStatusBarStyle(BackColorType);
 
   // 라우트 파라미터 추출
   const {item, gptRes, alarmId, type} = route.params;
@@ -78,7 +75,7 @@ const RCDTextScreen = ({
   };
 
   return (
-    <BG type={BackColorType}>
+    <BG type="solid">
       {/* 상단 앱바 */}
       <AppBar
         title=""
@@ -97,6 +94,7 @@ const RCDTextScreen = ({
       <ScrollView
         className="w-full h-full px-px mt-[65] pt-[52]"
         contentContainerStyle={{alignItems: 'center'}}>
+        <StatusBarGap />
         {/* 이미지 섹션 */}
         <StarPNG />
         <View className="mb-[29]" />

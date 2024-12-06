@@ -2,7 +2,6 @@ import PencilIcon from '@assets/svgs/pencil.svg';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
-import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {useEffect, useState} from 'react';
@@ -12,7 +11,6 @@ import {
   ImagePickerResponse,
   launchCamera,
 } from 'react-native-image-picker';
-import {SafeAreaView} from 'react-native-safe-area-context';
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -21,10 +19,7 @@ type AuthProps = NativeStackScreenProps<
 
 const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  // 상태바 스타일 설정
-  const BackColorType = 'main';
-  useStatusBarStyle(BackColorType);
-
+ 
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [nickname, setNickname] = useState('');
 
@@ -80,17 +75,15 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
   };
 
   return (
-    <SafeAreaView className="flex-1 justify-center items-center">
-      <BG type={BackColorType}>
-        <>
-          <View className="items-center mt-[149]">
-            <Txt
-              type="title2"
-              text={'내일모래가 당신을\n어떻게 부를까요?'}
-              className="text-white text-center"
-            />
+    <BG type="main">
+      <View className="items-center mt-[179]">
+        <Txt
+          type="title2"
+          text={'내일모래가 당신을\n어떻게 부를까요?'}
+          className="text-white text-center"
+        />
 
-            <Pressable onPress={selectImage} className="mt-[50] relative">
+        <Pressable onPress={selectImage} className="mt-[50] relative">
               {imageUri ? (
                 <Image
                   source={{uri: imageUri}}
@@ -133,9 +126,7 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
             }`}>
             <Button text="다음" onPress={handleNext} disabled={!nickname} />
           </View>
-        </>
-      </BG>
-    </SafeAreaView>
+    </BG>
   );
 };
 

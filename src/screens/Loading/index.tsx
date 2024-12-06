@@ -2,16 +2,10 @@ import BG from '@components/atom/BG';
 import Txt from '@components/atom/Txt';
 import LottieView from 'lottie-react-native';
 import {View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 const LoadingScreen = () => {
-  // 상태바 스타일 설정
-  const BackColorType = 'solid';
-  useStatusBarStyle(BackColorType);
 
   return (
-    <SafeAreaView className="flex-1">
-      <BG type={BackColorType}>
+      <BG type="main">
         <View className="flex-1 justify-center items-center">
           <View className="absolute top-[-100] w-full h-full">
             <LottieView
@@ -31,11 +25,10 @@ const LoadingScreen = () => {
           <Txt
             type="title2"
             text={'따스한 마음을 담은\n목소리를 준비 중이에요.'}
-            className="text-white text-center"
-          />
-        </View>
-      </BG>
-    </SafeAreaView>
+        className="text-white text-center"
+      />
+    </View>
+  </BG>
   );
 };
 

@@ -4,7 +4,6 @@ import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
-import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 import {CompositeScreenProps, useNavigation} from '@react-navigation/native';
 import {
   NativeStackNavigationProp,
@@ -33,9 +32,7 @@ const NOTICE_CONTENTS = [
 ];
 
 const VolunteerNoticeScreen = ({navigation}: Readonly<Props>) => {
-  // 상태바 스타일 설정
-  const BackColorType = 'solid';
-  useStatusBarStyle(BackColorType);
+
 
   const tabNavigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -47,7 +44,7 @@ const VolunteerNoticeScreen = ({navigation}: Readonly<Props>) => {
   };
 
   return (
-    <BG type={BackColorType}>
+    <BG type="solid">
       <AppBar
         title="주의사항"
         goBackCallbackFn={() => {

@@ -18,7 +18,6 @@ import {
   View,
 } from 'react-native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-import {SafeAreaView} from 'react-native-safe-area-context';
 
 // 아이콘 import
 import FightingIcon from '@assets/svgs/emotion/emotion_fighting.svg';
@@ -31,6 +30,8 @@ import SmileIcon from '@assets/svgs/smile.svg';
 import SmileWhiteIcon from '@assets/svgs/smile_white.svg';
 import StopIcon from '@assets/svgs/stop.svg';
 import {postComment} from '@apis/providedFile';
+import BG from '@components/atom/BG';
+import StatusBarGap from '@components/atom/StatusBarGap';
 
 // 네비게이션 Props 타입 정의
 type YouthProps = NativeStackScreenProps<
@@ -162,7 +163,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
 
   // 메인 UI 렌더링
   return (
-    <SafeAreaView className="flex-1 bg-solid">
+    <BG type="solid">
       {!isKeyboardVisible && (
         <View
           className="absolute left-0 bottom-0 w-full h-full"
@@ -181,8 +182,10 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
       <View className="flex-1">
         <AppBar
           exitCallbackFn={() => navigation.goBack()}
-          className="absolute top-[6] w-full"
+          className="absolute top-[0] w-full"
         />
+              <StatusBarGap />
+
         <View className="pt-[149] flex-1 items-center">
           {/* 프로필 이미지 영역 */}
           <View className="relative w-[78] h-[78] justify-center items-center">
@@ -288,7 +291,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
           </View>
         </View>
       </View>
-    </SafeAreaView>
+    </BG>
   );
 };
 
