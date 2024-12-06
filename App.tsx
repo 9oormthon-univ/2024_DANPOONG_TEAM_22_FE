@@ -36,44 +36,56 @@ export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 function App(): React.JSX.Element {
   // 포그라운드 상태에서 푸시 알림 처리
   useEffect(() => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      console.log('Foreground', remoteMessage);
-      // pushNoti.displayNoti(remoteMessage);
-    });
+    (async () => {
+      const role = await AsyncStorage.getItem('role');
+      if (role !== 'YOUTH') {
+        return;
+      }
 
-    return unsubscribe;
+      const unsubscribe = messaging().onMessage(async remoteMessage => {
+        console.log('Foreground', remoteMessage);
+        // pushNoti.displayNoti(remoteMessage);
+      });
+
+      return unsubscribe;
+    })();
   }, []);
 
   // 앱 초기화 및 푸시 알림 설정
   useEffect(() => {
-    requestUserPermission();
+    (async () => {
+      const role = await AsyncStorage.getItem('role');
+      if (role !== 'YOUTH') {
+        return;
+      }
 
-    // 종료 상태에서 알림을 통해 앱이 실행된 경우
-    messaging()
-      .getInitialNotification()
-      .then(remoteMessage => {
+      requestUserPermission();
+
+      // 종료 상태에서 알림을 통해 앱이 실행된 경우
+      messaging()
+        .getInitialNotification()
+        .then(remoteMessage => {
+          (async () => {
+            if (remoteMessage) {
+              const {alarmId} = remoteMessage.data;
+              // AsyncStorage에 알림 데이터 저장
+              await AsyncStorage.setItem('alarmId', alarmId);
+            }
+          })();
+        });
+
+      // 백그라운드에서 알림을 통해 앱이 실행된 경우
+      messaging().onNotificationOpenedApp(remoteMessage => {
         (async () => {
-          const role = await AsyncStorage.getItem('role');
-          if (remoteMessage && role === 'YOUTH') {
+          if (remoteMessage) {
             const {alarmId} = remoteMessage.data;
-            // AsyncStorage에 알림 데이터 저장
-            await AsyncStorage.setItem('alarmId', alarmId);
+            navigateToYouthListenScreen({
+              alarmId: Number(alarmId),
+            });
           }
         })();
       });
-
-    // 백그라운드에서 알림을 통해 앱이 실행된 경우
-    messaging().onNotificationOpenedApp(remoteMessage => {
-      (async () => {
-        const role = await AsyncStorage.getItem('role');
-        if (remoteMessage && role === 'YOUTH') {
-          const {alarmId} = remoteMessage.data;
-          navigateToYouthListenScreen({
-            alarmId: Number(alarmId),
-          });
-        }
-      })();
-    });
+    })();
   }, []);
 
   //푸시 알림 권한 요청 함수

@@ -26,12 +26,12 @@ client.interceptors.request.use(async config => {
     }
 
     // 요청 로그 출력
-    // console.log('Request:', {
-    //   url: config.url,
-    //   method: config.method,
-    //   headers: config.headers,
-    //   data: config.data,
-    // });
+    console.log('Request:', {
+      url: config.url,
+      method: config.method,
+      headers: config.headers,
+      data: config.data,
+    });
 
     return config;
   } catch (error) {
@@ -44,11 +44,11 @@ client.interceptors.request.use(async config => {
 client.interceptors.response.use(
   response => {
     // 응답 로그 출력
-    // console.log('Response:', {
-    //   url: response.config.url,
-    //   status: response.status,
-    //   data: response.data,
-    // });
+    console.log('Response:', {
+      url: response.config.url,
+      status: response.status,
+      data: response.data,
+    });
     return response;
   },
   async error => {
