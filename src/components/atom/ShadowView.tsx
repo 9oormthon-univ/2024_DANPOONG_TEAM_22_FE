@@ -15,7 +15,7 @@ const ShadowView = ({
       <ImageBackground
         source={require('@assets/webps/ShadowBox.webp')}
         className="w-full h-full"
-        resizeMode="cover">
+        resizeMode="stretch">
         {children}
       </ImageBackground>
     </View>
