@@ -124,7 +124,7 @@ const LetterListScreen = ({navigation}: Readonly<LetterProps>) => {
               <View className="flex-row items-center px-[30] py-[10] h-[36] mt-[20]">
                 {parentCategories.map((menu, index) => (
                   <Pressable
-                    key={`${menu.id}-parentCategories`}
+                    key={`${menu.category}=${menu.label}-parentCategories`}
                     className={`h-[36] px-[22] items-center justify-center border ${
                       index === selectedFilterIdx
                         ? 'border-tabIcon bg-white/10'

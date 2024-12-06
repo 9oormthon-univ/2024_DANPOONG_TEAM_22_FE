@@ -5,10 +5,10 @@ import Txt from '@components/atom/Txt';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {Gender} from '@type/api/member';
-import {useState} from 'react';
-import {Image, Pressable, TextInput, View} from 'react-native';
+import {useEffect, useState} from 'react';
+import {Image, Keyboard, Pressable, TextInput, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
+import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'YouthMemberInfoWriteScreen'
@@ -18,6 +18,7 @@ const YouthMemberInfoWriteScreen = ({
   route,
   navigation,
 }: Readonly<AuthProps>) => {
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   // 상태바 스타일 설정
   const BackColorType = 'main';
   useStatusBarStyle(BackColorType);
@@ -25,6 +26,22 @@ const YouthMemberInfoWriteScreen = ({
   const {nickname, imageUri, role} = route.params;
   const [birthday, setBirthday] = useState('');
   const [gender, setGender] = useState<Gender | null>(null);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
+      setIsKeyboardVisible(true),
+    );
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setTimeout(() => {
+        setIsKeyboardVisible(false);
+      }, 100);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   const handleNext = async () => {
     navigation.navigate('YouthWakeUpTimeScreen', {
@@ -103,9 +120,14 @@ const YouthMemberInfoWriteScreen = ({
         </View>
         <Image
           source={require('@assets/pngs/background/background_youth5.png')}
-          className="w-full h-auto flex-1 mt-[177]"
+          className={`w-full h-auto flex-1 mt-[177] ${
+            isKeyboardVisible ? 'hidden' : ''
+          }`}
         />
-        <View className="absolute left-0 bottom-[30] w-full px-[40]">
+        <View
+          className={`absolute left-0 bottom-[30] w-full px-[40] ${
+            isKeyboardVisible ? 'hidden' : ''
+          }`}>
           <Button
             text="다음"
             onPress={handleNext}
