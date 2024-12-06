@@ -10,7 +10,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker';
-import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
+import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 type AuthProps = NativeStackScreenProps<AuthStackParamList, 'YouthEatScreen'>;
 
 const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
@@ -101,7 +101,7 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
 
   // 상태바 스타일 설정
   const BackColorType = 'main';
-  useStatusBarStyle(BackColorType); 
+  useStatusBarStyle(BackColorType);
 
   return (
     <SafeAreaView className="flex-1">
@@ -221,7 +221,11 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
               className="w-full h-auto flex-1 mt-[177]"
             />
             <View className="absolute left-0 bottom-[30] w-full px-[40]">
-              <Button text="다음" onPress={handleNext} disabled={!wakeUpTime} />
+              <Button
+                text="다음"
+                onPress={handleNext}
+                disabled={!breakfastString || !lunchString || !dinnerString}
+              />
             </View>
           </View>
         </>

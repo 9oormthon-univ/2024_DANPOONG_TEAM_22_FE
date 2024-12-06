@@ -2,7 +2,7 @@ import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
-import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
+import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker';
@@ -116,7 +116,11 @@ const YouthWakeUpTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
             className="w-full h-auto flex-1 mt-[177]"
           />
           <View className="absolute left-0 bottom-[30] w-full px-[40]">
-            <Button text="다음" onPress={handleNext} disabled={!wakeUpTime} />
+            <Button
+              text="다음"
+              onPress={handleNext}
+              disabled={!wakeUpTimeString}
+            />
           </View>
         </>
       </BG>
