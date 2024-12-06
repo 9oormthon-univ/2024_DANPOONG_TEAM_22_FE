@@ -189,49 +189,64 @@ const YouthOnboardingScreen = ({route, navigation}: Readonly<AuthProps>) => {
     setCurrentPageIdx(e.nativeEvent.position);
   };
 
-  return (
-      <BG type={currentPageIdx === 3 || currentPageIdx === 4 ? 'gradation' : 'main'}>
-        <>
-          <View className="justify-center items-center mt-[85]">
-            <SlidingDot
-              testID={'sliding-dot'}
-              marginHorizontal={3}
-              containerStyle={{top: 30}}
-              data={INTRO_DATA}
-              //@ts-ignore
-              scrollX={scrollX}
-              dotSize={5.926}
-              dotStyle={{backgroundColor: '#414141'}}
-              slidingIndicatorStyle={{backgroundColor: '#F9F96C'}}
-            />
-          </View>
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (currentPageIdx < PAGE_COUNT) {
+        ref.current?.setPage(currentPageIdx + 1);
+      } else {
+        clearInterval(interval);
+      }
+    }, 3000);
 
-          <AnimatedPagerView
-            testID="pager-view"
-            initialPage={0}
-            ref={ref}
-            className="flex-1"
-            onPageScroll={onPageScroll}
-            onPageSelected={onPageSelected}
-            style={{marginTop: -85}}>
-            <View key="1" className="flex-1">
-              <Page1 nickname={nickname ?? ''} />
-            </View>
-            <View key="2" className="flex-1">
-              <Page2 />
-            </View>
-            <View key="3" className="flex-1">
-              <Page3 />
-            </View>
-            <View key="4" className="flex-1">
-              <Page4 />
-            </View>
-            <View key="5" className="flex-1">
-              <Page5 handleNext={handleNext} />
-            </View>
-          </AnimatedPagerView>
-        </>
-      </BG>
+    return () => clearInterval(interval);
+  }, [currentPageIdx]);
+
+  return (
+    <BG
+      type={
+        currentPageIdx === 3 || currentPageIdx === 4 ? 'gradation' : 'main'
+      }>
+      <>
+        <View className="justify-center items-center mt-[85]">
+          <SlidingDot
+            testID={'sliding-dot'}
+            marginHorizontal={3}
+            containerStyle={{top: 30}}
+            data={INTRO_DATA}
+            //@ts-ignore
+            scrollX={scrollX}
+            dotSize={5.926}
+            dotStyle={{backgroundColor: '#414141'}}
+            slidingIndicatorStyle={{backgroundColor: '#F9F96C'}}
+          />
+        </View>
+
+        <AnimatedPagerView
+          testID="pager-view"
+          initialPage={0}
+          ref={ref}
+          className="flex-1"
+          onPageScroll={onPageScroll}
+          onPageSelected={onPageSelected}
+          style={{marginTop: -85}}>
+          <View key="1" className="flex-1">
+            <Page1 nickname={nickname ?? ''} />
+          </View>
+          <View key="2" className="flex-1">
+            <Page2 />
+          </View>
+          <View key="3" className="flex-1">
+            <Page3 />
+          </View>
+          <View key="4" className="flex-1">
+            <Page4 />
+          </View>
+          <View key="5" className="flex-1">
+            <Page5 handleNext={handleNext} />
+          </View>
+        </AnimatedPagerView>
+      </>
+    </BG>
   );
 };
 
