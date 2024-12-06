@@ -24,6 +24,7 @@ import {
   View,
 } from 'react-native';
 import {
+  GeoCoordinates,
   getCurrentPosition,
   requestAuthorization,
 } from 'react-native-geolocation-service';
@@ -61,7 +62,9 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
     sleepTime,
   } = route.params;
   const {isLoading, setIsLoading} = useLoading();
-  const [currentLocation, setCurrentLocation] = useState(null);
+  const [currentLocation, setCurrentLocation] = useState<GeoCoordinates | null>(
+    null,
+  );
   // 상태바 스타일 설정
   const BackColorType = 'solid';
   useStatusBarStyle(BackColorType);
@@ -127,7 +130,7 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
       profileImage: imageLocation ?? '',
       role: role as Role,
       birth: formatBirth(birthday),
-      fcmToken,
+      fcmToken: fcmToken ?? '',
       youthMemberInfoDto: {
         wakeUpTime,
         breakfast,
