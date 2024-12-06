@@ -63,11 +63,10 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
         const {result} = await getAlarmCategoryDetail({
           childrenAlarmCategory,
         });
-        const {alarmId, title} = result;
+        const {alarmId} = result;
         console.log('getAlarmCategory', result);
         navigation.navigate('YouthListenScreen', {
           alarmId,
-          script: title,
         });
       } catch (error) {
         console.log(error);

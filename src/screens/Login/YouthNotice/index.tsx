@@ -22,12 +22,7 @@ import {
   ScrollView,
   View,
 } from 'react-native';
-import {
-  GeoCoordinates,
-  getCurrentPosition,
-  requestAuthorization,
-} from 'react-native-geolocation-service';
-// import Geolocation from 'react-native-geolocation-service';
+import Geolocation from '@react-native-community/geolocation';
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -47,6 +42,8 @@ const NOTICE_CONTENTS = [
   },
 ];
 
+Geolocation.setRNConfiguration({skipPermissionRequests: false});
+
 const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
   const {
     nickname,
@@ -61,16 +58,16 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
     sleepTime,
   } = route.params;
   const {isLoading, setIsLoading} = useLoading();
-  const [currentLocation, setCurrentLocation] = useState<GeoCoordinates | null>(
-    null,
-  );
+  const [currentLocation, setCurrentLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+  // 상태바 스타일 설정
+  const BackColorType = 'solid';
+  useStatusBarStyle(BackColorType);
 
   const requestPermission = async () => {
     try {
-      if (Platform.OS === 'ios') {
-        return await requestAuthorization('always');
-      }
-      // 안드로이드 위치 정보 수집 권한 요청
       if (Platform.OS === 'android') {
         return await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -82,27 +79,34 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
   };
 
   useEffect(() => {
-    requestPermission().then(result => {
-      console.log({result});
-      if (result === 'granted') {
-        getCurrentPosition(
-          pos => {
-            setCurrentLocation(pos.coords);
-          },
-          error => {
-            console.log(error);
-          },
-          {
-            enableHighAccuracy: true,
-            timeout: 3600,
-            maximumAge: 3600,
-          },
-        );
+    (async () => {
+      const permission = await requestPermission();
+      console.log({permission});
+      if (permission !== 'granted') {
+        return;
       }
-    });
+
+      Geolocation.getCurrentPosition(
+        pos => {
+          console.log('pos', pos);
+          setCurrentLocation(pos.coords);
+        },
+        error => {
+          console.log('error', error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 3600,
+        },
+      );
+    })();
   }, []);
 
   const handleNext = async () => {
+    navigation.navigate('YouthStackNav', {
+      screen: 'YouthHomeScreen',
+      params: {},
+    });
     if (!currentLocation) {
       return;
     }
@@ -135,6 +139,8 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
         sleepTime,
         latitude: currentLocation.latitude,
         longitude: currentLocation.longitude,
+        // latitude: 37.2750791,
+        // longitude: 127.047405,
       },
     };
 
@@ -143,6 +149,7 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
       console.log(result);
 
       await AsyncStorage.setItem('nickname', nickname);
+      await AsyncStorage.setItem('role', role);
 
       navigation.navigate('YouthStackNav', {
         screen: 'YouthHomeScreen',
@@ -190,7 +197,7 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
         <Button
           text="시작하기"
           onPress={handleNext}
-          disabled={isLoading || !currentLocation}
+          // disabled={isLoading || !currentLocation}
           isLoading={isLoading}
         />
       </View>

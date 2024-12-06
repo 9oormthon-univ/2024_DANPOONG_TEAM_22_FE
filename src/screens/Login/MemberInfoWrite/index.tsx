@@ -11,6 +11,7 @@ import {Alert, Image, Keyboard, Pressable, TextInput, View} from 'react-native';
 import useLoading from '@hooks/useLoading';
 import uploadImageToS3 from '@apis/util';
 import formatBirth from '@utils/formatBirth';
+import DismissKeyboardView from '@components/atom/DismissKeyboardView';
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'MemberInfoWriteScreen'
@@ -65,13 +66,14 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
       profileImage: imageLocation ?? '',
       role: role as Role,
       birth: formatBirth(birthday),
-      fcmToken,
+      fcmToken: fcmToken ?? '',
     };
     try {
       const {result} = await postMember(data);
       console.log(result);
 
       await AsyncStorage.setItem('nickname', nickname);
+      await AsyncStorage.setItem('role', role);
       navigation.navigate('VolunteerOnboardingScreen');
     } catch (error) {
       console.log(error);
@@ -80,9 +82,9 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   };
 
   return (
-      <BG type="main">
-        <>
-          <View className="items-center pt-[110]">
+    <BG type="main">
+      <DismissKeyboardView>
+        <View className="items-center pt-[110]">
             <Txt
               type="title2"
               text={`${nickname ?? ''} 님,`}
@@ -144,18 +146,19 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
             source={require('@assets/pngs/background/background2.png')}
             className="w-full h-auto flex-1 mt-[54]"
           />
-          <View
-            className={`absolute left-0 bottom-[30] w-full px-[40] ${
-              isKeyboardVisible ? 'hidden' : ''
-            }`}>
-            <Button
-              text="다음"
-              onPress={handleNext}
-              disabled={!birthday || !gender || isLoading}
-              isLoading={isLoading}
-            />
-          </View>
-        </>
+        </DismissKeyboardView>
+
+        <View
+          className={`absolute left-0 bottom-[30] w-full px-[40] ${
+            isKeyboardVisible ? 'hidden' : ''
+          }`}>
+          <Button
+            text="다음"
+            onPress={handleNext}
+            disabled={!birthday || !gender || isLoading}
+            isLoading={isLoading}
+          />
+        </View>
       </BG>
   );
 };

@@ -20,10 +20,6 @@ import {
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 
 // 아이콘 import
-import FightingIcon from '@assets/svgs/emotion/emotion_fighting.svg';
-import LoveIcon from '@assets/svgs/emotion/emotion_love.svg';
-import StarIcon from '@assets/svgs/emotion/emotion_star.svg';
-import ThumbIcon from '@assets/svgs/emotion/emotion_thumb.svg';
 import PlayIcon from '@assets/svgs/play_youth.svg';
 import SendIcon from '@assets/svgs/send.svg';
 import SmileIcon from '@assets/svgs/smile.svg';
@@ -32,6 +28,8 @@ import StopIcon from '@assets/svgs/stop.svg';
 import {postComment} from '@apis/providedFile';
 import BG from '@components/atom/BG';
 import StatusBarGap from '@components/atom/StatusBarGap';
+import {EmotionType} from '@type/api/providedFile';
+import {EMOTION_OPTIONS} from '@constants/letter';
 
 // 네비게이션 Props 타입 정의
 type YouthProps = NativeStackScreenProps<
@@ -39,19 +37,8 @@ type YouthProps = NativeStackScreenProps<
   'YouthListenScreen'
 >;
 
-// 감정 표현 옵션 상수
-export const EMOTION_OPTIONS = [
-  {icon: <StarIcon />, label: '고마워요', value: 'THANK_YOU'},
-  {icon: <ThumbIcon />, label: '응원해요', value: 'HELPFUL'},
-  {icon: <FightingIcon />, label: '화이팅', value: 'MOTIVATED'},
-  {icon: <LoveIcon />, label: '사랑해요', value: 'LOVE'},
-];
-
-// 청년 리스닝 화면 컴포넌트
 const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
-  // route params에서 필요한 값 추출
-  const {alarmId, script} = route.params;
-
+  const {alarmId} = route.params;
   // 상태 관리
   const [message, setMessage] = useState(''); // 메시지 입력값
   const [isClickedEmotion, setIsClickedEmotion] = useState(false); // 감정 표현 클릭 여부
@@ -87,9 +74,11 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
       setIsKeyboardVisible(true),
     );
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () =>
-      setIsKeyboardVisible(false),
-    );
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setTimeout(() => {
+        setIsKeyboardVisible(false);
+      }, 100);
+    });
 
     return () => {
       showSubscription.remove();
@@ -107,8 +96,10 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         const res = await getVoiceFiles({alarmId});
         console.log(res);
         setVoiceFile(res.result);
-        await audioPlayer.current.startPlayer(res.result.fileUrl);
-        setIsPlaying(true);
+        setTimeout(async () => {
+          await audioPlayer.current.startPlayer(res.result.fileUrl);
+          setIsPlaying(true);
+        }, 1000);
       } catch (error) {
         console.log(error);
         // Alert.alert('오류', '음성 파일을 불러오는 중 오류가 발생했어요');
@@ -121,17 +112,27 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
       }
     })();
 
-    return () => {
+    return async () => {
       if (isPlaying) {
-        audioPlayer.current.stopPlayer();
+        await audioPlayer.current.stopPlayer();
+        setIsPlaying(false);
       }
     };
-  }, []);
+  }, [alarmId, isPlaying]);
 
-  // 메시지 전송 처리
-  const handleMessageSend = async () => {
+  const handleMessageSend = async ({
+    emotionType,
+  }: {
+    emotionType?: EmotionType;
+  }) => {
+    if (!emotionType && !message) {
+      return;
+    }
     try {
-      await postComment({providedFileId: voiceFile.providedFileId, message});
+      await postComment({
+        providedFileId: voiceFile.providedFileId,
+        message: emotionType ?? message,
+      });
       Alert.alert('성공', '편지를 성공적으로 보냈어요');
       setMessage('');
     } catch (error) {
@@ -210,12 +211,17 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
             text="봉사자 닉네임"
             className="text-yellowPrimary mt-[13] mb-[25] text-center"
           />
-          <View className="px-[32]">
-            <Txt
-              type="title3"
-              text={script ?? ''}
-              className="text-gray200 text-center"
-            />
+          <View className="px-[32] h-[110]">
+            <ScrollView>
+              <Txt
+                type="title3"
+                text={
+                  voiceFile.content ??
+                  '아침 거르고 빈속으로 있으면 힘들어요\n가볍게라도 꼭 챙겨 드시길 바라요'
+                }
+                className="text-gray200 text-center"
+              />
+            </ScrollView>
           </View>
 
           {/* 재생/정지 버튼 */}
@@ -245,7 +251,10 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
                         ? 'mr-[50]'
                         : 'mr-[10]'
                     } flex-row items-center justify-center`}
-                    style={{borderRadius: 50}}>
+                    style={{borderRadius: 50}}
+                    onPress={() =>
+                      handleMessageSend({emotionType: emotion.type})
+                    }>
                     {emotion.icon}
                     <Txt
                       type="body3"

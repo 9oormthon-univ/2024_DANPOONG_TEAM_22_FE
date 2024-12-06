@@ -1,11 +1,12 @@
 type VoiceFilesRequestData = {
-  alarmId: number
-}
+  alarmId: number;
+};
 
 type VoiceFileResponseData = {
-  voiceFileId: number
-  fileUrl: string
-  providedFileId: number
-}
+  voiceFileId: number;
+  fileUrl: string;
+  providedFileId: number;
+  content: string;
+};
 
-export type { VoiceFilesRequestData, VoiceFileResponseData }
+export type {VoiceFilesRequestData, VoiceFileResponseData};
