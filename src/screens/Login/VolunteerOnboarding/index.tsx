@@ -4,13 +4,16 @@ import Txt from '@components/atom/Txt';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import React, {useEffect, useState} from 'react';
-import {Animated, Dimensions, Image, Text, View} from 'react-native';
+import {useEffect, useState} from 'react';
+import {
+  Animated,
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {SlidingDot} from 'react-native-animated-pagination-dots';
-import PagerView, {
-  PagerViewOnPageScrollEventData,
-  PagerViewOnPageSelectedEvent,
-} from 'react-native-pager-view';
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -20,8 +23,6 @@ type AuthProps = NativeStackScreenProps<
 type PageProps = {
   nickname: string;
 };
-
-const AnimatedPagerView = Animated.createAnimatedComponent(PagerView);
 
 const Page1 = ({nickname}: Readonly<PageProps>) => {
   return (
@@ -117,9 +118,9 @@ const Page4 = ({handleNext}: Readonly<{handleNext: () => void}>) => {
 };
 
 const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
-
   const [currentPageIdx, setCurrentPageIdx] = useState(0);
   const [nickname, setNickname] = useState('');
+  const [fadeAnim] = useState(new Animated.Value(1));
 
   // 닉네임 가져오기
   useEffect(() => {
@@ -135,108 +136,61 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
 
   const PAGE_COUNT = 4;
   const width = Dimensions.get('window').width;
-  const ref = React.useRef<PagerView>(null);
-  const scrollOffsetAnimatedValue = React.useRef(new Animated.Value(0)).current;
-  const positionAnimatedValue = React.useRef(new Animated.Value(0)).current;
-  const inputRange = [0, PAGE_COUNT];
-  const scrollX = Animated.add(
-    scrollOffsetAnimatedValue,
-    positionAnimatedValue,
-  ).interpolate({
-    inputRange,
-    outputRange: [0, PAGE_COUNT * width],
-  });
 
-  const INTRO_DATA = [
-    {
-      key: '1',
-      title: 'App showcase ✨',
-      description:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-    },
-    {
-      key: '2',
-      title: 'Introduction screen 🎉',
-      description:
-        "Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. ",
-    },
-    {
-      key: '3',
-      title: 'And can be anything 🎈',
-      description:
-        'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. ',
-    },
-    {
-      key: '4',
-      title: 'And can be anything 🎈',
-      description:
-        'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. ',
-    },
+  const pages = [
+    <Page1 key="1" nickname={nickname ?? ''} />,
+    <Page2 key="2" />,
+    <Page3 key="3" nickname={nickname ?? ''} />,
+    <Page4 key="4" handleNext={handleNext} />,
   ];
 
-  const onPageScroll = React.useMemo(
-    () =>
-      Animated.event<PagerViewOnPageScrollEventData>(
-        [
-          {
-            nativeEvent: {
-              offset: scrollOffsetAnimatedValue,
-              position: positionAnimatedValue,
-            },
-          },
-        ],
-        {
-          useNativeDriver: false,
-        },
-      ),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  );
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (currentPageIdx < PAGE_COUNT - 1) {
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 1000, // 페이드아웃 시간
+          useNativeDriver: true,
+        }).start(() => {
+          setCurrentPageIdx(prevIdx => prevIdx + 1);
+          fadeAnim.setValue(0);
+          Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: 1000, // 페이드인 시간
+            useNativeDriver: true,
+          }).start();
+        });
+      } else {
+        clearInterval(interval);
+      }
+    }, 2500); // 페이지 전환 간격 (페이드아웃 + 페이드인 시간 포함)
 
-  const onPageSelected = (e: PagerViewOnPageSelectedEvent) => {
-    setCurrentPageIdx(e.nativeEvent.position);
-  };
+    return () => clearInterval(interval);
+  }, [currentPageIdx, fadeAnim]);
 
   return (
-      <BG type={currentPageIdx === 3 ? 'gradation' : 'main'}>
-        <>
-          <View className="justify-center items-center mt-[85]">
-            <SlidingDot
-              testID={'sliding-dot'}
-              marginHorizontal={3}
-              containerStyle={{top: 30}}
-              data={INTRO_DATA}
-              //@ts-ignore
-              scrollX={scrollX}
-              dotSize={5.926}
-              dotStyle={{backgroundColor: '#414141'}}
-              slidingIndicatorStyle={{backgroundColor: '#F9F96C'}}
-            />
-          </View>
+    <BG type={currentPageIdx === 3 ? 'gradation' : 'main'}>
+      <>
+        <View className="justify-center items-center mt-[85]">
+          <SlidingDot
+            marginHorizontal={3}
+            containerStyle={{top: 30}}
+            data={Array(PAGE_COUNT).fill({})}
+            scrollX={new Animated.Value(currentPageIdx * width)}
+            dotSize={5.926}
+            dotStyle={{backgroundColor: '#414141'}}
+            slidingIndicatorStyle={{backgroundColor: '#F9F96C'}}
+          />
+        </View>
 
-          <AnimatedPagerView
-            testID="pager-view"
-            initialPage={0}
-            ref={ref}
-            className="flex-1"
-            onPageScroll={onPageScroll}
-            onPageSelected={onPageSelected}
-            style={{marginTop: -85}}>
-            <View key="1" className="flex-1">
-              <Page1 nickname={nickname ?? ''} />
-            </View>
-            <View key="2" className="flex-1">
-              <Page2 />
-            </View>
-            <View key="3" className="flex-1">
-              <Page3 nickname={nickname ?? ''} />
-            </View>
-            <View key="4" className="flex-1">
-              <Page4 handleNext={handleNext} />
-            </View>
-          </AnimatedPagerView>
-        </>
-      </BG>
+        <View style={{flex: 1}}>
+          <Animated.View
+            style={{...StyleSheet.absoluteFillObject, opacity: fadeAnim}}>
+            {pages[currentPageIdx]}
+          </Animated.View>
+        </View>
+      </>
+    </BG>
   );
 };
 
