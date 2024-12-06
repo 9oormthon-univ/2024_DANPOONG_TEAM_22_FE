@@ -2,11 +2,9 @@ import Txt from '@components/atom/Txt';
 import {Pressable, View, ViewStyle} from 'react-native';
 import ChevronLeftWhiteIcon from '@assets/svgs/chevron/chevron_left_white.svg';
 import ExitWhiteIcon from '@assets/svgs/exit_white.svg';
-
+import useStatusBarHeight from '@hooks/useStatusBarHeight';
 type AppBarProps = {
   title?: string;
-  // goBack?: boolean;
-  // exit?: boolean;
   goBackCallbackFn?: () => void;
   exitCallbackFn?: () => void;
   className?: string;
@@ -19,11 +17,12 @@ const AppBar = ({
   exitCallbackFn,
   ...props
 }: Readonly<AppBarProps>) => {
+  const statusBarHeight = useStatusBarHeight();
   return (
     <View
       {...props}
       className={`flex-row items-center justify-between px-[16] border-b border-b-white/5 ${props.className}`}
-      style={props.style}>
+      style={[ {marginTop: statusBarHeight},props.style]}>
       {goBackCallbackFn ? (
         <Pressable className="flex-1 py-[18]" onPress={goBackCallbackFn}>
           <ChevronLeftWhiteIcon />
