@@ -12,7 +12,6 @@ import {
   Image,
   ImageBackground,
   Pressable,
-  SafeAreaView,
   View,
 } from 'react-native';
 
@@ -91,7 +90,6 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
 
   // return <LoadingScreen />;
   return (
-    <SafeAreaView className="flex-1">
       <ImageBackground
         source={require('@assets/pngs/background/background_youth1.png')}
         className="flex-1 items-center">
@@ -178,7 +176,6 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
           </View>
         </View>
       </ImageBackground>
-    </SafeAreaView>
   );
 };
 

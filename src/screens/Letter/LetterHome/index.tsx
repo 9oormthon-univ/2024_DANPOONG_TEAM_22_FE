@@ -2,16 +2,15 @@ import BG from '@components/atom/BG';
 import ShadowView from '@components/atom/ShadowView';
 import Txt from '@components/atom/Txt';
 import useGetSummary from '@hooks/providedFile/useGetSummary';
-import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {LetterStackParamList} from '@type/nav/LetterStackParamList';
 import {useEffect, useState} from 'react';
 import {Alert, Image, Pressable, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import ChevronRightWhiteIcon from '@assets/svgs/chevron/chevron_right_white.svg';
 import {EMOTION_OPTIONS} from '@screens/Youth/YouthListen';
+import StatusBarGap from '@components/atom/StatusBarGap';
 
 type LetterProps = NativeStackScreenProps<
   LetterStackParamList,
@@ -41,14 +40,10 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
     })();
   }, []);
 
-  // 상태바 스타일 설정
-  const BackColorType = 'main';
-  useStatusBarStyle(BackColorType);
-
   return (
-    <SafeAreaView className="flex-1">
-      <BG type={BackColorType}>
+      <BG type='main'>
         <ScrollView className="flex-1">
+          <StatusBarGap />
           <View className="flex-1 pt-[50] pb-[110]">
             <View className="w-full items-center px-[35]">
               <Image
@@ -135,7 +130,6 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
           </View>
         </ScrollView>
       </BG>
-    </SafeAreaView>
   );
 };
 

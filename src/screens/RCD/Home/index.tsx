@@ -11,27 +11,26 @@ import BG from '@components/atom/BG';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {RecordType} from '@type/RecordType';
 import {RecordTypeConstant} from '@constants/RecordType';
+
 // SVG 아이콘 임포트
-import Main1 from '@assets/svgs/main1.svg';
-import Main2 from '@assets/svgs/main2.svg';
-import Main3 from '@assets/svgs/main3.svg';
+import Main1 from '@assets/svgs/Main1.svg';
+import Main2 from '@assets/svgs/Main2.svg';
+import Main3 from '@assets/svgs/Main3.svg';
 import MainArrow from '@assets/svgs/MainArrow.svg';
 
 // API 및 스토리지 관련 임포트
 import {getYouthNum} from '@apis/RCDApis/getYouthNum';
 import {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StatusBar } from 'react-native';
 
-import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
+import useStatusBarHeight from '@hooks/useStatusBarHeight';
 /**
  * 홈 화면 컴포넌트
  * 청년들의 수를 표시하고 녹음 유형을 선택할 수 있는 메인 화면
  */
 const HomeScreen = () => {
-  // 상태바 스타일 설정
-  const BackColorType = 'main';
-  useStatusBarStyle(BackColorType);
-
+  const statusBarHeight = useStatusBarHeight();
   // 상태 관리
   const [nickname, setNickname] = useState('');
   const [youthNum, setYouthNum] = useState<number>(999);
@@ -47,18 +46,18 @@ const HomeScreen = () => {
   // 청년 수 불러오기
   useEffect(() => {
     getYouthNum().then(num => {
-      console.log('youthNum:', num);
       setYouthNum(num);
     });
   }, []);
 
   return (
-    <BG type={BackColorType}>
+    <BG type="main">
       {/* 배경 이미지 */}
       <ImageBackground
         source={require('@assets/pngs/BGmain.png')}
         style={{position: 'absolute', bottom: 0, width: '100%', height: 762}}
       />
+      <View style={{height: statusBarHeight}}/>
       {/* 전체 frame */}
       <View className="flex-1 px-[30] pt-[117]">
         {/* header */}

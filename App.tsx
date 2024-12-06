@@ -19,6 +19,7 @@ import messaging from '@react-native-firebase/messaging';
 import {useEffect} from 'react';
 // import pushNoti from '@utils/pushNoti';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StatusBar } from 'react-native';
 
 // 쿼리 클라이언트 설정
 const queryClient = new QueryClient({
@@ -100,6 +101,11 @@ function App(): React.JSX.Element {
     <QueryClientProvider client={queryClient}>
       <GestureHandlerRootView style={{flex: 1}}>
         <NavigationContainer ref={navigationRef}>
+          <StatusBar  
+            translucent={true} 
+            backgroundColor="transparent" 
+            barStyle="light-content" 
+          />
           <AppInner />
         </NavigationContainer>
       </GestureHandlerRootView>

@@ -1,24 +1,24 @@
 // React Native 및 Navigation 관련 임포트
 import {View, ScrollView} from 'react-native';
-// 커스텀 컴포넌트 임포트
-import BG from '@components/atom/BG';
-import Txt from '@components/atom/Txt';
-import Button from '@components/atom/Button';
 import {
   NavigationProp,
   RouteProp,
   useNavigation,
 } from '@react-navigation/native';
+// 커스텀 컴포넌트 임포트
+import BG from '@components/atom/BG';
+import Txt from '@components/atom/Txt';
+import Button from '@components/atom/Button';
+import StatusBarGap from '@components/atom/StatusBarGap';
+
 // SVG 아이콘 임포트
 import Notice1 from '@assets/svgs/Notice1.svg';
 import Notice2 from '@assets/svgs/Notice2.svg';
 // 타입 임포트
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import AppBar from '@components/atom/AppBar';
-import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
 import { RCDNoticeSectionConstant } from '@constants/RCDNoticeSectionConstant';
 import { useState } from 'react';
-import { NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { getTopText } from '@apis/RCDApis/getTopText';
 import { postAskGPT } from '@apis/RCDApis/postAskGPT';
 import { postSaveScript } from '@apis/RCDApis/postSaveScript';
@@ -59,23 +59,12 @@ const RCDNoticeScreen = ({
 }: {
   route: RouteProp<HomeStackParamList, 'RCDNotice'>;
 }) => {
-  // 상태바 스타일 설정
-  const BackColorType = 'solid';
-  useStatusBarStyle(BackColorType);
+
   
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
   const {item, type} = route.params;
   const [isLoading, setIsLoading] = useState(false);
-  // 스크롤 끝에 도달 여부 상태
-  const [isScrollEnd, setIsScrollEnd] = useState(false);
-
-  // 스크롤 이벤트 핸들러
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const {layoutMeasurement, contentOffset, contentSize} = event.nativeEvent;
-    const isEnd = layoutMeasurement.height + contentOffset.y >= contentSize.height;
-    setIsScrollEnd(isEnd);
-  };
-  
+ 
   const handleNavigate = async () => {
     if(type === 'INFO'){
       try{
@@ -95,7 +84,7 @@ const RCDNoticeScreen = ({
   }
 
   return (
-    <BG type={BackColorType}>
+    <BG type="solid">
       {/* 상단 앱바 */}
       <AppBar
         title="주의 사항"
@@ -104,11 +93,11 @@ const RCDNoticeScreen = ({
         }}
         className="absolute top-[0] w-full"
       />
+      
       <ScrollView
         className="flex-1 px-px mt-[64]"
-        onScroll={handleScroll}
-        scrollEventThrottle={16} // 스크롤 이벤트 빈도 설정
       >
+        <StatusBarGap />
         <View className="flex-1 mb-[121]">
           {/* 헤더 섹션 */}
           <View className="mt-[63]" />
@@ -132,7 +121,6 @@ const RCDNoticeScreen = ({
       <View className="absolute bottom-[53] w-full px-px">
         <Button
           text="확인했어요"
-          disabled={!isScrollEnd || isLoading} // 스크롤 끝에 도달하지 않으면 비활성화
           onPress={handleNavigate}
           isLoading={isLoading}
         />

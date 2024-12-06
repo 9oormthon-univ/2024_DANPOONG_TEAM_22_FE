@@ -7,7 +7,6 @@ import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
 import useLoading from '@hooks/useLoading';
-import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CompositeScreenProps} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -163,7 +162,7 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
   };
 
   return (
-    <BG type={BackColorType}>
+    <BG type="solid">
       <AppBar
         title="주의사항"
         goBackCallbackFn={() => {

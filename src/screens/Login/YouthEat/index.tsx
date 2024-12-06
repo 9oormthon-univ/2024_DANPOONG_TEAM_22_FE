@@ -6,11 +6,9 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {useState} from 'react';
 import {Image, Pressable, TextInput, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker';
-import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
 type AuthProps = NativeStackScreenProps<AuthStackParamList, 'YouthEatScreen'>;
 
 const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
@@ -99,13 +97,8 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
     });
   };
 
-  // 상태바 스타일 설정
-  const BackColorType = 'main';
-  useStatusBarStyle(BackColorType); 
-
   return (
-    <SafeAreaView className="flex-1">
-      <BG type={BackColorType}>
+      <BG type="main">
         <>
           <AppBar
             goBackCallbackFn={() => {
@@ -113,7 +106,7 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
             }}
             className="absolute top-[0] w-full"
           />
-          <View className="w-[75%] h-[3] bg-yellowPrimary absolute top-[63]" />
+          <View className="w-[75%] h-[3] bg-yellowPrimary absolute top-[93]" />
           <View className="flex-1 mt-[50]">
             <View className="items-center pt-[100]">
               <Txt
@@ -226,7 +219,6 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
           </View>
         </>
       </BG>
-    </SafeAreaView>
   );
 };
 

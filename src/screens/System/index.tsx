@@ -3,18 +3,13 @@
 import BackIcon from '@assets/svgs/Back.svg';
 import BG from '@components/atom/BG';
 import Txt from '@components/atom/Txt';
-import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
 
 // 시스템 화면 컴포넌트
 const SystemScreen = () => {
-  // 상태바 스타일 설정
-  const BackColorType = 'main';
-  useStatusBarStyle(BackColorType);
-
   return (
-    <BG type={BackColorType}>
+    <BG type="main">
       {/* 메인 컨테이너 */}
-      <View className="flex-1 items-center pt-[35] px-px">
+      <View className="flex-1 items-center pt-[65] px-px">
         {/* 시스템 메뉴 버튼들 */}
         <SystemButton title="내 계정" sub="로그아웃 및 회원탈퇴하기" />
         <SystemButton title="이용약관" sub="이용약관 확인하기" />

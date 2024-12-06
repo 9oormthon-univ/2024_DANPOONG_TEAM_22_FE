@@ -40,7 +40,7 @@ import AppBar from '@components/atom/AppBar';
 import RNFS from 'react-native-fs';
 import { postVoiceAnalysis } from '@apis/RCDApis/postVoiceAnalysis';
 import { ActivityIndicator } from 'react-native';
-import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
+import StatusBarGap from '@components/atom/StatusBarGap';
 
 // 오디오 레코더 인스턴스 생성
 const audioRecorderPlayer = new AudioRecorderPlayer();
@@ -55,9 +55,6 @@ const RCDRecordScreen = ({
   route: RouteProp<HomeStackParamList, 'RCDRecord'>;
 }) => {
 
-   // 상태바 스타일 설정
-   const BackColorType = 'solid';
-   useStatusBarStyle(BackColorType);
    
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
   
@@ -274,7 +271,7 @@ const RCDRecordScreen = ({
   };
 
   return (
-    <BG type={BackColorType}>
+    <BG type="solid">
       {!isUploading ? (
         <>
           <AppBar
@@ -284,6 +281,7 @@ const RCDRecordScreen = ({
             }}
             className="absolute top-[0] w-full"
           />
+          <StatusBarGap />
           <View className="flex-1 justify-between mt-[65]">
             <View className="px-px pt-[0] h-[250]">
               <ScrollView className="h-full">
