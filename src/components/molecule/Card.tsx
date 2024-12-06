@@ -1,6 +1,6 @@
 import {RCD} from '@apis/RCDApis/getRCDList';
 import Button from '@components/atom/Button';
-import StarPNG from '@components/atom/StarPNG';
+import StarIMG from '@components/atom/StarIMG';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {View} from 'react-native';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
@@ -24,7 +24,7 @@ const Card = ({
         <View className="w-full h-full justify-evenly items-center px-px">
           {/* 별 이미지 */}
           <View className="flex w-full flex-row justify-center items-center">
-            <StarPNG />
+            <StarIMG />
           </View>
           {/* 제목 head*/}
           <View className="w-full">

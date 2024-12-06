@@ -8,7 +8,7 @@ import BackIcon from '@assets/svgs/Back.svg';
 import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import ShadowView from '@components/atom/ShadowView';
-import StarPNG from '@components/atom/StarPNG';
+import StarIMG from '@components/atom/StarIMG';
 import Txt from '@components/atom/Txt';
 import {RCDSelectButtonConstant} from '@constants/RCDSelectButtonConstant';
 // React Navigation 관련 import
@@ -139,7 +139,7 @@ const RCDSelectText = ({
       />
       {/* 메인 컨텐츠 */}
       <View className="flex-1 px-px mt-[100] pt-[52] items-center">
-        <StarPNG />
+        <StarIMG />
         {/* 제목 섹션 */}
         <View className="mt-[29]  mb-[52]  items-center">
           <Txt
