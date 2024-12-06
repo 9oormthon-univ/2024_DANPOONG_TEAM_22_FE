@@ -54,7 +54,7 @@ const AppInner = () => {
 
         // 사용자 정보 가져오기
         const {result} = await getMember();
-        console.log('getMember(): ',result);
+        console.log('getMember(): ', result);
         setRole(result.role);
       } catch (error) {
         console.error(error);
