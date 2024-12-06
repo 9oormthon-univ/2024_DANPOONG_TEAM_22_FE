@@ -1,15 +1,11 @@
-<svg width="30" height="33" viewBox="0 0 30 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Group 2085665359">
-<g id="Group 100">
-<path id="Line 30" d="M1 13.6819L1 19.3182" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
-<path id="Line 32" d="M8 5.22729L8 27.7728" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
-<path id="Line 33" d="M22 7.48193L22 25.5183" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
-<path id="Line 45" d="M25.5 10.8638L25.5 22.1365" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
-<path id="Line 46" d="M4.5 10.8638L4.5 22.1365" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
-<path id="Line 37" d="M29 9.45459L29 23.5455" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
-<path id="Line 42" d="M15 6.63623L15 26.3635" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
-<path id="Line 43" d="M11.5 1L11.5 32" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
-<path id="Line 44" d="M18.5 3.81812L18.5 29.1818" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
-</g>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" width="27" height="30" viewBox="0 0 27 30" fill="none">
+  <path d="M1 12.3231L1 17.3556" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M7.25 4.77441L7.25 24.9043" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M19.75 6.78748L19.75 22.8914" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M22.875 9.80695L22.875 19.8719" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M4.125 9.80695L4.125 19.8719" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M26 8.54877L26 21.1299" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M13.5 6.03235L13.5 23.646" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M10.375 1L10.375 28.6786" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M16.625 3.51617L16.625 26.1623" stroke="#FAFAFA" stroke-width="1.4" stroke-linecap="round"/>
 </svg>
