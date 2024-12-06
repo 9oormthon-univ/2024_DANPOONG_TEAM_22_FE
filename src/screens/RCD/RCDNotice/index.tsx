@@ -123,6 +123,7 @@ const RCDNoticeScreen = ({
           text="확인했어요"
           onPress={handleNavigate}
           isLoading={isLoading}
+          disabled={isLoading}
         />
       </View>
     </BG>
