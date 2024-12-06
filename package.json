@@ -34,7 +34,7 @@
     "react-native": "0.76.3",
     "react-native-animated-pagination-dots": "^0.1.73",
     "react-native-audio-recorder-player": "^3.6.12",
-    "react-native-config": "^1.5.3",
+    "react-native-config": "1.5.1",
     "react-native-device-info": "^14.0.1",
     "react-native-fs": "^2.20.0",
     "react-native-image-picker": "^7.2.2",

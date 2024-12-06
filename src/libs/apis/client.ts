@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import Config from 'react-native-config';
 
 // navigation 인스턴스를 저장할 변수
 let navigationRef: any = null;
@@ -10,7 +11,7 @@ export const setNavigator = (nav: any) => {
 };
 
 const client = axios.create({
-  baseURL: 'http://nysams.com:8081',
+  baseURL: Config.API_URL,
   headers: {
     'Content-Type': 'application/json',
   },

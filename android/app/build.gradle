@@ -114,6 +114,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        resValue "string", "build_config_package", "com.nm"
     }
     signingConfigs {
         debug {
@@ -144,8 +145,10 @@ android {
     }
     flavorDimensions "version"
     productFlavors {
-       
-       
+        development {
+        }
+        production {
+        }
     }
 }
 
