@@ -16,7 +16,7 @@ import {Gender, MemberInfoResponseData, Role} from '@type/api/member';
 import formatBirth from '@utils/formatBirth';
 import {postMemberYouth} from '@apis/member';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useStatusBarStyle } from '@hooks/useStatusBarStyle';
+import {useStatusBarStyle} from '@hooks/useStatusBarStyle';
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'YouthSleepTimeScreen'
@@ -73,12 +73,15 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
       setIsLoading(false);
     }
 
+    const fcmToken = await AsyncStorage.getItem('fcmToken');
+
     const data: MemberInfoResponseData = {
       gender: gender as Gender,
       name: nickname,
       profileImage: imageLocation ?? '',
       role: role as Role,
       birth: formatBirth(birthday),
+      fcmToken,
       youthMemberInfoDto: {
         wakeUpTime,
         breakfast,
