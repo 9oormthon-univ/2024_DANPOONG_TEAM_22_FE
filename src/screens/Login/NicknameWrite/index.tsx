@@ -1,6 +1,7 @@
 import PencilIcon from '@assets/svgs/pencil.svg';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
+import DismissKeyboardView from '@components/atom/DismissKeyboardView';
 import Txt from '@components/atom/Txt';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
@@ -20,7 +21,7 @@ type AuthProps = NativeStackScreenProps<
 
 const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
- 
+
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [nickname, setNickname] = useState('');
 
@@ -78,7 +79,7 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
   return (
     <SafeAreaView className="flex-1 justify-center items-center">
       <BG type="main">
-        <>
+        <DismissKeyboardView>
           <View className="items-center mt-[149]">
             <Txt
               type="title2"
@@ -122,14 +123,14 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
             source={require('@assets/pngs/background/background2.png')}
             className="w-full h-auto flex-1 mt-[89]"
           />
+        </DismissKeyboardView>
 
-          <View
-            className={`absolute left-0 bottom-[30] w-full px-[40] ${
-              isKeyboardVisible ? 'hidden' : ''
-            }`}>
-            <Button text="다음" onPress={handleNext} disabled={!nickname} />
-          </View>
-        </>
+        <View
+          className={`absolute left-0 bottom-[30] w-full px-[40] ${
+            isKeyboardVisible ? 'hidden' : ''
+          }`}>
+          <Button text="다음" onPress={handleNext} disabled={!nickname} />
+        </View>
       </BG>
     </SafeAreaView>
   );
