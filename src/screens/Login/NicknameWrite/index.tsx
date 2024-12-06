@@ -32,9 +32,11 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
       setIsKeyboardVisible(true),
     );
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () =>
-      setIsKeyboardVisible(false),
-    );
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setTimeout(() => {
+        setIsKeyboardVisible(false);
+      }, 100);
+    });
 
     return () => {
       showSubscription.remove();
