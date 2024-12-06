@@ -145,10 +145,7 @@ android {
     }
     flavorDimensions "version"
     productFlavors {
-        development {
-        }
-        production {
-        }
+       
     }
 }
 

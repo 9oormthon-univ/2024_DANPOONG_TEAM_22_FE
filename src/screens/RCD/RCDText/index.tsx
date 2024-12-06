@@ -2,7 +2,7 @@
 import {TextInput, TouchableOpacity, View} from 'react-native';
 // 커스텀 컴포넌트 import
 import BG from '@components/atom/BG';
-import StarPNG from '@components/atom/StarPNG';
+import StarIMG from '@components/atom/StarIMG';
 import Txt from '@components/atom/Txt';
 import Button from '@components/atom/Button';
 import {
@@ -96,7 +96,7 @@ const RCDTextScreen = ({
         contentContainerStyle={{alignItems: 'center'}}>
         <StatusBarGap />
         {/* 이미지 섹션 */}
-        <StarPNG />
+        <StarIMG />
         <View className="mb-[29]" />
         {/* 헤더 섹션 */}
         <View className="h-auto items-center mb-[50]">
