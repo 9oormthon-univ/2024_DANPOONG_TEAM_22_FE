@@ -11,9 +11,9 @@ import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {RecordType} from '@type/RecordType';
 import {RecordTypeConstant} from '@constants/RecordType';
 // SVG 아이콘 임포트
-import Main1 from '@assets/svgs/Main1.svg';
-import Main2 from '@assets/svgs/Main2.svg';
-import Main3 from '@assets/svgs/Main3.svg';
+import Main1 from '@assets/svgs/main1.svg';
+import Main2 from '@assets/svgs/main2.svg';
+import Main3 from '@assets/svgs/main3.svg';
 import MainArrow from '@assets/svgs/MainArrow.svg';
 
 // API 및 스토리지 관련 임포트
@@ -30,7 +30,7 @@ const HomeScreen = () => {
   // 상태바 스타일 설정
   const BackColorType = 'main';
   useStatusBarStyle(BackColorType);
-  
+
   // 상태 관리
   const [nickname, setNickname] = useState('');
   const [youthNum, setYouthNum] = useState<number>(999);
@@ -83,7 +83,7 @@ const HomeScreen = () => {
         </View>
         {/* button section*/}
         <View className="w-full h-[253] relative">
-          {Object.values(RecordTypeConstant).map((type) => (
+          {Object.values(RecordTypeConstant).map(type => (
             <SelectBtn key={type} type={type} />
           ))}
         </View>
@@ -101,9 +101,10 @@ const SelectBtn = ({type}: {type: RecordType}) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
 
   // 버튼 위치 설정
-  const addaptivePosition = 
-  type === RecordTypeConstant.DAILY ? 'top-[0] left-[0]' : 
-    type === RecordTypeConstant.COMFORT
+  const addaptivePosition =
+    type === RecordTypeConstant.DAILY
+      ? 'top-[0] left-[0]'
+      : type === RecordTypeConstant.COMFORT
       ? 'bottom-[0] left-[0]'
       : 'top-[0] right-[0]';
 
@@ -115,26 +116,37 @@ const SelectBtn = ({type}: {type: RecordType}) => {
       className={`w-[168] h-[116] px-[25] py-[20] bg-solid border border-white/10 justify-between absolute ${addaptivePosition}`}
       style={{borderRadius: 10}}>
       {/* 아이콘 */}
-        <View className="absolute top-[18] left-[27]">
-          {type === RecordTypeConstant.DAILY ? <Main1 /> : type === RecordTypeConstant.COMFORT ? <Main2 /> : <Main3 />}
-        </View>
-        {/* 텍스트와 화살표 */}
-        <View className="absolute bottom-[18] left-[27] flex flex-row items-center justify-between w-[120]">
-          <View className="flex flex-row items-center">        
-            <Txt
-          type="title3"
-          text={`${type === RecordTypeConstant.DAILY ? '일상' : type === RecordTypeConstant.COMFORT ? '위로' : '정보'}`}
-          className="text-yellowPrimary"
-        />
-         <Txt
-          type="title3"
-          text={`${type === RecordTypeConstant.COMFORT ? '의 말' : ' 알림'}`}
-          className="text-white "
+      <View className="absolute top-[18] left-[27]">
+        {type === RecordTypeConstant.DAILY ? (
+          <Main1 />
+        ) : type === RecordTypeConstant.COMFORT ? (
+          <Main2 />
+        ) : (
+          <Main3 />
+        )}
+      </View>
+      {/* 텍스트와 화살표 */}
+      <View className="absolute bottom-[18] left-[27] flex flex-row items-center justify-between w-[120]">
+        <View className="flex flex-row items-center">
+          <Txt
+            type="title3"
+            text={`${
+              type === RecordTypeConstant.DAILY
+                ? '일상'
+                : type === RecordTypeConstant.COMFORT
+                ? '위로'
+                : '정보'
+            }`}
+            className="text-yellowPrimary"
+          />
+          <Txt
+            type="title3"
+            text={`${type === RecordTypeConstant.COMFORT ? '의 말' : ' 알림'}`}
+            className="text-white "
           />
         </View>
         <MainArrow />
-        </View>
-
+      </View>
     </TouchableOpacity>
   );
 };
