@@ -1,5 +1,7 @@
 type AlarmType = '외출' | '기상' | '식사' | '취침' | '위로' | '우울' | '칭찬';
 
+type EmotionType = 'THANK_YOU' | 'HELPFUL' | 'MOTIVATED' | 'LOVE';
+
 type CommentRequestData = {
   providedFileId: number;
   message: string;
@@ -37,6 +39,7 @@ type LettersResponseData = {
 
 export type {
   AlarmType,
+  EmotionType,
   CommentRequestData,
   SummaryResponseData,
   LettersRequestData,

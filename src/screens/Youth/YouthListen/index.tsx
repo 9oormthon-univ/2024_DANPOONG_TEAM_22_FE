@@ -18,28 +18,19 @@ import {
 } from 'react-native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import FightingIcon from '@assets/svgs/emotion/emotion_fighting.svg';
-import LoveIcon from '@assets/svgs/emotion/emotion_love.svg';
-import StarIcon from '@assets/svgs/emotion/emotion_star.svg';
-import ThumbIcon from '@assets/svgs/emotion/emotion_thumb.svg';
 import PlayIcon from '@assets/svgs/play_youth.svg';
 import SendIcon from '@assets/svgs/send.svg';
 import SmileIcon from '@assets/svgs/smile.svg';
 import SmileWhiteIcon from '@assets/svgs/smile_white.svg';
 import StopIcon from '@assets/svgs/stop.svg';
 import {postComment} from '@apis/providedFile';
+import {EmotionType} from '@type/api/providedFile';
+import {EMOTION_OPTIONS} from '@constants/letter';
 
 type YouthProps = NativeStackScreenProps<
   YouthStackParamList,
   'YouthListenScreen'
 >;
-
-export const EMOTION_OPTIONS = [
-  {icon: <StarIcon />, label: '고마워요', value: 'THANK_YOU'},
-  {icon: <ThumbIcon />, label: '응원해요', value: 'HELPFUL'},
-  {icon: <FightingIcon />, label: '화이팅', value: 'MOTIVATED'},
-  {icon: <LoveIcon />, label: '사랑해요', value: 'LOVE'},
-];
 
 const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
   const {alarmId, script} = route.params;
@@ -76,9 +67,11 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
       setIsKeyboardVisible(true),
     );
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () =>
-      setIsKeyboardVisible(false),
-    );
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setTimeout(() => {
+        setIsKeyboardVisible(false);
+      }, 100);
+    });
 
     return () => {
       showSubscription.remove();
@@ -95,8 +88,10 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         const res = await getVoiceFiles({alarmId});
         console.log(res);
         setVoiceFile(res.result);
-        await audioPlayer.current.startPlayer(res.result.fileUrl);
-        setIsPlaying(true);
+        setTimeout(async () => {
+          await audioPlayer.current.startPlayer(res.result.fileUrl);
+          setIsPlaying(true);
+        }, 1000);
       } catch (error) {
         console.log(error);
         // Alert.alert('오류', '음성 파일을 불러오는 중 오류가 발생했어요');
@@ -109,16 +104,27 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
       }
     })();
 
-    return () => {
+    return async () => {
       if (isPlaying) {
-        audioPlayer.current.stopPlayer();
+        await audioPlayer.current.stopPlayer();
+        setIsPlaying(false);
       }
     };
-  }, []);
+  }, [alarmId, isPlaying]);
 
-  const handleMessageSend = async () => {
+  const handleMessageSend = async ({
+    emotionType,
+  }: {
+    emotionType?: EmotionType;
+  }) => {
+    if (!emotionType && !message) {
+      return;
+    }
     try {
-      await postComment({providedFileId: voiceFile.providedFileId, message});
+      await postComment({
+        providedFileId: voiceFile.providedFileId,
+        message: emotionType ?? message,
+      });
       Alert.alert('성공', '편지를 성공적으로 보냈어요');
       setMessage('');
     } catch (error) {
@@ -221,7 +227,10 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
                         ? 'mr-[50]'
                         : 'mr-[10]'
                     } flex-row items-center justify-center`}
-                    style={{borderRadius: 50}}>
+                    style={{borderRadius: 50}}
+                    onPress={() =>
+                      handleMessageSend({emotionType: emotion.type})
+                    }>
                     {emotion.icon}
                     <Txt
                       type="body3"
