@@ -10,6 +10,7 @@ import PagerView, {
   PagerViewOnPageScrollEventData,
   PagerViewOnPageSelectedEvent,
 } from 'react-native-pager-view';
+
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'YouthOnboardingScreen'
@@ -114,8 +115,8 @@ const Page5 = ({handleNext}: Readonly<{handleNext: () => void}>) => {
 const YouthOnboardingScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const {nickname, imageUri, role} = route.params;
   const [currentPageIdx, setCurrentPageIdx] = useState(0);
+  const [fadeAnim] = useState(new Animated.Value(1));
 
-  //
   const handleNext = () => {
     navigation.navigate('YouthMemberInfoWriteScreen', {
       nickname,
@@ -124,7 +125,7 @@ const YouthOnboardingScreen = ({route, navigation}: Readonly<AuthProps>) => {
     });
   };
 
-  const PAGE_COUNT = 4;
+  const PAGE_COUNT = 5;
   const width = Dimensions.get('window').width;
   const ref = React.useRef<PagerView>(null);
   const scrollOffsetAnimatedValue = React.useRef(new Animated.Value(0)).current;
@@ -191,15 +192,28 @@ const YouthOnboardingScreen = ({route, navigation}: Readonly<AuthProps>) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (currentPageIdx < PAGE_COUNT) {
-        ref.current?.setPage(currentPageIdx + 1);
+      if (currentPageIdx < PAGE_COUNT - 1) {
+        Animated.sequence([
+          Animated.timing(fadeAnim, {
+            toValue: 0,
+            duration: 500,
+            useNativeDriver: true,
+          }),
+          Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: 500,
+            useNativeDriver: true,
+          }),
+        ]).start(() => {
+          ref.current?.setPage(currentPageIdx + 1);
+        });
       } else {
         clearInterval(interval);
       }
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [currentPageIdx]);
+  }, [currentPageIdx, fadeAnim]);
 
   return (
     <BG
@@ -221,30 +235,32 @@ const YouthOnboardingScreen = ({route, navigation}: Readonly<AuthProps>) => {
           />
         </View>
 
-        <AnimatedPagerView
-          testID="pager-view"
-          initialPage={0}
-          ref={ref}
-          className="flex-1"
-          onPageScroll={onPageScroll}
-          onPageSelected={onPageSelected}
-          style={{marginTop: -85}}>
-          <View key="1" className="flex-1">
-            <Page1 nickname={nickname ?? ''} />
-          </View>
-          <View key="2" className="flex-1">
-            <Page2 />
-          </View>
-          <View key="3" className="flex-1">
-            <Page3 />
-          </View>
-          <View key="4" className="flex-1">
-            <Page4 />
-          </View>
-          <View key="5" className="flex-1">
-            <Page5 handleNext={handleNext} />
-          </View>
-        </AnimatedPagerView>
+        <Animated.View style={{flex: 1, opacity: fadeAnim}}>
+          <AnimatedPagerView
+            testID="pager-view"
+            initialPage={0}
+            ref={ref}
+            className="flex-1"
+            onPageScroll={onPageScroll}
+            onPageSelected={onPageSelected}
+            style={{marginTop: -85}}>
+            <View key="1" className="flex-1">
+              <Page1 nickname={nickname ?? ''} />
+            </View>
+            <View key="2" className="flex-1">
+              <Page2 />
+            </View>
+            <View key="3" className="flex-1">
+              <Page3 />
+            </View>
+            <View key="4" className="flex-1">
+              <Page4 />
+            </View>
+            <View key="5" className="flex-1">
+              <Page5 handleNext={handleNext} />
+            </View>
+          </AnimatedPagerView>
+        </Animated.View>
       </>
     </BG>
   );
