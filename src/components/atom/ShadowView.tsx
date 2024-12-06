@@ -11,11 +11,11 @@ const ShadowView = ({
   return (
     <View
       className={`w-full h-full rounded-card overflow-hidden ${className}`}
-      style={{backgroundColor: 'rgba(250,250,250,0.1)'}}>
+     >
       <ImageBackground
         source={require('@assets/webps/ShadowBox.webp')}
         className="w-full h-full"
-        resizeMode="cover">
+        resizeMode="stretch">
         {children}
       </ImageBackground>
     </View>

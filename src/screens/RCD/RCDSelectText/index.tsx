@@ -56,9 +56,9 @@ const SelectButton = ({
     setIsLoading(true);
     try {
       if (gpt) {
-        console.log('alarmId:', alarmId);
+        // console.log('alarmId:', alarmId);
         const res = await postAskGPT(alarmId);
-        console.log(res);
+        // console.log(res);
         navigation.navigate('RCDText', {
           item: item,
           gptRes: res,
