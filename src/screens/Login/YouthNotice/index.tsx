@@ -8,6 +8,7 @@ import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
 import useLoading from '@hooks/useLoading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Geolocation from '@react-native-community/geolocation';
 import {CompositeScreenProps} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
@@ -22,7 +23,6 @@ import {
   ScrollView,
   View,
 } from 'react-native';
-import Geolocation from '@react-native-community/geolocation';
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -62,9 +62,6 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
     latitude: number;
     longitude: number;
   } | null>(null);
-  // 상태바 스타일 설정
-  const BackColorType = 'solid';
-  useStatusBarStyle(BackColorType);
 
   const requestPermission = async () => {
     try {

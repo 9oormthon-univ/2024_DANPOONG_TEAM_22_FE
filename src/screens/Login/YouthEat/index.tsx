@@ -106,7 +106,7 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
           }}
           className="absolute top-[0] w-full"
         />
-        <View className="w-[75%] h-[3] bg-yellowPrimary absolute top-[93]" />
+        <View className="w-[75%] h-[3] bg-yellowPrimary absolute top-[83]" />
         <View className="flex-1 mt-[50]">
           <View className="items-center pt-[100]">
             <Txt
