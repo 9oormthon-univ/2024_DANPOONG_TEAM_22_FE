@@ -95,6 +95,20 @@ svg로 표현 불가한 이미지는 webp 사용.
 
 <br>
 
+## 이렇게 협업했습니다!
+
+
+| 항목               | 이미지                                                          | 설명                           |
+|-------------------|----------------------------------------------------------------|--------------------------------|
+| 회의록            | <img src="https://github.com/user-attachments/assets/05828601-f9bf-4d37-bb32-06b06051c226" style="width: 70%;" /> | 회의한 내용을 명시적으로 활용할 수 있도록 회의록을 작성해 공유했습니다|
+| 할 일 정리        | <img src="https://github.com/user-attachments/assets/044c6c3f-0dca-4d25-ae00-7c889e9657ce" style="width: 70%;" /> | 해야 할 일을 정리해 놓아 일정관리를 하였고, 팀원들에게 진행도를 공유하였습니다 |
+| API 명세          | <img src="https://github.com/user-attachments/assets/29be2e30-88e7-42d8-a523-49624161e718" style="width: 70%;" /> | 스웨거를 통해 API 명세를 확인하며, BackEnd분들과 의견을 나누었습니다.   |
+| 와이어프레임      | <img src="https://github.com/user-attachments/assets/b8b096b6-8377-4344-8c21-2ed2a1e1aab6" style="width: 70%;" /> | 피그마에서 와이어프레임을 살펴보며 팀원들과 의견을 공유했습니다|
+| 디자인            | <img src="https://github.com/user-attachments/assets/c0a605d1-3ba2-4402-9e5f-e1548f30d815" style="width: 70%;" /> | 최종 디자인을 살펴보며 팀원들과 의견을 공유했습니다|
+
+
+
+
 ## 📦 패키지 구조
 
 ```
