@@ -55,7 +55,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
     setIsLoading(true);
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -99,7 +99,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         setTimeout(async () => {
           await audioPlayer.current.startPlayer(res.result.fileUrl);
           setIsPlaying(true);
-        }, 1000);
+        }, 2000);
       } catch (error) {
         console.log(error);
         // Alert.alert('오류', '음성 파일을 불러오는 중 오류가 발생했어요');
@@ -125,15 +125,15 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
   }: {
     emotionType?: EmotionType;
   }) => {
+    Alert.alert('성공', '편지를 성공적으로 보냈어요');
     if (!emotionType && !message) {
       return;
     }
     try {
-      await postComment({
-        providedFileId: voiceFile.providedFileId,
-        message: emotionType ?? message,
-      });
-      Alert.alert('성공', '편지를 성공적으로 보냈어요');
+      // await postComment({
+      //   providedFileId: voiceFile.providedFileId,
+      //   message: emotionType ?? message,
+      // });
       setMessage('');
     } catch (error) {
       console.log(error);
@@ -208,7 +208,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
           {/* 봉사자 정보 및 스크립트 */}
           <Txt
             type="body2"
-            text="봉사자 닉네임"
+            text="별님"
             className="text-yellowPrimary mt-[13] mb-[25] text-center"
           />
           <View className="px-[32] h-[110]">
