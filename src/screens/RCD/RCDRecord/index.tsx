@@ -79,10 +79,10 @@ const RCDRecordScreen = ({
   }, []);
 
   // 녹음 관련 상태 초기화 함수 
-  const refleshRCDStates = () => {
+  const refleshRCDStates = async () => {
     try {
-      audioRecorderPlayer.stopRecorder();
-      audioRecorderPlayer.stopPlayer();
+      await audioRecorderPlayer.stopRecorder();
+      await audioRecorderPlayer.stopPlayer();
       setIsDone(false);
       setIsPlaying(false);
       setVolumeList([]);
@@ -90,7 +90,7 @@ const RCDRecordScreen = ({
       setUri(null);
       // console.log('refleshRCDStates!@');
     } catch (e) {
-      console.log('reflesh error', e);
+      console.log('refresh error', e);
     }
   };
 
@@ -132,6 +132,11 @@ const RCDRecordScreen = ({
 
   // 녹음 시작 함수 
   const startRecording = async () => {
+    if (isRecording) {
+      // 이미 녹음 중인 경우 중지
+      await stopRecording();
+    }
+
     if (!(await checkPermission())) {
       return;
     }
@@ -242,8 +247,8 @@ const RCDRecordScreen = ({
   // 음성 분석 업로드 함수 
   const uploadAnalysis = async () => {
     //test
-    // navigation.navigate('RCDFeedBack',undefined);
-    // return;
+    navigation.navigate('RCDFeedBack',undefined);
+    return;
     try {
       await postVoiceAnalysis(voiceFileId);
     } catch (error: any) {
