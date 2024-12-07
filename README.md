@@ -50,6 +50,27 @@
 ## ✅ 협업 방식
 
 <details>
+<summary><b>브랜치 규칙</b></summary>
+
+</br>
+
+**설명**
+
+| 구분 | 규칙 |
+|------|------|
+| Name | • `{feature name}/#{issue number}`의 규칙으로 작성<br>• 이슈를 해결하기 위한 브랜치를 만드는 것을 기본으로 함 |
+
+**예시**
+
+```
+회원가입/#1
+```
+
+</br>
+
+</details>
+
+<details>
 <summary><b>커밋 규칙</b></summary>
 
 </br>
