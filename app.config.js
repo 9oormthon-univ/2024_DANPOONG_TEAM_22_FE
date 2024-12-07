@@ -30,14 +30,14 @@ export default ({config}) => ({
   },
   android: {
     adaptiveIcon: {
-      foregroundImage: './assets/pngs/NMLOGO.png',
-      backgroundColor: '#FFFFFF',
+      foregroundImage: './assets/pngs/logo/NMLOGO.png',
+      backgroundColor: '#252738',
     },
     package: 'com.nail.morae',
     googleServicesFile: './google-services.json',
   },
   web: {
-    favicon: './assets/favicon.png',
+    favicon: './assets/pngs/logo/NMLOGO.png',
   },
   newArchEnabled: true,
   plugins: [
