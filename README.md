@@ -50,27 +50,6 @@
 ## ✅ 협업 방식
 
 <details>
-<summary><b>브랜치 규칙</b></summary>
-
-</br>
-
-**설명**
-
-| 구분 | 규칙 |
-|------|------|
-| Name | • `{feature name}/#{issue number}`의 규칙으로 작성<br>• 이슈를 해결하기 위한 브랜치를 만드는 것을 기본으로 함 |
-
-**예시**
-
-```
-회원가입/#1
-```
-
-</br>
-
-</details>
-
-<details>
 <summary><b>커밋 규칙</b></summary>
 
 </br>
@@ -95,3 +74,44 @@ onClick이나 다른 기능은 구현하지 않았습니다!
 
 </details>
 
+<details>
+<summary><b>브랜치 규칙</b></summary>
+
+</br>
+
+**설명**
+
+| 구분 | 규칙 |
+|------|------|
+| Name | • `{feature name}/#{issue number}`의 규칙으로 작성<br>• 태그는 커밋 태그와 동일하게 사용<br>• 이슈를 해결하기 위한 브랜치를 만드는 것을 기본으로 함 |
+
+**예시**
+
+```
+회원가입/#1
+```
+
+</br>
+
+</details>
+
+<details>
+<summary><b>풀 리퀘스트(PR) 규칙</b></summary>
+
+</br>
+
+**설명**
+
+| 구분 | 규칙 |
+|------|------|
+| Name | • `<type>/<subject>`의 규칙으로 작성<br>• 태그는 커밋 태그와 동일하게 사용<br>• 내용에는 자신이 작업했던 작업 기록 |
+
+**예시**
+
+```
+refactor/회원가입
+```
+
+</br>
+
+</details>
