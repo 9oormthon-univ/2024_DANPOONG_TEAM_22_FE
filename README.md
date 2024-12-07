@@ -42,6 +42,8 @@ svg로 표현 불가한 이미지는 webp 사용.
 사용하지 않는 폰트를 삭제해 용량 축소.
 향후 가장 자주 사용하는 wantedsans 외의 폰트를 서브셋 폰트로 제작할 계획입니다.
 
+<br>
+
 ## ⚙️ FE 사용 도구
 
 | 도구 | 도입 이유 |
@@ -55,6 +57,29 @@ svg로 표현 불가한 이미지는 webp 사용.
 | FCM (Firebase Cloud Messaging) | Google에서 지원하는 무료 메시지 전송 서비스다. 메시지 서버를 직접 구축할 수도 있지만 간편하게 푸시알림 기능을 구현하고자 사용했다. |
 | lottie-react-native | 적은 용량으로 부드러운 애니메이션을 적용하기 위해 사용했다. 청년의 녹음 듣기 화면에서 파형 애니메이션과 로딩 애니메이션을 재생하는 데 적용했다.  |
 
+<br>
+
+## 패키지 구조
+
+```
+src
+└── nav
+  ├── tabNav
+  └── stackNav
+├── screens
+└── components
+  ├── atom
+  └── molcule
+├── stories
+├── types
+├── contexts
+└── libs
+  ├── constants
+  ├── apis
+  ├── hooks
+  └── utils
+```
+
 ## 🧐 팀 소개
 
 | 이름 | 학교 | 역할 |
@@ -66,24 +91,22 @@ svg로 표현 불가한 이미지는 webp 사용.
 | 노유성 | 가천대학교 | BE |
 | 심세원 | 가천대학교 | BE |
 
+<br>
+
 ## ✅ 협업 방식
 
 <details>
-<summary><b>브랜치 규칙</b></summary>
+<summary><b>코드 컨벤션</b></summary>
 
-</br>
+<br>
 
-**설명**
+**React Native: JavaScript**
 
 | 구분 | 규칙 |
 |------|------|
-| Name | • `{feature name}/#{issue number}`의 규칙으로 작성<br>• 이슈를 해결하기 위한 브랜치를 만드는 것을 기본으로 함 |
-
-**예시**
-
-```
-회원가입/#1
-```
+| Name | • 변수 선언 시 const를 기본으로 사용, 필요한 경우에만 let 사용<br>• 객체 및 배열에는 리터럴 표기법 사용<br>• 함수는 함수 표현식을 주로 사용 |
+| Format | • 들여쓰기는 2칸 사용<br>• 여러 줄에 걸치는 객체는 쉼표 뒤에 줄 바뀜 적용 |
+| 주석 | • 코드의 의도를 설명하는 주석 추가 |
 
 </br>
 
@@ -114,3 +137,44 @@ onClick이나 다른 기능은 구현하지 않았습니다!
 
 </details>
 
+<details>
+<summary><b>브랜치 규칙</b></summary>
+
+</br>
+
+**설명**
+
+| 구분 | 규칙 |
+|------|------|
+| Name | • `{feature name}/#{issue number}`의 규칙으로 작성<br>• 태그는 커밋 태그와 동일하게 사용<br>• 이슈를 해결하기 위한 브랜치를 만드는 것을 기본으로 함 |
+
+**예시**
+
+```
+회원가입/#1
+```
+
+</br>
+
+</details>
+
+<details>
+<summary><b>풀 리퀘스트(PR) 규칙</b></summary>
+
+</br>
+
+**설명**
+
+| 구분 | 규칙 |
+|------|------|
+| Name | • `<type>/<subject>`의 규칙으로 작성<br>• 태그는 커밋 태그와 동일하게 사용<br>• 내용에는 자신이 작업했던 작업 기록 |
+
+**예시**
+
+```
+refactor/회원가입
+```
+
+</br>
+
+</details>
