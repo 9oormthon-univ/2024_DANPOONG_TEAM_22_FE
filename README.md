@@ -4,9 +4,35 @@
 
 ## 🔥 프로젝트 개요
 
-작성 중
+| 자립준비청년 정의 | 자립준비청년 사회 현상 |
+|---|---|
+| ![1 자립준비청년 정의](https://github.com/user-attachments/assets/0e94a7a6-f8c7-4e47-a358-a403b39f3840) | ![2 자립준비청년 사회 현상](https://github.com/user-attachments/assets/a3e9c742-f0a4-4647-a557-e1b8c8c9f63b) |
 
-## 예선대비 개선점
+| 인터뷰_자립준비청년 | 데스크리서치_봉사자 |
+|---|---|
+| ![3 인터뷰](https://github.com/user-attachments/assets/138d4989-f3ee-4170-8b76-ed739005912e) | ![4 데스크리서치_ 봉사자](https://github.com/user-attachments/assets/348619de-43a2-4e36-bc2c-5f601e4b5d7f) |
+
+| 인사이트 | 경쟁사 |
+|---|---|
+| ![5 인사이트](https://github.com/user-attachments/assets/2193d812-9586-4b58-9aa7-951a748ff4d8) | ![6 경쟁사](https://github.com/user-attachments/assets/bcd2f90f-91e8-4356-a822-6b389953ceb9) |
+
+| 솔루션 | 서비스 소개 |
+|---|---|
+| ![8](https://github.com/user-attachments/assets/549dab24-23f2-45af-9366-19e0d8b1d717) | ![9](https://github.com/user-attachments/assets/b6895bdb-475a-416b-a015-769fa6bad5ef) |
+
+| 디자인 컨셉 | 시연 영상 |
+|---|---|
+| ![10](https://github.com/user-attachments/assets/360cc5b0-2e16-4420-96e9-5c755e66f0db) | ![11](https://github.com/user-attachments/assets/52ff3aef-6ee8-4945-b75b-91e8692737f6) |
+
+| 비즈니스 모델 | 비전 |
+|---|---|
+| ![12](https://github.com/user-attachments/assets/5b385c9f-d3d2-4a5a-adfc-f3d0b6663de6) | ![15](https://github.com/user-attachments/assets/29f7cf13-3334-487e-b22e-1b7863cd18fd) |
+
+![16](https://github.com/user-attachments/assets/30f29d31-b870-4119-9ff3-827740843840)
+
+<br>
+
+## ⭐️ 예선대비 개선점
 
 **1. Expo 환경에서 React Native CLI로의 개발 환경 변경**
 
@@ -69,7 +95,7 @@ svg로 표현 불가한 이미지는 webp 사용.
 
 <br>
 
-## 패키지 구조
+## 📦 패키지 구조
 
 ```
 src
