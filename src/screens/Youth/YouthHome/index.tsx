@@ -1,5 +1,6 @@
 import {getAlarmCategoryDetail} from '@apis/alarm';
 import CancelIcon from '@assets/svgs/cancel.svg';
+import LogoIcon from '@assets/svgs/Main2.svg';
 import Txt from '@components/atom/Txt';
 import useGetAlarmComfort from '@hooks/alarm/useGetAlarmComfort';
 import useGetHelperNum from '@hooks/member/useGetHelperNum';
@@ -160,10 +161,9 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
               {clicked ? (
                 <CancelIcon />
               ) : (
-                <Image
-                  source={require('@assets/pngs/logo/vector/vector_logo_white.png')}
-                  className="w-[43] h-[43]"
-                />
+                <View className="w-[43] h-[43] justify-center items-center pr-[5]">
+                  <LogoIcon />
+                </View>
               )}
               {!clicked && (
                 <Txt
