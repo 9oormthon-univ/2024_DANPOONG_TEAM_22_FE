@@ -59,11 +59,11 @@ const RCDWave = ({volumeList, isPlaying, recording, isDone}: RCDWaveProps) => {
 
   const calculate_height = (item: number) => {
     if (item <= -50) {
-      // 구간 1: -160 ~ -50 -> 1% ~ 10%
-      return ((item + 50) / 50) * 9 + 1;
+      // 구간 1: -160 ~ -50 -> 10% ~ 20%
+      return ((item + 50) / 50) * 10 + 10;
     } else {
-      // 구간 2: -50 ~ 0 -> 10% ~ 70%
-      return ((item + 50) / 50) * 60 + 10;
+      // 구간 2: -50 ~ 0 -> 20% ~ 70%
+      return ((item + 50) / 50) * 50 + 20;
     }
   };
 
