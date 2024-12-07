@@ -1,6 +1,10 @@
-# 2024_DANPOONG_TEAM_22_FE
+## ✨ 내일 모래 : 사람의 목소리로 자립 준비 청년의 일상을 밝히는 서비스
 
-내일 모래 - 사람의 목소리로 자립 준비 청년의 일상을 밝히는 서비스
+![0 표지](https://github.com/user-attachments/assets/5c52cc72-0b46-49cf-88a0-406dbb1379ed)
+
+## 🔥 프로젝트 개요
+
+작성 중
 
 ## 예선대비 개선점
 
@@ -41,6 +45,12 @@ svg로 표현 불가한 이미지는 webp 사용.
   
 사용하지 않는 폰트를 삭제해 용량 축소.
 향후 가장 자주 사용하는 wantedsans 외의 폰트를 서브셋 폰트로 제작할 계획입니다.
+
+<br>
+
+## 📝 시스템 아키텍쳐
+
+![시스템 아키텍쳐](https://github.com/user-attachments/assets/00362eb3-d84d-48c1-a41a-e08c0cf745f5)
 
 <br>
 
