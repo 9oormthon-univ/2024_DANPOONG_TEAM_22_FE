@@ -75,8 +75,10 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
     }
   };
 
-  useEffect(() => {
-    (async () => {
+   
+
+  const handleNext = async () => {
+     (async () => {
       const permission = await requestPermission();
       console.log({permission});
       if (permission !== 'granted') {
@@ -87,6 +89,61 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
         pos => {
           console.log('pos', pos);
           setCurrentLocation(pos.coords);
+
+          (async () => {
+            let imageLocation;
+            try {
+              setIsLoading(true);
+              imageLocation = (await uploadImageToS3(imageUri)) as string;
+              console.log('imageLocation', imageLocation);
+            } catch (error) {
+              console.log(error);
+            } finally {
+              setIsLoading(false);
+            }
+        
+            const fcmToken = await AsyncStorage.getItem('fcmToken');
+        
+            const data: MemberInfoResponseData = {
+              gender: gender as Gender,
+              name: nickname,
+              profileImage: imageLocation ?? '',
+              role: role as Role,
+              birth: formatBirth(birthday),
+              fcmToken: fcmToken ?? '',
+              youthMemberInfoDto: {
+                wakeUpTime,
+                breakfast,
+                lunch,
+                dinner,
+                sleepTime,
+                latitude: pos.coords.latitude,
+                longitude: pos.coords.longitude,
+                // latitude: 37.2750791,
+                // longitude: 127.047405,
+              },
+            };
+        
+            try {
+              const {result} = await postMemberYouth(data);
+              console.log(result);
+        
+              await AsyncStorage.setItem('nickname', nickname);
+              await AsyncStorage.setItem('role', role);
+        
+              navigation.navigate('YouthStackNav', {
+                screen: 'YouthHomeScreen',
+                params: {},
+              });
+        
+            } catch (error) {
+              console.log(error);
+              Alert.alert('오류', '회원가입 중 오류가 발생했어요');
+            }
+        
+          })()
+       
+
         },
         error => {
           console.log('error', error);
@@ -97,65 +154,9 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
         },
       );
     })();
-  }, []);
 
-  const handleNext = async () => {
-    navigation.navigate('YouthStackNav', {
-      screen: 'YouthHomeScreen',
-      params: {},
-    });
-    if (!currentLocation) {
-      return;
-    }
-
-    let imageLocation;
-    try {
-      setIsLoading(true);
-      imageLocation = (await uploadImageToS3(imageUri)) as string;
-      console.log('imageLocation', imageLocation);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-
-    const fcmToken = await AsyncStorage.getItem('fcmToken');
-
-    const data: MemberInfoResponseData = {
-      gender: gender as Gender,
-      name: nickname,
-      profileImage: imageLocation ?? '',
-      role: role as Role,
-      birth: formatBirth(birthday),
-      fcmToken: fcmToken ?? '',
-      youthMemberInfoDto: {
-        wakeUpTime,
-        breakfast,
-        lunch,
-        dinner,
-        sleepTime,
-        latitude: currentLocation.latitude,
-        longitude: currentLocation.longitude,
-        // latitude: 37.2750791,
-        // longitude: 127.047405,
-      },
-    };
-
-    try {
-      const {result} = await postMemberYouth(data);
-      console.log(result);
-
-      await AsyncStorage.setItem('nickname', nickname);
-      await AsyncStorage.setItem('role', role);
-
-      navigation.navigate('YouthStackNav', {
-        screen: 'YouthHomeScreen',
-        params: {},
-      });
-    } catch (error) {
-      console.log(error);
-      Alert.alert('오류', '회원가입 중 오류가 발생했어요');
-    }
+    
+    
   };
 
   return (
