@@ -61,7 +61,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
             <View className="flex-row mt-[9] items-center">
               <Txt
                 type="title1"
-                text={String(summaryData?.result.totalListeners)}
+                text={String(summaryData?.result.totalListeners ?? '')}
                 className="text-yellowPrimary"
               />
               <Txt
@@ -115,7 +115,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
                           text={String(
                             summaryData?.result.reactionsNum[
                               emotion.type as keyof typeof summaryData.result.reactionsNum
-                            ],
+                            ] ?? '',
                           )}
                           // text="33"
                           className="text-gray100 text-center"
