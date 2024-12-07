@@ -90,7 +90,7 @@ const Page3 = ({nickname}: Readonly<PageProps>) => {
 
 const Page4 = ({handleNext}: Readonly<{handleNext: () => void}>) => {
   return (
-    <View className="flex-1 items-center mt-[189]">
+    <View className="flex-1 items-center mt-[89]">
       <Txt
         type="body2"
         text={
@@ -99,10 +99,10 @@ const Page4 = ({handleNext}: Readonly<{handleNext: () => void}>) => {
         className="text-gray200 text-center "
       />
       <Image
-        source={require('@assets/webps/marginalStars.webp')}
+        source={require('@assets/pngs/marginalStars.png')}
         width={274}
         height={269.5}
-        className="w-[300] h-auto absolute bottom-[30]"
+        className="w-[340] h-auto absolute bottom-[75] "
       />
       <Image
         source={require('@assets/webps/constellation.webp')}
