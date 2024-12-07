@@ -242,8 +242,8 @@ const RCDRecordScreen = ({
   // 음성 분석 업로드 함수 
   const uploadAnalysis = async () => {
     //test
-    navigation.navigate('RCDFeedBack',undefined);
-    return;
+    // navigation.navigate('RCDFeedBack',undefined);
+    // return;
     try {
       await postVoiceAnalysis(voiceFileId);
     } catch (error: any) {
