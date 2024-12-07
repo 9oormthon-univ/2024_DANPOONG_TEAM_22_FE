@@ -75,7 +75,7 @@ const RCDListScreen = ({
         }}
         className="absolute top-[0] w-full"
       />
-      <StatusBarGap times={2} />
+      <StatusBarGap  />
 
 
       {/* 상단 배경 이미지 */}

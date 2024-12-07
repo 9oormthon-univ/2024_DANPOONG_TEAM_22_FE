@@ -101,7 +101,7 @@ const RCDFeedBackScreen = () => {
                 letterSpacing: 18 * -0.025,
               }}>
               바람돌이님의 목소리 덕분에{'\n'}나그네가 힘차게 여행할 수
-              있을거에요
+              있을거예요
             </Animated.Text>
       </View>
     </View>

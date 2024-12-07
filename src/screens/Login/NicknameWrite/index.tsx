@@ -77,7 +77,6 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
   };
 
   return (
-    <SafeAreaView className="flex-1 justify-center items-center">
       <BG type="main">
         <DismissKeyboardView>
           <View className="items-center mt-[149]">
@@ -132,7 +131,6 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
           <Button text="다음" onPress={handleNext} disabled={!nickname} />
         </View>
       </BG>
-    </SafeAreaView>
   );
 };
 
