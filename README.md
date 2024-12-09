@@ -20,7 +20,7 @@
 |---|---|
 | ![8](https://github.com/user-attachments/assets/549dab24-23f2-45af-9366-19e0d8b1d717) | ![9](https://github.com/user-attachments/assets/b6895bdb-475a-416b-a015-769fa6bad5ef) |
 
-| 디자인 컨셉 | [시연 영상](https://youtu.be/hEcB9O_u_yA?feature=shared) |
+| 디자인 컨셉 | <a href="https://youtu.be/hEcB9O_u_yA?feature=shared" target="_blank" rel="noopener noreferrer">시연 영상</a> |
 |---|---|
 | ![10](https://github.com/user-attachments/assets/360cc5b0-2e16-4420-96e9-5c755e66f0db) | ![11](https://github.com/user-attachments/assets/52ff3aef-6ee8-4945-b75b-91e8692737f6) |
 
