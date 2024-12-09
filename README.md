@@ -1,4 +1,4 @@
-## ✨ 내일 모래 : 사람의 목소리로 자립 준비 청년의 일상을 밝히는 서비스
+## ✨ 내일모래 : 사람의 목소리로 자립준비청년의 일상을 밝히는 서비스
 
 ![0 표지](https://github.com/user-attachments/assets/5c52cc72-0b46-49cf-88a0-406dbb1379ed)
 
@@ -20,7 +20,7 @@
 |---|---|
 | ![8](https://github.com/user-attachments/assets/549dab24-23f2-45af-9366-19e0d8b1d717) | ![9](https://github.com/user-attachments/assets/b6895bdb-475a-416b-a015-769fa6bad5ef) |
 
-| 디자인 컨셉 | 시연 영상 |
+| 디자인 컨셉 | [시연 영상](https://youtu.be/hEcB9O_u_yA?feature=shared) |
 |---|---|
 | ![10](https://github.com/user-attachments/assets/360cc5b0-2e16-4420-96e9-5c755e66f0db) | ![11](https://github.com/user-attachments/assets/52ff3aef-6ee8-4945-b75b-91e8692737f6) |
 
@@ -29,48 +29,6 @@
 | ![12](https://github.com/user-attachments/assets/5b385c9f-d3d2-4a5a-adfc-f3d0b6663de6) | ![15](https://github.com/user-attachments/assets/29f7cf13-3334-487e-b22e-1b7863cd18fd) |
 
 ![16](https://github.com/user-attachments/assets/30f29d31-b870-4119-9ff3-827740843840)
-
-<br>
-
-## ⭐️ 예선대비 개선점
-
-**1. Expo 환경에서 React Native CLI로의 개발 환경 변경**
-
-개발 환경을 React Native CLI로 변경함으로써 빌드 시간을 약 20분에서 1분 미만으로 단축시켰습니다. 이로 인해 빌드 시간 95% 이상 단축되었으며, 개발 효율성을 크게 향상시킬 수 있었습니다.
-
-초기에는 Expo Managed Workflow를 사용하여 빠른 시작과 개발을 목표로 했습니다. 하지만, 카카오 로그인 API와 같은 네이티브 기능을 사용하기 위해서는 EAS Build를 활용해야 했습니다. Expo Managed Workflow는 네이티브 모듈을 직접 사용할 수 없으며, EAS Build는 네이티브 코드와 관련된 작업을 처리하는 서비스였기 때문입니다.
-
-하지만 EAS Build의 긴 빌드 시간은 개발 효율성을 낮추는 주요 원인이었습니다. 이를 해결하기 위해 React Native CLI로 환경을 전환하였고, 빌드 시간을 크게 단축시켜 개발 속도와 효율성을 향상시켰습니다.
-
-또한, 네이티브 종속성을 직접 관리하면서 추가적인 커스터마이징이 가능해졌습니다. 구체적으로,
-
-녹음 기능은 `expo-av`에서 `react-native-audio-recorder-player`로,
-알림 기능은 `react-native-push-notification`에서 `notifee/react-native`로 변경하여 세부적인 설정을 할 수 있었습니다.
-
-**2. 앱 완성도 및 안정성 향상**
-
-기존에 구현하지 못했던 기능들을 추가하고, API 연결 안정성을 높여 앱의 완성도와 안정성을 크게 향상시켰습니다.
-
-특히, 알림 기능의 완성도를 높이기 위해 알림 수신 조건과 앱 상태에 따른 분기 처리를 구현하였습니다. 이를 통해 사용자가 앱을 열지 않은 상태에서도 알림을 받을 수 있도록 안정성을 강화했습니다.
-
-**3. 에셋 최적화**
-
-+ 이미지 최적화
-
-이미지 파일 확장자를 png, webp, svg로 통일하였습니다.
-간단한 아이콘은 svg 사용.
-svg로 표현 불가한 이미지는 webp 사용.
-배경화면처럼 webp로 변환 시 품질 손상이 발생하는 이미지는 png로 유지.
-
-+ 오디오 최적화
-  
-백엔드 음성 인식을 위해 wav 형식으로 녹음 후 API 요청을 합니다.
-추후 ADPCM 형식을 사용해 데이터 손실 없이 파일 크기를 줄일 계획입니다.
-
-+ 폰트 최적화
-  
-사용하지 않는 폰트를 삭제해 용량 축소.
-향후 가장 자주 사용하는 wantedsans 외의 폰트를 서브셋 폰트로 제작할 계획입니다.
 
 <br>
 
@@ -94,20 +52,6 @@ svg로 표현 불가한 이미지는 webp 사용.
 | lottie-react-native | 적은 용량으로 부드러운 애니메이션을 적용하기 위해 사용했다. 청년의 녹음 듣기 화면에서 파형 애니메이션과 로딩 애니메이션을 재생하는 데 적용했다.  |
 
 <br>
-
-## 이렇게 협업했습니다!
-
-
-| 항목               | 이미지                                                          | 설명                           |
-|-------------------|----------------------------------------------------------------|--------------------------------|
-| 회의록            | <img src="https://github.com/user-attachments/assets/05828601-f9bf-4d37-bb32-06b06051c226" style="width: 70%;" /> | 회의한 내용을 명시적으로 활용할 수 있도록 회의록을 작성해 공유했습니다|
-| 할 일 정리        | <img src="https://github.com/user-attachments/assets/044c6c3f-0dca-4d25-ae00-7c889e9657ce" style="width: 70%;" /> | 해야 할 일을 정리해 놓아 일정관리를 하였고, 팀원들에게 진행도를 공유하였습니다 |
-| API 명세          | <img src="https://github.com/user-attachments/assets/29be2e30-88e7-42d8-a523-49624161e718" style="width: 70%;" /> | 스웨거를 통해 API 명세를 확인하며, BackEnd분들과 의견을 나누었습니다.   |
-| 와이어프레임      | <img src="https://github.com/user-attachments/assets/b8b096b6-8377-4344-8c21-2ed2a1e1aab6" style="width: 70%;" /> | 피그마에서 와이어프레임을 살펴보며 팀원들과 의견을 공유했습니다|
-| 디자인            | <img src="https://github.com/user-attachments/assets/c0a605d1-3ba2-4402-9e5f-e1548f30d815" style="width: 70%;" /> | 최종 디자인을 살펴보며 팀원들과 의견을 공유했습니다|
-
-
-
 
 ## 📦 패키지 구조
 
@@ -226,5 +170,71 @@ refactor/회원가입
 ```
 
 </br>
+
+</details>
+
+<details>
+<summary><b>이렇게 협업했습니다!</b></summary>
+
+</br>
+
+| 항목               | 이미지                                                          | 설명                           |
+|-------------------|----------------------------------------------------------------|--------------------------------|
+| 회의록            | <img src="https://github.com/user-attachments/assets/05828601-f9bf-4d37-bb32-06b06051c226" style="width: 70%;" /> | 회의한 내용을 명시적으로 활용할 수 있도록 회의록을 작성해 공유했습니다|
+| 할 일 정리        | <img src="https://github.com/user-attachments/assets/044c6c3f-0dca-4d25-ae00-7c889e9657ce" style="width: 70%;" /> | 해야 할 일을 정리해 놓아 일정관리를 하였고, 팀원들에게 진행도를 공유하였습니다 |
+| API 명세          | <img src="https://github.com/user-attachments/assets/29be2e30-88e7-42d8-a523-49624161e718" style="width: 70%;" /> | 스웨거를 통해 API 명세를 확인하며, BackEnd분들과 의견을 나누었습니다.   |
+| 와이어프레임      | <img src="https://github.com/user-attachments/assets/b8b096b6-8377-4344-8c21-2ed2a1e1aab6" style="width: 70%;" /> | 피그마에서 와이어프레임을 살펴보며 팀원들과 의견을 공유했습니다|
+| 디자인            | <img src="https://github.com/user-attachments/assets/c0a605d1-3ba2-4402-9e5f-e1548f30d815" style="width: 70%;" /> | 최종 디자인을 살펴보며 팀원들과 의견을 공유했습니다|
+
+</br>
+
+</details>
+
+<br>
+
+<details>
+<summary><h2>⭐️ 예선대비 개선점</h2></summary>
+
+</br>
+
+**1. Expo 환경에서 React Native CLI로의 개발 환경 변경**
+
+개발 환경을 React Native CLI로 변경함으로써 빌드 시간을 약 20분에서 1분 미만으로 단축시켰습니다. 이로 인해 빌드 시간 95% 이상 단축되었으며, 개발 효율성을 크게 향상시킬 수 있었습니다.
+
+초기에는 Expo Managed Workflow를 사용하여 빠른 시작과 개발을 목표로 했습니다. 하지만, 카카오 로그인 API와 같은 네이티브 기능을 사용하기 위해서는 EAS Build를 활용해야 했습니다. Expo Managed Workflow는 네이티브 모듈을 직접 사용할 수 없으며, EAS Build는 네이티브 코드와 관련된 작업을 처리하는 서비스였기 때문입니다.
+
+하지만 EAS Build의 긴 빌드 시간은 개발 효율성을 낮추는 주요 원인이었습니다. 이를 해결하기 위해 React Native CLI로 환경을 전환하였고, 빌드 시간을 크게 단축시켜 개발 속도와 효율성을 향상시켰습니다.
+
+또한, 네이티브 종속성을 직접 관리하면서 추가적인 커스터마이징이 가능해졌습니다. 구체적으로,
+
+녹음 기능은 `expo-av`에서 `react-native-audio-recorder-player`로,
+알림 기능은 `react-native-push-notification`에서 `notifee/react-native`로 변경하여 세부적인 설정을 할 수 있었습니다.
+
+**2. 앱 완성도 및 안정성 향상**
+
+기존에 구현하지 못했던 기능들을 추가하고, API 연결 안정성을 높여 앱의 완성도와 안정성을 크게 향상시켰습니다.
+
+특히, 알림 기능의 완성도를 높이기 위해 알림 수신 조건과 앱 상태에 따른 분기 처리를 구현하였습니다. 이를 통해 사용자가 앱을 열지 않은 상태에서도 알림을 받을 수 있도록 안정성을 강화했습니다.
+
+**3. 에셋 최적화**
+
++ 이미지 최적화
+
+이미지 파일 확장자를 png, webp, svg로 통일하였습니다.
+간단한 아이콘은 svg 사용.
+svg로 표현 불가한 이미지는 webp 사용.
+배경화면처럼 webp로 변환 시 품질 손상이 발생하는 이미지는 png로 유지.
+
++ 오디오 최적화
+  
+백엔드 음성 인식을 위해 wav 형식으로 녹음 후 API 요청을 합니다.
+추후 ADPCM 형식을 사용해 데이터 손실 없이 파일 크기를 줄일 계획입니다.
+
++ 폰트 최적화
+  
+사용하지 않는 폰트를 삭제해 용량 축소.
+향후 가장 자주 사용하는 wantedsans 외의 폰트를 서브셋 폰트로 제작할 계획입니다.
+
+<br>
 
 </details>
