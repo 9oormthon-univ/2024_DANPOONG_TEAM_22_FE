@@ -8,6 +8,6 @@ export type RCDBtnBarProps = {
     // isPaused: boolean
     isDone: boolean
     recording: boolean
-    reflesh : ()=>void
+    refresh : ()=>void
     stop: ()=>void
   }
