@@ -71,7 +71,7 @@ const RCDRecordScreen = ({
 
   // 컴포넌트 마운트/언마운트 시 녹음 상태 초기화
   useEffect(() => {
-    refleshRCDStates();
+    refreshRCDStates();
     return () => {
       audioRecorderPlayer.stopRecorder();
       audioRecorderPlayer.stopPlayer();
@@ -79,7 +79,7 @@ const RCDRecordScreen = ({
   }, []);
 
   // 녹음 관련 상태 초기화 함수 
-  const refleshRCDStates = async () => {
+  const refreshRCDStates = async () => {
     try {
       await audioRecorderPlayer.stopRecorder();
       await audioRecorderPlayer.stopPlayer();
@@ -88,7 +88,7 @@ const RCDRecordScreen = ({
       setVolumeList([]);
       setIsRecording(false);
       setUri(null);
-      // console.log('refleshRCDStates!@');
+      // console.log('refreshRCDStates!@');
     } catch (e) {
       console.log('refresh error', e);
     }
@@ -323,7 +323,7 @@ const RCDRecordScreen = ({
                   isPlaying={isPlaying}
                   recording={isRecording}
                   isDone={isDone}
-                  reflesh={refleshRCDStates}
+                  refresh={refreshRCDStates}
                   stop={stopRecording}
                 />
               </View>

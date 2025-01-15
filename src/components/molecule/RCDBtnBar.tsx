@@ -30,7 +30,7 @@ const RCDBtnBar = ({
   // isPaused,
   isDone,
   recording,
-  reflesh,
+  refresh,
   stop,
 }: RCDBtnBarProps) => {
   const justifyType = isDone ? 'between' : 'center';
@@ -42,7 +42,7 @@ const RCDBtnBar = ({
           content="다시"
           color="gray300"
           onPress={async () => {
-            await reflesh();
+            await refresh();
             await record();
           }}
         />
