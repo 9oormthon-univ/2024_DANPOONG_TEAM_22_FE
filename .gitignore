@@ -82,3 +82,8 @@ S3config.ts
 
 # keystore
 *.keystore
+*.jks
+
+# gradle
+gradle.properties
+
