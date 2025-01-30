@@ -10,16 +10,18 @@
 import {
   createNavigationContainerRef,
   NavigationContainer,
+  NavigationState,
 } from '@react-navigation/native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import AppInner, {navigateToYouthListenScreen} from 'AppInner';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
 import messaging from '@react-native-firebase/messaging';
-import {useEffect} from 'react';
+import {useEffect, useRef} from 'react';
 // import pushNoti from '@utils/pushNoti';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StatusBar } from 'react-native';
+import {StatusBar} from 'react-native';
+import analytics from '@react-native-firebase/analytics';
 
 // 쿼리 클라이언트 설정
 const queryClient = new QueryClient({
@@ -34,6 +36,41 @@ const queryClient = new QueryClient({
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
 function App(): React.JSX.Element {
+  const routeNameRef = useRef<string | undefined>();
+
+  // GA 트래킹 설정
+  useEffect(() => {
+    const state = navigationRef.current?.getRootState();
+    if (state) {
+      routeNameRef.current = getActiveRouteName(state);
+    }
+  }, []);
+
+  const getActiveRouteName = (state: NavigationState) => {
+    const route = state.routes[state.index];
+    if (route.state) {
+      return getActiveRouteName(route.state as NavigationState);
+    }
+    return route.name;
+  };
+
+  const onStateChange = async (state: NavigationState | undefined) => {
+    if (state === undefined) return;
+    const previousRouteName = routeNameRef.current;
+    const currentRouteName = getActiveRouteName(state);
+
+    if (previousRouteName !== currentRouteName) {
+      // Google Analytics에 스크린 전송
+      await analytics().logScreenView({
+        screen_name: currentRouteName,
+        screen_class: currentRouteName,
+      });
+      console.log('GA: ', currentRouteName);
+    }
+
+    routeNameRef.current = currentRouteName;
+  };
+
   // 포그라운드 상태에서 푸시 알림 처리
   useEffect(() => {
     (async () => {
@@ -112,11 +149,11 @@ function App(): React.JSX.Element {
   return (
     <QueryClientProvider client={queryClient}>
       <GestureHandlerRootView style={{flex: 1}}>
-        <NavigationContainer ref={navigationRef}>
-          <StatusBar  
-            translucent={true} 
-            backgroundColor="transparent" 
-            barStyle="light-content" 
+        <NavigationContainer ref={navigationRef} onStateChange={onStateChange}>
+          <StatusBar
+            translucent={true}
+            backgroundColor="transparent"
+            barStyle="light-content"
           />
           <AppInner />
         </NavigationContainer>
