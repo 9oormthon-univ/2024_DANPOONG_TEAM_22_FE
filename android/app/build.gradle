@@ -164,6 +164,7 @@ dependencies {
     implementation "com.kakao.sdk:v2-user:2.20.1"
     implementation "com.kakao.sdk:v2-talk:2.20.1"
     implementation "com.kakao.sdk:v2-story:2.17.0"
+    implementation 'com.google.android.gms:play-services-tagmanager:18.0.3'
 }
 
 allprojects {

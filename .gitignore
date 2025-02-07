@@ -82,3 +82,6 @@ S3config.ts
 
 # keystore
 *.keystore
+
+# GA
+GTM-*.json

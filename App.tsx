@@ -7,21 +7,22 @@
  * - 쿼리 클라이언트 설정
  */
 
+import messaging from '@react-native-firebase/messaging';
 import {
   createNavigationContainerRef,
   NavigationContainer,
   NavigationState,
 } from '@react-navigation/native';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import AppInner, {navigateToYouthListenScreen} from 'AppInner';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
-import messaging from '@react-native-firebase/messaging';
+import AppInner, {navigateToYouthListenScreen} from 'AppInner';
 import {useEffect, useRef} from 'react';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 // import pushNoti from '@utils/pushNoti';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {StatusBar} from 'react-native';
 import analytics from '@react-native-firebase/analytics';
+import {trackAppStart, trackScreenView} from '@utils/gtmTracker';
+import {StatusBar} from 'react-native';
 
 // 쿼리 클라이언트 설정
 const queryClient = new QueryClient({
@@ -37,6 +38,11 @@ export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
 function App(): React.JSX.Element {
   const routeNameRef = useRef<string | undefined>();
+
+  // GTM 초기화
+  useEffect(() => {
+    trackAppStart();
+  }, []);
 
   // GA 트래킹 설정
   useEffect(() => {
@@ -61,11 +67,7 @@ function App(): React.JSX.Element {
 
     if (previousRouteName !== currentRouteName) {
       // Google Analytics에 스크린 전송
-      await analytics().logScreenView({
-        screen_name: currentRouteName,
-        screen_class: currentRouteName,
-      });
-      console.log('GA: ', currentRouteName);
+      trackScreenView(currentRouteName);
     }
 
     routeNameRef.current = currentRouteName;
