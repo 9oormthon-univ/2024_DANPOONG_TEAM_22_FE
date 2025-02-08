@@ -7,19 +7,20 @@
  * - 쿼리 클라이언트 설정
  */
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import messaging from '@react-native-firebase/messaging';
 import {
   createNavigationContainerRef,
   NavigationContainer,
 } from '@react-navigation/native';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import AppInner, {navigateToYouthListenScreen} from 'AppInner';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
-import messaging from '@react-native-firebase/messaging';
+import navigateToYouthListenScreen from '@utils/navigateToYouthListenScreen';
+import pushNoti from '@utils/pushNoti';
+import AppInner from 'AppInner';
 import {useEffect} from 'react';
-// import pushNoti from '@utils/pushNoti';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StatusBar } from 'react-native';
+import {StatusBar} from 'react-native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 // 쿼리 클라이언트 설정
 const queryClient = new QueryClient({
@@ -44,7 +45,13 @@ function App(): React.JSX.Element {
 
       const unsubscribe = messaging().onMessage(async remoteMessage => {
         console.log('Foreground', remoteMessage);
-        // pushNoti.displayNoti(remoteMessage);
+        const {alarmId} = remoteMessage.data;
+
+        pushNoti.displayNotification({
+          title: '내일모래',
+          body: '따뜻한 목소리가 도착했어요',
+          data: {alarmId: Number(alarmId)},
+        });
       });
 
       return unsubscribe;
@@ -113,10 +120,10 @@ function App(): React.JSX.Element {
     <QueryClientProvider client={queryClient}>
       <GestureHandlerRootView style={{flex: 1}}>
         <NavigationContainer ref={navigationRef}>
-          <StatusBar  
-            translucent={true} 
-            backgroundColor="transparent" 
-            barStyle="light-content" 
+          <StatusBar
+            translucent={true}
+            backgroundColor="transparent"
+            barStyle="light-content"
           />
           <AppInner />
         </NavigationContainer>
