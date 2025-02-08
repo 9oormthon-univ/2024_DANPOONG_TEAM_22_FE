@@ -15,22 +15,11 @@ import {Alert} from 'react-native';
 // API 및 타입 임포트
 import {getMember} from '@apis/member';
 import {Role} from '@type/api/member';
-import {navigationRef} from 'App';
+import navigateToYouthListenScreen from '@utils/navigateToYouthListenScreen';
 import SplashScreen from 'react-native-splash-screen';
 
 // 네비게이션 스택 생성
 const Stack = createNativeStackNavigator<RootStackParamList>();
-
-export const navigateToYouthListenScreen = ({
-  alarmId,
-}: Readonly<{alarmId: number}>) => {
-  navigationRef.navigate('YouthStackNav', {
-    screen: 'YouthListenScreen',
-    params: {
-      alarmId,
-    },
-  });
-};
 
 const AppInner = () => {
   // 상태 관리
@@ -79,9 +68,10 @@ const AppInner = () => {
 
   // 스플래시 스크린 숨기기
   useEffect(() => {
-    if (isNavigationReady && role) {
-      SplashScreen.hide();
-    }
+    SplashScreen.hide();
+    // if (isNavigationReady && role) {
+    //   SplashScreen.hide();
+    // }
   }, [isNavigationReady, role]);
 
   // 알람 처리 및 청년 리스닝 화면 이동

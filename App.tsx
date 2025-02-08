@@ -83,7 +83,13 @@ function App(): React.JSX.Element {
 
       const unsubscribe = messaging().onMessage(async remoteMessage => {
         console.log('Foreground', remoteMessage);
-        // pushNoti.displayNoti(remoteMessage);
+        const {alarmId} = remoteMessage.data;
+
+        pushNoti.displayNotification({
+          title: '내일모래',
+          body: '따뜻한 목소리가 도착했어요',
+          data: {alarmId: Number(alarmId)},
+        });
       });
 
       return unsubscribe;
