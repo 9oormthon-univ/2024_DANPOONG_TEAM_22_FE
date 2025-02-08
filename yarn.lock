@@ -2148,24 +2148,24 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-4.5.5.tgz#d70fc5870477760033769bbd6625d57e7d7678b2"
   integrity sha512-x2N415pg4ZxIltArOKczPwn7JEYh+1OxQ4+hTnafomnMsqs65HZuEWcX+Ch8c5r8V83DiunuQUf5hWGWlw8hQQ==
 
-"@react-native-firebase/analytics@^21.7.1":
+"@react-native-firebase/analytics@21.7.1":
   version "21.7.1"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-21.7.1.tgz#35f8b24785fcfd463cdaa9e50ef61d6cfa9ca9df"
   integrity sha512-3Nrt8lpBkzZLOsdwge4XYPxIhR/zHQ55BkPRKOIbbymMaApVh14iJDkapA9Kjs71jl0cHsqVPjf1o+5OBqR4Og==
   dependencies:
     superstruct "^2.0.2"
 
-"@react-native-firebase/app@^21.7.1":
+"@react-native-firebase/app@21.7.1":
   version "21.7.1"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-21.7.1.tgz#649db81616cbf474eff8b4fbbf0d8980360d771b"
   integrity sha512-sBXKJE+Uu2+G8SBQzUXMEIyWK932GqxfKsCAVOfzEegxknQuQ8l6qx/tIbMeEFuBJlo334GNctMa4ehePog5lQ==
   dependencies:
     firebase "10.13.2"
 
-"@react-native-firebase/messaging@^21.6.0":
-  version "21.6.1"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-21.6.1.tgz#95c45ad7ca81d9a88ce0bfee05ba3a2555c85058"
-  integrity sha512-WoMGcqflDyhwpe5saqJFNKcvRiGRhW764cNv9j9fca11rtzqw186/frvE+QDVuUBEeaOZJg7bW+BV19IToc92g==
+"@react-native-firebase/messaging@21.7.1":
+  version "21.7.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-21.7.1.tgz#826344d9cd0bb19743b985ae1fc023632f0d33c2"
+  integrity sha512-asLoTH/IZROTR/y82UpMqWGFly5TJf9Zvy+EqvgWMKhRWnAPxjC+UFHQeGwut95kg0zBj49H9F6yJ2gjdatOHg==
 
 "@react-native-seoul/kakao-login@^5.4.1":
   version "5.4.1"
