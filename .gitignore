@@ -87,3 +87,6 @@ S3config.ts
 
 # gradle
 gradle.properties
+
+# GA
+GTM-*.json
