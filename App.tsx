@@ -20,8 +20,8 @@ import {useEffect, useRef} from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 // import pushNoti from '@utils/pushNoti';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import analytics from '@react-native-firebase/analytics';
-import {trackAppStart, trackScreenView} from '@utils/gtmTracker';
+
+import {trackAppStart, trackScreenView} from '@utils/tracker';
 import {StatusBar} from 'react-native';
 
 // 쿼리 클라이언트 설정
@@ -67,7 +67,7 @@ function App(): React.JSX.Element {
 
     if (previousRouteName !== currentRouteName) {
       // Google Analytics에 스크린 전송
-      trackScreenView(currentRouteName);
+      trackScreenView({screenName: currentRouteName});
     }
 
     routeNameRef.current = currentRouteName;
