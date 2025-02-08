@@ -7,20 +7,22 @@
  * - 쿼리 클라이언트 설정
  */
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import {
   createNavigationContainerRef,
   NavigationContainer,
+  NavigationState,
 } from '@react-navigation/native';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
-import navigateToYouthListenScreen from '@utils/navigateToYouthListenScreen';
-import pushNoti from '@utils/pushNoti';
-import AppInner from 'AppInner';
-import {useEffect} from 'react';
-import {StatusBar} from 'react-native';
+import AppInner, {navigateToYouthListenScreen} from 'AppInner';
+import {useEffect, useRef} from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+// import pushNoti from '@utils/pushNoti';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import {trackAppStart, trackScreenView} from '@utils/tracker';
+import {StatusBar} from 'react-native';
 
 // 쿼리 클라이언트 설정
 const queryClient = new QueryClient({
@@ -35,6 +37,42 @@ const queryClient = new QueryClient({
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
 function App(): React.JSX.Element {
+  const routeNameRef = useRef<string | undefined>();
+
+  // GTM 초기화
+  useEffect(() => {
+    trackAppStart();
+  }, []);
+
+  // GA 트래킹 설정
+  useEffect(() => {
+    const state = navigationRef.current?.getRootState();
+    if (state) {
+      routeNameRef.current = getActiveRouteName(state);
+    }
+  }, []);
+
+  const getActiveRouteName = (state: NavigationState) => {
+    const route = state.routes[state.index];
+    if (route.state) {
+      return getActiveRouteName(route.state as NavigationState);
+    }
+    return route.name;
+  };
+
+  const onStateChange = async (state: NavigationState | undefined) => {
+    if (state === undefined) return;
+    const previousRouteName = routeNameRef.current;
+    const currentRouteName = getActiveRouteName(state);
+
+    if (previousRouteName !== currentRouteName) {
+      // Google Analytics에 스크린 전송
+      trackScreenView({screenName: currentRouteName});
+    }
+
+    routeNameRef.current = currentRouteName;
+  };
+
   // 포그라운드 상태에서 푸시 알림 처리
   useEffect(() => {
     (async () => {
@@ -119,7 +157,7 @@ function App(): React.JSX.Element {
   return (
     <QueryClientProvider client={queryClient}>
       <GestureHandlerRootView style={{flex: 1}}>
-        <NavigationContainer ref={navigationRef}>
+        <NavigationContainer ref={navigationRef} onStateChange={onStateChange}>
           <StatusBar
             translucent={true}
             backgroundColor="transparent"
