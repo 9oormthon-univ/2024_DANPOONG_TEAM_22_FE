@@ -6,6 +6,8 @@
     "android": "react-native run-android",
     "android:dev": "react-native run-android --mode=devDebug",
     "android:prod": "react-native run-android --mode=prdDebug",
+    "android:release": "cd android && gradlew assembleRelease",
+    "android:bundle": "cd android && gradlew bundleRelease",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest"

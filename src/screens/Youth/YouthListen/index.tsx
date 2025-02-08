@@ -46,7 +46,9 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
   const imageUri = null; // 프로필 이미지 URI
   const animation = useRef<LottieView>(null); // 애니메이션 ref
   const [isPlaying, setIsPlaying] = useState(false); // 오디오 재생 여부
-  const [voiceFile, setVoiceFile] = useState<VoiceFileResponseData>({} as VoiceFileResponseData); // 음성 파일 데이터
+  const [voiceFile, setVoiceFile] = useState<VoiceFileResponseData>(
+    {} as VoiceFileResponseData,
+  ); // 음성 파일 데이터
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태
   const audioPlayer = useRef(new AudioRecorderPlayer()); // 오디오 플레이어 ref
 
@@ -103,10 +105,17 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
       } catch (error) {
         console.log(error);
         // Alert.alert('오류', '음성 파일을 불러오는 중 오류가 발생했어요');
-        setTimeout(async () => {
-          await audioPlayer.current.startPlayer(
+        const mockVoiceFile: VoiceFileResponseData = {
+          fileUrl:
             'https://ip-file-upload-test.s3.ap-northeast-2.amazonaws.com/mom.mp4',
-          );
+          voiceFileId: 1,
+          providedFileId: 1,
+          content:
+            '아침 거르고 빈속으로 있으면 힘들어요\n가볍게라도 꼭 챙겨 드시길 바라요',
+        };
+        setVoiceFile(mockVoiceFile);
+        setTimeout(async () => {
+          await audioPlayer.current.startPlayer(mockVoiceFile.fileUrl);
           setIsPlaying(true);
         }, 1000);
       }
@@ -118,7 +127,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         setIsPlaying(false);
       }
     };
-  }, [alarmId, isPlaying]);
+  }, [alarmId]);
 
   const handleMessageSend = async ({
     emotionType,
@@ -143,12 +152,17 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
 
   // 재생/정지 버튼 클릭 처리
   const handlePlayButtonClick = async () => {
+    console.log({isPlaying, fileUrl: voiceFile.fileUrl});
     try {
       if (isPlaying) {
-        await audioPlayer.current.stopPlayer();
+        await audioPlayer.current.pausePlayer();
         setIsPlaying(false);
       } else {
-        await audioPlayer.current.startPlayer(voiceFile.fileUrl);
+        // TODO: 멈춘 부분부터 재생
+        // 기존: 처음부터 다시 재생됨
+        // TODO: 음성 재생이 모두 끝날 시 멈춤 아이콘에서 재생 아이콘으로 변경
+        // 기존: 음성 재생이 끝나도 멈춤 아이콘이 표시되어, 다시 듣기가 어려움.
+        await audioPlayer.current.resumePlayer();
         setIsPlaying(true);
       }
     } catch (error) {
@@ -185,7 +199,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
           exitCallbackFn={() => navigation.goBack()}
           className="absolute top-[0] w-full"
         />
-              <StatusBarGap />
+        <StatusBarGap />
 
         <View className="pt-[149] flex-1 items-center">
           {/* 프로필 이미지 영역 */}
@@ -215,10 +229,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
             <ScrollView>
               <Txt
                 type="title3"
-                text={
-                  voiceFile.content ??
-                  '아침 거르고 빈속으로 있으면 힘들어요\n가볍게라도 꼭 챙겨 드시길 바라요'
-                }
+                text={voiceFile.content ?? ''}
                 className="text-gray200 text-center"
               />
             </ScrollView>
