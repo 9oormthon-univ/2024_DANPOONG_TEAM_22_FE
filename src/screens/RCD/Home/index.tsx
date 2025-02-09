@@ -1,5 +1,4 @@
 // React 및 React Native 관련 임포트
-import React from 'react';
 import {View, TouchableOpacity, ImageBackground} from 'react-native';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
 
@@ -15,15 +14,14 @@ import {RecordTypeConstant} from '@constants/RecordType';
 // SVG 아이콘 임포트
 import Main1 from '@assets/svgs/Main1.svg';
 import Main2 from '@assets/svgs/Main2.svg';
-import Main3 from '@assets/svgs/Main3.svg';
-import MainArrow from '@assets/svgs/MainArrow.svg';
+// import Main3 from '@assets/svgs/Main3.svg';
+// import MainArrow from '@assets/svgs/MainArrow.svg';
 import MainArrow2 from '@assets/svgs/MainArrow2.svg';
 
 // API 및 스토리지 관련 임포트
 import {getYouthNum} from '@apis/RCDApis/getYouthNum';
 import {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StatusBar } from 'react-native';
 
 import useStatusBarHeight from '@hooks/useStatusBarHeight';
 /**
@@ -181,7 +179,7 @@ const SelectBtn = ({type}: {type: RecordType}) => {
           <Txt
             type="title3"
             text={`${type === RecordTypeConstant.DAILY ? '일상' : '위로'}`}
-            className="text-yellowPrimary"
+            className="text-white"
           />
           <Txt
             type="title3"
@@ -190,7 +188,7 @@ const SelectBtn = ({type}: {type: RecordType}) => {
           />
         </View>
         {/* 녹음하기 텍스트와 화살표 */}
-      <View className="mt-[48] flex flex-row items-center w-full">
+      <View className="mt-[45] flex flex-row items-center w-full">
         <Txt type="title3" text="녹음하기" className="text-yellowPrimary"/>
         <View className='absolute right-[-8]'>
           <MainArrow2/>
