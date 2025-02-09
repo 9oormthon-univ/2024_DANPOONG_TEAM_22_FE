@@ -90,3 +90,40 @@ gradle.properties
 
 # GA
 GTM-*.json
+
+# React Native
+.expo/
+dist/
+web-build/
+
+# Android Build
+android/app/build/
+android/.gradle/
+android/build/
+android/local.properties
+android/app/src/main/assets/index.android.bundle
+android/app/src/main/assets/index.android.bundle.meta
+android/.cxx
+
+# iOS Build
+ios/build/
+ios/Pods/
+ios/*.xcworkspace/
+ios/DerivedData/
+
+# IDE
+.vscode/
+*.swp
+*.swo
+
+# Temp files
+*.log
+*.tmp
+*.temp
+
+# Metro
+.metro-health-check*
+.metro/
+
+# Watchman
+.watchman*
