@@ -62,14 +62,19 @@ client.interceptors.response.use(
 
       switch (error.response.status) {
         case 401:
+        case 403:
           // 인증 에러 처리
           try {
             const refreshToken = await AsyncStorage.getItem('refreshToken');
+            // refreshToken이 없으면 바로 로그아웃 처리
+            if (!refreshToken) {
+              await handleLogout();
+              throw new Error('[401] 로그인이 필요합니다.');
+            }
+            
             const response = await axios.post(
               `${process.env.EXPO_PUBLIC_API_URL}/api/v1/auth/token/refresh`,
-              {
-                refreshToken,
-              },
+              { refreshToken }
             );
             const accessToken = response.data.result.accessToken;
             await AsyncStorage.setItem('accessToken', accessToken);
@@ -78,15 +83,12 @@ client.interceptors.response.use(
             originalRequest.headers.Authorization = `Bearer ${accessToken}`;
             return axios(originalRequest);
           } catch (refreshError) {
-            // 토큰 갱신 실패 시 로그아웃 처리 등
-            await AsyncStorage.removeItem('accessToken');
-            // navigation 참조를 사용하여 리다이렉트
-            if (navigationRef) {
-              navigationRef.navigate('AuthStackNav');
-            }
-            throw new Error(
-              '[401] 인증이 만료되었습니다. 다시 로그인해주세요.',
-            );
+            await handleLogout();
+            // 401과 403 에러 구분
+            const errorMessage = error.response.status === 401
+              ? '[401] 인증이 만료되었습니다. 다시 로그인해주세요.'
+              : '[403] 접근 권한이 없습니다. 다시 로그인해주세요.';
+            throw new Error(errorMessage);
           }
         case 404:
           throw new Error('[404] 요청한 리소스를 찾을 수 없습니다.');
@@ -105,5 +107,18 @@ client.interceptors.response.use(
     }
   },
 );
+
+// 파일 상단에 handleLogout 함수 추가
+const handleLogout = async () => {
+  // 모든 인증 관련 데이터 제거
+  await AsyncStorage.multiRemove(['accessToken', 'refreshToken']);
+  // 로그인 화면으로 이동
+  if (navigationRef) {
+    navigationRef.reset({
+      index: 0,
+      routes: [{ name: 'AuthStackNav' }],
+    });
+  }
+};
 
 export default client;
