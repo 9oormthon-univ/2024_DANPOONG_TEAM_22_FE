@@ -1,4 +1,4 @@
-import PencilIcon from '@assets/svgs/pencil.svg';
+import CameraIcon from '@assets/svgs/camera.svg';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import DismissKeyboardView from '@components/atom/DismissKeyboardView';
@@ -10,9 +10,8 @@ import {Image, Keyboard, Pressable, TextInput, View} from 'react-native';
 import {
   ImageLibraryOptions,
   ImagePickerResponse,
-  launchCamera,
+  launchImageLibrary,
 } from 'react-native-image-picker';
-import {SafeAreaView} from 'react-native-safe-area-context';
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -21,7 +20,11 @@ type AuthProps = NativeStackScreenProps<
 
 const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-
+  const role = 'YOUTH'; // or HELPER
+  const defaultImageUri =
+    role === 'YOUTH'
+      ? require('@assets/pngs/profile/youthDefault.png')
+      : require('@assets/pngs/profile/volunteerDefault.png');
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [nickname, setNickname] = useState('');
 
@@ -46,7 +49,7 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
       mediaType: 'photo', // 'photo', 'video', 또는 'mixed' 중 선택 가능
     };
 
-    launchCamera(options, (response: ImagePickerResponse) => {
+    launchImageLibrary(options, (response: ImagePickerResponse) => {
       if (response.didCancel) {
         console.log('User cancelled camera picker');
         return;
@@ -87,22 +90,20 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
           />
 
           <Pressable onPress={selectImage} className="mt-[50] relative">
-            {imageUri ? (
-              <Image
-                source={{uri: imageUri}}
-                className="w-[107] h-[107]"
-                style={{borderRadius: 53.5}}
-              />
-            ) : (
-              <View
-                className="w-[107] h-[107] bg-blue400"
-                style={{borderRadius: 53.5}}
-              />
-            )}
             <View
-              className="absolute bottom-0 right-0 justify-center items-center w-[32] h-[32] bg-blue700"
+              className={`w-[107] h-[107] ${
+                imageUri ? 'border border-gray200' : ''
+              }`}
+              style={{borderRadius: 53.5, overflow: 'hidden'}}>
+              <Image
+                source={imageUri ? {uri: imageUri} : defaultImageUri}
+                style={{width: '100%', height: '100%'}}
+              />
+            </View>
+            <View
+              className="absolute bottom-0 right-0 justify-center items-center w-[32] h-[32] border-2 border-blue700 bg-yellowPrimary"
               style={{borderRadius: 16}}>
-              <PencilIcon />
+              <CameraIcon />
             </View>
           </Pressable>
 
@@ -115,6 +116,11 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
               nickname ? 'border-yellow200' : 'border-gray500'
             } mt-[31]`}
             style={{fontSize: 22}}
+          />
+          <Txt
+            type="caption1"
+            text="2자 이상 10자 이내의 한글, 영문, 숫자 입력 가능합니다"
+            className="text-gray400 mt-[15]"
           />
         </View>
 
