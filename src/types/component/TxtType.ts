@@ -11,9 +11,11 @@ export type TxtProps = {
     | 'body2'
     | 'body3'
     | 'body4'
-    | 'button'
+    | 'caption1'
+    | 'caption2'
+    | 'caption3'
     | 'recording'
-    | 'caption1';
+    | 'button';
   className?: string;
   style?: TextStyle | TextStyle[];
 };
