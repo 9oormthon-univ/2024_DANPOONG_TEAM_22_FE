@@ -27,6 +27,7 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
       : require('@assets/pngs/profile/volunteerDefault.png');
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [nickname, setNickname] = useState('');
+  const [clickedUpload, setClickedUpload] = useState(false);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
@@ -69,7 +70,13 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
       }
       console.log(response.assets[0].uri);
       setImageUri(response.assets[0].uri ?? null);
+      setClickedUpload(false);
     });
+  };
+
+  const handleDefaultImageClick = () => {
+    setImageUri(null);
+    setClickedUpload(false);
   };
 
   const handleNext = () => {
@@ -89,7 +96,9 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
             className="text-white text-center"
           />
 
-          <Pressable onPress={selectImage} className="mt-[50] relative">
+          <Pressable
+            onPress={() => setClickedUpload(true)}
+            className="mt-[50] relative">
             <View
               className={`w-[107] h-[107] ${
                 imageUri ? 'border border-gray200' : ''
@@ -130,12 +139,51 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
         />
       </DismissKeyboardView>
 
-      <View
-        className={`absolute left-0 bottom-[30] w-full px-[40] ${
-          isKeyboardVisible ? 'hidden' : ''
-        }`}>
-        <Button text="다음" onPress={handleNext} disabled={!nickname} />
-      </View>
+      {clickedUpload ? (
+        <View
+          className={`absolute left-0 bottom-0 w-full px-[40] bg-black/50 h-full justify-end pb-[30] ${
+            isKeyboardVisible ? 'hidden' : ''
+          }`}>
+          <View className="bg-blue500 mb-[24]" style={{borderRadius: 10}}>
+            <View className="h-[43] justify-center items-center">
+              <Txt
+                type="caption1"
+                text="프로필 사진 설정"
+                className="text-gray300"
+              />
+            </View>
+            <View className="bg-blue600 h-[1]" />
+            <Pressable
+              className="h-[61] justify-center items-center"
+              onPress={selectImage}>
+              <Txt
+                type="body3"
+                text="앨범에서 사진 선택"
+                className="text-white"
+              />
+            </Pressable>
+            <View className="bg-blue600 h-[1]" />
+            <Pressable
+              className="h-[61] justify-center items-center"
+              onPress={handleDefaultImageClick}>
+              <Txt
+                type="body3"
+                text="기본 이미지 적용"
+                className="text-white"
+              />
+            </Pressable>
+          </View>
+
+          <Button text="취소" onPress={() => setClickedUpload(false)} />
+        </View>
+      ) : (
+        <View
+          className={`absolute left-0 bottom-[30] w-full px-[40] ${
+            isKeyboardVisible ? 'hidden' : ''
+          }`}>
+          <Button text="다음" onPress={handleNext} disabled={!nickname} />
+        </View>
+      )}
     </BG>
   );
 };
