@@ -78,7 +78,7 @@ const RCDTextScreen = ({
     <BG type="solid">
       {/* 상단 앱바 */}
       <AppBar
-        title=""
+        title="녹음 내용 작성"
         goBackCallbackFn={() => {
           navigation.goBack();
         }}

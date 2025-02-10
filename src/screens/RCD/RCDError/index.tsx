@@ -26,11 +26,12 @@ const RCDErrorScreen = ({
 }) => {
 
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
-  const {type} = route.params;
+  const {type,message} = route.params;
 
   return (
     <BG type="solid">
       {/* 상단 앱바 */}
+
       <AppBar
         title=""
         exitCallbackFn={() => {
@@ -43,18 +44,13 @@ const RCDErrorScreen = ({
     {/* 오류 메시지 섹션 */}
     <View className="absolute top-[194] items-center">
       {/* 오류 타입에 따른 아이콘 표시 */}
-      {type === 'bad' ? <Notice1 /> : <Notice2 />}
+      {/* {type === 'bad' ? <Notice1 /> : <Notice2 />} */}
+      <Notice1 />
       <View className="mt-[43]" />
       {/* 오류 메시지 제목 */}
       <Txt
         type="title2"
-        text={
-          type === 'bad'
-            ? '부적절한 표현이 감지되어\n녹음을 전송할 수 없어요'
-            : type === 'noisy'
-            ? '주변 소음이 크게 들려서\n녹음을 전송할 수 없었어요'
-            : '서버에 문제가 생겨\n녹음을 전송할 수 없었어요'
-        }
+        text={message}
         className="text-white text-center"
       />
       <View className="mt-[25]" />
@@ -62,11 +58,7 @@ const RCDErrorScreen = ({
       <Txt
         type="body4"
         text={
-          type === 'bad'
-            ? '적절한 언어로 다시 녹음해 주시겠어요?'
-            : type === 'noisy'
-            ? '조용한 장소에서 다시 녹음해 주시겠어요?'
-            : '다시 시도해 주시겠어요?'
+          '다시 녹음해 주시겠어요?'
         }
         className="text-gray300 text-center"
       />
@@ -77,11 +69,12 @@ const RCDErrorScreen = ({
         text="다시 녹음하기"
         onPress={() => {
           // 부적절한 표현일 경우 홈으로, 그 외에는 이전 화면으로
-          if (type === 'bad') {
-            navigation.navigate('Home');
-          } else {
-            navigation.goBack();
-          }
+          // if (type === 'bad') {
+          //   navigation.navigate('Home');
+          // } else {
+          //   navigation.goBack();
+          // }
+          navigation.goBack();
         }}
         disabled={false}
       />
