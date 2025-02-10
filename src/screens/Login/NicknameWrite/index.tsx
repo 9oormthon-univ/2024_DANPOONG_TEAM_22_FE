@@ -77,60 +77,60 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
   };
 
   return (
-      <BG type="main">
-        <DismissKeyboardView>
-          <View className="items-center mt-[149]">
-            <Txt
-              type="title2"
-              text={'내일모래가 당신을\n어떻게 부를까요?'}
-              className="text-white text-center"
-            />
-
-            <Pressable onPress={selectImage} className="mt-[50] relative">
-              {imageUri ? (
-                <Image
-                  source={{uri: imageUri}}
-                  className="w-[107] h-[107]"
-                  style={{borderRadius: 53.5}}
-                />
-              ) : (
-                <View
-                  className="w-[107] h-[107] bg-tabIcon"
-                  style={{borderRadius: 53.5}}
-                />
-              )}
-              <View
-                className="absolute bottom-0 right-0 justify-center items-center w-[32] h-[32] bg-solid"
-                style={{borderRadius: 16}}>
-                <PencilIcon />
-              </View>
-            </Pressable>
-
-            <TextInput
-              value={nickname}
-              onChangeText={setNickname}
-              placeholder="닉네임을 입력해주세요"
-              placeholderTextColor={'#717171'}
-              className={`text-center px-[10] font-m text-yellowPrimary border-b ${
-                nickname ? 'border-yellow200' : 'border-gray500'
-              } mt-[31]`}
-              style={{fontSize: 22}}
-            />
-          </View>
-
-          <Image
-            source={require('@assets/pngs/background/background2.png')}
-            className="w-full h-auto flex-1 mt-[89]"
+    <BG type="main">
+      <DismissKeyboardView>
+        <View className="items-center mt-[149]">
+          <Txt
+            type="title2"
+            text={'내일모래가 당신을\n어떻게 부를까요?'}
+            className="text-white text-center"
           />
-        </DismissKeyboardView>
 
-        <View
-          className={`absolute left-0 bottom-[30] w-full px-[40] ${
-            isKeyboardVisible ? 'hidden' : ''
-          }`}>
-          <Button text="다음" onPress={handleNext} disabled={!nickname} />
+          <Pressable onPress={selectImage} className="mt-[50] relative">
+            {imageUri ? (
+              <Image
+                source={{uri: imageUri}}
+                className="w-[107] h-[107]"
+                style={{borderRadius: 53.5}}
+              />
+            ) : (
+              <View
+                className="w-[107] h-[107] bg-blue400"
+                style={{borderRadius: 53.5}}
+              />
+            )}
+            <View
+              className="absolute bottom-0 right-0 justify-center items-center w-[32] h-[32] bg-blue700"
+              style={{borderRadius: 16}}>
+              <PencilIcon />
+            </View>
+          </Pressable>
+
+          <TextInput
+            value={nickname}
+            onChangeText={setNickname}
+            placeholder="닉네임을 입력해주세요"
+            placeholderTextColor={'#717171'}
+            className={`text-center px-[10] font-m text-yellowPrimary border-b ${
+              nickname ? 'border-yellow200' : 'border-gray500'
+            } mt-[31]`}
+            style={{fontSize: 22}}
+          />
         </View>
-      </BG>
+
+        <Image
+          source={require('@assets/pngs/background/background2.png')}
+          className="w-full h-auto flex-1 mt-[89]"
+        />
+      </DismissKeyboardView>
+
+      <View
+        className={`absolute left-0 bottom-[30] w-full px-[40] ${
+          isKeyboardVisible ? 'hidden' : ''
+        }`}>
+        <Button text="다음" onPress={handleNext} disabled={!nickname} />
+      </View>
+    </BG>
   );
 };
 

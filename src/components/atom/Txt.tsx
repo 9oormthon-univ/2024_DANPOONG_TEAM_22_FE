@@ -77,10 +77,10 @@ const getStyle = (type: string): TextStyle => {
       letterSpacing: 12 * -0.025,
     },
     caption3: {
-      fontFamily: 'WantedSans-Regular',
-      fontSize: 10,
-      lineHeight: 10 * 1.5,
-      letterSpacing: 10 * -0.025,
+      fontFamily: 'WantedSans-SemiBold',
+      fontSize: 11,
+      lineHeight: 11 * 1.5,
+      letterSpacing: 11 * -0.025,
     },
   };
 
