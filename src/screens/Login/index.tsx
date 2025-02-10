@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {KakaoOAuthToken, login} from '@react-native-seoul/kakao-login';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {Image, Pressable, View} from 'react-native';
+import {Image, Linking, Pressable, View} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
 type AuthProps = NativeStackScreenProps<AuthStackParamList, 'LoginScreen'>;
@@ -78,14 +78,34 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
               style={{fontSize: 17.6}}
             />
           </Pressable>
-          {/* 익명 로그인 버튼 */}
-          <Pressable onPress={() => handleLogin({loginType: 'ANOYMOUS'})}>
-            <Txt
-              type="body4"
-              text="가입 없이 써볼래요"
-              className="mt-[16.2] text-gray300 text-center underline"
-            />
-          </Pressable>
+          {/* 이용약관, 개인정보처리방침 */}
+          <View className="mt-[18.2] flex-row justify-center">
+            <View className="flex-row justify-center">
+              <Txt
+                type="caption2"
+                text="계속 진행함에 따라 "
+                className="text-gray300"
+              />
+              {/* TODO: 이용약관 링크 변경 */}
+              <Pressable onPress={() => Linking.openURL('https://m.naver.com')}>
+                <Txt type="caption2" text="이용약관" className="text-white" />
+              </Pressable>
+              <Txt type="caption2" text="과 " className="text-gray300" />
+              {/* TODO: 개인정보처리방침 링크 변경 */}
+              <Pressable onPress={() => Linking.openURL('https://google.com')}>
+                <Txt
+                  type="caption2"
+                  text="개인정보 처리방침"
+                  className="text-white"
+                />
+              </Pressable>
+              <Txt
+                type="caption2"
+                text="에 동의합니다."
+                className="text-gray300"
+              />
+            </View>
+          </View>
         </View>
       </View>
     </BG>
