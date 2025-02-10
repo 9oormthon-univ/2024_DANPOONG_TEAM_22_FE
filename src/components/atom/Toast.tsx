@@ -39,7 +39,7 @@ const Toast = ({
   return (
     <View className="w-full items-center justify-center absolute top-[150] ">
       <Animated.View
-        className="w-auto h-auto flex-row bg-tabIcon px-[27] py-[16] z-50"
+        className="w-auto h-auto flex-row bg-blue400 px-[27] py-[16] z-50"
         style={{
           borderRadius: 50,
           opacity,

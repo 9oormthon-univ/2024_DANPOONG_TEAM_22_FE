@@ -23,7 +23,7 @@ import MainArrow2 from '@assets/svgs/MainArrow2.svg';
 import {getYouthNum} from '@apis/RCDApis/getYouthNum';
 import {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StatusBar } from 'react-native';
+import {StatusBar} from 'react-native';
 
 import useStatusBarHeight from '@hooks/useStatusBarHeight';
 /**
@@ -58,7 +58,7 @@ const HomeScreen = () => {
         source={require('@assets/pngs/BGmain.png')}
         style={{position: 'absolute', bottom: 0, width: '100%', height: 762}}
       />
-      <View style={{height: statusBarHeight}}/>
+      <View style={{height: statusBarHeight}} />
       {/* 전체 frame */}
       <View className="flex-1 px-[30] pt-[117]">
         {/* header */}
@@ -99,7 +99,7 @@ export default HomeScreen;
  * @param type - 녹음 유형 (DAILY: 일상, COMFORT: 위로, INFO: 정보)
  */
 
-// 일상,위로,정보 알림이 있었을때의 버튼 
+// 일상,위로,정보 알림이 있었을때의 버튼
 // 정보 알림 기능을 빼면서 디자인이 달라져서 주석해놓음 롤백 가능성 있음
 // const SelectBtn = ({type}: {type: RecordType}) => {
 //   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
@@ -117,7 +117,7 @@ export default HomeScreen;
 //       onPress={() => {
 //         navigation.navigate('RCDList', {type});
 //       }}
-//       className={`w-[168] h-[116] px-[25] py-[20] bg-solid border border-white/10 justify-between absolute ${addaptivePosition}`}
+//       className={`w-[168] h-[116] px-[25] py-[20] bg-blue700 border border-white/10 justify-between absolute ${addaptivePosition}`}
 //       style={{borderRadius: 10}}>
 //       {/* 아이콘 */}
 //       <View className="absolute top-[18] left-[27]">
@@ -170,35 +170,32 @@ const SelectBtn = ({type}: {type: RecordType}) => {
       onPress={() => {
         navigation.navigate('RCDList', {type});
       }}
-      className={`w-[168] h-[207] px-[25] py-[20] bg-solid border border-white/10 absolute ${addaptivePosition}`}
+      className={`w-[168] h-[207] px-[25] py-[20] bg-blue700 border border-white/10 absolute ${addaptivePosition}`}
       style={{borderRadius: 10}}>
       {/* 아이콘 */}
       <View className="">
         {type === RecordTypeConstant.DAILY ? <Main1 /> : <Main2 />}
       </View>
       {/* 텍스트와 화살표 */}
-        <View className="mt-[19] flex flex-row items-center">
-          <Txt
-            type="title3"
-            text={`${type === RecordTypeConstant.DAILY ? '일상' : '위로'}`}
-            className="text-yellowPrimary"
-          />
-          <Txt
-            type="title3"
-            text={`${type === RecordTypeConstant.COMFORT ? '의 말' : ' 알림'}`}
-            className="text-white "
-          />
-        </View>
-        {/* 녹음하기 텍스트와 화살표 */}
+      <View className="mt-[19] flex flex-row items-center">
+        <Txt
+          type="title3"
+          text={`${type === RecordTypeConstant.DAILY ? '일상' : '위로'}`}
+          className="text-yellowPrimary"
+        />
+        <Txt
+          type="title3"
+          text={`${type === RecordTypeConstant.COMFORT ? '의 말' : ' 알림'}`}
+          className="text-white "
+        />
+      </View>
+      {/* 녹음하기 텍스트와 화살표 */}
       <View className="mt-[48] flex flex-row items-center w-full">
-        <Txt type="title3" text="녹음하기" className="text-yellowPrimary"/>
-        <View className='absolute right-[-8]'>
-          <MainArrow2/>
-          </View>
+        <Txt type="title3" text="녹음하기" className="text-yellowPrimary" />
+        <View className="absolute right-[-8]">
+          <MainArrow2 />
         </View>
+      </View>
     </TouchableOpacity>
-
-
-
   );
 };
