@@ -120,9 +120,9 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
             value={nickname}
             onChangeText={setNickname}
             placeholder="닉네임을 입력해주세요"
-            placeholderTextColor={'#717171'}
+            placeholderTextColor={'#A0A0A0'}
             className={`text-center px-[10] font-m text-yellowPrimary border-b ${
-              nickname ? 'border-yellow200' : 'border-gray500'
+              nickname ? 'border-yellow200' : 'border-gray400'
             } mt-[31]`}
             style={{fontSize: 22}}
           />
@@ -134,8 +134,8 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
         </View>
 
         <Image
-          source={require('@assets/pngs/background/background2.png')}
-          className="w-full h-auto flex-1 mt-[89]"
+          source={require('@assets/pngs/background/signup2.png')}
+          className="w-full h-auto flex-1 mt-[80]"
         />
       </DismissKeyboardView>
 
