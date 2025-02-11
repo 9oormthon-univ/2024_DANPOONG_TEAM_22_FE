@@ -6,7 +6,7 @@ import Txt from '@components/atom/Txt';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {useEffect, useState} from 'react';
-import {Image, Keyboard, Pressable, TextInput, View} from 'react-native';
+import {Alert, Image, Keyboard, Pressable, TextInput, View} from 'react-native';
 import {
   ImageLibraryOptions,
   ImagePickerResponse,
@@ -18,6 +18,14 @@ type AuthProps = NativeStackScreenProps<
   'NicknameWriteScreen'
 >;
 
+const NICKNAME_MESSAGES = {
+  SUCCESS: '사용 가능한 닉네임입니다.',
+  DEFAULT: '2자 이상 10자 이내의 한글, 영문, 숫자만 입력해주세요.',
+  TOO_SHORT: '2자 이상 입력하세요.',
+  NO_SPACES: '공백을 제거해주세요.',
+  NO_SPECIAL_CHARS: '특수문자를 제거해주세요.',
+};
+
 const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const {role} = route.params;
   const defaultImageUri =
@@ -26,6 +34,9 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
       : require('@assets/pngs/profile/volunteerDefault.png');
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [nickname, setNickname] = useState('');
+  const [nicknameStatus, setNicknameStatus] = useState(
+    NICKNAME_MESSAGES.DEFAULT,
+  );
   const [clickedUpload, setClickedUpload] = useState(false);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
@@ -87,6 +98,24 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
     });
   };
 
+  const handleNicknameChange = (text: string) => {
+    setNickname(text);
+    const regex = /^[ㄱ-ㅎ가-힣ㅏ-ㅣa-zA-Z0-9]{2,10}$/;
+    if (text === '') {
+      setNicknameStatus(NICKNAME_MESSAGES.DEFAULT);
+    } else if (text.length < 2) {
+      setNicknameStatus(NICKNAME_MESSAGES.TOO_SHORT);
+    } else if (/\s/.test(text)) {
+      setNicknameStatus(NICKNAME_MESSAGES.NO_SPACES);
+    } else if (/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g.test(text)) {
+      setNicknameStatus(NICKNAME_MESSAGES.NO_SPECIAL_CHARS);
+    } else if (regex.test(text)) {
+      setNicknameStatus(NICKNAME_MESSAGES.SUCCESS);
+    } else {
+      setNicknameStatus(NICKNAME_MESSAGES.DEFAULT);
+    }
+  };
+
   return (
     <BG type="main">
       <DismissKeyboardView>
@@ -119,7 +148,7 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
 
           <TextInput
             value={nickname}
-            onChangeText={setNickname}
+            onChangeText={handleNicknameChange}
             placeholder="닉네임을 입력해주세요"
             placeholderTextColor={'#A0A0A0'}
             className={`text-center px-[10] font-m text-yellowPrimary border-b ${
@@ -129,7 +158,7 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
           />
           <Txt
             type="caption1"
-            text="2자 이상 10자 이내의 한글, 영문, 숫자 입력 가능합니다"
+            text={nicknameStatus}
             className="text-gray400 mt-[15]"
           />
         </View>
@@ -186,7 +215,11 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
           className={`absolute left-0 bottom-[30] w-full px-[40] ${
             isKeyboardVisible ? 'hidden' : ''
           }`}>
-          <Button text="다음" onPress={handleNext} disabled={!nickname} />
+          <Button
+            text="다음"
+            onPress={handleNext}
+            disabled={nicknameStatus !== NICKNAME_MESSAGES.SUCCESS}
+          />
         </View>
       )}
     </BG>
