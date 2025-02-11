@@ -15,8 +15,7 @@ type AuthProps = NativeStackScreenProps<
   'YouthWakeUpTimeScreen'
 >;
 
-const YouthWakeUpTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
-  const {nickname, imageUri, role, birthday, gender} = route.params;
+const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {
   const [wakeUpTime, setWakeUpTime] = useState(new Date());
   const [wakeUpTimeString, setWakeUpTimeString] = useState('');
   const [show, setShow] = useState(false);
@@ -40,11 +39,6 @@ const YouthWakeUpTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
 
   const handleNext = async () => {
     navigation.navigate('YouthEatScreen', {
-      nickname,
-      imageUri,
-      role,
-      birthday,
-      gender,
       wakeUpTime: wakeUpTime.toISOString(),
     });
   };

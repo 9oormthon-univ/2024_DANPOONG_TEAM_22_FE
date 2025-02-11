@@ -34,7 +34,7 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
       await AsyncStorage.setItem('refreshToken', refreshToken);
       await AsyncStorage.setItem('memberId', String(memberId));
 
-      navigation.navigate('NicknameWriteScreen');
+      navigation.navigate('RoleSelectScreen');
     } catch (error) {
       console.error('login error:', error);
     }

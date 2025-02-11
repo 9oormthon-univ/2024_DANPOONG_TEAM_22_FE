@@ -1,17 +1,17 @@
 import {postMember} from '@apis/member';
+import uploadImageToS3 from '@apis/util';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
+import DismissKeyboardView from '@components/atom/DismissKeyboardView';
 import Txt from '@components/atom/Txt';
+import useLoading from '@hooks/useLoading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {Gender, MemberRequestData, Role} from '@type/api/member';
+import {Gender, MemberCommonRequestData, Role} from '@type/api/member';
+import formatBirth from '@utils/formatBirth';
 import {useEffect, useState} from 'react';
 import {Alert, Image, Keyboard, Pressable, TextInput, View} from 'react-native';
-import useLoading from '@hooks/useLoading';
-import uploadImageToS3 from '@apis/util';
-import formatBirth from '@utils/formatBirth';
-import DismissKeyboardView from '@components/atom/DismissKeyboardView';
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'MemberInfoWriteScreen'
@@ -19,8 +19,6 @@ type AuthProps = NativeStackScreenProps<
 
 const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  // 상태바 스타일 설정
-
   const {nickname, imageUri, role} = route.params;
   const [birthday, setBirthday] = useState('');
   const [gender, setGender] = useState<Gender | null>(null);
@@ -43,24 +41,21 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   }, []);
 
   const handleNext = async () => {
-    if (!gender) {
-      return;
-    }
-
-    let imageLocation;
-    try {
-      setIsLoading(true);
-      imageLocation = (await uploadImageToS3(imageUri)) as string;
-      console.log('imageLocation', imageLocation);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
+    if (!gender) return;
+    setIsLoading(true);
+    let imageLocation = '';
+    if (imageUri) {
+      try {
+        imageLocation = (await uploadImageToS3(imageUri)) as string;
+        console.log('imageLocation', imageLocation);
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     const fcmToken = await AsyncStorage.getItem('fcmToken');
 
-    const data: MemberRequestData = {
+    const data: MemberCommonRequestData = {
       gender,
       name: nickname,
       profileImage: imageLocation ?? '',
@@ -74,10 +69,16 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
 
       await AsyncStorage.setItem('nickname', nickname);
       await AsyncStorage.setItem('role', role);
+      if (role === 'YOUTH') {
+        navigation.navigate('YouthOnboardingScreen');
+        return;
+      }
       navigation.navigate('VolunteerOnboardingScreen');
     } catch (error) {
       console.log(error);
       Alert.alert('오류', '회원가입 중 오류가 발생했어요');
+    } finally {
+      setIsLoading(false);
     }
   };
 

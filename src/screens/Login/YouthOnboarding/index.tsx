@@ -1,6 +1,7 @@
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {useEffect, useState} from 'react';
@@ -9,8 +10,8 @@ import {
   Dimensions,
   Image,
   ImageBackground,
-  View,
   StyleSheet,
+  View,
 } from 'react-native';
 import {SlidingDot} from 'react-native-animated-pagination-dots';
 
@@ -113,24 +114,27 @@ const Page5 = ({handleNext}: Readonly<{handleNext: () => void}>) => {
   );
 };
 
-const YouthOnboardingScreen = ({route, navigation}: Readonly<AuthProps>) => {
-  const {nickname, imageUri, role} = route.params;
+const YouthOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
+  const [nickname, setNickname] = useState('');
   const [currentPageIdx, setCurrentPageIdx] = useState(0);
   const [fadeAnim] = useState(new Animated.Value(1));
 
+  useEffect(() => {
+    (async () => {
+      const nickname = await AsyncStorage.getItem('nickname');
+      setNickname(nickname ?? '');
+    })();
+  }, []);
+
   const handleNext = () => {
-    navigation.navigate('YouthMemberInfoWriteScreen', {
-      nickname,
-      imageUri,
-      role,
-    });
+    navigation.navigate('YouthWakeUpTimeScreen');
   };
 
   const PAGE_COUNT = 5;
   const width = Dimensions.get('window').width;
 
   const pages = [
-    <Page1 key="1" nickname={nickname ?? ''} />,
+    <Page1 key="1" nickname={nickname} />,
     <Page2 key="2" />,
     <Page3 key="3" />,
     <Page4 key="4" />,

@@ -1,5 +1,4 @@
-import {postMemberYouth} from '@apis/member';
-import uploadImageToS3 from '@apis/util';
+import {postMember} from '@apis/member';
 import AlarmCircleIcon from '@assets/svgs/alarmCircle.svg';
 import LocationCircleIcon from '@assets/svgs/locationCircle.svg';
 import AppBar from '@components/atom/AppBar';
@@ -7,15 +6,12 @@ import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
 import useLoading from '@hooks/useLoading';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geolocation from '@react-native-community/geolocation';
 import {CompositeScreenProps} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {Gender, MemberInfoResponseData, Role} from '@type/api/member';
+import {MemberDetailRequestData} from '@type/api/member';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
-import formatBirth from '@utils/formatBirth';
-import {useEffect, useState} from 'react';
 import {
   Alert,
   PermissionsAndroid,
@@ -45,23 +41,8 @@ const NOTICE_CONTENTS = [
 Geolocation.setRNConfiguration({skipPermissionRequests: false});
 
 const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
-  const {
-    nickname,
-    imageUri,
-    role,
-    birthday,
-    gender,
-    wakeUpTime,
-    breakfast,
-    lunch,
-    dinner,
-    sleepTime,
-  } = route.params;
+  const {wakeUpTime, breakfast, lunch, dinner, sleepTime} = route.params;
   const {isLoading, setIsLoading} = useLoading();
-  const [currentLocation, setCurrentLocation] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
 
   const requestPermission = async () => {
     try {
@@ -75,10 +56,8 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
     }
   };
 
-   
-
   const handleNext = async () => {
-     (async () => {
+    (async () => {
       const permission = await requestPermission();
       console.log({permission});
       if (permission !== 'granted') {
@@ -88,29 +67,9 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
       Geolocation.getCurrentPosition(
         pos => {
           console.log('pos', pos);
-          setCurrentLocation(pos.coords);
 
           (async () => {
-            let imageLocation;
-            try {
-              setIsLoading(true);
-              imageLocation = (await uploadImageToS3(imageUri)) as string;
-              console.log('imageLocation', imageLocation);
-            } catch (error) {
-              console.log(error);
-            } finally {
-              setIsLoading(false);
-            }
-        
-            const fcmToken = await AsyncStorage.getItem('fcmToken');
-        
-            const data: MemberInfoResponseData = {
-              gender: gender as Gender,
-              name: nickname,
-              profileImage: imageLocation ?? '',
-              role: role as Role,
-              birth: formatBirth(birthday),
-              fcmToken: fcmToken ?? '',
+            const data: MemberDetailRequestData = {
               youthMemberInfoDto: {
                 wakeUpTime,
                 breakfast,
@@ -123,27 +82,20 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
                 // longitude: 127.047405,
               },
             };
-        
+
             try {
-              const {result} = await postMemberYouth(data);
+              const {result} = await postMember(data);
               console.log(result);
-        
-              await AsyncStorage.setItem('nickname', nickname);
-              await AsyncStorage.setItem('role', role);
-        
+
               navigation.navigate('YouthStackNav', {
                 screen: 'YouthHomeScreen',
                 params: {},
               });
-        
             } catch (error) {
               console.log(error);
               Alert.alert('오류', '회원가입 중 오류가 발생했어요');
             }
-        
-          })()
-       
-
+          })();
         },
         error => {
           console.log('error', error);
@@ -154,9 +106,6 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
         },
       );
     })();
-
-    
-    
   };
 
   return (

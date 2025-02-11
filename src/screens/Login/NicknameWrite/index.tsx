@@ -18,9 +18,8 @@ type AuthProps = NativeStackScreenProps<
   'NicknameWriteScreen'
 >;
 
-const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  const role = 'YOUTH'; // or HELPER
+const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
+  const {role} = route.params;
   const defaultImageUri =
     role === 'YOUTH'
       ? require('@assets/pngs/profile/youthDefault.png')
@@ -28,6 +27,7 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [nickname, setNickname] = useState('');
   const [clickedUpload, setClickedUpload] = useState(false);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
@@ -80,7 +80,8 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
   };
 
   const handleNext = () => {
-    navigation.navigate('RoleSelectScreen', {
+    navigation.navigate('MemberInfoWriteScreen', {
+      role,
       nickname,
       imageUri: imageUri ?? '',
     });
