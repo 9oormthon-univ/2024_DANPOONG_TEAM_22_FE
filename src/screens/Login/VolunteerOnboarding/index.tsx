@@ -81,7 +81,7 @@ const Page3 = ({nickname}: Readonly<PageProps>) => {
         className="text-gray200 text-center"
       />
       <Image
-        source={require('@assets/pngs/background/background1.png')}
+        source={require('@assets/pngs/background/signup1.png')}
         className="w-full h-auto mt-[234]"
       />
     </View>

@@ -1,12 +1,14 @@
 import Txt from '@components/atom/Txt';
 import LottieView from 'lottie-react-native';
-import {Pressable} from 'react-native';
+import {Pressable, TextStyle, ViewStyle} from 'react-native';
 
 type ButtonProps = {
   text: string;
   onPress: () => void;
   disabled?: boolean;
   isLoading?: boolean;
+  containerStyle?: ViewStyle | ViewStyle[];
+  textStyle?: TextStyle | TextStyle[];
 };
 
 const Button = ({
@@ -14,13 +16,15 @@ const Button = ({
   onPress,
   disabled,
   isLoading,
+  containerStyle,
+  textStyle,
 }: Readonly<ButtonProps>) => {
   return (
     <Pressable
       className={`h-[57] justify-center items-center flex-row ${
         disabled ? 'bg-gray300' : 'bg-yellowPrimary'
       }`}
-      style={{borderRadius: 10}}
+      style={[{borderRadius: 10}, containerStyle]}
       onPress={onPress}
       disabled={disabled}>
       {isLoading ? (
@@ -38,6 +42,7 @@ const Button = ({
           type="button"
           text={text}
           className={`${disabled ? 'text-white bg-gray300' : 'text-black'}`}
+          style={textStyle}
         />
       )}
     </Pressable>

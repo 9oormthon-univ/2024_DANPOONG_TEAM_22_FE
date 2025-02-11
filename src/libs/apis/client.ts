@@ -26,12 +26,19 @@ client.interceptors.request.use(async config => {
     }
 
     // 요청 로그 출력
-    console.log('Request:', {
-      url: config.url,
-      method: config.method,
-      headers: config.headers,
-      data: config.data,
-    });
+    console.log(
+      'Request:',
+      JSON.stringify(
+        {
+          url: config.url,
+          method: config.method,
+          headers: config.headers,
+          data: config.data,
+        },
+        null,
+        2,
+      ),
+    );
 
     return config;
   } catch (error) {
@@ -44,21 +51,35 @@ client.interceptors.request.use(async config => {
 client.interceptors.response.use(
   response => {
     // 응답 로그 출력
-    console.log('Response:', {
-      url: response.config.url,
-      status: response.status,
-      data: response.data,
-    });
+    console.log(
+      'Response:',
+      JSON.stringify(
+        {
+          url: response.config.url,
+          status: response.status,
+          data: response.data,
+        },
+        null,
+        2,
+      ),
+    );
     return response;
   },
   async error => {
     if (error.response) {
       // 응답 에러 로그 출력
-      console.log('Response Error:', {
-        url: error.config.url,
-        status: error.response.status,
-        data: error.response.data,
-      });
+      console.log(
+        'Response Error:',
+        JSON.stringify(
+          {
+            url: error.config.url,
+            status: error.response.status,
+            data: error.response.data,
+          },
+          null,
+          2,
+        ),
+      );
 
       switch (error.response.status) {
         case 401:

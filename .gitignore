@@ -90,3 +90,5 @@ gradle.properties
 
 # GA
 GTM-*.json
+
+keystore
