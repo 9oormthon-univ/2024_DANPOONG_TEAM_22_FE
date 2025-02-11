@@ -4,8 +4,10 @@ import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import DismissKeyboardView from '@components/atom/DismissKeyboardView';
+import Modal from '@components/atom/Modal';
 import Txt from '@components/atom/Txt';
 import useLoading from '@hooks/useLoading';
+import useModal from '@hooks/useModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
@@ -27,6 +29,7 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const [gender, setGender] = useState<Gender | null>(null);
   const {isLoading, setIsLoading} = useLoading();
   const [open, setOpen] = useState(false);
+  const {visible, openModal, closeModal} = useModal();
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
@@ -90,9 +93,7 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
     <BG type="main">
       <DismissKeyboardView>
         <AppBar
-          goBackCallbackFn={() => {
-            navigation.goBack();
-          }}
+          goBackCallbackFn={openModal}
           className="absolute top-[0] w-full"
         />
         <View className="items-center pt-[110]">
@@ -191,6 +192,23 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
         confirmText="확인"
         title={'생년월일'}
       />
+
+      <Modal
+        type="info"
+        visible={visible}
+        onCancel={closeModal}
+        onConfirm={() => navigation.goBack()}>
+        <Txt
+          type="title4"
+          text="나가시겠어요?"
+          className="text-white mt-[26.92] mb-[5]"
+        />
+        <Txt
+          type="caption1"
+          text="화면을 나가면 변경사항이 저장되지 않아요"
+          className="text-gray300 mb-[32]"
+        />
+      </Modal>
     </BG>
   );
 };

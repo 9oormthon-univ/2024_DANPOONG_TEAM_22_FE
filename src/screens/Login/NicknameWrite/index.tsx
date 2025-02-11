@@ -4,7 +4,9 @@ import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import DismissKeyboardView from '@components/atom/DismissKeyboardView';
+import Modal from '@components/atom/Modal';
 import Txt from '@components/atom/Txt';
+import useModal from '@hooks/useModal';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {useEffect, useState} from 'react';
@@ -41,6 +43,7 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   );
   const [clickedUpload, setClickedUpload] = useState(false);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const {visible, openModal, closeModal} = useModal();
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
@@ -122,9 +125,7 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
     <BG type="main">
       <DismissKeyboardView>
         <AppBar
-          goBackCallbackFn={() => {
-            navigation.goBack();
-          }}
+          goBackCallbackFn={openModal}
           className="absolute top-[0] w-full"
         />
         <View className="items-center mt-[149]">
@@ -233,6 +234,23 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
           />
         </View>
       )}
+
+      <Modal
+        type="info"
+        visible={visible}
+        onCancel={closeModal}
+        onConfirm={() => navigation.goBack()}>
+        <Txt
+          type="title4"
+          text="나가시겠어요?"
+          className="text-white mt-[26.92] mb-[5]"
+        />
+        <Txt
+          type="caption1"
+          text="화면을 나가면 변경사항이 저장되지 않아요"
+          className="text-gray300 mb-[32]"
+        />
+      </Modal>
     </BG>
   );
 };
