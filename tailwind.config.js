@@ -49,6 +49,7 @@ module.exports = {
 
         // Transparent
         white10: '#fafafa1a',
+        'yellow300/15': '#fbfba726',
       },
       borderRadius: {
         btn: '16px',

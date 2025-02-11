@@ -1,5 +1,6 @@
 import {postMember} from '@apis/member';
 import uploadImageToS3 from '@apis/util';
+import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import DismissKeyboardView from '@components/atom/DismissKeyboardView';
@@ -9,9 +10,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {Gender, MemberCommonRequestData, Role} from '@type/api/member';
-import formatBirth from '@utils/formatBirth';
+import formatDateDot from '@utils/formatDateDot';
 import {useEffect, useState} from 'react';
-import {Alert, Image, Keyboard, Pressable, TextInput, View} from 'react-native';
+import {Alert, Image, Keyboard, Pressable, View} from 'react-native';
+import DatePicker from 'react-native-date-picker';
+
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'MemberInfoWriteScreen'
@@ -20,9 +23,10 @@ type AuthProps = NativeStackScreenProps<
 const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const {nickname, imageUri, role} = route.params;
-  const [birthday, setBirthday] = useState('');
+  const [birthday, setBirthday] = useState<Date | null>(null);
   const [gender, setGender] = useState<Gender | null>(null);
   const {isLoading, setIsLoading} = useLoading();
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
@@ -41,7 +45,7 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   }, []);
 
   const handleNext = async () => {
-    if (!gender) return;
+    if (!gender || !birthday) return;
     setIsLoading(true);
     let imageLocation = '';
     if (imageUri) {
@@ -60,7 +64,7 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
       name: nickname,
       profileImage: imageLocation ?? '',
       role: role as Role,
-      birth: formatBirth(birthday),
+      birth: birthday.toISOString(),
       fcmToken: fcmToken ?? '',
     };
     try {
@@ -85,6 +89,12 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   return (
     <BG type="main">
       <DismissKeyboardView>
+        <AppBar
+          goBackCallbackFn={() => {
+            navigation.goBack();
+          }}
+          className="absolute top-[0] w-full"
+        />
         <View className="items-center pt-[110]">
           <Txt
             type="title2"
@@ -98,25 +108,29 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
           />
 
           <View className="mt-[30] px-[46] w-full">
-            <TextInput
-              value={birthday}
-              onChangeText={setBirthday}
-              placeholder="생년월일 (YYYYMMDD)"
-              placeholderTextColor={'#A0A0A0'}
-              className={`text-white py-[12] px-[23] font-r w-full inline-block border ${
+            <Pressable
+              onPress={() => setOpen(true)}
+              className={`w-full h-[48] justify-center border px-[22] ${
                 birthday
-                  ? 'border-yellow200 bg-white/20'
-                  : 'border-white/10 bg-white/10'
-              } mt-[31]`}
-              style={{fontSize: 16, borderRadius: 10}}
-            />
+                  ? 'border-yellowPrimary bg-yellow300/15'
+                  : 'border-gray300 bg-white/10'
+              }`}
+              style={{borderRadius: 10}}>
+              <Txt
+                type="body4"
+                text={
+                  birthday ? formatDateDot(birthday) : '생년월일(YYYY.MM.DD)'
+                }
+                className={`${birthday ? 'text-white' : 'text-gray300'}`}
+              />
+            </Pressable>
 
             <View className="mt-[28] flex-row">
               <Pressable
                 className={`flex-1 h-[121] items-center justify-center border mr-[22] ${
                   gender === 'MALE'
-                    ? 'bg-white/20 border-yellowPrimary'
-                    : 'bg-white/10 border-white/10'
+                    ? 'border-yellowPrimary bg-yellow300/15'
+                    : 'border-gray300 bg-white/10'
                 }`}
                 style={{borderRadius: 10}}
                 onPress={() => setGender('MALE')}>
@@ -129,8 +143,8 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
               <Pressable
                 className={`flex-1 h-[121] items-center justify-center border ${
                   gender === 'FEMALE'
-                    ? 'bg-white/20 border-yellowPrimary'
-                    : 'bg-white/10 border-white/10'
+                    ? 'border-yellowPrimary bg-yellow300/15'
+                    : 'border-gray300 bg-white/10'
                 }`}
                 style={{borderRadius: 10}}
                 onPress={() => setGender('FEMALE')}>
@@ -160,6 +174,23 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
           isLoading={isLoading}
         />
       </View>
+
+      <DatePicker
+        modal
+        open={open}
+        date={birthday ?? new Date()}
+        onConfirm={date => {
+          setOpen(false);
+          setBirthday(date);
+        }}
+        onCancel={() => {
+          setOpen(false);
+        }}
+        mode="date"
+        cancelText="취소"
+        confirmText="확인"
+        title={'생년월일'}
+      />
     </BG>
   );
 };

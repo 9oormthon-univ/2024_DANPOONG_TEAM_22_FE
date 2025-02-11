@@ -1,5 +1,6 @@
 import CameraIcon from '@assets/svgs/camera.svg';
 import AnimatedView from '@components/atom/AnimatedView';
+import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import DismissKeyboardView from '@components/atom/DismissKeyboardView';
@@ -120,6 +121,12 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   return (
     <BG type="main">
       <DismissKeyboardView>
+        <AppBar
+          goBackCallbackFn={() => {
+            navigation.goBack();
+          }}
+          className="absolute top-[0] w-full"
+        />
         <View className="items-center mt-[149]">
           <Txt
             type="title2"
