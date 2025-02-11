@@ -18,14 +18,16 @@ const Modal = ({
   onCancel,
   onConfirm,
   children,
+  buttonRatio,
 }: {
   visible: boolean;
   type?: 'info';
   cancelText?: string;
   confirmText?: string;
-  onCancel?: () => void;
+  onCancel: () => void;
   onConfirm?: () => void;
   children: React.ReactNode;
+  buttonRatio?: '1:1';
 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -71,7 +73,7 @@ const Modal = ({
           )}
           {children}
           <View className="flex-row w-full">
-            {onCancel && (
+            {buttonRatio === '1:1' && onCancel && (
               <Button
                 text={cancelText}
                 onPress={onCancel}

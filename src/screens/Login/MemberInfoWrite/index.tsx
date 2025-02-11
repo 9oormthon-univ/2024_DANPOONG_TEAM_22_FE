@@ -30,6 +30,7 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const {isLoading, setIsLoading} = useLoading();
   const [open, setOpen] = useState(false);
   const {visible, openModal, closeModal} = useModal();
+  const [visible2, setVisible2] = useState(false);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
@@ -47,8 +48,32 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
     };
   }, []);
 
+  const calculateAge = (birthday: Date) => {
+    const today = new Date();
+    const age = today.getFullYear() - birthday.getFullYear();
+    const monthDifference = today.getMonth() - birthday.getMonth();
+    // 만 나이
+    if (
+      monthDifference < 0 ||
+      (monthDifference === 0 && today.getDate() < birthday.getDate())
+    ) {
+      return age - 1;
+    }
+    return age;
+  };
+
   const handleNext = async () => {
     if (!gender || !birthday) return;
+
+    // 만 19세 미만인 봉사자는 서비스 이용 불가
+    if (role === 'HELPER') {
+      const age = calculateAge(birthday);
+      if (age < 19) {
+        setVisible2(true);
+        return;
+      }
+    }
+
     setIsLoading(true);
     let imageLocation = '';
     if (imageUri) {
@@ -192,6 +217,18 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
         confirmText="확인"
         title={'생년월일'}
       />
+
+      <Modal
+        type="info"
+        visible={visible2}
+        onCancel={() => setVisible2(false)}
+        onConfirm={() => navigation.navigate('LoginScreen')}>
+        <Txt
+          type="body3"
+          text={`내일모래의 목소리 봉사는\n만 19세 이상부터 참여할 수 있어요.\n나중에 다시 찾아주세요!`}
+          className="text-white my-[28.92] text-center"
+        />
+      </Modal>
 
       <Modal
         type="info"
