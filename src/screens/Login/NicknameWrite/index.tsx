@@ -140,42 +140,46 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
       </DismissKeyboardView>
 
       {clickedUpload ? (
-        <View
+        <Pressable
+          onPress={() => setClickedUpload(false)}
           className={`absolute left-0 bottom-0 w-full px-[40] bg-black/50 h-full justify-end pb-[30] ${
             isKeyboardVisible ? 'hidden' : ''
           }`}>
-          <View className="bg-blue500 mb-[24]" style={{borderRadius: 10}}>
-            <View className="h-[43] justify-center items-center">
-              <Txt
-                type="caption1"
-                text="프로필 사진 설정"
-                className="text-gray300"
-              />
+          {/* 내부 컴포넌트에는 상위 onPress 이벤트가 전파되지 않도록 함 */}
+          <Pressable onPress={() => {}} className="w-full">
+            <View className="bg-blue500 mb-[24]" style={{borderRadius: 10}}>
+              <View className="h-[43] justify-center items-center">
+                <Txt
+                  type="caption1"
+                  text="프로필 사진 설정"
+                  className="text-gray300"
+                />
+              </View>
+              <View className="bg-blue600 h-[1]" />
+              <Pressable
+                className="h-[61] justify-center items-center"
+                onPress={selectImage}>
+                <Txt
+                  type="body3"
+                  text="앨범에서 사진 선택"
+                  className="text-white"
+                />
+              </Pressable>
+              <View className="bg-blue600 h-[1]" />
+              <Pressable
+                className="h-[61] justify-center items-center"
+                onPress={handleDefaultImageClick}>
+                <Txt
+                  type="body3"
+                  text="기본 이미지 적용"
+                  className="text-white"
+                />
+              </Pressable>
             </View>
-            <View className="bg-blue600 h-[1]" />
-            <Pressable
-              className="h-[61] justify-center items-center"
-              onPress={selectImage}>
-              <Txt
-                type="body3"
-                text="앨범에서 사진 선택"
-                className="text-white"
-              />
-            </Pressable>
-            <View className="bg-blue600 h-[1]" />
-            <Pressable
-              className="h-[61] justify-center items-center"
-              onPress={handleDefaultImageClick}>
-              <Txt
-                type="body3"
-                text="기본 이미지 적용"
-                className="text-white"
-              />
-            </Pressable>
-          </View>
 
-          <Button text="취소" onPress={() => setClickedUpload(false)} />
-        </View>
+            <Button text="취소" onPress={() => setClickedUpload(false)} />
+          </Pressable>
+        </Pressable>
       ) : (
         <View
           className={`absolute left-0 bottom-[30] w-full px-[40] ${
