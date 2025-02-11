@@ -5,8 +5,15 @@ import DismissKeyboardView from '@components/atom/DismissKeyboardView';
 import Txt from '@components/atom/Txt';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {useEffect, useState} from 'react';
-import {Alert, Image, Keyboard, Pressable, TextInput, View} from 'react-native';
+import {useEffect, useRef, useState} from 'react';
+import {
+  Animated,
+  Image,
+  Keyboard,
+  Pressable,
+  TextInput,
+  View,
+} from 'react-native';
 import {
   ImageLibraryOptions,
   ImagePickerResponse,
@@ -40,6 +47,9 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const [clickedUpload, setClickedUpload] = useState(false);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const translateYAnim = useRef(new Animated.Value(50)).current;
+
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
       setIsKeyboardVisible(true),
@@ -55,6 +65,36 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
       hideSubscription.remove();
     };
   }, []);
+
+  useEffect(() => {
+    if (clickedUpload) {
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+        Animated.timing(translateYAnim, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    } else {
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+        Animated.timing(translateYAnim, {
+          toValue: 50,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }
+  }, [clickedUpload]);
 
   const selectImage = async () => {
     const options: ImageLibraryOptions = {
@@ -172,12 +212,18 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
       {clickedUpload ? (
         <Pressable
           onPress={() => setClickedUpload(false)}
-          className={`absolute left-0 bottom-0 w-full px-[40] bg-black/50 h-full justify-end pb-[30] ${
+          className={`absolute left-0 bottom-0 w-full h-full bg-black/50 px-[40] pb-[30] justify-end ${
             isKeyboardVisible ? 'hidden' : ''
           }`}>
           {/* 내부 컴포넌트에는 상위 onPress 이벤트가 전파되지 않도록 함 */}
           <Pressable onPress={() => {}} className="w-full">
-            <View className="bg-blue500 mb-[24]" style={{borderRadius: 10}}>
+            <Animated.View
+              style={{
+                opacity: fadeAnim,
+                transform: [{translateY: translateYAnim}],
+                borderRadius: 10,
+              }}
+              className="bg-blue500 mb-[24]">
               <View className="h-[43] justify-center items-center">
                 <Txt
                   type="caption1"
@@ -205,7 +251,7 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
                   className="text-white"
                 />
               </Pressable>
-            </View>
+            </Animated.View>
 
             <Button text="취소" onPress={() => setClickedUpload(false)} />
           </Pressable>
