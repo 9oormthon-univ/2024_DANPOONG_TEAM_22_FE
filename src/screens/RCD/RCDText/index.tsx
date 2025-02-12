@@ -86,7 +86,7 @@ const RCDTextScreen = ({
       />
       {/* 에러 토스트 메시지 */}
       <Toast
-        text="부적절한 언어가 감지되어 녹음할 수 없어요"
+        text="부적절한 언어가 있어요"
         isToast={isToast}
         setIsToast={() => setIsToast(false)}
       />
