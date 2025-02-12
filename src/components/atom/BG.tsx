@@ -5,18 +5,18 @@ import {BackType} from '@type/BackType';
 import {COLORS} from '@constants/Colors';
 const BG = ({type, children}: {type: BackType; children?: React.ReactNode}) => {
   const colors: [string, string] =
-    type === 'main'
+    type === BackType.MAIN
       ? [COLORS.main100, COLORS.main200]
       : [COLORS.second100, COLORS.second200];
   return (
     <SafeAreaView className="w-full h-full">
       <StatusBar
         barStyle="light-content"
-        backgroundColor={type === 'main' ? '#16161f' : '#20222f'}
+        backgroundColor={type === BackType.MAIN ? COLORS.main100 : type === BackType.SOLID ? COLORS.blue700 : COLORS.second100}
         translucent={false}
       />
-      {type === 'solid' ? (
-        <View className="w-full h-full bg-blue-700">
+      {type === BackType.SOLID ? (
+        <View className="w-full h-full bg-blue700">
           {children}
         </View>
       ) : (
