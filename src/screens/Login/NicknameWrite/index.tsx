@@ -23,11 +23,11 @@ type AuthProps = NativeStackScreenProps<
 >;
 
 const NICKNAME_MESSAGES = {
-  SUCCESS: '사용 가능한 닉네임입니다.',
-  DEFAULT: '2자 이상 10자 이내의 한글, 영문, 숫자만 입력해주세요.',
-  TOO_SHORT: '2자 이상 입력하세요.',
-  NO_SPACES: '공백을 제거해주세요.',
-  NO_SPECIAL_CHARS: '특수문자를 제거해주세요.',
+  SUCCESS: '사용 가능한 닉네임이에요',
+  DEFAULT: '2자 이상 10자 이내의 한글, 영문, 숫자만 입력해주세요',
+  TOO_SHORT: '2자 이상 입력하세요',
+  NO_SPACES: '공백을 제거해주세요',
+  NO_SPECIAL_CHARS: '특수문자를 제거해주세요',
 };
 
 const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
