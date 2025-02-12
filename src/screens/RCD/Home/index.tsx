@@ -82,9 +82,11 @@ const HomeScreen = () => {
         </View>
         {/* button section*/}
         <View className="w-full h-[253] relative">
-          {Object.values(RecordTypeConstant).map(type => (
+          <SelectBtn type={RecordTypeConstant.DAILY} />
+          <SelectBtn type={RecordTypeConstant.COMFORT} />
+          {/* {Object.values(RecordTypeConstant).map(type => (
             <SelectBtn key={type} type={type} />
-          ))}
+          ))} */}
         </View>
       </View>
     </BG>
