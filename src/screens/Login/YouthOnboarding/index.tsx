@@ -1,115 +1,293 @@
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
+import {COLORS} from '@constants/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {PageProps} from '@screens/Login/VolunteerOnboarding';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {
   Animated,
   Dimensions,
   Image,
   ImageBackground,
+  Pressable,
   StyleSheet,
   View,
 } from 'react-native';
 import {SlidingDot} from 'react-native-animated-pagination-dots';
+import LogoRoundIcon from '@assets/svgs/logoRound.svg';
+import LottieView from 'lottie-react-native';
+import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'YouthOnboardingScreen'
 >;
 
-type PageProps = {
-  nickname: string;
+// 이미지 미리 로딩 함수
+const preloadImages = async () => {
+  const images = [
+    require('@assets/pngs/background/youthOnboarding1.png'),
+    require('@assets/pngs/background/youthOnboarding2.png'),
+    require('@assets/pngs/background/youthOnboarding3.png'),
+    require('@assets/pngs/background/youthOnboarding4.png'),
+  ];
+
+  await Promise.all(
+    images.map(image => Image.prefetch(Image.resolveAssetSource(image).uri)),
+  );
 };
 
-const Page1 = ({nickname}: Readonly<PageProps>) => {
+const Page1 = ({nickname, onNext}: Readonly<PageProps>) => {
   return (
     <ImageBackground
-      source={require('@assets/pngs/background/background_youth6.png')}
+      source={require('@assets/pngs/background/youthOnboarding1.png')}
       className="flex-1 items-center">
-      <View className="flex-1 items-center mt-[189]">
-        <Txt
-          type="body1"
-          text={'이곳은 광활한 사막...'}
-          className="text-white text-center mb-[36]"
-        />
+      <View className="flex-1 w-full">
         <Txt
           type="body2"
-          text={`${nickname} 님,\n당신은 이곳을 여행하는 나그네군요.`}
-          className="text-gray200 text-center"
+          text={`${nickname} 님,\n지금도 내일모래에는\n당신을 위해 목소리를 내는\n사람들이 있어요`}
+          className="text-gray200 text-center mt-[200]"
         />
+        <View className="absolute left-0 bottom-[55] w-full px-[30]">
+          <Button text="다음" onPress={onNext} />
+        </View>
       </View>
     </ImageBackground>
   );
 };
 
-const Page2 = () => {
+const Page2 = ({
+  nickname,
+  onNext,
+  jumpStep,
+}: Readonly<PageProps & {jumpStep: () => void}>) => {
+  const contentOpacity = useRef(new Animated.Value(0)).current;
+  const textColorAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      Animated.parallel([
+        Animated.timing(contentOpacity, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.timing(textColorAnim, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: false,
+        }),
+      ]).start();
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const textColor = textColorAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [COLORS.white, COLORS.gray300], // white to gray
+  });
+
   return (
-    <View className="flex-1 items-center mt-[189]">
-      <Txt
-        type="body2"
-        text={
-          '낯선 길을 걸으며 때로는 지치고,\n혼자라는 생각이 들 수 있을 거예요.'
-        }
-        className="text-gray200 text-center"
-      />
-      <Image
-        source={require('@assets/pngs/background/background_youth2.png')}
-        className="w-full h-auto mt-[143]"
-      />
+    <ImageBackground
+      source={require('@assets/pngs/background/youthOnboarding2.png')}
+      className="flex-1 items-center">
+      <View className="flex-1 w-full">
+        <View className="h-[200]" />
+        <Animated.Text
+          style={{
+            color: textColor,
+          }}>
+          <Txt
+            type="body2"
+            text={`이제부터 이들의 목소리가\n${nickname} 님의 일상 곳곳에 도착할 거예요`}
+            className="text-center"
+          />
+        </Animated.Text>
+
+        <Animated.View style={{opacity: contentOpacity}}>
+          <Txt
+            type="body2"
+            text="이렇게요"
+            className="text-white text-center mt-[55]"
+          />
+
+          <View className="h-[32]" />
+
+          <View className="px-[30]">
+            <Pressable
+              className="border border-yellow200 bg-white10 shadow-[0px_0px_15px_0px_rgba(253,253,196,0.30)] h-[84] flex-row items-center px-[17]"
+              style={{borderRadius: 10}}
+              onPress={onNext}>
+              <LogoRoundIcon />
+              <View className="w-[16.81]" />
+              <View>
+                <Txt type="body4" text="내일모래" className="text-white" />
+                <View className="h-[3]" />
+                <Txt
+                  type="caption2"
+                  text="외출할 일이 있나요? 나가기 전에, 잠깐 들어봐요."
+                  className="text-gray200"
+                />
+              </View>
+            </Pressable>
+          </View>
+
+          <View className="h-[21]" />
+
+          <View className="items-center">
+            <View className="w-0 h-0 border-l-[5.5px] border-r-[5.5px] border-b-[11px] border-l-transparent border-r-transparent border-b-yellow200" />
+            <View
+              className="w-[301] h-[43] bg-yellow200 justify-center items-center"
+              style={{borderRadius: 100}}>
+              <Txt
+                type="caption2"
+                text="누르면, 실제 봉사자의 목소리 알림을 들을 수 있어요"
+                className="text-black"
+              />
+            </View>
+          </View>
+        </Animated.View>
+
+        <View className="absolute left-0 bottom-[55] w-full px-[30]">
+          <Button text="다음" onPress={jumpStep} />
+        </View>
+      </View>
+    </ImageBackground>
+  );
+};
+
+const Page3 = ({onNext}: Readonly<PageProps>) => {
+  const animation = useRef<LottieView>(null); // 애니메이션 ref
+  const audioPlayer = useRef(new AudioRecorderPlayer()); // 오디오 플레이어 ref
+  const mockFileUrl =
+    'https://ip-file-upload-test.s3.ap-northeast-2.amazonaws.com/mom.mp4';
+
+  // 애니메이션 재생/정지 처리
+  useEffect(() => {
+    animation.current?.play();
+
+    setTimeout(async () => {
+      await audioPlayer.current.startPlayer(mockFileUrl);
+    }, 1000);
+
+    return () => {
+      (async () => {
+        await audioPlayer.current.stopPlayer();
+      })();
+    };
+  }, []);
+
+  return (
+    <View className="flex-1 w-full ">
+      <View
+        className="absolute left-0 bottom-0 w-full h-full"
+        style={{transform: [{scale: 1.1}]}}>
+        <LottieView
+          ref={animation}
+          style={{
+            flex: 1,
+          }}
+          source={require('@assets/lottie/voice.json')}
+          autoPlay
+          loop
+        />
+      </View>
+
+      <View className="h-[130] " />
+
+      <View className="flex-row items-center px-[30]">
+        <View className="relative w-[31] h-[31] justify-center items-center">
+          <Image
+            source={require('@assets/pngs/logo/app/app_logo_yellow.png')}
+            className="w-[25] h-[25]"
+            style={{borderRadius: 25}}
+          />
+          <View
+            className="absolute left-0 bottom-0 w-[31] h-[31] border border-yellowPrimary"
+            style={{borderRadius: 31}}
+          />
+        </View>
+        <View className="w-[10]" />
+        <Txt type="title4" text="네잎클로바" className="text-yellowPrimary" />
+      </View>
+
+      <View className="h-[33] " />
+
+      <View className="px-[30]">
+        <Txt
+          type="title3"
+          text={`오늘 밖에 비가 온대.\n꼭 우산을 챙겨서 나가렴.\n오늘도 힘내!`}
+          className="text-gray200"
+        />
+      </View>
+
+      <View className="absolute left-0 bottom-[55] w-full px-[30]">
+        <Button text="다음" onPress={onNext} />
+      </View>
     </View>
   );
 };
 
-const Page3 = () => {
-  return (
-    <ImageBackground
-      source={require('@assets/pngs/background/background_youth1.png')}
-      className="flex-1 items-center mt-[-60]">
-      <View className="flex-1 items-center mt-[189]">
-        <Txt
-          type="body2"
-          text={'내일모래에는\n당신의 위해 목소리를 내는\n별들이 있어요.'}
-          className="text-gray200 text-center"
-        />
-      </View>
-    </ImageBackground>
-  );
-};
+const AnimatedImageBackground =
+  Animated.createAnimatedComponent(ImageBackground);
 
-const Page4 = () => {
-  return (
-    <ImageBackground
-      source={require('@assets/pngs/background/background_youth3.png')}
-      className="flex-1 items-center mt-[-60]">
-      <View className="flex-1 items-center mt-[189]">
-        <Txt
-          type="body2"
-          text={'별들의 목소리는\n당신의 일상을 안내하고,\n위로 해줄 거예요.'}
-          className="text-gray200 text-center"
-        />
-      </View>
-    </ImageBackground>
-  );
-};
+const Page4 = ({onNext}: Readonly<PageProps>) => {
+  const opacityAnim = useRef(new Animated.Value(1)).current;
+  const nextOpacityAnim = useRef(new Animated.Value(0)).current;
 
-const Page5 = ({handleNext}: Readonly<{handleNext: () => void}>) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      Animated.parallel([
+        Animated.timing(opacityAnim, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.timing(nextOpacityAnim, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <View className="flex-1 items-center mt-[189]">
-      <Txt
-        type="body2"
-        text={'내일모래에서\n내일도, 모레도,\n함께할 별들을 만나러 가볼래요?'}
-        className="text-gray200 text-center"
-      />
-      <Image
-        source={require('@assets/pngs/background/background_youth9.png')}
-        className="mt-[-60]"
-      />
-      <View className="absolute left-0 bottom-[30] w-full px-[30]">
-        <Button text="다음" onPress={handleNext} />
-      </View>
+    <View className="flex-1 items-center">
+      <AnimatedImageBackground
+        source={require('@assets/pngs/background/youthOnboarding3.png')}
+        style={{...StyleSheet.absoluteFillObject, opacity: opacityAnim}}>
+        <View className="flex-1 w-full">
+          <Txt
+            type="body2"
+            text={`이제부터 내일모래가 내일도, 모레도,\n당신의 일상에 따스한 목소리를 전달해줄게요`}
+            className="text-gray200 text-center mt-[200]"
+          />
+          <View className="absolute left-0 bottom-[55] w-full px-[30]">
+            <Button text="다음" onPress={onNext} />
+          </View>
+        </View>
+      </AnimatedImageBackground>
+      <AnimatedImageBackground
+        source={require('@assets/pngs/background/youthOnboarding4.png')}
+        style={{...StyleSheet.absoluteFillObject, opacity: nextOpacityAnim}}>
+        <View className="flex-1 w-full">
+          <Txt
+            type="body2"
+            text={`이제부터 내일모래가 내일도, 모레도,\n당신의 일상에 따스한 목소리를 전달해줄게요`}
+            className="text-gray200 text-center mt-[200]"
+          />
+          <View className="absolute left-0 bottom-[55] w-full px-[30]">
+            <Button text="다음" onPress={onNext} />
+          </View>
+        </View>
+      </AnimatedImageBackground>
     </View>
   );
 };
@@ -117,8 +295,9 @@ const Page5 = ({handleNext}: Readonly<{handleNext: () => void}>) => {
 const YouthOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
   const [nickname, setNickname] = useState('');
   const [currentPageIdx, setCurrentPageIdx] = useState(0);
-  const [fadeAnim] = useState(new Animated.Value(1));
+  const fadeAnim = useRef(new Animated.Value(1)).current;
 
+  // 닉네임 가져오기
   useEffect(() => {
     (async () => {
       const nickname = await AsyncStorage.getItem('nickname');
@@ -126,66 +305,108 @@ const YouthOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
     })();
   }, []);
 
-  const handleNext = () => {
+  // 이미지 미리 로딩
+  useEffect(() => {
+    preloadImages();
+  }, []);
+
+  const goNext = () => {
     navigation.navigate('YouthWakeUpTimeScreen');
+    setCurrentPageIdx(0);
   };
 
-  const PAGE_COUNT = 5;
+  const handleNext = () => {
+    if (currentPageIdx === PAGE_COUNT - 1) {
+      goNext();
+      return;
+    }
+    // 페이드 아웃 애니메이션
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setCurrentPageIdx(prevIdx => prevIdx + 1);
+      // 페이드 인 애니메이션
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    });
+  };
+
+  const handleJumpStep = () => {
+    if (currentPageIdx === PAGE_COUNT - 1) {
+      goNext();
+      return;
+    }
+    // 페이드 아웃 애니메이션
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setCurrentPageIdx(prevIdx => prevIdx + 2); // 여기만 다름
+      // 페이드 인 애니메이션
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    });
+  };
+
+  const PAGE_COUNT = 4;
   const width = Dimensions.get('window').width;
 
   const pages = [
-    <Page1 key="1" nickname={nickname} />,
-    <Page2 key="2" />,
-    <Page3 key="3" />,
-    <Page4 key="4" />,
-    <Page5 key="5" handleNext={handleNext} />,
+    <Page1 key="1" nickname={nickname} onNext={handleNext} />,
+    <Page2
+      key="2"
+      nickname={nickname}
+      onNext={handleNext}
+      jumpStep={handleJumpStep}
+    />,
+    <Page3 key="3" onNext={handleNext} />,
+    <Page4 key="4" onNext={handleNext} />,
   ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (currentPageIdx < PAGE_COUNT - 1) {
-        Animated.timing(fadeAnim, {
-          toValue: 0,
-          duration: 700, // 페이드아웃 시간
-          useNativeDriver: true,
-        }).start(() => {
-          setCurrentPageIdx(prevIdx => prevIdx + 1);
-          fadeAnim.setValue(0);
-          Animated.timing(fadeAnim, {
-            toValue: 1,
-            duration: 700, // 페이드인 시간
-            useNativeDriver: true,
-          }).start();
-        });
-      } else {
-        clearInterval(interval);
-      }
-    }, 2500); // 페이지 전환 간격 (페이드아웃 + 페이드인 시간 포함)
-
-    return () => clearInterval(interval);
-  }, [currentPageIdx, fadeAnim]);
+  const canJumpPageIdx = 2;
 
   return (
-    <BG
-      type={
-        currentPageIdx === 3 || currentPageIdx === 4 ? 'gradation' : 'main'
-      }>
+    <BG type="main">
       <>
-        <View className="justify-center items-center mt-[85]">
-          <SlidingDot
-            marginHorizontal={3}
-            containerStyle={{top: 30}}
-            data={Array(PAGE_COUNT).fill({})}
-            scrollX={new Animated.Value(currentPageIdx * width)}
-            dotSize={5.926}
-            dotStyle={{backgroundColor: '#414141'}}
-            slidingIndicatorStyle={{backgroundColor: '#F9F96C'}}
-          />
-        </View>
+        {currentPageIdx !== canJumpPageIdx && (
+          <>
+            <Pressable
+              className="absolute top-[42] right-[22] z-10"
+              onPress={goNext}>
+              <Txt type="button" text="건너뛰기" className="text-white" />
+            </Pressable>
+
+            <View className="absolute top-[100] left-1/2 -translate-x-1/2">
+              <SlidingDot
+                marginHorizontal={6}
+                containerStyle={{top: 30}}
+                data={Array(PAGE_COUNT - 1).fill({})}
+                scrollX={
+                  new Animated.Value(
+                    (currentPageIdx === PAGE_COUNT - 1
+                      ? currentPageIdx - 1
+                      : currentPageIdx) * width,
+                  )
+                }
+                dotSize={5.926}
+                dotStyle={{backgroundColor: COLORS.gray400, zIndex: 10}}
+                slidingIndicatorStyle={{backgroundColor: COLORS.yellowPrimary}}
+              />
+            </View>
+          </>
+        )}
 
         <View className="flex-1">
-          <Animated.View
-            style={{...StyleSheet.absoluteFillObject, opacity: fadeAnim}}>
+          <Animated.View style={{flex: 1, opacity: fadeAnim}}>
             {pages[currentPageIdx]}
           </Animated.View>
         </View>

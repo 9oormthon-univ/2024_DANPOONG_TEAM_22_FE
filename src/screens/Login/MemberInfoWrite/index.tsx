@@ -190,7 +190,7 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
       </DismissKeyboardView>
 
       <View
-        className={`absolute left-0 bottom-[30] w-full px-[40] ${
+        className={`absolute left-0 bottom-[55] w-full px-[30] ${
           isKeyboardVisible ? 'hidden' : ''
         }`}>
         <Button

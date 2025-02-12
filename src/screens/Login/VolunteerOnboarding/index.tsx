@@ -1,15 +1,17 @@
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
+import {COLORS} from '@constants/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {
   Animated,
   Dimensions,
   Image,
-  StyleSheet,
+  ImageBackground,
+  Pressable,
   Text,
   View,
 } from 'react-native';
@@ -20,16 +22,30 @@ type AuthProps = NativeStackScreenProps<
   'VolunteerOnboardingScreen'
 >;
 
-type PageProps = {
-  nickname: string;
+export type PageProps = {
+  nickname?: string;
+  onNext: () => void;
 };
 
-const Page1 = ({nickname}: Readonly<PageProps>) => {
+// 이미지 미리 로딩 함수
+const preloadImages = async () => {
+  const images = [
+    require('@assets/pngs/background/volunteerOnboarding1.png'),
+    require('@assets/pngs/background/volunteerOnboarding2.png'),
+    require('@assets/pngs/background/volunteerOnboarding3.png'),
+  ];
+
+  await Promise.all(
+    images.map(image => Image.prefetch(Image.resolveAssetSource(image).uri)),
+  );
+};
+
+const Page1 = ({nickname, onNext}: Readonly<PageProps>) => {
   return (
-    <View className="flex-1 items-center justify-center">
+    <View className="flex-1 items-center mt-[220]">
       <Txt
         type="body2"
-        text={`${nickname ?? ''} 님,\n이런 말 들어본 적 있나요?`}
+        text={`${nickname} 님,\n이런 말 들어본 적 있나요?`}
         className="text-white text-center mb-[26]"
       />
       <Text
@@ -48,79 +64,78 @@ const Page1 = ({nickname}: Readonly<PageProps>) => {
         ”
       </Text>
       <Txt type="body2" text="라는 말이요" className="text-white text-center" />
-    </View>
-  );
-};
-
-const Page2 = () => {
-  return (
-    <View className="flex-1 items-center mt-[189]">
-      <Txt
-        type="body2"
-        text={
-          '홀로서기를 시작한\n자립준비청년은 마치\n사막을 걷는 나그네와 같아요'
-        }
-        className="text-gray200 text-center"
-      />
-      <Image
-        source={require('@assets/pngs/background/background3.png')}
-        className="w-full h-auto mt-[173]"
-      />
-    </View>
-  );
-};
-
-const Page3 = ({nickname}: Readonly<PageProps>) => {
-  return (
-    <View className="flex-1 items-center mt-[189]">
-      <Txt
-        type="body2"
-        text={`사막의 별처럼,\n${
-          nickname ?? ''
-        } 님의 목소리는\n나그네의 길을 안내할 수 있어요`}
-        className="text-gray200 text-center"
-      />
-      <Image
-        source={require('@assets/pngs/background/signup1.png')}
-        className="w-full h-auto mt-[234]"
-      />
-    </View>
-  );
-};
-
-const Page4 = ({handleNext}: Readonly<{handleNext: () => void}>) => {
-  return (
-    <View className="flex-1 items-center mt-[89]">
-      <Txt
-        type="body2"
-        text={
-          '내일모래와 함께\n내일도, 모레도,\n청년의 일상을 비추러 가볼래요?'
-        }
-        className="text-gray200 text-center "
-      />
-      <Image
-        source={require('@assets/pngs/marginalStars.png')}
-        width={274}
-        height={269.5}
-        className="w-[340] h-auto absolute bottom-[75] "
-      />
-      <Image
-        source={require('@assets/webps/constellation.webp')}
-        width={274}
-        height={269.5}
-        className="w-[274] h-[269.5] mt-[100]"
-      />
-      <View className="absolute left-0 bottom-[30] w-full px-[30]">
-        <Button text="다음" onPress={handleNext} />
+      <View className="absolute left-0 bottom-[55] w-full px-[30]">
+        <Button text="다음" onPress={onNext} />
       </View>
     </View>
   );
 };
 
+const Page2 = ({onNext}: Readonly<PageProps>) => {
+  return (
+    <ImageBackground
+      source={require('@assets/pngs/background/volunteerOnboarding1.png')}
+      className="flex-1 items-center">
+      <View className="flex-1 w-full">
+        <Txt
+          type="body2"
+          text={
+            '내일모래는\n자립준비청년의 일상에\n따스한 목소리를 전하기 위해 만들어졌어요'
+          }
+          className="text-gray200 text-center mt-[200]"
+        />
+        <View className="absolute left-0 bottom-[55] w-full px-[30]">
+          <Button text="다음" onPress={onNext} />
+        </View>
+      </View>
+    </ImageBackground>
+  );
+};
+
+const Page3 = ({nickname, onNext}: Readonly<PageProps>) => {
+  return (
+    <ImageBackground
+      source={require('@assets/pngs/background/volunteerOnboarding2.png')}
+      className="flex-1 items-center">
+      <View className="flex-1 w-full">
+        <Txt
+          type="body2"
+          text={`${nickname} 님의 말 한마디에는\n자립준비청년의 일상을\n밝게 비출 힘이 있어요`}
+          className="text-gray200 text-center mt-[200]"
+        />
+        <View className="absolute left-0 bottom-[55] w-full px-[30]">
+          <Button text="다음" onPress={onNext} />
+        </View>
+      </View>
+    </ImageBackground>
+  );
+};
+
+const Page4 = ({onNext}: Readonly<PageProps>) => {
+  return (
+    <ImageBackground
+      source={require('@assets/pngs/background/volunteerOnboarding3.png')}
+      className="flex-1 items-center">
+      <View className="flex-1 w-full">
+        <Txt
+          type="body2"
+          text={
+            '내일모래와 함께 내일도, 모레도,\n청년의 일상을 비추러 가볼래요?'
+          }
+          className="text-gray200 text-center mt-[200]"
+        />
+        <View className="absolute left-0 bottom-[55] w-full px-[30]">
+          <Button text="다음" onPress={onNext} />
+        </View>
+      </View>
+    </ImageBackground>
+  );
+};
+
 const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
-  const [currentPageIdx, setCurrentPageIdx] = useState(0);
   const [nickname, setNickname] = useState('');
-  const [fadeAnim] = useState(new Animated.Value(1));
+  const [currentPageIdx, setCurrentPageIdx] = useState(0);
+  const fadeAnim = useRef(new Animated.Value(1)).current;
 
   // 닉네임 가져오기
   useEffect(() => {
@@ -130,62 +145,70 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
     })();
   }, []);
 
-  const handleNext = () => {
+  // 이미지 미리 로딩
+  useEffect(() => {
+    preloadImages();
+  }, []);
+
+  const goNext = () => {
     navigation.navigate('VolunteerNoticeScreen');
+    setCurrentPageIdx(0);
+  };
+
+  const handleNext = () => {
+    if (currentPageIdx === PAGE_COUNT - 1) {
+      goNext();
+      return;
+    }
+    // 페이드 아웃 애니메이션
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setCurrentPageIdx(prevIdx => prevIdx + 1);
+      // 페이드 인 애니메이션
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    });
   };
 
   const PAGE_COUNT = 4;
   const width = Dimensions.get('window').width;
 
   const pages = [
-    <Page1 key="1" nickname={nickname ?? ''} />,
-    <Page2 key="2" />,
-    <Page3 key="3" nickname={nickname ?? ''} />,
-    <Page4 key="4" handleNext={handleNext} />,
+    <Page1 key="1" nickname={nickname} onNext={handleNext} />,
+    <Page2 key="2" onNext={handleNext} />,
+    <Page3 key="3" nickname={nickname} onNext={handleNext} />,
+    <Page4 key="4" onNext={handleNext} />,
   ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (currentPageIdx < PAGE_COUNT - 1) {
-        Animated.timing(fadeAnim, {
-          toValue: 0,
-          duration: 1000, // 페이드아웃 시간
-          useNativeDriver: true,
-        }).start(() => {
-          setCurrentPageIdx(prevIdx => prevIdx + 1);
-          fadeAnim.setValue(0);
-          Animated.timing(fadeAnim, {
-            toValue: 1,
-            duration: 1000, // 페이드인 시간
-            useNativeDriver: true,
-          }).start();
-        });
-      } else {
-        clearInterval(interval);
-      }
-    }, 2500); // 페이지 전환 간격 (페이드아웃 + 페이드인 시간 포함)
-
-    return () => clearInterval(interval);
-  }, [currentPageIdx, fadeAnim]);
 
   return (
     <BG type={currentPageIdx === 3 ? 'gradation' : 'main'}>
       <>
-        <View className="justify-center items-center mt-[85]">
+        <Pressable
+          className="absolute top-[42] right-[22] z-10"
+          onPress={goNext}>
+          <Txt type="button" text="건너뛰기" className="text-white" />
+        </Pressable>
+
+        <View className="absolute top-[100] left-1/2 -translate-x-1/2">
           <SlidingDot
-            marginHorizontal={3}
+            marginHorizontal={6}
             containerStyle={{top: 30}}
             data={Array(PAGE_COUNT).fill({})}
             scrollX={new Animated.Value(currentPageIdx * width)}
             dotSize={5.926}
-            dotStyle={{backgroundColor: '#414141'}}
-            slidingIndicatorStyle={{backgroundColor: '#F9F96C'}}
+            dotStyle={{backgroundColor: COLORS.gray400, zIndex: 10}}
+            slidingIndicatorStyle={{backgroundColor: COLORS.yellowPrimary}}
           />
         </View>
 
-        <View style={{flex: 1}}>
-          <Animated.View
-            style={{...StyleSheet.absoluteFillObject, opacity: fadeAnim}}>
+        <View className="flex-1">
+          <Animated.View style={{flex: 1, opacity: fadeAnim}}>
             {pages[currentPageIdx]}
           </Animated.View>
         </View>
