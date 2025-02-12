@@ -23,13 +23,11 @@ import {getYouthNum} from '@apis/RCDApis/getYouthNum';
 import {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import useStatusBarHeight from '@hooks/useStatusBarHeight';
 /**
  * 홈 화면 컴포넌트
  * 청년들의 수를 표시하고 녹음 유형을 선택할 수 있는 메인 화면
  */
 const HomeScreen = () => {
-  const statusBarHeight = useStatusBarHeight();
   // 상태 관리
   const [nickname, setNickname] = useState('');
   const [youthNum, setYouthNum] = useState<number>(999);
@@ -56,7 +54,6 @@ const HomeScreen = () => {
         source={require('@assets/pngs/BGmain.png')}
         style={{position: 'absolute', bottom: 0, width: '100%', height: 762}}
       />
-      <View style={{height: statusBarHeight}}/>
       {/* 전체 frame */}
       <View className="flex-1 px-[30] pt-[117]">
         {/* header */}

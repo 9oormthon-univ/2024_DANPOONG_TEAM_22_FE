@@ -1,7 +1,6 @@
 import {postLogin} from '@apis/auth';
 import KakaoIcon from '@assets/svgs/kakao.svg';
 import BG from '@components/atom/BG';
-import StatusBarGap from '@components/atom/StatusBarGap';
 import Txt from '@components/atom/Txt';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {KakaoOAuthToken, login} from '@react-native-seoul/kakao-login';
@@ -42,7 +41,6 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
 
   return (
     <BG type="main">
-      <StatusBarGap />
       <View className="flex-1">
         {/* 상단 텍스트 및 로고 섹션 */}
         <View className="items-center mt-[185]">

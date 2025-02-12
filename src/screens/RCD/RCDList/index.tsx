@@ -10,7 +10,6 @@ import BG from '@components/atom/BG';
 import Txt from '@components/atom/Txt';
 import Carousel from '@components/molecule/Carousel';
 import AppBar from '@components/atom/AppBar';
-import StatusBarGap from '@components/atom/StatusBarGap';
 // React Navigation 관련 import
 import {
   NavigationProp,
@@ -75,9 +74,6 @@ const RCDListScreen = ({
         }}
         className="absolute top-[0] w-full"
       />
-      <StatusBarGap  />
-
-
       {/* 상단 배경 이미지 */}
       <ImageBackground
         source={

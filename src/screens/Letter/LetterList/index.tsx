@@ -15,7 +15,6 @@ import {LetterResponseData} from '@type/api/providedFile';
 import {useEffect, useState} from 'react';
 import {Alert, Pressable, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import StatusBarGap from '@components/atom/StatusBarGap';
 type LetterProps = NativeStackScreenProps<
   LetterStackParamList,
   'LetterListScreen'
@@ -110,7 +109,6 @@ const LetterListScreen = ({navigation}: Readonly<LetterProps>) => {
           goBackCallbackFn={() => navigation.goBack()}
           className="absolute top-[6] w-full"
         />
-        <StatusBarGap />
         <View>
           <ScrollView
             horizontal

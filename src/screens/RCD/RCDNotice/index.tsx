@@ -9,7 +9,6 @@ import {
 import BG from '@components/atom/BG';
 import Txt from '@components/atom/Txt';
 import Button from '@components/atom/Button';
-import StatusBarGap from '@components/atom/StatusBarGap';
 
 // SVG 아이콘 임포트
 import Notice1 from '@assets/svgs/Notice1.svg';
@@ -97,7 +96,6 @@ const RCDNoticeScreen = ({
       <ScrollView
         className="flex-1 px-px mt-[64]"
       >
-        <StatusBarGap />
         <View className="flex-1 mb-[121]">
           {/* 헤더 섹션 */}
           <View className="mt-[63]" />

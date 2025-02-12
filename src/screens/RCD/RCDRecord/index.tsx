@@ -40,7 +40,6 @@ import AppBar from '@components/atom/AppBar';
 import RNFS from 'react-native-fs';
 import { postVoiceAnalysis } from '@apis/RCDApis/postVoiceAnalysis';
 import { ActivityIndicator } from 'react-native';
-import StatusBarGap from '@components/atom/StatusBarGap';
 
 // 오디오 레코더 인스턴스 생성
 const audioRecorderPlayer = new AudioRecorderPlayer();
@@ -155,20 +154,20 @@ const RCDRecordScreen = ({
 
     try {
       const path = Platform.select({
-        ios: 'recording.m4a',
-        android: `${RNFS.DocumentDirectoryPath}/recording.wav`,
+        ios: 'recording.mp4',
+        android: `${RNFS.DocumentDirectoryPath}/recording.mp4`,
       });
 
       try {
         const audioSet: AudioSet = {
           // Android
-          AudioEncoderAndroid: AudioEncoderAndroidType.DEFAULT,
-          AudioSourceAndroid: AudioSourceAndroidType.MIC,
+          AudioEncoderAndroid: AudioEncoderAndroidType.AAC, // 안드로이드 녹음 인코더 설정
+          AudioSourceAndroid: AudioSourceAndroidType.MIC,// 소스 설정 - 마이크
           // IOS 
           AVModeIOS: AVModeIOSOption.measurement,          // IOS 녹음 모드 설정
           AVEncoderAudioQualityKeyIOS: AVEncoderAudioQualityIOSType.high,// IOS 녹음 퀄리티 설정
           AVNumberOfChannelsKeyIOS: 2,          // IOS 채널 설정
-          AVFormatIDKeyIOS: AVEncodingOption.wav,          // IOS 포맷 설정
+          AVFormatIDKeyIOS: AVEncodingOption.aac,          // IOS 포맷 설정
         };
 
         const result = await audioRecorderPlayer.startRecorder(
@@ -247,8 +246,8 @@ const RCDRecordScreen = ({
       const formData = new FormData();
       formData.append('file', {
         uri: Platform.OS === 'android' ? `file://${uri}` : uri,
-        name: 'recording.wav', 
-        type: 'audio/wav',
+        name: 'recording.m4a',
+        type: 'audio/mp4',
       } as any);
 
       await postSaveVoice(voiceFileId, formData);
@@ -331,7 +330,6 @@ const RCDRecordScreen = ({
             }}
             className="absolute top-[0] w-full"
           />
-          <StatusBarGap />
           <View className="flex-1 justify-between mt-[65]">
             <View className="px-px pt-[0] h-[250]">
               <ScrollView className="h-full">

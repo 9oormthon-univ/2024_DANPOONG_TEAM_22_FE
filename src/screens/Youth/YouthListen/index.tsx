@@ -27,7 +27,6 @@ import SmileWhiteIcon from '@assets/svgs/smile_white.svg';
 import StopIcon from '@assets/svgs/stop.svg';
 import {postComment} from '@apis/providedFile';
 import BG from '@components/atom/BG';
-import StatusBarGap from '@components/atom/StatusBarGap';
 import {EmotionType} from '@type/api/providedFile';
 import {EMOTION_OPTIONS} from '@constants/letter';
 
@@ -199,7 +198,6 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
           exitCallbackFn={() => navigation.goBack()}
           className="absolute top-[0] w-full"
         />
-        <StatusBarGap />
 
         <View className="pt-[149] flex-1 items-center">
           {/* 프로필 이미지 영역 */}
