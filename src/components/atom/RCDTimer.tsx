@@ -56,9 +56,7 @@ const RCDTimer = ({recording, stop, type}: RCDTimerProps) => {
         type="recording"
         text={formatTime(remainingTime)}
         className={`${
-          remainingTime < 5000 && remainingTime > 0
-            ? 'text-recording'
-            : 'text-white'
+          remainingTime < 5000 && remainingTime > 0 ? 'text-red' : 'text-white'
         }`}
       />
     </View>

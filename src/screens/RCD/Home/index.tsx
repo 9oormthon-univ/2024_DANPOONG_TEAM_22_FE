@@ -96,7 +96,7 @@ export default HomeScreen;
  * @param type - 녹음 유형 (DAILY: 일상, COMFORT: 위로, INFO: 정보)
  */
 
-// 일상,위로,정보 알림이 있었을때의 버튼 
+// 일상,위로,정보 알림이 있었을때의 버튼
 // 정보 알림 기능을 빼면서 디자인이 달라져서 주석해놓음 롤백 가능성 있음
 // const SelectBtn = ({type}: {type: RecordType}) => {
 //   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
@@ -114,7 +114,7 @@ export default HomeScreen;
 //       onPress={() => {
 //         navigation.navigate('RCDList', {type});
 //       }}
-//       className={`w-[168] h-[116] px-[25] py-[20] bg-solid border border-white/10 justify-between absolute ${addaptivePosition}`}
+//       className={`w-[168] h-[116] px-[25] py-[20] bg-blue700 border border-white/10 justify-between absolute ${addaptivePosition}`}
 //       style={{borderRadius: 10}}>
 //       {/* 아이콘 */}
 //       <View className="absolute top-[18] left-[27]">
@@ -167,7 +167,7 @@ const SelectBtn = ({type}: {type: RecordType}) => {
       onPress={() => {
         navigation.navigate('RCDList', {type});
       }}
-      className={`w-[168] h-[207] px-[25] py-[20] bg-solid border border-white/10 absolute ${addaptivePosition}`}
+      className={`w-[168] h-[207] px-[25] py-[20] bg-blue700 border border-white/10 absolute ${addaptivePosition}`}
       style={{borderRadius: 10}}>
       {/* 아이콘 */}
       <View className="">
@@ -194,8 +194,5 @@ const SelectBtn = ({type}: {type: RecordType}) => {
           </View>
         </View>
     </TouchableOpacity>
-
-
-
   );
 };

@@ -1,38 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-const colors = {
-  white: '#fafafa',
-  white10: '#fafafa1a',
-  black: '#121212',
-  gray: {
-    100: '#efefef',
-    200: '#d0d0d0',
-    300: '#a0a0a0',
-    400: '#717171',
-    500: '#414141',
-    600: '#333333',
-  },
-  blue: {
-    100: '#d7d7dc',
-    200: '#afafb8',
-    300: '#868895',
-    400: '#5e6071',
-    500: '#36384e',
-    600: '#2b2d3e',
-    700: '#20222f',
-    800: '#16161f',
-    900: '#0b0b10',
-  },
-  yellow: {
-    100: '#fefee2',
-    200: '#fdfdc4',
-    300: '#fbfba7',
-    400: '#fafa89',
-    primary: '#f9f96c',
-    600: '#c7c756',
-  },
-  solid: '#20222f',
-  red: '#f13a1e',
-};
 
 module.exports = {
   content: ['./App.{js,jsx,ts,tsx}', './src/**/*.{js,jsx,ts,tsx}'],
@@ -44,19 +10,47 @@ module.exports = {
         r: 'WantedSans-Regular',
         m: 'WantedSans-Medium',
       },
-      colors,
-      textColor: {
-        ...colors,
-        recording: colors.red,
-      },
-      backgroundColor: {
-        ...colors,
-        error: `${colors.red}0d`,
-        bottomNavigation: colors.blue[500],
-        tabIcon: colors.blue[400],
-      },
-      borderColor: {
-        ...colors,
+      colors: {
+        // Yellow
+        yellow100: '#fefee2',
+        yellow200: '#fdfdc4',
+        yellow300: '#fbfba7',
+        yellow400: '#fafa89',
+        yellowPrimary: '#f9f96c',
+        yellow600: '#c7c756',
+
+        // Blue
+        blue100: '#D7D7DC',
+        blue200: '#AFAFB8',
+        blue300: '#868895',
+        blue400: '#5E6071',
+        blue500: '#36384E',
+        blue600: '#2B2D3E',
+        blue700: '#20222F',
+        blue800: '#16161F',
+        blue900: '#0B0B10',
+
+        // Gray
+        gray100: '#efefef',
+        gray200: '#d0d0d0',
+        gray300: '#a0a0a0',
+        gray400: '#717171',
+        gray500: '#414141',
+        gray600: '#333333',
+
+        white: '#fafafa',
+        black: '#121212',
+        red: '#f13a1e',
+
+        // Gradient
+        main100: '#16161F',
+        main200: '#2B2D3E',
+        second100: '#20222F',
+        second200: '#36384E',
+
+        // Transparent
+        white10: '#fafafa1a',
+        'yellow300/15': '#fbfba726',
       },
       borderRadius: {
         btn: '16px',

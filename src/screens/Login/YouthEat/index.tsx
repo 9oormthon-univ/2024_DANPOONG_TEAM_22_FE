@@ -2,17 +2,17 @@ import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from '@react-native-community/datetimepicker';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {useState} from 'react';
 import {Image, Pressable, TextInput, View} from 'react-native';
-import DateTimePicker, {
-  DateTimePickerEvent,
-} from '@react-native-community/datetimepicker';
 type AuthProps = NativeStackScreenProps<AuthStackParamList, 'YouthEatScreen'>;
 
 const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
-  const {nickname, imageUri, role, birthday, gender, wakeUpTime} = route.params;
+  const {wakeUpTime} = route.params;
   const [breakfast, setBreakfast] = useState(new Date());
   const [lunch, setLunch] = useState(new Date());
   const [dinner, setDinner] = useState(new Date());
@@ -85,11 +85,6 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
 
   const handleNext = async () => {
     navigation.navigate('YouthSleepTimeScreen', {
-      nickname,
-      imageUri,
-      role,
-      birthday,
-      gender,
       wakeUpTime,
       breakfast: breakfast.toISOString(),
       lunch: lunch.toISOString(),

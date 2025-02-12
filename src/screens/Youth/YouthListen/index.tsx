@@ -255,7 +255,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
                 {EMOTION_OPTIONS.map((emotion, index) => (
                   <Pressable
                     key={emotion.label}
-                    className={`bg-tabIcon py-[9] pl-[14] pr-[19] ${
+                    className={`bg-blue400 py-[9] pl-[14] pr-[19] ${
                       index === EMOTION_OPTIONS.length - 1
                         ? 'mr-[50]'
                         : 'mr-[10]'
@@ -275,16 +275,16 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
               </ScrollView>
             )}
             {/* 메시지 입력 영역 */}
-            <View className="h-[86] px-[25] bg-bottomNavigation flex-row items-center relative">
+            <View className="h-[86] px-[25] bg-blue500 flex-row items-center relative">
               <TextInput
                 value={message}
                 onChangeText={setMessage}
                 placeholder="감사의 말을 전해보세요"
                 placeholderTextColor={'#A0A0A0'}
-                className={`mr-[15] text-gray100 py-[8] px-[27] font-r bg-tabIcon border ${
+                className={`mr-[15] text-gray100 py-[8] px-[27] font-r bg-blue400 border ${
                   isKeyboardVisible
                     ? 'border-gray200 w-full'
-                    : 'border-tabIcon w-[307]'
+                    : 'border-blue400 w-[307]'
                 }`}
                 style={{fontSize: 16, borderRadius: 100}}
                 onSubmitEditing={handleMessageSend}

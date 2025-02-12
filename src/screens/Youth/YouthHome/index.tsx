@@ -8,13 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {YouthStackParamList} from '@stackNav/Youth';
 import {useEffect, useState} from 'react';
-import {
-  Alert,
-  Image,
-  ImageBackground,
-  Pressable,
-  View,
-} from 'react-native';
+import {Alert, Image, ImageBackground, Pressable, View} from 'react-native';
 
 type YouthProps = NativeStackScreenProps<
   YouthStackParamList,
@@ -91,91 +85,91 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
 
   // return <LoadingScreen />;
   return (
-      <ImageBackground
-        source={require('@assets/pngs/background/background_youth1.png')}
-        className="flex-1 items-center">
-        <View className="self-start">
-          <Txt
-            type="title3"
-            text={`${nickname ?? '모래바람'}님, 반가워요!`}
-            className="text-gray300 pt-[117] px-[30]"
-          />
-          <View className="mt-[9] px-[30]">
-            <View className="flex-row items-center">
-              <Txt
-                type="title2"
-                text={`${helperNumData?.result.youthMemberNum}명의 목소리`}
-                className="text-yellowPrimary"
-              />
-              <Txt type="title2" text="가" className="text-white" />
-            </View>
+    <ImageBackground
+      source={require('@assets/pngs/background/background_youth1.png')}
+      className="flex-1 items-center">
+      <View className="self-start">
+        <Txt
+          type="title3"
+          text={`${nickname ?? '모래바람'}님, 반가워요!`}
+          className="text-gray300 pt-[117] px-[30]"
+        />
+        <View className="mt-[9] px-[30]">
+          <View className="flex-row items-center">
             <Txt
               type="title2"
-              text="당신의 일상을 비추고 있어요"
-              className="text-white"
+              text={`${helperNumData?.result.youthMemberNum}명의 목소리`}
+              className="text-yellowPrimary"
             />
+            <Txt type="title2" text="가" className="text-white" />
           </View>
+          <Txt
+            type="title2"
+            text="당신의 일상을 비추고 있어요"
+            className="text-white"
+          />
         </View>
+      </View>
 
-        <View
-          className={`absolute items-center w-full h-full ${
-            clicked ? 'bg-black/50' : ''
-          }`}>
-          <View className="absolute bottom-[88] items-center">
+      <View
+        className={`absolute items-center w-full h-full ${
+          clicked ? 'bg-black/50' : ''
+        }`}>
+        <View className="absolute bottom-[88] items-center">
+          {clicked ? (
+            <View className="mb-[29] items-center">
+              {VOICE_MENU.map(({alarmCategory, alarmCategoryKoreanName}) => (
+                <Pressable
+                  key={alarmCategory}
+                  className="mb-[15] bg-blue400 border border-gray100 h-[59] px-[22] justify-center items-center"
+                  style={{borderRadius: 100}}
+                  onPress={() => handleButtonClick(alarmCategory)}>
+                  <Txt
+                    type="title3"
+                    text={alarmCategoryKoreanName}
+                    className="text-gray100"
+                  />
+                </Pressable>
+              ))}
+            </View>
+          ) : (
+            <View className="mb-[24]">
+              <Txt
+                type="body3"
+                text="당신을 응원하는 목소리를"
+                className="text-gray300 text-center"
+              />
+              <Txt
+                type="body3"
+                text="들을 수 있어요"
+                className="text-gray300 text-center"
+              />
+            </View>
+          )}
+          <Pressable
+            className={`${
+              clicked ? 'bg-blue700' : 'bg-blue500'
+            } flex-row justify-center items-center h-[61] w-[160]`}
+            style={{borderRadius: 100}}
+            onPress={() => setClicked(prev => !prev)}>
             {clicked ? (
-              <View className="mb-[29] items-center">
-                {VOICE_MENU.map(({alarmCategory, alarmCategoryKoreanName}) => (
-                  <Pressable
-                    key={alarmCategory}
-                    className="mb-[15] bg-tabIcon border border-gray100 h-[59] px-[22] justify-center items-center"
-                    style={{borderRadius: 100}}
-                    onPress={() => handleButtonClick(alarmCategory)}>
-                    <Txt
-                      type="title3"
-                      text={alarmCategoryKoreanName}
-                      className="text-gray100"
-                    />
-                  </Pressable>
-                ))}
-              </View>
+              <CancelIcon />
             ) : (
-              <View className="mb-[24]">
-                <Txt
-                  type="body3"
-                  text="당신을 응원하는 목소리를"
-                  className="text-gray300 text-center"
-                />
-                <Txt
-                  type="body3"
-                  text="들을 수 있어요"
-                  className="text-gray300 text-center"
-                />
+              <View className="w-[43] h-[43] justify-center items-center pr-[5]">
+                <LogoIcon />
               </View>
             )}
-            <Pressable
-              className={`${
-                clicked ? 'bg-solid' : 'bg-bottomNavigation'
-              } flex-row justify-center items-center h-[61] w-[160]`}
-              style={{borderRadius: 100}}
-              onPress={() => setClicked(prev => !prev)}>
-              {clicked ? (
-                <CancelIcon />
-              ) : (
-                <View className="w-[43] h-[43] justify-center items-center pr-[5]">
-                  <LogoIcon />
-                </View>
-              )}
-              {!clicked && (
-                <Txt
-                  type="button"
-                  text="위로 받기"
-                  className="text-gray100 pr-[12]"
-                />
-              )}
-            </Pressable>
-          </View>
+            {!clicked && (
+              <Txt
+                type="button"
+                text="위로 받기"
+                className="text-gray100 pr-[12]"
+              />
+            )}
+          </Pressable>
         </View>
-      </ImageBackground>
+      </View>
+    </ImageBackground>
   );
 };
 

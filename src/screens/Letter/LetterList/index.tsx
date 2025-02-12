@@ -120,7 +120,7 @@ const LetterListScreen = ({navigation}: Readonly<LetterProps>) => {
                   key={`${menu.category}=${menu.label}-parentCategories`}
                   className={`h-[36] px-[22] items-center justify-center border ${
                     index === selectedFilterIdx
-                      ? 'border-tabIcon bg-white/10'
+                      ? 'border-blue400 bg-white/10'
                       : 'border-white10'
                   } mr-[8]`}
                   style={{borderRadius: 20}}

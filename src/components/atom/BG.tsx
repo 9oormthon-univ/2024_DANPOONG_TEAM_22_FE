@@ -2,19 +2,12 @@ import {View, StatusBar} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 import {BackType} from '@type/BackType';
-
-const BG = ({
-  type,
-  children,
-}: {
-  type: BackType;
-  children?: React.ReactNode;
-}) => {
+import {COLORS} from '@constants/Colors';
+const BG = ({type, children}: {type: BackType; children?: React.ReactNode}) => {
   const colors: [string, string] =
-    type === 'main' 
-      ? ['#16161f', '#2b2d3e'] // blue.800, blue.600
-      : ['#20222f', '#36384e']; // blue.700, blue.500
-
+    type === 'main'
+      ? [COLORS.main100, COLORS.main200]
+      : [COLORS.second100, COLORS.second200];
   return (
     <SafeAreaView className="w-full h-full">
       <StatusBar

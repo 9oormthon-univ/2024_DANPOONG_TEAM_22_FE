@@ -127,3 +127,5 @@ ios/DerivedData/
 
 # Watchman
 .watchman*
+
+keystore

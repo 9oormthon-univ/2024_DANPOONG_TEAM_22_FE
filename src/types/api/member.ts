@@ -2,7 +2,7 @@ type Gender = 'MALE' | 'FEMALE';
 
 type Role = 'ADMIN' | 'YOUTH' | 'HELPER';
 
-type MemberRequestData = {
+type MemberCommonRequestData = {
   name: string;
   gender: Gender;
   profileImage: string;
@@ -11,9 +11,7 @@ type MemberRequestData = {
   fcmToken: string;
 };
 
-type MemberResponseData = {memberId: number};
-
-interface MemberInfoResponseData extends MemberRequestData {
+type MemberDetailRequestData = {
   youthMemberInfoDto: {
     wakeUpTime: string;
     sleepTime: string;
@@ -23,7 +21,13 @@ interface MemberInfoResponseData extends MemberRequestData {
     latitude: number;
     longitude: number;
   };
-}
+};
+
+interface MemberInfoResponseData
+  extends MemberCommonRequestData,
+    MemberDetailRequestData {}
+
+type MemberResponseData = {memberId: number};
 
 type HelperNumResponseData = {
   youthMemberNum: number;
@@ -32,8 +36,9 @@ type HelperNumResponseData = {
 export type {
   Gender,
   HelperNumResponseData,
+  MemberCommonRequestData,
+  MemberDetailRequestData,
   MemberInfoResponseData,
-  MemberRequestData,
   MemberResponseData,
   Role,
 };
