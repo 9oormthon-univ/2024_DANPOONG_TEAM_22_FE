@@ -11,6 +11,7 @@ import {
   Dimensions,
   Image,
   ImageBackground,
+  Pressable,
   Text,
   View,
 } from 'react-native';
@@ -183,6 +184,12 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
   return (
     <BG type={currentPageIdx === 3 ? 'gradation' : 'main'}>
       <>
+        <Pressable
+          className="absolute top-[42] right-[22] z-10"
+          onPress={() => navigation.navigate('VolunteerNoticeScreen')}>
+          <Txt type="button" text="건너뛰기" className="text-white" />
+        </Pressable>
+
         <View className="absolute top-[100] left-1/2 -translate-x-1/2">
           <SlidingDot
             marginHorizontal={6}
