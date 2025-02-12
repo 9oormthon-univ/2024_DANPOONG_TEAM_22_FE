@@ -13,6 +13,7 @@ import {
   Image,
   ImageBackground,
   Pressable,
+  StyleSheet,
   View,
 } from 'react-native';
 import {SlidingDot} from 'react-native-animated-pagination-dots';
@@ -58,19 +59,56 @@ const Page1 = ({nickname, onNext}: Readonly<PageProps>) => {
   );
 };
 
-const Page2 = ({nickname, onNext}: Readonly<PageProps>) => {
+const Page2 = ({
+  nickname,
+  onNext,
+  jumpStep,
+}: Readonly<PageProps & {jumpStep: () => void}>) => {
+  const contentOpacity = useRef(new Animated.Value(0)).current;
+  const textColorAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      Animated.parallel([
+        Animated.timing(contentOpacity, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.timing(textColorAnim, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: false,
+        }),
+      ]).start();
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const textColor = textColorAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [COLORS.white, COLORS.gray300], // white to gray
+  });
+
   return (
     <ImageBackground
       source={require('@assets/pngs/background/youthOnboarding2.png')}
       className="flex-1 items-center">
       <View className="flex-1 w-full">
-        <Txt
-          type="body2"
-          text={`이제부터 이들의 목소리가\n${nickname} 님의 일상 곳곳에 도착할 거예요`}
-          className="text-gray200 text-center mt-[200]"
-        />
+        <View className="h-[200]" />
+        <Animated.Text
+          style={{
+            color: textColor,
+          }}>
+          <Txt
+            type="body2"
+            text={`이제부터 이들의 목소리가\n${nickname} 님의 일상 곳곳에 도착할 거예요`}
+            className="text-center"
+          />
+        </Animated.Text>
 
-        <View>
+        <Animated.View style={{opacity: contentOpacity}}>
           <Txt
             type="body2"
             text="이렇게요"
@@ -82,7 +120,8 @@ const Page2 = ({nickname, onNext}: Readonly<PageProps>) => {
           <View className="px-[30]">
             <Pressable
               className="border border-yellow200 bg-white10 shadow-[0px_0px_15px_0px_rgba(253,253,196,0.30)] h-[84] flex-row items-center px-[17]"
-              style={{borderRadius: 10}}>
+              style={{borderRadius: 10}}
+              onPress={onNext}>
               <LogoRoundIcon />
               <View className="w-[16.81]" />
               <View>
@@ -111,10 +150,10 @@ const Page2 = ({nickname, onNext}: Readonly<PageProps>) => {
               />
             </View>
           </View>
-        </View>
+        </Animated.View>
 
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
-          <Button text="다음" onPress={onNext} />
+          <Button text="다음" onPress={jumpStep} />
         </View>
       </View>
     </ImageBackground>
@@ -133,7 +172,7 @@ const Page3 = ({onNext}: Readonly<PageProps>) => {
 
     setTimeout(async () => {
       await audioPlayer.current.startPlayer(mockFileUrl);
-    }, 2000);
+    }, 1000);
 
     return () => {
       (async () => {
@@ -193,22 +232,63 @@ const Page3 = ({onNext}: Readonly<PageProps>) => {
   );
 };
 
+const AnimatedImageBackground =
+  Animated.createAnimatedComponent(ImageBackground);
+
 const Page4 = ({onNext}: Readonly<PageProps>) => {
+  const opacityAnim = useRef(new Animated.Value(1)).current;
+  const nextOpacityAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      Animated.parallel([
+        Animated.timing(opacityAnim, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.timing(nextOpacityAnim, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <ImageBackground
-      source={require('@assets/pngs/background/youthOnboarding3.png')}
-      className="flex-1 items-center">
-      <View className="flex-1 w-full">
-        <Txt
-          type="body2"
-          text={`이제부터 내일모래가 내일도, 모레도,\n당신의 일상에 따스한 목소리를 전달해줄게요`}
-          className="text-gray200 text-center mt-[200]"
-        />
-        <View className="absolute left-0 bottom-[55] w-full px-[30]">
-          <Button text="다음" onPress={onNext} />
+    <View className="flex-1 items-center">
+      <AnimatedImageBackground
+        source={require('@assets/pngs/background/youthOnboarding3.png')}
+        style={{...StyleSheet.absoluteFillObject, opacity: opacityAnim}}>
+        <View className="flex-1 w-full">
+          <Txt
+            type="body2"
+            text={`이제부터 내일모래가 내일도, 모레도,\n당신의 일상에 따스한 목소리를 전달해줄게요`}
+            className="text-gray200 text-center mt-[200]"
+          />
+          <View className="absolute left-0 bottom-[55] w-full px-[30]">
+            <Button text="다음" onPress={onNext} />
+          </View>
         </View>
-      </View>
-    </ImageBackground>
+      </AnimatedImageBackground>
+      <AnimatedImageBackground
+        source={require('@assets/pngs/background/youthOnboarding4.png')}
+        style={{...StyleSheet.absoluteFillObject, opacity: nextOpacityAnim}}>
+        <View className="flex-1 w-full">
+          <Txt
+            type="body2"
+            text={`이제부터 내일모래가 내일도, 모레도,\n당신의 일상에 따스한 목소리를 전달해줄게요`}
+            className="text-gray200 text-center mt-[200]"
+          />
+          <View className="absolute left-0 bottom-[55] w-full px-[30]">
+            <Button text="다음" onPress={onNext} />
+          </View>
+        </View>
+      </AnimatedImageBackground>
+    </View>
   );
 };
 
@@ -256,20 +336,48 @@ const YouthOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
     });
   };
 
+  const handleJumpStep = () => {
+    if (currentPageIdx === PAGE_COUNT - 1) {
+      goNext();
+      return;
+    }
+    // 페이드 아웃 애니메이션
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setCurrentPageIdx(prevIdx => prevIdx + 2); // 여기만 다름
+      // 페이드 인 애니메이션
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    });
+  };
+
   const PAGE_COUNT = 4;
   const width = Dimensions.get('window').width;
 
   const pages = [
     <Page1 key="1" nickname={nickname} onNext={handleNext} />,
-    <Page2 key="2" nickname={nickname} onNext={handleNext} />,
+    <Page2
+      key="2"
+      nickname={nickname}
+      onNext={handleNext}
+      jumpStep={handleJumpStep}
+    />,
     <Page3 key="3" onNext={handleNext} />,
     <Page4 key="4" onNext={handleNext} />,
   ];
 
+  const canJumpPageIdx = 2;
+
   return (
     <BG type="main">
       <>
-        {currentPageIdx !== 2 && (
+        {currentPageIdx !== canJumpPageIdx && (
           <>
             <Pressable
               className="absolute top-[42] right-[22] z-10"
@@ -281,8 +389,14 @@ const YouthOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
               <SlidingDot
                 marginHorizontal={6}
                 containerStyle={{top: 30}}
-                data={Array(PAGE_COUNT).fill({})}
-                scrollX={new Animated.Value(currentPageIdx * width)}
+                data={Array(PAGE_COUNT - 1).fill({})}
+                scrollX={
+                  new Animated.Value(
+                    (currentPageIdx === PAGE_COUNT - 1
+                      ? currentPageIdx - 1
+                      : currentPageIdx) * width,
+                  )
+                }
                 dotSize={5.926}
                 dotStyle={{backgroundColor: COLORS.gray400, zIndex: 10}}
                 slidingIndicatorStyle={{backgroundColor: COLORS.yellowPrimary}}
