@@ -152,7 +152,7 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
 
   const handleNext = () => {
     if (currentPageIdx === PAGE_COUNT - 1) {
-      navigation.navigate('VolunteerNoticeScreen');
+      goNext();
       return;
     }
     // 페이드 아웃 애니메이션
@@ -181,12 +181,17 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
     <Page4 key="4" onNext={handleNext} />,
   ];
 
+  const goNext = () => {
+    navigation.navigate('VolunteerNoticeScreen');
+    setCurrentPageIdx(0);
+  };
+
   return (
     <BG type={currentPageIdx === 3 ? 'gradation' : 'main'}>
       <>
         <Pressable
           className="absolute top-[42] right-[22] z-10"
-          onPress={() => navigation.navigate('VolunteerNoticeScreen')}>
+          onPress={goNext}>
           <Txt type="button" text="건너뛰기" className="text-white" />
         </Pressable>
 
