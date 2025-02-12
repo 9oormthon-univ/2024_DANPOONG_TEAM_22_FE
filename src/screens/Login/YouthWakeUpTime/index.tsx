@@ -98,7 +98,7 @@ const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {
           source={require('@assets/pngs/background/background_youth5.png')}
           className="mt-[121]"
         />
-        <View className="absolute left-0 bottom-[30] w-full px-[40]">
+        <View className="absolute left-0 bottom-[55] w-full px-[30]">
           <Button
             text="다음"
             onPress={handleNext}
