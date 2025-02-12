@@ -64,7 +64,7 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
           className="w-full h-auto flex-1 absolute bottom-[-30]"
         />
         {/* 로그인 버튼 섹션 */}
-        <View className="absolute left-0 bottom-[72] w-full px-[40]">
+        <View className="absolute left-0 bottom-[51] w-full px-[30]">
           {/* 카카오 로그인 버튼 */}
           <Pressable
             className="h-[52.8] bg-[#FEE500] justify-center items-center flex-row"
