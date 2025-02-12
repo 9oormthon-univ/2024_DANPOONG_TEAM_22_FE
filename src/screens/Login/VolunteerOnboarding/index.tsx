@@ -22,7 +22,7 @@ type AuthProps = NativeStackScreenProps<
   'VolunteerOnboardingScreen'
 >;
 
-type PageProps = {
+export type PageProps = {
   nickname?: string;
   onNext: () => void;
 };
@@ -133,8 +133,8 @@ const Page4 = ({onNext}: Readonly<PageProps>) => {
 };
 
 const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
-  const [currentPageIdx, setCurrentPageIdx] = useState(0);
   const [nickname, setNickname] = useState('');
+  const [currentPageIdx, setCurrentPageIdx] = useState(0);
   const fadeAnim = useRef(new Animated.Value(1)).current;
 
   // 닉네임 가져오기
@@ -149,6 +149,11 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
   useEffect(() => {
     preloadImages();
   }, []);
+
+  const goNext = () => {
+    navigation.navigate('VolunteerNoticeScreen');
+    setCurrentPageIdx(0);
+  };
 
   const handleNext = () => {
     if (currentPageIdx === PAGE_COUNT - 1) {
@@ -175,16 +180,11 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
   const width = Dimensions.get('window').width;
 
   const pages = [
-    <Page1 key="1" nickname={nickname ?? ''} onNext={handleNext} />,
+    <Page1 key="1" nickname={nickname} onNext={handleNext} />,
     <Page2 key="2" onNext={handleNext} />,
-    <Page3 key="3" nickname={nickname ?? ''} onNext={handleNext} />,
+    <Page3 key="3" nickname={nickname} onNext={handleNext} />,
     <Page4 key="4" onNext={handleNext} />,
   ];
-
-  const goNext = () => {
-    navigation.navigate('VolunteerNoticeScreen');
-    setCurrentPageIdx(0);
-  };
 
   return (
     <BG type={currentPageIdx === 3 ? 'gradation' : 'main'}>
@@ -207,7 +207,7 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
           />
         </View>
 
-        <View style={{flex: 1}}>
+        <View className="flex-1">
           <Animated.View style={{flex: 1, opacity: fadeAnim}}>
             {pages[currentPageIdx]}
           </Animated.View>
