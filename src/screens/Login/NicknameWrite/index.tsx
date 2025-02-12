@@ -112,7 +112,7 @@ const NicknameWriteScreen = ({navigation}: Readonly<AuthProps>) => {
               placeholder="닉네임을 입력해주세요"
               placeholderTextColor={'#717171'}
               className={`text-center px-[10] font-m text-yellowPrimary border-b ${
-                nickname ? 'border-yellow200' : 'border-gray500'
+                nickname ? 'border-yellow200' : 'border-gray600'
               } mt-[31]`}
               style={{fontSize: 22}}
             />

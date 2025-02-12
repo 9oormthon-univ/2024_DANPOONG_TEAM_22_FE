@@ -2,6 +2,7 @@ import {View, Platform} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 import {BackType} from '@type/BackType';
+
 const BG = ({
   type,
   children,
@@ -11,12 +12,14 @@ const BG = ({
 }) => {
   const Container = Platform.OS === 'android' ? View : SafeAreaView;
   const colors: [string, string] =
-    type === 'main' ? ['#121320', '#252738'] : ['#252738', '#393C52'];
+    type === 'main' 
+      ? ['#16161f', '#2b2d3e'] // blue.800, blue.600
+      : ['#20222f', '#36384e']; // blue.700, blue.500
+
   return (
-    <Container style={{width: '100%', height: '100%'}}>
+    <Container className="w-full h-full">
       {type === 'solid' ? (
-        <View
-          style={{backgroundColor: '#252738', width: '100%', height: '100%'}}>
+        <View className="w-full h-full bg-blue-700">
           {children}
         </View>
       ) : (
@@ -24,7 +27,7 @@ const BG = ({
           colors={colors}
           start={{x: 0, y: 0.15}}
           end={{x: 0, y: 1}}
-          style={{width: '100%', height: '100%'}}>
+          className="w-full h-full">
           {children}
         </LinearGradient>
       )}
