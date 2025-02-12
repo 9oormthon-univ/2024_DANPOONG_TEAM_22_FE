@@ -5,12 +5,12 @@ import {COLORS} from '@constants/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {
   Animated,
   Dimensions,
+  Image,
   ImageBackground,
-  StyleSheet,
   Text,
   View,
 } from 'react-native';
@@ -26,12 +26,25 @@ type PageProps = {
   onNext: () => void;
 };
 
+// 이미지 미리 로딩 함수
+const preloadImages = async () => {
+  const images = [
+    require('@assets/pngs/background/volunteerOnboarding1.png'),
+    require('@assets/pngs/background/volunteerOnboarding2.png'),
+    require('@assets/pngs/background/volunteerOnboarding3.png'),
+  ];
+
+  await Promise.all(
+    images.map(image => Image.prefetch(Image.resolveAssetSource(image).uri)),
+  );
+};
+
 const Page1 = ({nickname, onNext}: Readonly<PageProps>) => {
   return (
     <View className="flex-1 items-center mt-[220]">
       <Txt
         type="body2"
-        text={`${nickname ?? ''} 님,\n이런 말 들어본 적 있나요?`}
+        text={`${nickname} 님,\n이런 말 들어본 적 있나요?`}
         className="text-white text-center mb-[26]"
       />
       <Text
@@ -86,9 +99,7 @@ const Page3 = ({nickname, onNext}: Readonly<PageProps>) => {
       <View className="flex-1 w-full">
         <Txt
           type="body2"
-          text={
-            '하얀송이 님의 말 한마디에는\n자립준비청년의 일상을\n밝게 비출 힘이 있어요'
-          }
+          text={`${nickname} 님의 말 한마디에는\n자립준비청년의 일상을\n밝게 비출 힘이 있어요`}
           className="text-gray200 text-center mt-[200]"
         />
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
@@ -123,7 +134,7 @@ const Page4 = ({onNext}: Readonly<PageProps>) => {
 const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
   const [currentPageIdx, setCurrentPageIdx] = useState(0);
   const [nickname, setNickname] = useState('');
-  const [fadeAnim] = useState(new Animated.Value(1));
+  const fadeAnim = useRef(new Animated.Value(1)).current;
 
   // 닉네임 가져오기
   useEffect(() => {
@@ -133,12 +144,30 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
     })();
   }, []);
 
+  // 이미지 미리 로딩
+  useEffect(() => {
+    preloadImages();
+  }, []);
+
   const handleNext = () => {
-    if (currentPageIdx < PAGE_COUNT - 1) {
-      setCurrentPageIdx(prevIdx => prevIdx + 1);
+    if (currentPageIdx === PAGE_COUNT - 1) {
+      navigation.navigate('VolunteerNoticeScreen');
       return;
     }
-    navigation.navigate('VolunteerNoticeScreen');
+    // 페이드 아웃 애니메이션
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setCurrentPageIdx(prevIdx => prevIdx + 1);
+      // 페이드 인 애니메이션
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    });
   };
 
   const PAGE_COUNT = 4;
@@ -167,8 +196,7 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
         </View>
 
         <View style={{flex: 1}}>
-          <Animated.View
-            style={{...StyleSheet.absoluteFillObject, opacity: fadeAnim}}>
+          <Animated.View style={{flex: 1, opacity: fadeAnim}}>
             {pages[currentPageIdx]}
           </Animated.View>
         </View>
