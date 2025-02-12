@@ -32,10 +32,10 @@ const AppInner = () => {
     (async () => {
       try {
         // await AsyncStorage.removeItem('accessToken');
+        // await AsyncStorage.removeItem('role');
         // await AsyncStorage.setItem('role', 'YOUTH');
         // await AsyncStorage.setItem('role', 'HELPER');
         console.log('role: ', await AsyncStorage.getItem('role'));
-        // await AsyncStorage.removeItem('role');
         const token = await AsyncStorage.getItem('accessToken');
         setIsLoggedIn(!!token);
 
