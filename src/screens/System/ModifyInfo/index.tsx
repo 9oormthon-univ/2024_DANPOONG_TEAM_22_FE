@@ -23,9 +23,9 @@ const ModifyInfoScreen = () => {
         <View className="h-[39]" />
         {/* 닉네임 수정 Section */}
         <View className="w-full px-px gap-y-[10]">
-            <Txt type="caption1" text="닉네임" className="ml-[9] text-gray-200"/>
-            <View className="w-full h-[48] bg-gray-100 rounded-lg"/>
-            <Txt type="caption1" text="2자 이상 10자 이내의 한글,영문,숫자 입력 가능합니다." className="ml-[9] text-gray-400"/>
+            <Txt type="caption1" text="닉네임" className="ml-[9] text-gray200"/>
+            <View className="w-full h-[48] bg-gray100 rounded-lg"/>
+            <Txt type="caption1" text="2자 이상 10자 이내의 한글,영문,숫자 입력 가능합니다." className="ml-[9] text-gray400"/>
         </View>
       </View>
     </BG>

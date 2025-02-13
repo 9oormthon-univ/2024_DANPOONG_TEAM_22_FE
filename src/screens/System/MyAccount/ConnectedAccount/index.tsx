@@ -1,0 +1,29 @@
+import AppBar from "@components/atom/AppBar";
+import BG from "@components/atom/BG";
+import { useNavigation } from "@react-navigation/native";
+import { NavigationProp } from "@react-navigation/native";
+import { SystemStackParamList } from "@type/nav/SystemStackParamList";
+import KakaoLogo from "@assets/svgs/KakaoLogo.svg";
+import { View } from "react-native";
+import Txt from "@components/atom/Txt";
+const ConnectedAccountScreen = () => {
+  const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
+  return <BG type="solid">
+
+    <AppBar title="연결된 소셜 계정" goBackCallbackFn={() => {navigation.goBack();}} />
+        {/* 전체 컨테이너 */}
+        <View className="flex-1 items-center px-px  pt-[28]">
+            {/* 연결된 소셜 계정 컨테이너 */}
+            <View className="w-full h-[89] bg-blue600 rounded-[10px] px-[27] py-[17]">
+                <View className="flex-row items-center gap-[10]">
+                    <KakaoLogo />
+                    <Txt type="caption1" text="카카오 계정" className="text-gray200" />
+                </View>
+                <View className="w-full h-[27] overflow-hidden"><Txt type="body3" text={`123@gmail.com`} className="text-white" /></View>
+
+            </View>
+        </View>
+  </BG>;
+};
+
+export default ConnectedAccountScreen;
