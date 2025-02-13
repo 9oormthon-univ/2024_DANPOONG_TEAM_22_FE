@@ -23,11 +23,11 @@ type AuthProps = NativeStackScreenProps<
 >;
 
 const NICKNAME_MESSAGES = {
-  SUCCESS: '사용 가능한 닉네임입니다.',
-  DEFAULT: '2자 이상 10자 이내의 한글, 영문, 숫자만 입력해주세요.',
-  TOO_SHORT: '2자 이상 입력하세요.',
-  NO_SPACES: '공백을 제거해주세요.',
-  NO_SPECIAL_CHARS: '특수문자를 제거해주세요.',
+  SUCCESS: '사용 가능한 닉네임이에요',
+  DEFAULT: '2자 이상 10자 이내의 한글, 영문, 숫자만 입력해주세요',
+  TOO_SHORT: '2자 이상 입력하세요',
+  NO_SPACES: '공백을 제거해주세요',
+  NO_SPECIAL_CHARS: '특수문자를 제거해주세요',
 };
 
 const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
@@ -181,7 +181,7 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
       {clickedUpload ? (
         <Pressable
           onPress={() => setClickedUpload(false)}
-          className={`absolute left-0 bottom-0 w-full h-full bg-black/50 px-[40] pb-[30] justify-end ${
+          className={`absolute left-0 bottom-0 w-full h-full bg-black/50 px-[30] pb-[55] justify-end ${
             isKeyboardVisible ? 'hidden' : ''
           }`}>
           {/* 내부 컴포넌트에는 상위 onPress 이벤트가 전파되지 않도록 함 */}
@@ -224,7 +224,7 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
         </Pressable>
       ) : (
         <View
-          className={`absolute left-0 bottom-[30] w-full px-[40] ${
+          className={`absolute left-0 bottom-[55] w-full px-[30] ${
             isKeyboardVisible ? 'hidden' : ''
           }`}>
           <Button

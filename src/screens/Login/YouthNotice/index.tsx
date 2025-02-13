@@ -140,7 +140,7 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
         </View>
       </ScrollView>
 
-      <View className="absolute left-0 bottom-[30] w-full px-[40]">
+      <View className="absolute left-0 bottom-[55] w-full px-[30]">
         <Button
           text="시작하기"
           onPress={handleNext}
