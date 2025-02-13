@@ -41,7 +41,7 @@ const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {
 
   const handleNext = async () => {
     const wakeUpTime = convertToDate(hour, minute);
-    console.log(wakeUpTime.toISOString());
+
     navigation.navigate('YouthEatScreen', {
       wakeUpTime: wakeUpTime.toISOString(),
     });
@@ -111,6 +111,7 @@ const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {
             value={hour}
             setValue={setHour}
             onClose={() => setShowHourBottomSheet(false)}
+            onSelect={() => setShowMinuteBottomSheet(true)}
           />
         )}
 

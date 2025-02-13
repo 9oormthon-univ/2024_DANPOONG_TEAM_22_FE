@@ -8,11 +8,13 @@ const TimeSelectBottomSheet = ({
   value,
   setValue,
   onClose,
+  onSelect,
 }: Readonly<{
   type: 'hour' | 'minute';
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
   onClose: () => void;
+  onSelect?: () => void;
 }>) => {
   const slideAnim = useRef(new Animated.Value(0)).current;
 
@@ -38,6 +40,7 @@ const TimeSelectBottomSheet = ({
   const handleOptionClick = (option: string) => {
     setValue(option);
     onClose();
+    if (onSelect) onSelect();
   };
 
   return (
