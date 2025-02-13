@@ -1,14 +1,13 @@
+import ChevronBottomGrayIcon from '@assets/svgs/chevron/chevron_bottom_gray.svg';
 import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
+import TimeSelectBottomSheet from '@components/atom/TimeSelectBottomSheet';
 import Txt from '@components/atom/Txt';
-import DateTimePicker, {
-  DateTimePickerEvent,
-} from '@react-native-community/datetimepicker';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {useState} from 'react';
-import {Image, Pressable, TextInput, View} from 'react-native';
+import {Pressable, View} from 'react-native';
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -16,36 +15,36 @@ type AuthProps = NativeStackScreenProps<
 >;
 
 const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {
-  const [wakeUpTime, setWakeUpTime] = useState(new Date());
-  const [wakeUpTimeString, setWakeUpTimeString] = useState('');
-  const [show, setShow] = useState(false);
+  const [hour, setHour] = useState('오전 8시');
+  const [minute, setMinute] = useState('00분');
+  const [showHourBottomSheet, setShowHourBottomSheet] = useState(false);
+  const [showMinuteBottomSheet, setShowMinuteBottomSheet] = useState(false);
 
-  const onChangeDate = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    const currentDate = selectedDate || wakeUpTime;
-    if (!currentDate) {
-      return;
+  const convertToDate = (hour: string, minute: string): Date => {
+    const now = new Date();
+    const isPM = hour.includes('오후');
+    let hourValue = parseInt(hour.replace(/[^0-9]/g, ''), 10); // 숫자만 추출
+
+    // 오전 12시는 0으로 변환, 오후 12시는 그대로 12 유지
+    if (hourValue === 12) {
+      hourValue = isPM ? 12 : 0;
+    } else {
+      hourValue = isPM ? hourValue + 12 : hourValue;
     }
 
-    setShow(false);
-    setWakeUpTime(currentDate);
-    // 선택한 시간을 문자열로 변환하여 저장
-    const formattedTime = currentDate.toLocaleTimeString([], {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: false,
-    });
-    setWakeUpTimeString(formattedTime);
+    const minuteValue = parseInt(minute.replace(/[^0-9]/g, ''), 10); // 숫자만 추출
+
+    // 현재 날짜에 시, 분을 설정한 Date 객체 생성
+    now.setHours(hourValue, minuteValue, 0, 0);
+    return now;
   };
 
   const handleNext = async () => {
+    const wakeUpTime = convertToDate(hour, minute);
+
     navigation.navigate('YouthEatScreen', {
       wakeUpTime: wakeUpTime.toISOString(),
     });
-  };
-
-  const handleInputTouch = () => {
-    console.log('handleInputTouch');
-    setShow(true);
   };
 
   return (
@@ -57,54 +56,68 @@ const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {
           }}
           className="absolute top-[0] w-full"
         />
-        <View className="w-[50%] h-[3] bg-yellowPrimary absolute top-[83]" />
-        <View className="items-center pt-[100] flex-1 mt-[50]">
+        <View className="w-full h-[3] bg-white/5 absolute top-[60]" />
+        <View className="w-[50%] h-[3] bg-yellowPrimary absolute top-[60]" />
+
+        <View className="h-[180]" />
+
+        <View className="items-center flex-1">
           <Txt
             type="title2"
-            text={'몇 시에\n일어나시나요?'}
+            text="기상 시간을 알려주세요"
             className="text-white text-center"
           />
+          <View className="h-[9]" />
           <Txt
             type="body3"
-            text="평소 기상 시간을 알려주세요"
-            className="text-gray300 mt-[16] text-center"
+            text="기상 알림을 받고 싶은 시간을 입력해주세요"
+            className="text-gray300 text-center"
           />
 
-          <View className="mt-[60] px-[46]">
-            <Pressable onPress={handleInputTouch}>
-              <TextInput
-                value={wakeUpTimeString}
-                placeholder="시간을 선택해주세요"
-                placeholderTextColor={'#717171'}
-                className={`text-yellowPrimary px-[8] font-r border-b ${
-                  wakeUpTimeString ? 'border-b-yellow200' : 'border-b-gray400'
-                } mt-[31] text-center`}
-                style={{fontSize: 32}}
-                editable={false}
-              />
+          <View className="h-[100]" />
+
+          <View className="px-[50] flex-row items-center justify-between">
+            <Pressable
+              onPress={() => setShowHourBottomSheet(true)}
+              className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
+              <Txt type="title1" text={hour} className="text-white" />
+              <ChevronBottomGrayIcon />
             </Pressable>
-            {show && (
-              <DateTimePicker
-                value={wakeUpTime}
-                mode="time" // 시간 선택 모드
-                is24Hour={true} // 24시간 형식
-                display="spinner"
-                onChange={onChangeDate}
-              />
-            )}
+            <View className="w-[17]" />
+            <Pressable
+              onPress={() => setShowMinuteBottomSheet(true)}
+              className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
+              <Txt type="title1" text={minute} className="text-white" />
+              <ChevronBottomGrayIcon />
+            </Pressable>
           </View>
         </View>
-        <Image
-          source={require('@assets/pngs/background/background_youth5.png')}
-          className="mt-[121]"
-        />
+
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
           <Button
             text="다음"
             onPress={handleNext}
-            disabled={!wakeUpTimeString}
+            disabled={!hour || !minute}
           />
         </View>
+
+        {showHourBottomSheet && (
+          <TimeSelectBottomSheet
+            type="hour"
+            value={hour}
+            setValue={setHour}
+            onClose={() => setShowHourBottomSheet(false)}
+          />
+        )}
+
+        {showMinuteBottomSheet && (
+          <TimeSelectBottomSheet
+            type="minute"
+            value={minute}
+            setValue={setMinute}
+            onClose={() => setShowMinuteBottomSheet(false)}
+          />
+        )}
       </>
     </BG>
   );

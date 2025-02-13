@@ -1,6 +1,7 @@
-import Txt from '@components/atom/Txt';
-import {Pressable, ScrollView, View} from 'react-native';
 import SelectCheckIcon from '@assets/svgs/selectCheck.svg';
+import Txt from '@components/atom/Txt';
+import {useEffect, useRef} from 'react';
+import {Animated, Pressable, ScrollView, View} from 'react-native';
 
 const TimeSelectBottomSheet = ({
   type,
@@ -13,6 +14,16 @@ const TimeSelectBottomSheet = ({
   setValue: React.Dispatch<React.SetStateAction<string>>;
   onClose: () => void;
 }>) => {
+  const slideAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(slideAnim, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
   const hourOptions = Array.from({length: 12 * 2}, (_, i) => {
     const period = i < 12 ? '오전' : '오후';
     const hour = i % 12 === 0 ? 12 : i % 12;
@@ -24,13 +35,32 @@ const TimeSelectBottomSheet = ({
   const titleText = `${type === 'hour' ? '시간' : '분'}을 선택해주세요`;
   const options = type === 'hour' ? hourOptions : minuteOptions;
 
+  const handleOptionClick = (option: string) => {
+    setValue(option);
+    onClose();
+  };
+
   return (
     <View className="absolute top-0 left-0 right-0 bottom-0 bg-black/50 justify-end px-[30] pb-[27]">
-      <View
+      <Pressable
+        className="absolute top-0 left-0 right-0 bottom-0"
+        onPress={onClose}
+      />
+      <Animated.View
         className={`bg-blue500 overflow-hidden ${
-          type === 'hour' ? 'h-[474]' : ''
+          type === 'hour' ? 'h-[474]' : 'h-[220]'
         }`}
-        style={{borderRadius: 10}}>
+        style={{
+          borderRadius: 10,
+          transform: [
+            {
+              translateY: slideAnim.interpolate({
+                inputRange: [0, 1],
+                outputRange: [300, 0],
+              }),
+            },
+          ],
+        }}>
         <View className="h-[13]" />
 
         <View className="items-center">
@@ -51,7 +81,7 @@ const TimeSelectBottomSheet = ({
               <Pressable
                 key={option}
                 className="h-[56] flex-row items-center justify-between"
-                onPress={() => setValue(option)}>
+                onPress={() => handleOptionClick(option)}>
                 <Txt
                   type="body3"
                   text={option}
@@ -64,7 +94,7 @@ const TimeSelectBottomSheet = ({
             ))}
           </ScrollView>
         </View>
-      </View>
+      </Animated.View>
     </View>
   );
 };
