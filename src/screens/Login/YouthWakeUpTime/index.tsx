@@ -18,8 +18,9 @@ type AuthProps = NativeStackScreenProps<
 export const DEFAULT_TIME = {
   wakeUpTime: {hour: '오전 8시', minute: '00분'},
   breakfast: {hour: '오전 9시', minute: '00분'},
-  lunch: {hour: '오전 9시', minute: '00분'},
-  dinner: {hour: '오전 9시', minute: '00분'},
+  lunch: {hour: '오후 12시', minute: '00분'},
+  dinner: {hour: '오후 6시', minute: '00분'},
+  sleepTime: {hour: '오후 10시', minute: '00분'},
 };
 
 const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {

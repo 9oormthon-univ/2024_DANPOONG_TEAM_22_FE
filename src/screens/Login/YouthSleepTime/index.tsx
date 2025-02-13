@@ -1,14 +1,16 @@
+import ChevronBottomGrayIcon from '@assets/svgs/chevron/chevron_bottom_gray.svg';
 import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
+import TimeSelectBottomSheet from '@components/atom/TimeSelectBottomSheet';
 import Txt from '@components/atom/Txt';
-import DateTimePicker, {
-  DateTimePickerEvent,
-} from '@react-native-community/datetimepicker';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {DEFAULT_TIME} from '@screens/Login/YouthWakeUpTime';
 import {AuthStackParamList} from '@stackNav/Auth';
+import convertToDate from '@utils/convertToDate';
 import {useState} from 'react';
-import {Image, Pressable, TextInput, View} from 'react-native';
+import {Pressable, View} from 'react-native';
+
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'YouthSleepTimeScreen'
@@ -16,29 +18,14 @@ type AuthProps = NativeStackScreenProps<
 
 const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const {wakeUpTime, breakfast, lunch, dinner} = route.params;
-  const [sleepTime, setSleepTime] = useState(new Date());
-  const [sleepTimeString, setSleepTimeString] = useState('');
-  const [show, setShow] = useState(false);
-
-  // 시간 선택 함수
-  const onChangeDate = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    const currentDate = selectedDate || sleepTime;
-    if (!currentDate) {
-      return;
-    }
-
-    setShow(false);
-    setSleepTime(currentDate);
-    // 선택한 시간을 문자열로 변환하여 저장
-    const formattedTime = currentDate.toLocaleTimeString([], {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: false,
-    });
-    setSleepTimeString(formattedTime);
-  };
+  const [hour, setHour] = useState(DEFAULT_TIME.sleepTime.hour);
+  const [minute, setMinute] = useState(DEFAULT_TIME.sleepTime.minute);
+  const [showHourBottomSheet, setShowHourBottomSheet] = useState(false);
+  const [showMinuteBottomSheet, setShowMinuteBottomSheet] = useState(false);
 
   const handleNext = async () => {
+    const sleepTime = convertToDate(hour, minute);
+
     navigation.navigate('YouthNoticeScreen', {
       wakeUpTime,
       breakfast,
@@ -57,53 +44,67 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
           }}
           className="absolute top-[0] w-full"
         />
-        <View className="w-[50%] h-[3] bg-yellowPrimary absolute top-[83]" />
-        <View className="items-center pt-[100] flex-1 mt-[50]">
+        <View className="w-full h-[3] bg-yellowPrimary absolute top-[60]" />
+
+        <View className="h-[180]" />
+
+        <View className="items-center flex-1">
           <Txt
             type="title2"
-            text={'몇 시에\n취침하시나요?'}
+            text="취침 시간을 알려주세요"
             className="text-white text-center"
           />
+          <View className="h-[9]" />
           <Txt
             type="body3"
-            text="하루를 마무리하는 시간이 궁금해요"
-            className="text-gray300 mt-[16] text-center"
+            text="취침 알림을 받고 싶은 시간을 입력해주세요"
+            className="text-gray300 text-center"
           />
 
-          <View className="mt-[60] px-[46]">
-            <Pressable onPress={() => setShow(true)}>
-              <TextInput
-                value={sleepTimeString}
-                placeholder="시간을 선택해주세요"
-                placeholderTextColor={'#717171'}
-                className={`text-yellowPrimary px-[8] font-r border-b ${
-                  sleepTimeString ? 'border-b-yellow200' : 'border-b-gray400'
-                } mt-[31] text-center`}
-                style={{fontSize: 32}}
-                editable={false}
+          <View className="h-[100]" />
+
+          <View className="px-[50] flex-row items-center justify-between">
+            <Pressable
+              onPress={() => setShowHourBottomSheet(true)}
+              className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
+              <Txt
+                type="title1"
+                text={hour.includes('자정') ? '오전 12시' : hour}
+                className="text-white"
               />
+              <ChevronBottomGrayIcon />
             </Pressable>
-            {show && (
-              <DateTimePicker
-                value={sleepTime}
-                mode="time" // 시간 선택 모드
-                is24Hour={true} // 24시간 형식
-                display="spinner"
-                onChange={onChangeDate}
-              />
-            )}
+            <View className="w-[17]" />
+            <Pressable
+              onPress={() => setShowMinuteBottomSheet(true)}
+              className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
+              <Txt type="title1" text={minute} className="text-white" />
+              <ChevronBottomGrayIcon />
+            </Pressable>
           </View>
-          <Image
-            source={require('@assets/pngs/background/background_youth5.png')}
-            className="mt-[92]"
-          />
+
           <View className="absolute left-0 bottom-[55] w-full px-[30]">
-            <Button
-              text="다음"
-              onPress={handleNext}
-              disabled={!sleepTimeString}
-            />
+            <Button text="다음" onPress={handleNext} />
           </View>
+
+          {showHourBottomSheet && (
+            <TimeSelectBottomSheet
+              type="hour"
+              value={hour}
+              setValue={setHour}
+              onClose={() => setShowHourBottomSheet(false)}
+              onSelect={() => setShowMinuteBottomSheet(true)}
+            />
+          )}
+
+          {showMinuteBottomSheet && (
+            <TimeSelectBottomSheet
+              type="minute"
+              value={minute}
+              setValue={setMinute}
+              onClose={() => setShowMinuteBottomSheet(false)}
+            />
+          )}
         </View>
       </>
     </BG>
