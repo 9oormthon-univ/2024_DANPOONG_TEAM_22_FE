@@ -41,7 +41,7 @@ const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {
 
   const handleNext = async () => {
     const wakeUpTime = convertToDate(hour, minute);
-
+    console.log(wakeUpTime.toISOString());
     navigation.navigate('YouthEatScreen', {
       wakeUpTime: wakeUpTime.toISOString(),
     });
@@ -80,7 +80,11 @@ const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {
             <Pressable
               onPress={() => setShowHourBottomSheet(true)}
               className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
-              <Txt type="title1" text={hour} className="text-white" />
+              <Txt
+                type="title1"
+                text={hour.includes('자정') ? '오전 12시' : hour}
+                className="text-white"
+              />
               <ChevronBottomGrayIcon />
             </Pressable>
             <View className="w-[17]" />
