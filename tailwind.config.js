@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   content: ['./App.{js,jsx,ts,tsx}', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
@@ -58,8 +59,8 @@ module.exports = {
       padding: {
         btn: '13px',
         px: '30px',
-        pt: '157px', // 상단에 appBar 가 없을때 padding Top 크기입니다.
-        ptt: '63px', // 상단에 appBar 기 있을때 padding Top 크기입니다.
+        pt: '157px',
+        ptt: '63px',
         pb: '55px',
       },
       margin: {

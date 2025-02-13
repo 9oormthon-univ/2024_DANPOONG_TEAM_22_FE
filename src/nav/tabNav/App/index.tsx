@@ -24,7 +24,7 @@ const AppTabNav = () => {
             focused ? (
               <HomeIcon style={{color: '#fafafa'}} />
             ) : (
-              <HomeIcon style={{color: '#585A6C'}} />
+              <HomeIcon style={{color: '#5e6071'}} />
             ),
         }}
       />
@@ -37,7 +37,7 @@ const AppTabNav = () => {
             focused ? (
               <LetterIcon style={{color: '#fafafa'}} />
             ) : (
-              <LetterIcon style={{color: '#585A6C'}} />
+              <LetterIcon style={{color: '#5e6071'}} />
             ),
         }}
       />
@@ -50,7 +50,7 @@ const AppTabNav = () => {
             focused ? (
               <SystemIcon style={{color: '#fafafa'}} />
             ) : (
-              <SystemIcon style={{color: '#585A6C'}} />
+              <SystemIcon style={{color: '#5e6071'}} />
             ),
         }}
       />

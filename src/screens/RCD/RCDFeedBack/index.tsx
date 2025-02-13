@@ -12,7 +12,6 @@ import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 
 // React Hooks import
 import {useEffect, useRef} from 'react';
-import StatusBarGap from '@components/atom/StatusBarGap';
 /**
  * RCD 피드백 화면 컴포넌트
  * 녹음 완료 후 로딩 및 완료 상태를 보여주는 화면
@@ -51,7 +50,6 @@ const RCDFeedBackScreen = () => {
   const RenderImageBackground = ({isOn}: {isOn: boolean}) => (
     <BG type={isOn ? 'gradation' : 'solid'}>
 
-      <StatusBarGap />
       <View className="w-full h-full justify-center items-center">
         <View className="w-[90%] h-[85%] justify-center items-center">
         <ImageBackground

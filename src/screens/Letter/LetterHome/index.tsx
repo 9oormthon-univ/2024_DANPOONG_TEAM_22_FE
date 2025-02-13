@@ -9,7 +9,6 @@ import {useEffect, useState} from 'react';
 import {Alert, Image, Pressable, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import ChevronRightWhiteIcon from '@assets/svgs/chevron/chevron_right_white.svg';
-import StatusBarGap from '@components/atom/StatusBarGap';
 import {EMOTION_OPTIONS} from '@constants/letter';
 
 type LetterProps = NativeStackScreenProps<
@@ -43,7 +42,6 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   return (
     <BG type="main">
       <ScrollView className="flex-1">
-        <StatusBarGap />
         <View className="flex-1 pt-[50] pb-[110]">
           <View className="w-full items-center px-[35]">
             <Image

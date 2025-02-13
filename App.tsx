@@ -22,7 +22,6 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {trackAppStart, trackScreenView} from '@utils/tracker';
-import {StatusBar} from 'react-native';
 
 // 쿼리 클라이언트 설정
 const queryClient = new QueryClient({
@@ -158,11 +157,6 @@ function App(): React.JSX.Element {
     <QueryClientProvider client={queryClient}>
       <GestureHandlerRootView style={{flex: 1}}>
         <NavigationContainer ref={navigationRef} onStateChange={onStateChange}>
-          <StatusBar
-            translucent={true}
-            backgroundColor="transparent"
-            barStyle="light-content"
-          />
           <AppInner />
         </NavigationContainer>
       </GestureHandlerRootView>

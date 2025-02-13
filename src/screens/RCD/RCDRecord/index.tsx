@@ -1,5 +1,5 @@
 // 필요한 React 및 React Native 컴포넌트 임포트
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {
   ScrollView,
   View,
@@ -40,7 +40,6 @@ import AppBar from '@components/atom/AppBar';
 import RNFS from 'react-native-fs';
 import { postVoiceAnalysis } from '@apis/RCDApis/postVoiceAnalysis';
 import { ActivityIndicator } from 'react-native';
-import StatusBarGap from '@components/atom/StatusBarGap';
 
 // 오디오 레코더 인스턴스 생성
 const audioRecorderPlayer = new AudioRecorderPlayer();
@@ -61,20 +60,32 @@ const RCDRecordScreen = ({
   // 라우트 파라미터 추출
   const {type, voiceFileId, content} = route.params;
 
-  // 상태 관리
+  // 녹음 상태 관리
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [uri, setUri] = useState<string | null>(null);
   const [volumeList, setVolumeList] = useState<number[]>([]);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isDone, setIsDone] = useState<boolean>(false);
+  // 업로드 상태 관리
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [isUploadingError, setIsUploadingError] = useState<boolean>(false);
+
+  // 컴포넌트 언마운트 여부 및 재시도 타이머 관리 ref
+  const isMountedRef = useRef(true);
+  const analysisTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // 컴포넌트 마운트/언마운트 시 녹음 상태 초기화
   useEffect(() => {
     refreshRCDStates();
     return () => {
+      // 컴포넌트 언마운트 시 녹음 중지
       audioRecorderPlayer.stopRecorder();
       audioRecorderPlayer.stopPlayer();
+      // 언마운트 되었음을 표시하고, 재시도 타이머가 있으면 해제
+      isMountedRef.current = false;
+      if (analysisTimeoutRef.current) {
+        clearTimeout(analysisTimeoutRef.current);
+      }
     };
   }, []);
 
@@ -143,20 +154,22 @@ const RCDRecordScreen = ({
 
     try {
       const path = Platform.select({
-        ios: 'recording.m4a',
-        android: `${RNFS.DocumentDirectoryPath}/recording.wav`,
+        ios: 'recording.mp4',
+        android: `${RNFS.DocumentDirectoryPath}/recording.mp4`,
       });
 
       try {
         const audioSet: AudioSet = {
-          AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
-          AudioSourceAndroid: AudioSourceAndroidType.MIC,
-          AVModeIOS: AVModeIOSOption.measurement,
-          AVEncoderAudioQualityKeyIOS: AVEncoderAudioQualityIOSType.high,
-          AVNumberOfChannelsKeyIOS: 2,
-          AVFormatIDKeyIOS: AVEncodingOption.aac,
+          // Android
+          AudioEncoderAndroid: AudioEncoderAndroidType.AAC, // 안드로이드 녹음 인코더 설정
+          AudioSourceAndroid: AudioSourceAndroidType.MIC,// 소스 설정 - 마이크
+          // IOS 
+          AVModeIOS: AVModeIOSOption.measurement,          // IOS 녹음 모드 설정
+          AVEncoderAudioQualityKeyIOS: AVEncoderAudioQualityIOSType.high,// IOS 녹음 퀄리티 설정
+          AVNumberOfChannelsKeyIOS: 2,          // IOS 채널 설정
+          AVFormatIDKeyIOS: AVEncodingOption.aac,          // IOS 포맷 설정
         };
-        
+
         const result = await audioRecorderPlayer.startRecorder(
           path,
           audioSet,
@@ -233,8 +246,8 @@ const RCDRecordScreen = ({
       const formData = new FormData();
       formData.append('file', {
         uri: Platform.OS === 'android' ? `file://${uri}` : uri,
-        name: 'recording.wav', 
-        type: 'audio/wav',
+        name: 'recording.m4a',
+        type: 'audio/mp4',
       } as any);
 
       await postSaveVoice(voiceFileId, formData);
@@ -246,47 +259,77 @@ const RCDRecordScreen = ({
 
   // 음성 분석 업로드 함수 
   const uploadAnalysis = async () => {
-    //test
-    navigation.navigate('RCDFeedBack',undefined);
-    return;
-    try {
-      await postVoiceAnalysis(voiceFileId);
-    } catch (error: any) {
-      console.log('음성 파일 분석 오류:', error);
+    // 컴포넌트가 언마운트된 경우 진행하지 않음
+    if (!isMountedRef.current) return;
 
-      const errorCode = error.response?.data.code;
-      
-      switch(errorCode) {
+    try {
+      const res = await postVoiceAnalysis(voiceFileId);
+      if (!isMountedRef.current) return;
+      const {code, message} = res;
+      switch(code) {
         case 'ANALYSIS001':
-          // 분석 중인 경우 1초 후 재시도
-          setTimeout(uploadAnalysis, 1000);
+          // 아직 분석 중이면 5초 후 재시도; 언마운트되지 않은 경우에만 타이머 설정
+          console.log('재시도 - ANALYSIS001 ', new Date());
+          if (isMountedRef.current) {
+            analysisTimeoutRef.current = setTimeout(uploadAnalysis, 5000);
+          }
           break;
         case 'ANALYSIS002':
-          // 분석 실패 - 노이즈
-          navigation.navigate('RCDError', {type: 'noisy'});
+          if (!isMountedRef.current) return;
+          navigation.navigate('RCDError', {type: 'Include inappropriate content', message});
+          break;
+        case 'ANALYSIS003':
+          if (!isMountedRef.current) return;
+          navigation.navigate('RCDError', {type: 'text has not been read as it is', message});
+          break;
+        case 'ANALYSIS006':
+          if (!isMountedRef.current) return;
+          navigation.navigate('RCDError', {type: 'notAnalyzing', message});
+          break;
+        case 'ANALYSIS107':
+          if (!isMountedRef.current) return;
+          navigation.navigate('RCDError', {type: 'invalidScript', message});
           break;
         default:
-          // 서버 오류
-          navigation.navigate('RCDError', {type: 'server'});
+          if (!isMountedRef.current) return;
+          navigation.navigate('RCDError', {type: 'server', message});
           break;
       }
-    } finally {
-      setIsUploading(false);
-    }
+    } catch (error: any) {
+      if (!isMountedRef.current) return;
+      const errorCode = error.response?.data.code;
+      const message = error.response?.data.message;
+      switch(errorCode) {
+        case 'ANALYSIS004':
+        case 'ANALYSIS005':
+        case 'ANALYSIS108':
+          if (isMountedRef.current) {
+            navigation.navigate('RCDError', {type: 'server', message});
+          }
+          break;
+        default:
+          if (isMountedRef.current) {
+            navigation.navigate('RCDError', {type: 'server', message});
+          }
+          break;
+      }
+    } 
   };
+
+  
+
 
   return (
     <BG type="solid">
       {!isUploading ? (
         <>
           <AppBar
-            title=""
+            title={type === 'DAILY' ? '일상 알림 녹음' : type === 'COMFORT' ? '위로 알림 녹음' : '정보 알림 녹음'}
             goBackCallbackFn={() => {
               navigation.goBack();
             }}
             className="absolute top-[0] w-full"
           />
-          <StatusBarGap />
           <View className="flex-1 justify-between mt-[65]">
             <View className="px-px pt-[0] h-[250]">
               <ScrollView className="h-full">

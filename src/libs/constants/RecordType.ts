@@ -1,5 +1,5 @@
 export const RecordTypeConstant = {
   DAILY: 'DAILY',
   COMFORT: 'COMFORT',
-  // INFO: 'INFO',
+  INFO: 'INFO',
 } as const;

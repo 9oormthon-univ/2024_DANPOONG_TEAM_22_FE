@@ -1,5 +1,4 @@
 // React 및 React Native 관련 임포트
-import React from 'react';
 import {View, TouchableOpacity, ImageBackground} from 'react-native';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
 
@@ -15,23 +14,20 @@ import {RecordTypeConstant} from '@constants/RecordType';
 // SVG 아이콘 임포트
 import Main1 from '@assets/svgs/Main1.svg';
 import Main2 from '@assets/svgs/Main2.svg';
-import Main3 from '@assets/svgs/Main3.svg';
-import MainArrow from '@assets/svgs/MainArrow.svg';
+// import Main3 from '@assets/svgs/Main3.svg';
+// import MainArrow from '@assets/svgs/MainArrow.svg';
 import MainArrow2 from '@assets/svgs/MainArrow2.svg';
 
 // API 및 스토리지 관련 임포트
 import {getYouthNum} from '@apis/RCDApis/getYouthNum';
 import {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {StatusBar} from 'react-native';
 
-import useStatusBarHeight from '@hooks/useStatusBarHeight';
 /**
  * 홈 화면 컴포넌트
  * 청년들의 수를 표시하고 녹음 유형을 선택할 수 있는 메인 화면
  */
 const HomeScreen = () => {
-  const statusBarHeight = useStatusBarHeight();
   // 상태 관리
   const [nickname, setNickname] = useState('');
   const [youthNum, setYouthNum] = useState<number>(999);
@@ -58,7 +54,6 @@ const HomeScreen = () => {
         source={require('@assets/pngs/BGmain.png')}
         style={{position: 'absolute', bottom: 0, width: '100%', height: 762}}
       />
-      <View style={{height: statusBarHeight}} />
       {/* 전체 frame */}
       <View className="flex-1 px-[30] pt-[117]">
         {/* header */}
@@ -84,9 +79,11 @@ const HomeScreen = () => {
         </View>
         {/* button section*/}
         <View className="w-full h-[253] relative">
-          {Object.values(RecordTypeConstant).map(type => (
+          <SelectBtn type={RecordTypeConstant.DAILY} />
+          <SelectBtn type={RecordTypeConstant.COMFORT} />
+          {/* {Object.values(RecordTypeConstant).map(type => (
             <SelectBtn key={type} type={type} />
-          ))}
+          ))} */}
         </View>
       </View>
     </BG>
@@ -177,25 +174,25 @@ const SelectBtn = ({type}: {type: RecordType}) => {
         {type === RecordTypeConstant.DAILY ? <Main1 /> : <Main2 />}
       </View>
       {/* 텍스트와 화살표 */}
-      <View className="mt-[19] flex flex-row items-center">
-        <Txt
-          type="title3"
-          text={`${type === RecordTypeConstant.DAILY ? '일상' : '위로'}`}
-          className="text-yellowPrimary"
-        />
-        <Txt
-          type="title3"
-          text={`${type === RecordTypeConstant.COMFORT ? '의 말' : ' 알림'}`}
-          className="text-white "
-        />
-      </View>
-      {/* 녹음하기 텍스트와 화살표 */}
-      <View className="mt-[48] flex flex-row items-center w-full">
-        <Txt type="title3" text="녹음하기" className="text-yellowPrimary" />
-        <View className="absolute right-[-8]">
-          <MainArrow2 />
+        <View className="mt-[19] flex flex-row items-center">
+          <Txt
+            type="title3"
+            text={`${type === RecordTypeConstant.DAILY ? '일상' : '위로'}`}
+            className="text-white"
+          />
+          <Txt
+            type="title3"
+            text={`${type === RecordTypeConstant.COMFORT ? '의 말' : ' 알림'}`}
+            className="text-white "
+          />
         </View>
-      </View>
+        {/* 녹음하기 텍스트와 화살표 */}
+      <View className="mt-[45] flex flex-row items-center w-full">
+        <Txt type="title3" text="녹음하기" className="text-yellowPrimary"/>
+        <View className='absolute right-[-8]'>
+          <MainArrow2/>
+          </View>
+        </View>
     </TouchableOpacity>
   );
 };

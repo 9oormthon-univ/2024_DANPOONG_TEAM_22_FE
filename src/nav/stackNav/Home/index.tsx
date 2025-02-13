@@ -24,14 +24,17 @@ const HomeStackNav = () => {
   const route = useRoute();
 
   useLayoutEffect(() => {
-    //visual flicker 방지
     const routeName = getFocusedRouteNameFromRoute(route);
-    // console.log(route,routeName)
-    if (routeName === undefined || routeName === 'Home') {
-      //Main이외의 화면에 대해 tabBar none을 설정한다.
-      navigation.setOptions(TabNavOptions);
+    
+    // Home 스크린일 때만 탭바 표시, 다른 스크린에서는 숨김
+    if (!routeName || routeName === 'Home') {
+      navigation.setOptions({
+        tabBarStyle: TabNavOptions.tabBarStyle
+      });
     } else {
-      navigation.setOptions({...TabNavOptions, tabBarStyle: {display: 'none'}});
+      navigation.setOptions({
+        tabBarStyle: { display: 'none' }
+      });
     }
   }, [navigation, route]);
 
