@@ -6,6 +6,7 @@ import TimeSelectBottomSheet from '@components/atom/TimeSelectBottomSheet';
 import Txt from '@components/atom/Txt';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
+import convertToDate from '@utils/convertToDate';
 import {useState} from 'react';
 import {Pressable, View} from 'react-native';
 
@@ -14,30 +15,18 @@ type AuthProps = NativeStackScreenProps<
   'YouthWakeUpTimeScreen'
 >;
 
+export const DEFAULT_TIME = {
+  wakeUpTime: {hour: '오전 8시', minute: '00분'},
+  breakfast: {hour: '오전 9시', minute: '00분'},
+  lunch: {hour: '오전 9시', minute: '00분'},
+  dinner: {hour: '오전 9시', minute: '00분'},
+};
+
 const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {
-  const [hour, setHour] = useState('오전 8시');
-  const [minute, setMinute] = useState('00분');
+  const [hour, setHour] = useState(DEFAULT_TIME.wakeUpTime.hour);
+  const [minute, setMinute] = useState(DEFAULT_TIME.wakeUpTime.minute);
   const [showHourBottomSheet, setShowHourBottomSheet] = useState(false);
   const [showMinuteBottomSheet, setShowMinuteBottomSheet] = useState(false);
-
-  const convertToDate = (hour: string, minute: string): Date => {
-    const now = new Date();
-    const isPM = hour.includes('오후');
-    let hourValue = parseInt(hour.replace(/[^0-9]/g, ''), 10); // 숫자만 추출
-
-    // 오전 12시는 0으로 변환, 오후 12시는 그대로 12 유지
-    if (hourValue === 12) {
-      hourValue = isPM ? 12 : 0;
-    } else {
-      hourValue = isPM ? hourValue + 12 : hourValue;
-    }
-
-    const minuteValue = parseInt(minute.replace(/[^0-9]/g, ''), 10); // 숫자만 추출
-
-    // 현재 날짜에 시, 분을 설정한 Date 객체 생성
-    now.setHours(hourValue, minuteValue, 0, 0);
-    return now;
-  };
 
   const handleNext = async () => {
     const wakeUpTime = convertToDate(hour, minute);
@@ -98,11 +87,7 @@ const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {
         </View>
 
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
-          <Button
-            text="다음"
-            onPress={handleNext}
-            disabled={!hour || !minute}
-          />
+          <Button text="다음" onPress={handleNext} />
         </View>
 
         {showHourBottomSheet && (
