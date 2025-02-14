@@ -4,17 +4,46 @@ import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 import { SystemStackParamList } from "@type/nav/SystemStackParamList";
 import SystemButton from "@components/atom/SystemButton";
-import { View } from "react-native";
+import { View, Linking, Platform } from "react-native";
 import Txt from "@components/atom/Txt";
-  const ServiceScreen = () => {
+import DeviceInfo from 'react-native-device-info';
+
+const ServiceScreen = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
+
+  const currentVersion = DeviceInfo.getVersion();
+  const latestVersion = "1.0.0";
+  
+  const isUpdateAvailable = currentVersion < latestVersion;
+
+  const openWebsite = async () => {
+    try {
+      await Linking.openURL('https://nm-site.vercel.app/');
+    } catch (error) {
+      console.error('웹사이트를 여는데 실패했습니다:', error);
+    }
+  };
+  const handleUpdate = async () => {
+    const storeUrl = Platform.select({
+      ios: 'https://apps.apple.com/app/[YOUR_APP_ID]', // 앱스토어 URL
+      android: 'market://details?id=[YOUR_PACKAGE_NAME]', // 플레이스토어 URL
+    });
+    
+    if (storeUrl) {
+      try {
+        await Linking.openURL(storeUrl);
+      } catch (error) {
+        console.error('스토어를 여는데 실패했습니다:', error);
+      }
+    }
+  };
   return <BG type="solid">
     <AppBar title="서비스" goBackCallbackFn={() => {navigation.goBack();}} />
     {[
-      {title: "내일모래 새소식", onPress: () => {}},
-      {title: "문의하기", onPress: () => {}},
-      {title: "서비스 이용 약관", onPress: () => {}}, 
-      {title: "개인정보 처리 방침", onPress: () => {}}
+      {title: "내일모래 새소식", onPress: openWebsite},
+      {title: "문의하기", onPress: openWebsite},
+      {title: "서비스 이용 약관", onPress: openWebsite}, 
+      {title: "개인정보 처리 방침", onPress: openWebsite}
     ].map((item, index) => (
       <SystemButton 
         key={index}
@@ -28,12 +57,20 @@ import Txt from "@components/atom/Txt";
         {/* 텍스트 영역 */}
         <View className="flex-1">
           {/* 메뉴 제목 */}
-          <View className="flex-row justify-start items-center gap-x-[11]"><Txt type="body3" text={`현재 버전 1.0.0`} className="text-gray300"/></View>
-         
+          <View className="flex-row justify-start items-center gap-x-[11]">
+            <Txt 
+              type="body3" 
+              text={`현재 버전 ${currentVersion}`} 
+              className={isUpdateAvailable ? "text-white" : "text-gray300"}
+            />
+          </View>
         </View>
-      <View className="px-[17] py-[6] bg-gray300 rounded-full">
-        <Txt type="caption1" text="업데이트" className="text-white"/>
-        </View>
+          <View 
+            className={`px-[17] py-[6] rounded-full ${isUpdateAvailable ? "bg-yellowPrimary" : "bg-gray300"}`}
+            onTouchEnd={handleUpdate}
+          >
+            <Txt type="caption1" text="업데이트" className={isUpdateAvailable ? "text-black" : "text-white"}/>
+          </View>
       </View>
   </BG>;
 };

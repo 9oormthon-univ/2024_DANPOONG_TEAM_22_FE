@@ -1,14 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Config from 'react-native-config';
-
-// navigation 인스턴스를 저장할 변수
-let navigationRef: any = null;
-
-// navigation 참조를 설정하는 함수
-export const setNavigator = (nav: any) => {
-  navigationRef = nav;
-};
+import { handleLogout } from '@utils/handleLogout';
 
 const client = axios.create({
   baseURL: Config.API_URL,
@@ -84,28 +77,30 @@ client.interceptors.response.use(
       switch (error.response.status) {
         case 401:
         case 403:
-          // 인증 에러 처리
           try {
+            // 1. refreshToken 확인
             const refreshToken = await AsyncStorage.getItem('refreshToken');
-            // refreshToken이 없으면 바로 로그아웃 처리
             if (!refreshToken) {
-              await handleLogout();
               throw new Error('[401] 로그인이 필요합니다.');
             }
             
+            // 2. 새로운 accessToken 요청
             const response = await axios.post(
               `${process.env.EXPO_PUBLIC_API_URL}/api/v1/auth/token/refresh`,
               { refreshToken }
             );
             const accessToken = response.data.result.accessToken;
+            
+            // 3. 새 accessToken 저장
             await AsyncStorage.setItem('accessToken', accessToken);
-            // 새로운 토큰으로 원래 요청 재시도
+            
+            // 4. 실패했던 원래 요청 재시도
             const originalRequest = error.config;
             originalRequest.headers.Authorization = `Bearer ${accessToken}`;
             return axios(originalRequest);
           } catch (refreshError) {
+            // 5. 토큰 갱신 실패 시
             await handleLogout();
-            // 401과 403 에러 구분
             const errorMessage = error.response.status === 401
               ? '[401] 인증이 만료되었습니다. 다시 로그인해주세요.'
               : '[403] 접근 권한이 없습니다. 다시 로그인해주세요.';
@@ -129,17 +124,6 @@ client.interceptors.response.use(
   },
 );
 
-// 파일 상단에 handleLogout 함수 추가
-const handleLogout = async () => {
-  // 모든 인증 관련 데이터 제거
-  await AsyncStorage.multiRemove(['accessToken', 'refreshToken']);
-  // 로그인 화면으로 이동
-  if (navigationRef) {
-    navigationRef.reset({
-      index: 0,
-      routes: [{ name: 'AuthStackNav' }],
-    });
-  }
-};
+
 
 export default client;

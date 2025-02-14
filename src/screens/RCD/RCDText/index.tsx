@@ -1,5 +1,5 @@
 // React Native 및 기본 컴포넌트 import
-import {TextInput, TouchableOpacity, View} from 'react-native';
+import {View} from 'react-native';
 // 커스텀 컴포넌트 import
 import BG from '@components/atom/BG';
 import StarIMG from '@components/atom/StarIMG';
@@ -10,13 +10,13 @@ import {
   RouteProp,
   useNavigation,
 } from '@react-navigation/native';
-import ShadowView from '@components/atom/ShadowView';
 import {useState, useRef, useEffect} from 'react';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {ScrollView} from 'react-native-gesture-handler';
 import {postSaveScript} from '@apis/RCDApis/postSaveScript';
 import Toast from '@components/atom/Toast';
 import AppBar from '@components/atom/AppBar';
+import TextInput from '@components/molecule/ShadowTextInput';
 /**
  * RCD 텍스트 입력 화면 컴포넌트
  * @param route - 네비게이션 라우트 파라미터
@@ -32,9 +32,7 @@ const RCDTextScreen = ({
   
   // 상태 관리
   const [text, setText] = useState(''); // 텍스트 입력값
-  const textInputRef = useRef<TextInput>(null); // 텍스트 입력 ref
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>(); // 네비게이션
-  const [isFocused, setIsFocused] = useState(false); // 입력창 포커스 상태
   const [isError, setIsError] = useState(false); // 에러 상태
   const [isToast, setIsToast] = useState(false); // 토스트 메시지 표시 상태
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
@@ -105,43 +103,14 @@ const RCDTextScreen = ({
           />
         </View>
         {/* 텍스트 입력 섹션 */}
-        <View
-          className={`flex-1 w-full h-[340] mb-[51] rounded-card border-[1px] border-transparent ${
-            isFocused && 'border-gray300'
-          } ${isError && 'border-[#f13a1e] bg-error'}`}>
-          <ShadowView>
-            <TextInput
-              ref={textInputRef}
-              onChangeText={onChangeText}
-              value={text}
-              style={{
-                fontFamily: 'WantedSans-Regular',
-                fontSize: 20,
-                lineHeight: 30,
-                letterSpacing: 20 * -0.025,
-                color: '#fafafa',
-              }}
-              className={'w-full h-auto p-[33]'}
-              placeholder="15초 동안 녹음할 말을 작성해주세요"
-              placeholderTextColor="#a0a0a0"
-              autoCapitalize="none"
-              cursorColor="#fafafa"
-              multiline
-              textAlign="left"
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
-            />
-            {/* 입력창 터치 영역 확장 */}
-            <TouchableOpacity
-              onPress={() => {
-                if (textInputRef.current) {
-                  textInputRef.current.focus();
-                }
-              }}
-              className="flex-1"
-            />
-          </ShadowView>
-        </View>
+          <TextInput
+            value={text}
+            onChangeText={onChangeText}
+            placeholder="15초 동안 녹음할 말을 작성해주세요"
+            isError={isError}
+          />
+        <View className="mb-[51]"/>
+
         {/* 버튼 섹션 */}
         <View className="w-full mb-[78]">
           <Button

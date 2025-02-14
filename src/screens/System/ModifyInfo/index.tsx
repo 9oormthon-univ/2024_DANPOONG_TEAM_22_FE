@@ -5,9 +5,20 @@ import AppBar from "@components/atom/AppBar";
 import { NavigationProp, useNavigation} from "@react-navigation/native";
 import { SystemStackParamList } from "@type/nav/SystemStackParamList";
 import ProfileIcon from '@assets/svgs/Profile.svg';
+import ProfileIcon2 from '@assets/svgs/Profile2.svg';
 import ProfileCameraIcon from '@assets/svgs/ProfileCamera.svg';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState, useEffect } from 'react';
+
 const ModifyInfoScreen = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
+  const [role, setRole] = useState('');
+  useEffect(() => {
+    (async () => {
+      const storedRole = await AsyncStorage.getItem('role');
+      if (storedRole) setRole(storedRole);
+    })();
+  }, []);
   return (
     <BG type="solid">
       <AppBar 
@@ -17,7 +28,7 @@ const ModifyInfoScreen = () => {
         }}/>
       <View className="flex-1 items-center pt-[38]">
         <View className="relative ">
-        <ProfileIcon/>
+          {role == 'HELPER' ? <ProfileIcon/> : <ProfileIcon2/>}
         <ProfileCameraIcon className="absolute right-[-8] bottom-[0]"/>
         </View>
         <View className="h-[39]" />

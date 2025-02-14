@@ -4,14 +4,16 @@ import Txt from "@components/atom/Txt";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 import { SystemStackParamList } from "@type/nav/SystemStackParamList";
-import { View, Pressable, TextInput, KeyboardAvoidingView, ScrollView, Platform } from "react-native";
+import { View, Pressable, KeyboardAvoidingView, ScrollView, Platform } from "react-native";
 import { LeaveReasons } from "@constants/LeaveReasons";
 import { useState, useRef } from "react";
 import Button from "@components/atom/Button";
+import TextInput from "@components/molecule/ShadowTextInput";
+
 const LeaveAccountScreen = () => {
     const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
     const [selectedReasons, setSelectedReasons] = useState<string[]>([]);
-    const [otherReason, setOtherReason] = useState('');
+    const [detailReason, setDetailReason] = useState('');
     const scrollViewRef = useRef<ScrollView>(null);
 
     const toggleReason = (reason: string) => {
@@ -58,21 +60,19 @@ const LeaveAccountScreen = () => {
                             {selectedReasons.includes("기타") && (
                                 <View className="w-full px-px">
                                 <TextInput
-                                    value={otherReason}
-                                    onFocus={() => {
-                                        scrollViewRef.current?.scrollToEnd({ animated: true });
-                                    }}
-                                    onChangeText={setOtherReason}
+                                    value={detailReason}
+                                    onChangeText={setDetailReason}
                                     placeholder="내용을 입력해주세요"
-                                    placeholderTextColor="#9E9E9E"
-                                    className="w-full p-3 rounded-lg bg-blue500 text-white"
-                                    multiline
+                                    height={120}
                                 />
                                 </View>
                             )}
                         </>
                         <View className="w-full px-px mt-[29] mb-[55]">
-                            <Button text="다음" onPress={() => {navigation.navigate("LeaveAccount2")}} disabled={selectedReasons.length === 0}/>
+                            <Button text="다음" onPress={() => {navigation.navigate("LeaveAccount2", {
+                              reasons: selectedReasons,
+                                otherReason: selectedReasons.includes("기타") ? detailReason : ""
+                            })}} disabled={selectedReasons.length === 0 }/>
                         </View>
                     </View>
                 </ScrollView>
