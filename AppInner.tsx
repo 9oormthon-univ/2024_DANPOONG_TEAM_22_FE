@@ -107,6 +107,7 @@ const AppInner = () => {
         <Stack.Group>
           {role === 'HELPER' ? (
             // 헬퍼인 경우
+            
             <Stack.Screen name="AppTabNav" component={AppTabNav} />
           ) : (
             // 청년인 경우
