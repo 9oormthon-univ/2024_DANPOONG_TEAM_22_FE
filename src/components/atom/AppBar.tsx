@@ -6,6 +6,7 @@ type AppBarProps = {
   title?: string;
   goBackCallbackFn?: () => void;
   exitCallbackFn?: () => void;
+  confirmCallbackFn?: () => void;
   className?: string;
   style?: ViewStyle | ViewStyle[];
 };
@@ -14,6 +15,7 @@ const AppBar = ({
   title,
   goBackCallbackFn,
   exitCallbackFn,
+  confirmCallbackFn,
   ...props
 }: Readonly<AppBarProps>) => {
   return (
@@ -42,6 +44,10 @@ const AppBar = ({
           className="flex-1 py-[18] flex-row justify-end"
           onPress={exitCallbackFn}>
           <ExitWhiteIcon />
+        </Pressable>
+      ) : confirmCallbackFn ? (
+        <Pressable className="flex-1 py-[18] flex-row justify-end" onPress={confirmCallbackFn}>
+          <Txt type="title4" text="완료" className="text-white " />
         </Pressable>
       ) : (
         <View className="flex-1" />
