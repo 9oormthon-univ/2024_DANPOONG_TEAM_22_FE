@@ -13,21 +13,25 @@ const LetterCard = ({letter, idx}: Readonly<LetterCardProps>) => {
   const imageUri = null;
 
   return (
-    <Pressable className="h-[189]">
+    <Pressable className="h-[153]">
       <ShadowView>
         <View className="px-[22] py-[14] justify-between flex-1">
           <View>
             <Txt
               type="body4"
               text={formatDate(letter.createdAt)}
-              className="text-gray300 font-[LeeSeoyun-Regular]"
+              className="text-gray200 font-[LeeSeoyun-Regular]"
             />
+            <View className="h-[10]" />
             <Txt
               type="body4"
               text={letter.thanksMessage}
-              className="text-white my-[15] text-justify"
+              className="text-white text-justify"
             />
           </View>
+
+          <View className="h-[10]" />
+
           <View className="flex-row items-center self-end">
             <Txt
               type="body4"

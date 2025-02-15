@@ -69,9 +69,9 @@ export const EMOTION_OPTIONS: {
   label: string;
   type: EmotionType;
 }[] = [
-  {icon: <StarIcon />, label: '고마워요', type: 'THANK_YOU'},
-  {icon: <ThumbIcon />, label: '응원해요', type: 'HELPFUL'},
-  {icon: <FightingIcon />, label: '화이팅', type: 'MOTIVATED'},
+  {icon: <StarIcon />, label: '감사해요', type: 'THANK_YOU'},
+  {icon: <ThumbIcon />, label: '도움돼요', type: 'HELPFUL'},
+  {icon: <FightingIcon />, label: '힘낼게요', type: 'MOTIVATED'},
   {icon: <LoveIcon />, label: '사랑해요', type: 'LOVE'},
 ];
 
