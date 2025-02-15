@@ -2,7 +2,7 @@ import {TextInput as RNTextInput, TouchableOpacity, View} from 'react-native';
 import {useRef, useState} from 'react';
 import ShadowView from '@components/atom/ShadowView';
 
-interface TextInputProps {
+interface ShadowTextInputProps {
   value: string;
   onChangeText: (text: string) => void;
   placeholder?: string;
@@ -10,13 +10,13 @@ interface TextInputProps {
   height?: number;
 }
 
-const TextInput = ({
+const ShadowTextInput = ({
   value,
   onChangeText,
   placeholder = "텍스트를 입력해주세요",
   isError = false,
   height = 340,
-}: TextInputProps) => {
+}: ShadowTextInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const textInputRef = useRef<RNTextInput>(null);
 
@@ -60,4 +60,4 @@ const TextInput = ({
   );
 };
 
-export default TextInput; 
+export default ShadowTextInput; 

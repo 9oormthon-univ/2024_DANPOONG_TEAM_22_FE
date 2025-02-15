@@ -117,7 +117,6 @@ const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'L
                         <Txt type="title4" text="를 떠나시겠어요?" className="text-white" />
                         </View>
                         <Txt type="body4" text={`계정 정보, 활동 내역 등 소중한 기록이 모두 사라져요\n탈퇴하면 다시 가입하더라도 이전 정보를 되돌릴 수 없어요`} className="text-gray300" />
-
                     </View>
                 )}
                 
