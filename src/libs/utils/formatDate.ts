@@ -6,9 +6,7 @@ const formatDate = (dateString: string) => {
     month: '2-digit',
     day: '2-digit',
   };
-  const formattedDate = date
-    .toLocaleDateString('ko-KR', options)
-    .replace(/\./g, '. ');
+  const formattedDate = date.toLocaleDateString('ko-KR', options);
 
   return formattedDate;
 };
