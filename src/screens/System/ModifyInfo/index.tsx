@@ -15,21 +15,31 @@ import {
   ImageLibraryOptions,
   ImagePickerResponse,
 } from "react-native-image-picker";
+import Modal from "@components/atom/Modal";
+import useModal from "@hooks/useModal";
+import uploadImageToS3 from "@apis/util";
 
 const ModifyInfoScreen = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
   const [role, setRole] = useState('');
   const [isError, setIsError] = useState(false); // 에러 상태
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
+  // 닉네임 관련 state
   const [nickname, setNickname] = useState('');
-  // 처음 async에서 받아온 nickname을 저장하는 state
   const [initialNickname, setInitialNickname] = useState('');
-  // nickname이 처음 값과 달라졌는지를 확인하는 state
   const [isNicknameChanged, setIsNicknameChanged] = useState(false);
-
   // 프로필 이미지 관련 state
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [clickedUpload, setClickedUpload] = useState(false);
+  const [isImageChanged, setIsImageChanged] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const {visible, openModal, closeModal} = useModal();
+
+  const defaultImageUri =
+    role === 'YOUTH'
+      ? require('@assets/pngs/profile/youthDefault.png')
+      : require('@assets/pngs/profile/volunteerDefault.png');
+
 
   // 닉네임 유효성 검사 함수
   const validateNickname = (text: string) => {
@@ -59,20 +69,45 @@ const ModifyInfoScreen = () => {
     setIsNicknameChanged(newText !== initialNickname);
   };
 
+
   useEffect(() => {
     (async () => {
       const storedRole = await AsyncStorage.getItem('role');
       const storedNickname = await AsyncStorage.getItem('nickname');
+      const storedProfileImage = await AsyncStorage.getItem('profileImage');
       if (storedRole) setRole(storedRole);
       if (storedNickname) {
         setNickname(storedNickname);
         setInitialNickname(storedNickname);
       }
+      if (storedProfileImage) setImageUri(storedProfileImage);
     })();
   }, []);
 
-  const confirmCallbackFn = () => {
-    console.log('확인');
+//완료 버튼 클릭 함수
+  const confirmCallbackFn = async () => {
+    if(isLoading) return;
+    setIsLoading(true);
+    try {
+      if (isImageChanged) {
+        let imageLocation = '';
+        if (imageUri) {
+          try {
+            imageLocation = (await uploadImageToS3(imageUri)) as string;
+            console.log('업로드된 이미지 위치:', imageLocation);
+            await AsyncStorage.setItem('profileImage', imageLocation);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+      if (isNicknameChanged) {
+        await AsyncStorage.setItem('nickname', nickname);
+      }
+    } finally {
+      setIsLoading(false);
+      navigation.goBack();
+    }
   };
 
   // 이미지 라이브러리에서 사진 선택 함수
@@ -100,6 +135,7 @@ const ModifyInfoScreen = () => {
         return;
       }
       setImageUri(response.assets[0].uri ?? null);
+      setIsImageChanged(true);
       setClickedUpload(false);
     });
   };
@@ -110,23 +146,28 @@ const ModifyInfoScreen = () => {
     setClickedUpload(false);
   };
 
-  const defaultImageUri =
-    role === 'YOUTH'
-      ? require('@assets/pngs/profile/youthDefault.png')
-      : require('@assets/pngs/profile/volunteerDefault.png');
+  // 나가기 버튼 클릭 함수
+  const goBackCallbackFn = () => {
+    if(isLoading) return;
+    if(isNicknameChanged || isImageChanged) {
+      openModal();
+    } else {
+      navigation.goBack();
+    }
+  };
 
   return (
+    <>
     <BG type="solid">
       <AppBar 
       title="내 정보 수정" 
-      goBackCallbackFn={() => {
-          navigation.goBack();
-        }}
-        confirmCallbackFn={confirmCallbackFn}
+      goBackCallbackFn={goBackCallbackFn}
+      confirmCallbackFn={confirmCallbackFn}
+        isLoading={isLoading}
         />
         {/* 프로필 이미지 영역 */}
       <View className="flex-1 items-center pt-[38]">
-        <Pressable onPress={() => setClickedUpload(true)}>
+        <Pressable onPress={() => !isLoading && setClickedUpload(true)}>
           <View className="relative w-[107] h-[107]">
             {imageUri ? (
               <Image
@@ -161,7 +202,7 @@ const ModifyInfoScreen = () => {
       {/* 이미지 수정 모달 (앨범에서 사진 선택 / 기본 이미지 적용) */}
       {clickedUpload && (
         <Pressable
-          onPress={() => setClickedUpload(false)}
+          onPress={() => !isLoading && setClickedUpload(false)}
           className="absolute left-0 bottom-0 w-full h-full bg-black/50 px-[30] pb-[55] justify-end"
         >
           <Pressable onPress={() => {}} className="w-full">
@@ -180,23 +221,39 @@ const ModifyInfoScreen = () => {
               <View className="bg-blue600 h-[1]" />
               <Pressable
                 className="h-[61] justify-center items-center"
-                onPress={selectImage}
+                onPress={() => !isLoading && selectImage()}
               >
                 <Txt type="body3" text="앨범에서 사진 선택" className="text-white" />
               </Pressable>
               <View className="bg-blue600 h-[1]" />
               <Pressable
                 className="h-[61] justify-center items-center"
-                onPress={handleDefaultImageClick}
+                onPress={() => !isLoading && handleDefaultImageClick()}
               >
                 <Txt type="body3" text="기본 이미지 적용" className="text-white" />
               </Pressable>
             </AnimatedView>
-            <Button text="취소" onPress={() => setClickedUpload(false)} />
+            <Button 
+              text="취소" 
+              onPress={() => !isLoading && setClickedUpload(false)} 
+            />
           </Pressable>
         </Pressable>
       )}
     </BG>
+    <Modal
+    type="info"
+    visible={visible}
+    onCancel={closeModal}
+    onConfirm={() => {
+      navigation.goBack();
+    }}
+    buttonRatio="1:1"
+    >
+      <Txt type="title4" text="수정을 취소하고 나가시겠어요?" className="text-white mt-[32] mb-[5]"/>
+      <Txt type="caption1" text="화면을 나가면 변경사항이 저장되지 않아요" className="text-gray300 mb-[32]"/>
+    </Modal>
+    </>
   );
 };
 

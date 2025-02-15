@@ -8,7 +8,7 @@ import { View, Pressable, KeyboardAvoidingView, ScrollView, Platform } from "rea
 import { LeaveReasons } from "@constants/LeaveReasons";
 import { useState, useRef } from "react";
 import Button from "@components/atom/Button";
-import TextInput from "@components/molecule/ShadowTextInput";
+import TextInput from "@components/atom/TextInput";
 
 const LeaveAccountScreen = () => {
     const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
@@ -59,11 +59,12 @@ const LeaveAccountScreen = () => {
                             />
                             {selectedReasons.includes("기타") && (
                                 <View className="w-full px-px">
-                                <TextInput
+                                <TextInput  
                                     value={detailReason}
                                     onChangeText={setDetailReason}
                                     placeholder="내용을 입력해주세요"
-                                    height={120}
+                                    height={114}
+                                    isError={false}
                                 />
                                 </View>
                             )}

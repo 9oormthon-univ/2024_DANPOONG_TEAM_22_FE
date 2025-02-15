@@ -69,7 +69,7 @@ const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'L
             <View className="flex-1 justify-between">
                 
                 {/* 상단 영역 */}
-                {role!=='HELPER' ? (
+                {role=='HELPER' ? (
                     <View>
                     {/* 안내 문구 */}
                     <View className="w-full px-px py-[42]">

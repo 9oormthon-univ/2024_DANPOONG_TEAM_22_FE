@@ -101,6 +101,7 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
 
       await AsyncStorage.setItem('nickname', nickname);
       await AsyncStorage.setItem('role', role);
+      await AsyncStorage.setItem('profileImage', imageLocation ?? '');
       if (role === 'YOUTH') {
         navigation.navigate('YouthOnboardingScreen');
         return;
