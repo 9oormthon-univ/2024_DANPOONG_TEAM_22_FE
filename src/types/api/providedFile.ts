@@ -7,6 +7,11 @@ type CommentRequestData = {
   message: string;
 };
 
+type ReportRequestData = {
+  providedFileId: number;
+  reason: string;
+};
+
 type SummaryResponseData = {
   totalListeners: number;
   reactionsNum: {
@@ -41,6 +46,7 @@ export type {
   AlarmType,
   EmotionType,
   CommentRequestData,
+  ReportRequestData,
   SummaryResponseData,
   LettersRequestData,
   LetterResponseData,

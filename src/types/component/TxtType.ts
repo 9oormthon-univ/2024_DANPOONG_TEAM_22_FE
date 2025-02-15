@@ -18,4 +18,5 @@ export type TxtProps = {
     | 'button';
   className?: string;
   style?: TextStyle | TextStyle[];
+  numberOfLines?: number;
 };
