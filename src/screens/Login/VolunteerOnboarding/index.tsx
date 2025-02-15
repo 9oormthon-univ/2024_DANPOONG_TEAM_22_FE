@@ -82,7 +82,7 @@ const Page2 = ({onNext}: Readonly<PageProps>) => {
           text={
             '내일모래는\n자립준비청년의 일상에\n따스한 목소리를 전하기 위해 만들어졌어요'
           }
-          className="text-gray200 text-center mt-[200]"
+          className="text-white text-center mt-[200]"
         />
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
           <Button text="다음" onPress={onNext} />
@@ -101,7 +101,7 @@ const Page3 = ({nickname, onNext}: Readonly<PageProps>) => {
         <Txt
           type="body2"
           text={`${nickname} 님의 말 한마디에는\n자립준비청년의 일상을\n밝게 비출 힘이 있어요`}
-          className="text-gray200 text-center mt-[200]"
+          className="text-white text-center mt-[200]"
         />
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
           <Button text="다음" onPress={onNext} />
@@ -122,7 +122,7 @@ const Page4 = ({onNext}: Readonly<PageProps>) => {
           text={
             '내일모래와 함께 내일도, 모레도,\n청년의 일상을 비추러 가볼래요?'
           }
-          className="text-gray200 text-center mt-[200]"
+          className="text-gray100 text-center mt-[200]"
         />
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
           <Button text="다음" onPress={onNext} />

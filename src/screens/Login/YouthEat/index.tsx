@@ -1,89 +1,48 @@
+import ChevronBottomGrayIcon from '@assets/svgs/chevron/chevron_bottom_gray.svg';
 import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
+import TimeSelectBottomSheet from '@components/atom/TimeSelectBottomSheet';
 import Txt from '@components/atom/Txt';
-import DateTimePicker, {
-  DateTimePickerEvent,
-} from '@react-native-community/datetimepicker';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {DEFAULT_TIME} from '@screens/Login/YouthWakeUpTime';
 import {AuthStackParamList} from '@stackNav/Auth';
+import convertToDate from '@utils/convertToDate';
 import {useState} from 'react';
-import {Image, Pressable, TextInput, View} from 'react-native';
+import {Pressable, View} from 'react-native';
+
 type AuthProps = NativeStackScreenProps<AuthStackParamList, 'YouthEatScreen'>;
 
 const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const {wakeUpTime} = route.params;
-  const [breakfast, setBreakfast] = useState(new Date());
-  const [lunch, setLunch] = useState(new Date());
-  const [dinner, setDinner] = useState(new Date());
-  const [breakfastString, setBreakfastString] = useState('');
-  const [lunchString, setLunchString] = useState('');
-  const [dinnerString, setDinnerString] = useState('');
-  const [showBreakfast, setShowBreakfast] = useState(false);
-  const [showLunch, setShowLunch] = useState(false);
-  const [showDinner, setShowDinner] = useState(false);
-
-  const onChangeDateBreakfast = (
-    event: DateTimePickerEvent,
-    selectedDate?: Date,
-  ) => {
-    const currentDate = selectedDate || breakfast;
-    if (!currentDate) {
-      return;
-    }
-
-    setShowBreakfast(false);
-    setBreakfast(currentDate);
-    // 선택한 시간을 문자열로 변환하여 저장
-    const formattedTime = currentDate.toLocaleTimeString([], {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: false,
-    });
-    setBreakfastString(formattedTime);
-  };
-
-  const onChangeDateLunch = (
-    event: DateTimePickerEvent,
-    selectedDate?: Date,
-  ) => {
-    const currentDate = selectedDate || lunch;
-    if (!currentDate) {
-      return;
-    }
-
-    setShowLunch(false);
-    setLunch(currentDate);
-    // 선택한 시간을 문자열로 변환하여 저장
-    const formattedTime = currentDate.toLocaleTimeString([], {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: false,
-    });
-    setLunchString(formattedTime);
-  };
-
-  const onChangeDateDinner = (
-    event: DateTimePickerEvent,
-    selectedDate?: Date,
-  ) => {
-    const currentDate = selectedDate || breakfast;
-    if (!currentDate) {
-      return;
-    }
-
-    setShowDinner(false);
-    setDinner(currentDate);
-    // 선택한 시간을 문자열로 변환하여 저장
-    const formattedTime = currentDate.toLocaleTimeString([], {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: false,
-    });
-    setDinnerString(formattedTime);
-  };
+  const [breakfastHour, setBreakfastHour] = useState(
+    DEFAULT_TIME.breakfast.hour,
+  );
+  const [breakfastMinute, setBreakfastMinute] = useState(
+    DEFAULT_TIME.breakfast.minute,
+  );
+  const [lunchHour, setLunchHour] = useState(DEFAULT_TIME.lunch.hour);
+  const [lunchMinute, setLunchMinute] = useState(DEFAULT_TIME.lunch.minute);
+  const [dinnerHour, setDinnerHour] = useState(DEFAULT_TIME.dinner.hour);
+  const [dinnerMinute, setDinnerMinute] = useState(DEFAULT_TIME.dinner.minute);
+  const [showBreakfastHourBottomSheet, setShowBreakfastHourBottomSheet] =
+    useState(false);
+  const [showBreakfastMinuteBottomSheet, setShowBreakfastMinuteBottomSheet] =
+    useState(false);
+  const [showLunchHourBottomSheet, setShowLunchHourBottomSheet] =
+    useState(false);
+  const [showLunchMinuteBottomSheet, setShowLunchMinuteBottomSheet] =
+    useState(false);
+  const [showDinnerHourBottomSheet, setShowDinnerHourBottomSheet] =
+    useState(false);
+  const [showDinnerMinuteBottomSheet, setShowDinnerMinuteBottomSheet] =
+    useState(false);
 
   const handleNext = async () => {
+    const breakfast = convertToDate(breakfastHour, breakfastMinute);
+    const lunch = convertToDate(lunchHour, lunchMinute);
+    const dinner = convertToDate(dinnerHour, dinnerMinute);
+
     navigation.navigate('YouthSleepTimeScreen', {
       wakeUpTime,
       breakfast: breakfast.toISOString(),
@@ -101,105 +60,186 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
           }}
           className="absolute top-[0] w-full"
         />
-        <View className="w-[75%] h-[3] bg-yellowPrimary absolute top-[83]" />
-        <View className="items-center pt-[100] flex-1 mt-[50]">
+        <View className="w-full h-[3] bg-white/5 absolute top-[60]" />
+        <View className="w-[66%] h-[3] bg-yellowPrimary absolute top-[60]" />
+
+        <View className="h-[120]" />
+
+        <View className="items-center flex-1">
           <Txt
             type="title2"
-            text={'몇 시에\n식사하시나요?'}
+            text="식사 시간을 알려주세요"
             className="text-white text-center"
           />
+          <View className="h-[9]" />
           <Txt
             type="body3"
-            text="평소 식사 시간이 궁금해요"
-            className="text-gray300 mt-[16] text-center"
+            text="식사 알림을 받고 싶은 시간을 입력해주세요"
+            className="text-gray300 text-center"
           />
 
-          <View className="mt-[60] px-[24] flex-row justify-between w-full">
-            <View className="items-center">
-              <Txt type="body3" text="아침" className="text-gray300 mb-[-16]" />
-              <Pressable onPress={() => setShowBreakfast(true)}>
-                <TextInput
-                  value={breakfastString}
-                  placeholder="00:00"
-                  placeholderTextColor={'#717171'}
-                  className={`text-yellowPrimary px-[8] font-r border-b ${
-                    breakfastString ? 'border-b-yellow200' : 'border-b-gray400'
-                  } mt-[31] text-center`}
-                  style={{fontSize: 32}}
-                  editable={false}
-                />
-              </Pressable>
+          <View className="h-[60]" />
+
+          <View>
+            {/* 아침 */}
+            <View className="px-[50]">
+              <Txt type="button" text="아침" className="text-gray300" />
+              <View className="h-[11]" />
+              <View className="flex-row items-center justify-between">
+                <Pressable
+                  onPress={() => setShowBreakfastHourBottomSheet(true)}
+                  className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
+                  <Txt
+                    type="title1"
+                    text={
+                      breakfastHour.includes('자정')
+                        ? '오전 12시'
+                        : breakfastHour
+                    }
+                    className="text-white"
+                  />
+                  <ChevronBottomGrayIcon />
+                </Pressable>
+                <View className="w-[17]" />
+                <Pressable
+                  onPress={() => setShowBreakfastMinuteBottomSheet(true)}
+                  className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
+                  <Txt
+                    type="title1"
+                    text={breakfastMinute}
+                    className="text-white"
+                  />
+                  <ChevronBottomGrayIcon />
+                </Pressable>
+              </View>
             </View>
-            <View className="items-center">
-              <Txt type="body3" text="점심" className="text-gray300 mb-[-16]" />
-              <Pressable onPress={() => setShowLunch(true)}>
-                <TextInput
-                  value={lunchString}
-                  placeholder="00:00"
-                  placeholderTextColor={'#717171'}
-                  className={`text-yellowPrimary px-[8] font-r border-b ${
-                    lunchString ? 'border-b-yellow200' : 'border-b-gray400'
-                  } mt-[31] text-center`}
-                  style={{fontSize: 32}}
-                  editable={false}
-                />
-              </Pressable>
+
+            <View className="h-[59]" />
+
+            {/* 점심 */}
+            <View className="px-[50]">
+              <Txt type="button" text="점심" className="text-gray300" />
+              <View className="h-[11]" />
+              <View className="flex-row items-center justify-between">
+                <Pressable
+                  onPress={() => setShowLunchHourBottomSheet(true)}
+                  className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
+                  <Txt
+                    type="title1"
+                    text={lunchHour.includes('자정') ? '오전 12시' : lunchHour}
+                    className="text-white"
+                  />
+                  <ChevronBottomGrayIcon />
+                </Pressable>
+                <View className="w-[17]" />
+                <Pressable
+                  onPress={() => setShowLunchMinuteBottomSheet(true)}
+                  className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
+                  <Txt
+                    type="title1"
+                    text={lunchMinute}
+                    className="text-white"
+                  />
+                  <ChevronBottomGrayIcon />
+                </Pressable>
+              </View>
             </View>
-            <View className="items-center">
-              <Txt type="body3" text="저녁" className="text-gray300 mb-[-16]" />
-              <Pressable onPress={() => setShowDinner(true)}>
-                <TextInput
-                  value={dinnerString}
-                  placeholder="00:00"
-                  placeholderTextColor={'#717171'}
-                  className={`text-yellowPrimary px-[8] font-r border-b ${
-                    dinnerString ? 'border-b-yellow200' : 'border-b-gray400'
-                  } mt-[31] text-center`}
-                  style={{fontSize: 32}}
-                  editable={false}
-                />
-              </Pressable>
+
+            <View className="h-[59]" />
+
+            {/* 저녁 */}
+            <View className="px-[50]">
+              <Txt type="button" text="저녁" className="text-gray300" />
+              <View className="h-[11]" />
+              <View className="flex-row items-center justify-between">
+                <Pressable
+                  onPress={() => setShowDinnerHourBottomSheet(true)}
+                  className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
+                  <Txt
+                    type="title1"
+                    text={
+                      dinnerHour.includes('자정') ? '오전 12시' : dinnerHour
+                    }
+                    className="text-white"
+                  />
+                  <ChevronBottomGrayIcon />
+                </Pressable>
+                <View className="w-[17]" />
+                <Pressable
+                  onPress={() => setShowDinnerMinuteBottomSheet(true)}
+                  className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
+                  <Txt
+                    type="title1"
+                    text={dinnerMinute}
+                    className="text-white"
+                  />
+                  <ChevronBottomGrayIcon />
+                </Pressable>
+              </View>
             </View>
-            {showBreakfast && (
-              <DateTimePicker
-                value={breakfast}
-                mode="time" // 시간 선택 모드
-                is24Hour={true} // 24시간 형식
-                display="spinner"
-                onChange={onChangeDateBreakfast}
-              />
-            )}
-            {showLunch && (
-              <DateTimePicker
-                value={lunch}
-                mode="time" // 시간 선택 모드
-                is24Hour={true} // 24시간 형식
-                display="spinner"
-                onChange={onChangeDateLunch}
-              />
-            )}
-            {showDinner && (
-              <DateTimePicker
-                value={dinner}
-                mode="time" // 시간 선택 모드
-                is24Hour={true} // 24시간 형식
-                display="spinner"
-                onChange={onChangeDateDinner}
-              />
-            )}
-          </View>
-          <Image
-            source={require('@assets/pngs/background/background_youth5.png')}
-            className="mt-[92]"
-          />
-          <View className="absolute left-0 bottom-[55] w-full px-[30]">
-            <Button
-              text="다음"
-              onPress={handleNext}
-              disabled={!breakfastString || !lunchString || !dinnerString}
-            />
           </View>
         </View>
+
+        <View className="absolute left-0 bottom-[55] w-full px-[30]">
+          <Button text="다음" onPress={handleNext} />
+        </View>
+
+        {/* 아침 */}
+        {showBreakfastHourBottomSheet && (
+          <TimeSelectBottomSheet
+            type="hour"
+            value={breakfastHour}
+            setValue={setBreakfastHour}
+            onClose={() => setShowBreakfastHourBottomSheet(false)}
+            onSelect={() => setShowBreakfastMinuteBottomSheet(true)}
+          />
+        )}
+        {showBreakfastMinuteBottomSheet && (
+          <TimeSelectBottomSheet
+            type="minute"
+            value={breakfastMinute}
+            setValue={setBreakfastMinute}
+            onClose={() => setShowBreakfastMinuteBottomSheet(false)}
+          />
+        )}
+
+        {/* 점심 */}
+        {showLunchHourBottomSheet && (
+          <TimeSelectBottomSheet
+            type="hour"
+            value={lunchHour}
+            setValue={setLunchHour}
+            onClose={() => setShowLunchHourBottomSheet(false)}
+            onSelect={() => setShowLunchMinuteBottomSheet(true)}
+          />
+        )}
+        {showLunchMinuteBottomSheet && (
+          <TimeSelectBottomSheet
+            type="minute"
+            value={lunchMinute}
+            setValue={setLunchMinute}
+            onClose={() => setShowLunchMinuteBottomSheet(false)}
+          />
+        )}
+
+        {/* 저녁 */}
+        {showDinnerHourBottomSheet && (
+          <TimeSelectBottomSheet
+            type="hour"
+            value={dinnerHour}
+            setValue={setDinnerHour}
+            onClose={() => setShowDinnerHourBottomSheet(false)}
+            onSelect={() => setShowDinnerMinuteBottomSheet(true)}
+          />
+        )}
+        {showDinnerMinuteBottomSheet && (
+          <TimeSelectBottomSheet
+            type="minute"
+            value={dinnerMinute}
+            setValue={setDinnerMinute}
+            onClose={() => setShowDinnerMinuteBottomSheet(false)}
+          />
+        )}
       </>
     </BG>
   );

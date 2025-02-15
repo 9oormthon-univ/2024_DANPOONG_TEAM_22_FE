@@ -89,7 +89,11 @@ const getStyle = (type: string): TextStyle => {
 const Txt = ({text, type, ...props}: TxtProps) => {
   const style = getStyle(type);
   return (
-    <Text {...props} className={props.className} style={[style, props.style]}>
+    <Text
+      {...props}
+      className={props.className}
+      style={[style, props.style]}
+      numberOfLines={props.numberOfLines}>
       {text}
     </Text>
   );
