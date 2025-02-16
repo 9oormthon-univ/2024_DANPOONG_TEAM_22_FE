@@ -1,12 +1,13 @@
-import Txt from '@components/atom/Txt';
-import {Pressable, View, ViewStyle} from 'react-native';
 import ChevronLeftWhiteIcon from '@assets/svgs/chevron/chevron_left_white.svg';
 import ExitWhiteIcon from '@assets/svgs/exit_white.svg';
+import Txt from '@components/atom/Txt';
+import {Pressable, View, ViewStyle} from 'react-native';
 type AppBarProps = {
   title?: string;
   goBackCallbackFn?: () => void;
   exitCallbackFn?: () => void;
   confirmCallbackFn?: () => void;
+  skipCallbackFn?: () => void;
   className?: string;
   style?: ViewStyle | ViewStyle[];
 };
@@ -16,8 +17,41 @@ const AppBar = ({
   goBackCallbackFn,
   exitCallbackFn,
   confirmCallbackFn,
+  skipCallbackFn,
   ...props
 }: Readonly<AppBarProps>) => {
+  const renderRightButton = (
+    exitCallbackFn?: () => void,
+    confirmCallbackFn?: () => void,
+    skipCallbackFn?: () => void,
+  ) => {
+    if (exitCallbackFn)
+      return (
+        <Pressable
+          className="flex-1 py-[18] flex-row justify-end"
+          onPress={exitCallbackFn}>
+          <ExitWhiteIcon />
+        </Pressable>
+      );
+    if (confirmCallbackFn)
+      return (
+        <Pressable
+          className="flex-1 py-[18] flex-row justify-end"
+          onPress={confirmCallbackFn}>
+          <Txt type="title4" text="완료" className="text-white " />
+        </Pressable>
+      );
+    if (skipCallbackFn)
+      return (
+        <Pressable
+          className="flex-1 py-[18] flex-row justify-end"
+          onPress={skipCallbackFn}>
+          <Txt type="button" text="건너뛰기" className="text-white " />
+        </Pressable>
+      );
+    return <View className="flex-1" />;
+  };
+
   return (
     <View
       {...props}
@@ -39,19 +73,7 @@ const AppBar = ({
       ) : (
         <View className="flex-1" />
       )}
-      {exitCallbackFn ? (
-        <Pressable
-          className="flex-1 py-[18] flex-row justify-end"
-          onPress={exitCallbackFn}>
-          <ExitWhiteIcon />
-        </Pressable>
-      ) : confirmCallbackFn ? (
-        <Pressable className="flex-1 py-[18] flex-row justify-end" onPress={confirmCallbackFn}>
-          <Txt type="title4" text="완료" className="text-white " />
-        </Pressable>
-      ) : (
-        <View className="flex-1" />
-      )}
+      {renderRightButton(exitCallbackFn, confirmCallbackFn, skipCallbackFn)}
     </View>
   );
 };
