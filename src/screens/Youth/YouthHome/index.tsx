@@ -1,6 +1,7 @@
 import {getAlarmCategoryDetail} from '@apis/alarm';
 import CancelIcon from '@assets/svgs/cancel.svg';
 import LogoIcon from '@assets/svgs/Main2.svg';
+import SettingSmallIcon from '@assets/svgs/settingSmall.svg';
 import Txt from '@components/atom/Txt';
 import useGetAlarmComfort from '@hooks/alarm/useGetAlarmComfort';
 import useGetHelperNum from '@hooks/member/useGetHelperNum';
@@ -8,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {YouthStackParamList} from '@stackNav/Youth';
 import {useEffect, useState} from 'react';
-import {Alert, Image, ImageBackground, Pressable, View} from 'react-native';
+import {Alert, ImageBackground, Pressable, View} from 'react-native';
 
 type YouthProps = NativeStackScreenProps<
   YouthStackParamList,
@@ -88,13 +89,22 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
     <ImageBackground
       source={require('@assets/pngs/background/youthMain.png')}
       className="flex-1 items-center">
+      <Pressable
+        className="flex-row self-start items-center px-[33.5] pt-[32.5]"
+        onPress={() => navigation.navigate('SystemStackNav')}>
+        <SettingSmallIcon />
+        <View className="w-[6.5]" />
+        <Txt type="caption1" text="설정" className="text-blue200" />
+      </Pressable>
+
       <View className="self-start">
         <Txt
-          type="title3"
-          text={`${nickname ?? '모래바람'}님, 반가워요!`}
-          className="text-gray300 pt-[117] px-[30]"
+          type="body2"
+          text={`${nickname}님, 반가워요!`}
+          className="text-gray300 pt-[60.5] px-[30]"
         />
-        <View className="mt-[9] px-[30]">
+        <View className="h-[12]" />
+        <View className="px-[30]">
           <View className="flex-row items-center">
             <Txt
               type="title2"
