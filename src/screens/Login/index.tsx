@@ -42,8 +42,9 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
   return (
     <BG type="main">
       <View className="flex-1">
+        <View className="h-[132]" />
         {/* 상단 텍스트 및 로고 섹션 */}
-        <View className="items-center mt-[185]">
+        <View className="items-center">
           <Txt type="body4" text="내일도 모레도," className="text-gray300" />
           <Txt
             type="body4"
