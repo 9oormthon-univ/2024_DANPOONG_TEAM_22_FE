@@ -86,7 +86,7 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
   // return <LoadingScreen />;
   return (
     <ImageBackground
-      source={require('@assets/pngs/background/background_youth1.png')}
+      source={require('@assets/pngs/background/youthMain.png')}
       className="flex-1 items-center">
       <View className="self-start">
         <Txt
