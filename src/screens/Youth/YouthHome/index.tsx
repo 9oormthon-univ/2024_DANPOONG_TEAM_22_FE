@@ -1,5 +1,8 @@
 import {getAlarmCategoryDetail} from '@apis/alarm';
-import CancelIcon from '@assets/svgs/cancel.svg';
+import CloseBlackIcon from '@assets/svgs/closeBlack.svg';
+import FightingIcon from '@assets/svgs/emotion/emotion_fighting_gray.svg';
+import ThumbIcon from '@assets/svgs/emotion/emotion_thumb_gray.svg';
+import WaterIcon from '@assets/svgs/emotion/emotion_water_gray.svg';
 import LogoIcon from '@assets/svgs/Main2.svg';
 import SettingSmallIcon from '@assets/svgs/settingSmall.svg';
 import Txt from '@components/atom/Txt';
@@ -17,9 +20,21 @@ type YouthProps = NativeStackScreenProps<
 >;
 
 const VOICE_MENU = [
-  {alarmCategory: 'CONSOLATION', alarmCategoryKoreanName: '위로'},
-  {alarmCategory: 'PRAISE', alarmCategoryKoreanName: '칭찬과 격려'},
-  {alarmCategory: 'SADNESS', alarmCategoryKoreanName: '우울과 불안'},
+  {
+    alarmCategory: 'CONSOLATION',
+    alarmCategoryKoreanName: '위로',
+    icon: <FightingIcon />,
+  },
+  {
+    alarmCategory: 'PRAISE',
+    alarmCategoryKoreanName: '칭찬과 격려',
+    icon: <ThumbIcon />,
+  },
+  {
+    alarmCategory: 'SADNESS',
+    alarmCategoryKoreanName: '우울과 불안',
+    icon: <WaterIcon />,
+  },
 ];
 
 const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
@@ -88,7 +103,7 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
   return (
     <ImageBackground
       source={require('@assets/pngs/background/youthMain.png')}
-      className="flex-1 items-center">
+      className="flex-1">
       <Pressable
         className="flex-row self-start items-center px-[33.5] pt-[32.5]"
         onPress={() => navigation.navigate('SystemStackNav')}>
@@ -97,88 +112,76 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
         <Txt type="caption1" text="설정" className="text-blue200" />
       </Pressable>
 
-      <View className="self-start">
-        <Txt
-          type="body2"
-          text={`${nickname}님, 반가워요!`}
-          className="text-gray300 pt-[60.5] px-[30]"
-        />
-        <View className="h-[12]" />
-        <View className="px-[30]">
-          <View className="flex-row items-center">
-            <Txt
-              type="title2"
-              text={`${helperNumData?.result.youthMemberNum}명의 목소리`}
-              className="text-yellowPrimary"
-            />
-            <Txt type="title2" text="가" className="text-white" />
-          </View>
+      <Txt
+        type="body2"
+        text={`${nickname}님, 반가워요!`}
+        className="text-gray300 pt-[60.5] px-[30]"
+      />
+      <View className="h-[12]" />
+      <View className="px-[30]">
+        <View className="flex-row items-center">
           <Txt
             type="title2"
-            text="당신의 일상을 비추고 있어요"
-            className="text-white"
+            text={`${helperNumData?.result.youthMemberNum}명의 목소리`}
+            className="text-yellowPrimary"
           />
+          <Txt type="title2" text="가" className="text-white" />
         </View>
+        <Txt
+          type="title2"
+          text="당신의 일상을 비추고 있어요"
+          className="text-white"
+        />
       </View>
 
-      <View
-        className={`absolute items-center w-full h-full ${
+      <Pressable
+        className={`absolute items-end w-full h-full ${
           clicked ? 'bg-black/50' : ''
-        }`}>
-        <View className="absolute bottom-[88] items-center">
-          {clicked ? (
-            <View className="mb-[29] items-center">
+        }`}
+        onPress={() => setClicked(false)}>
+        <View className="absolute bottom-[90] right-[41] items-end">
+          {clicked && (
+            <View className="mb-[11] items-end">
               {VOICE_MENU.map(({alarmCategory, alarmCategoryKoreanName}) => (
-                <Pressable
-                  key={alarmCategory}
-                  className="mb-[15] bg-blue400 border border-gray100 h-[59] px-[22] justify-center items-center"
-                  style={{borderRadius: 100}}
-                  onPress={() => handleButtonClick(alarmCategory)}>
+                <View
+                  className="flex-row items-center mb-[14]"
+                  key={alarmCategory}>
                   <Txt
-                    type="title3"
+                    type="button"
                     text={alarmCategoryKoreanName}
-                    className="text-gray100"
+                    className="text-white"
                   />
-                </Pressable>
+                  <View className="w-[16]" />
+                  <Pressable
+                    className="bg-blue400 h-[61] w-[61] justify-center items-center active:bg-blue600"
+                    style={{borderRadius: 100}}
+                    onPress={() => handleButtonClick(alarmCategory)}>
+                    {
+                      VOICE_MENU.find(
+                        menu => menu.alarmCategory === alarmCategory,
+                      )?.icon
+                    }
+                  </Pressable>
+                </View>
               ))}
             </View>
-          ) : (
-            <View className="mb-[24]">
-              <Txt
-                type="body3"
-                text="당신을 응원하는 목소리를"
-                className="text-gray300 text-center"
-              />
-              <Txt
-                type="body3"
-                text="들을 수 있어요"
-                className="text-gray300 text-center"
-              />
-            </View>
           )}
-          <Pressable
-            className={`${
-              clicked ? 'bg-blue700' : 'bg-blue500'
-            } flex-row justify-center items-center h-[61] w-[160]`}
-            style={{borderRadius: 100}}
-            onPress={() => setClicked(prev => !prev)}>
-            {clicked ? (
-              <CancelIcon />
-            ) : (
-              <View className="w-[43] h-[43] justify-center items-center pr-[5]">
-                <LogoIcon />
-              </View>
-            )}
+          <View className="flex-row items-center">
             {!clicked && (
-              <Txt
-                type="button"
-                text="위로 받기"
-                className="text-gray100 pr-[12]"
-              />
+              <Txt type="button" text="위로 받기" className="text-white" />
             )}
-          </Pressable>
+            <View className="w-[16]" />
+            <Pressable
+              className={`${
+                clicked ? 'bg-yellowPrimary' : 'bg-blue500'
+              } flex-row justify-center items-center h-[61] w-[61]`}
+              style={{borderRadius: 100}}
+              onPress={() => setClicked(prev => !prev)}>
+              {clicked ? <CloseBlackIcon /> : <LogoIcon />}
+            </Pressable>
+          </View>
         </View>
-      </View>
+      </Pressable>
     </ImageBackground>
   );
 };
