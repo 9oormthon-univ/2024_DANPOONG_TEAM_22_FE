@@ -37,6 +37,7 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
     setValue: setNickname,
     isValid: isValidNickname,
     isError: isErrorNickname,
+    isSuccess: isSuccessNickname,
     message: nicknameMessage,
   } = useValidateInput({type: 'nickname'});
   const [clickedUpload, setClickedUpload] = useState(false);
@@ -150,6 +151,7 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
             value={nickname}
             onChangeText={handleNicknameChange}
             isError={isErrorNickname}
+            isSuccess={isSuccessNickname}
             placeholder="닉네임을 입력해주세요"
             message={nicknameMessage}
           />

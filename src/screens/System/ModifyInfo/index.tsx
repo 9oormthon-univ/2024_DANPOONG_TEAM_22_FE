@@ -26,6 +26,7 @@ const ModifyInfoScreen = () => {
     setValue: setNickname,
     isValid: isValidNickname,
     isError: isErrorNickname,
+    isSuccess: isSuccessNickname,
     message: nicknameMessage,
   } = useValidateInput({type: 'nickname'});
 
@@ -137,6 +138,7 @@ const ModifyInfoScreen = () => {
             value={nickname}
             onChangeText={handleNicknameChange}
             isError={isErrorNickname}
+            isSuccess={isSuccessNickname}
             placeholder="닉네임을 입력해주세요"
             message={nicknameMessage}
           />

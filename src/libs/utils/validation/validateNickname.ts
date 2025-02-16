@@ -15,32 +15,54 @@ const SPECIAL_CHARS_REGEX = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
 
 const validateNickname = (text: string): ValidationResult => {
   if (text === '') {
-    return {isValid: false, isError: false, message: NICKNAME_MESSAGES.DEFAULT};
+    return {
+      isValid: false,
+      isError: false,
+      isSuccess: false,
+      message: NICKNAME_MESSAGES.DEFAULT,
+    };
   } else if (text.length < 2) {
     return {
       isValid: false,
       isError: true,
+      isSuccess: false,
       message: NICKNAME_MESSAGES.TOO_SHORT,
     };
   } else if (text.length > 10) {
-    return {isValid: false, isError: true, message: NICKNAME_MESSAGES.TOO_LONG};
+    return {
+      isValid: false,
+      isError: true,
+      isSuccess: false,
+      message: NICKNAME_MESSAGES.TOO_LONG,
+    };
   } else if (SPACES_REGEX.test(text)) {
     return {
       isValid: false,
       isError: true,
+      isSuccess: false,
       message: NICKNAME_MESSAGES.NO_SPACES,
     };
   } else if (SPECIAL_CHARS_REGEX.test(text)) {
     return {
       isValid: false,
       isError: true,
+      isSuccess: false,
       message: NICKNAME_MESSAGES.NO_SPECIAL_CHARS,
     };
   } else if (NICKNAME_REGEX.test(text)) {
-    return {isValid: true, isError: false, message: NICKNAME_MESSAGES.SUCCESS};
-  } else {
-    return {isValid: false, isError: false, message: NICKNAME_MESSAGES.DEFAULT};
+    return {
+      isValid: true,
+      isError: false,
+      isSuccess: true,
+      message: NICKNAME_MESSAGES.SUCCESS,
+    };
   }
+  return {
+    isValid: false,
+    isError: false,
+    isSuccess: false,
+    message: NICKNAME_MESSAGES.DEFAULT,
+  };
 };
 
 export default validateNickname;
