@@ -16,6 +16,12 @@ import {
   View,
 } from 'react-native';
 import {SlidingDot} from 'react-native-animated-pagination-dots';
+import {
+  PanGestureHandler,
+  PanGestureHandlerEventPayload,
+  State,
+} from 'react-native-gesture-handler';
+import {ValueOf} from 'react-native-gesture-handler/lib/typescript/typeUtils';
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -176,6 +182,40 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
     });
   };
 
+  const handlePrevious = () => {
+    if (currentPageIdx === 0) return;
+    // 페이드 아웃 애니메이션
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setCurrentPageIdx(prevIdx => prevIdx - 1);
+      // 페이드 인 애니메이션
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    });
+  };
+
+  const handleSwipe = ({
+    nativeEvent,
+  }: {
+    nativeEvent: PanGestureHandlerEventPayload & {state: ValueOf<typeof State>};
+  }) => {
+    if (nativeEvent.state === State.END) {
+      if (nativeEvent.translationX < -50) {
+        // Swipe left
+        handleNext();
+      } else if (nativeEvent.translationX > 50) {
+        // Swipe right
+        handlePrevious();
+      }
+    }
+  };
+
   const PAGE_COUNT = 4;
   const width = Dimensions.get('window').width;
 
@@ -187,7 +227,10 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
   ];
 
   return (
-    <BG type={currentPageIdx === 3 ? 'gradation' : 'main'}>
+    <BG
+      type={
+        currentPageIdx === 2 || currentPageIdx === 3 ? 'gradation' : 'main'
+      }>
       <>
         <AppBar skipCallbackFn={handleSkip} />
 
@@ -204,9 +247,11 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
         </View>
 
         <View className="flex-1">
-          <Animated.View style={{flex: 1, opacity: fadeAnim}}>
-            {pages[currentPageIdx]}
-          </Animated.View>
+          <PanGestureHandler onHandlerStateChange={handleSwipe}>
+            <Animated.View style={{flex: 1, opacity: fadeAnim}}>
+              {pages[currentPageIdx]}
+            </Animated.View>
+          </PanGestureHandler>
         </View>
       </>
     </BG>
