@@ -95,12 +95,17 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
                 className="text-gray300"
               />
               {/* TODO: 이용약관 링크 변경 */}
-              <Pressable onPress={() => Linking.openURL('https://m.naver.com')}>
+              <Pressable
+                onPress={() =>
+                  Linking.openURL('https://www.naeilmorae.co.kr/privacy')
+                }>
                 <Txt type="caption2" text="이용약관" className="text-white" />
               </Pressable>
               <Txt type="caption2" text="과 " className="text-gray300" />
-              {/* TODO: 개인정보처리방침 링크 변경 */}
-              <Pressable onPress={() => Linking.openURL('https://google.com')}>
+              <Pressable
+                onPress={() =>
+                  Linking.openURL('https://www.naeilmorae.co.kr/privacy')
+                }>
                 <Txt
                   type="caption2"
                   text="개인정보 처리방침"
