@@ -6,12 +6,14 @@ import BottomMenu from '@components/atom/BottomMenu';
 import Button from '@components/atom/Button';
 import DismissKeyboardView from '@components/atom/DismissKeyboardView';
 import Modal from '@components/atom/Modal';
+import TextInput from '@components/atom/TextInput';
 import Txt from '@components/atom/Txt';
 import useModal from '@hooks/useModal';
+import useValidateInput from '@hooks/useValidateInput';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {useEffect, useState} from 'react';
-import {Image, Keyboard, Pressable, TextInput, View} from 'react-native';
+import {Image, Keyboard, Pressable, View} from 'react-native';
 import {
   ImageLibraryOptions,
   ImagePickerResponse,
@@ -23,14 +25,6 @@ type AuthProps = NativeStackScreenProps<
   'NicknameWriteScreen'
 >;
 
-const NICKNAME_MESSAGES = {
-  SUCCESS: '사용 가능한 닉네임이에요',
-  DEFAULT: '2자 이상 10자 이내의 한글, 영문, 숫자만 입력해주세요',
-  TOO_SHORT: '2자 이상 입력하세요',
-  NO_SPACES: '공백을 제거해주세요',
-  NO_SPECIAL_CHARS: '특수문자를 제거해주세요',
-};
-
 const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const {role} = route.params;
   const defaultImageUri =
@@ -38,10 +32,13 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
       ? require('@assets/pngs/profile/youthDefault.png')
       : require('@assets/pngs/profile/volunteerDefault.png');
   const [imageUri, setImageUri] = useState<string | null>(null);
-  const [nickname, setNickname] = useState('');
-  const [nicknameStatus, setNicknameStatus] = useState(
-    NICKNAME_MESSAGES.DEFAULT,
-  );
+  const {
+    value: nickname,
+    setValue: setNickname,
+    isValid: isValidNickname,
+    isError: isErrorNickname,
+    message: nicknameMessage,
+  } = useValidateInput({type: 'nickname'});
   const [clickedUpload, setClickedUpload] = useState(false);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const {visible, openModal, closeModal} = useModal();
@@ -106,20 +103,6 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
 
   const handleNicknameChange = (text: string) => {
     setNickname(text);
-    const regex = /^[ㄱ-ㅎ가-힣ㅏ-ㅣa-zA-Z0-9]{2,10}$/;
-    if (text === '') {
-      setNicknameStatus(NICKNAME_MESSAGES.DEFAULT);
-    } else if (text.length < 2) {
-      setNicknameStatus(NICKNAME_MESSAGES.TOO_SHORT);
-    } else if (/\s/.test(text)) {
-      setNicknameStatus(NICKNAME_MESSAGES.NO_SPACES);
-    } else if (/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g.test(text)) {
-      setNicknameStatus(NICKNAME_MESSAGES.NO_SPECIAL_CHARS);
-    } else if (regex.test(text)) {
-      setNicknameStatus(NICKNAME_MESSAGES.SUCCESS);
-    } else {
-      setNicknameStatus(NICKNAME_MESSAGES.DEFAULT);
-    }
   };
 
   return (
@@ -129,16 +112,21 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
           goBackCallbackFn={openModal}
           className="absolute top-[0] w-full"
         />
-        <View className="items-center mt-[149]">
+
+        <View className="h-[120]" />
+
+        <View className="items-center px-[30]">
           <Txt
             type="title2"
             text={'내일모래가 당신을\n어떻게 부를까요?'}
             className="text-white text-center"
           />
 
+          <View className="h-[40]" />
+
           <Pressable
             onPress={() => setClickedUpload(true)}
-            className="mt-[50] relative">
+            className="relative">
             <View
               className={`w-[107] h-[107] ${
                 imageUri ? 'border border-gray200' : ''
@@ -156,20 +144,14 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
             </View>
           </Pressable>
 
+          <View className="h-[31]" />
+
           <TextInput
             value={nickname}
             onChangeText={handleNicknameChange}
+            isError={isErrorNickname}
             placeholder="닉네임을 입력해주세요"
-            placeholderTextColor={'#A0A0A0'}
-            className={`text-center px-[10] font-m text-yellowPrimary border-b ${
-              nickname ? 'border-yellow200' : 'border-gray400'
-            } mt-[31]`}
-            style={{fontSize: 22}}
-          />
-          <Txt
-            type="caption1"
-            text={nicknameStatus}
-            className="text-gray400 mt-[15]"
+            message={nicknameMessage}
           />
         </View>
 
@@ -211,7 +193,7 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
           <Button
             text="다음"
             onPress={handleNext}
-            disabled={nicknameStatus !== NICKNAME_MESSAGES.SUCCESS}
+            disabled={!isValidNickname}
           />
         </View>
       )}
