@@ -1,3 +1,5 @@
+import LogoRoundIcon from '@assets/svgs/logoRound.svg';
+import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
@@ -6,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {PageProps} from '@screens/Login/VolunteerOnboarding';
 import {AuthStackParamList} from '@stackNav/Auth';
+import LottieView from 'lottie-react-native';
 import {useEffect, useRef, useState} from 'react';
 import {
   Animated,
@@ -17,9 +20,10 @@ import {
   View,
 } from 'react-native';
 import {SlidingDot} from 'react-native-animated-pagination-dots';
-import LogoRoundIcon from '@assets/svgs/logoRound.svg';
-import LottieView from 'lottie-react-native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+import {PanGestureHandler, State} from 'react-native-gesture-handler';
+import {ValueOf} from 'react-native-gesture-handler/lib/typescript/typeUtils';
+import {PanGestureHandlerEventPayload} from 'react-native-screens';
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -46,10 +50,11 @@ const Page1 = ({nickname, onNext}: Readonly<PageProps>) => {
       source={require('@assets/pngs/background/youthOnboarding1.png')}
       className="flex-1 items-center">
       <View className="flex-1 w-full">
+        <View className="h-[130]" />
         <Txt
           type="body2"
           text={`${nickname} 님,\n지금도 내일모래에는\n당신을 위해 목소리를 내는\n사람들이 있어요`}
-          className="text-gray200 text-center mt-[200]"
+          className="text-white text-center"
         />
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
           <Button text="다음" onPress={onNext} />
@@ -96,7 +101,7 @@ const Page2 = ({
       source={require('@assets/pngs/background/youthOnboarding2.png')}
       className="flex-1 items-center">
       <View className="flex-1 w-full">
-        <View className="h-[200]" />
+        <View className="h-[130]" />
         <Animated.Text
           style={{
             color: textColor,
@@ -119,8 +124,15 @@ const Page2 = ({
 
           <View className="px-[30]">
             <Pressable
-              className="border border-yellow200 bg-white10 shadow-[0px_0px_15px_0px_rgba(253,253,196,0.30)] h-[84] flex-row items-center px-[17]"
-              style={{borderRadius: 10}}
+              className="border border-yellow200 bg-white10 h-[84] flex-row items-center px-[17]"
+              style={{
+                borderRadius: 10,
+                shadowColor: 'rgba(253, 253, 196, 0.30)',
+                shadowOffset: {width: 0, height: 0},
+                shadowOpacity: 1,
+                shadowRadius: 15,
+                elevation: 33, // Android only
+              }}
               onPress={onNext}>
               <LogoRoundIcon />
               <View className="w-[16.81]" />
@@ -264,10 +276,11 @@ const Page4 = ({onNext}: Readonly<PageProps>) => {
         source={require('@assets/pngs/background/youthOnboarding3.png')}
         style={{...StyleSheet.absoluteFillObject, opacity: opacityAnim}}>
         <View className="flex-1 w-full">
+          <View className="h-[130]" />
           <Txt
             type="body2"
             text={`이제부터 내일모래가 내일도, 모레도,\n당신의 일상에 따스한 목소리를 전달해줄게요`}
-            className="text-gray200 text-center mt-[200]"
+            className="text-white text-center"
           />
           <View className="absolute left-0 bottom-[55] w-full px-[30]">
             <Button text="다음" onPress={onNext} />
@@ -278,10 +291,11 @@ const Page4 = ({onNext}: Readonly<PageProps>) => {
         source={require('@assets/pngs/background/youthOnboarding4.png')}
         style={{...StyleSheet.absoluteFillObject, opacity: nextOpacityAnim}}>
         <View className="flex-1 w-full">
+          <View className="h-[130]" />
           <Txt
             type="body2"
             text={`이제부터 내일모래가 내일도, 모레도,\n당신의 일상에 따스한 목소리를 전달해줄게요`}
-            className="text-gray200 text-center mt-[200]"
+            className="text-white text-center"
           />
           <View className="absolute left-0 bottom-[55] w-full px-[30]">
             <Button text="다음" onPress={onNext} />
@@ -310,14 +324,14 @@ const YouthOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
     preloadImages();
   }, []);
 
-  const goNext = () => {
+  const handleSkip = () => {
     navigation.navigate('YouthWakeUpTimeScreen');
     setCurrentPageIdx(0);
   };
 
   const handleNext = () => {
     if (currentPageIdx === PAGE_COUNT - 1) {
-      goNext();
+      handleSkip();
       return;
     }
     // 페이드 아웃 애니메이션
@@ -336,9 +350,43 @@ const YouthOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
     });
   };
 
+  const handlePrevious = () => {
+    if (currentPageIdx === 0) return;
+    // 페이드 아웃 애니메이션
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setCurrentPageIdx(prevIdx => prevIdx - 1);
+      // 페이드 인 애니메이션
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    });
+  };
+
+  const handleSwipe = ({
+    nativeEvent,
+  }: {
+    nativeEvent: PanGestureHandlerEventPayload & {state: ValueOf<typeof State>};
+  }) => {
+    if (nativeEvent.state === State.END) {
+      if (nativeEvent.translationX < -50) {
+        // Swipe left
+        handleNext();
+      } else if (nativeEvent.translationX > 50) {
+        // Swipe right
+        handlePrevious();
+      }
+    }
+  };
+
   const handleJumpStep = () => {
     if (currentPageIdx === PAGE_COUNT - 1) {
-      goNext();
+      handleSkip();
       return;
     }
     // 페이드 아웃 애니메이션
@@ -379,11 +427,7 @@ const YouthOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
       <>
         {currentPageIdx !== canJumpPageIdx && (
           <>
-            <Pressable
-              className="absolute top-[42] right-[22] z-10"
-              onPress={goNext}>
-              <Txt type="button" text="건너뛰기" className="text-white" />
-            </Pressable>
+            <AppBar skipCallbackFn={handleSkip} />
 
             <View className="absolute top-[100] left-1/2 -translate-x-1/2">
               <SlidingDot
@@ -406,9 +450,11 @@ const YouthOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
         )}
 
         <View className="flex-1">
-          <Animated.View style={{flex: 1, opacity: fadeAnim}}>
-            {pages[currentPageIdx]}
-          </Animated.View>
+          <PanGestureHandler onHandlerStateChange={handleSwipe}>
+            <Animated.View style={{flex: 1, opacity: fadeAnim}}>
+              {pages[currentPageIdx]}
+            </Animated.View>
+          </PanGestureHandler>
         </View>
       </>
     </BG>
