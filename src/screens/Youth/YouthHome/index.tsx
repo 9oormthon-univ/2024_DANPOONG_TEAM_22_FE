@@ -167,7 +167,7 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
         className={`absolute items-end w-full h-full ${
           clicked ? 'bg-black/50' : ''
         }`}
-        onPress={handleMenuToggle}>
+        onPress={clicked ? handleMenuToggle : null}>
         <View className="absolute bottom-[90] right-[41] items-end">
           {VOICE_MENU.map(({alarmCategory, alarmCategoryKoreanName}, index) => (
             <Animated.View

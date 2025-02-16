@@ -125,10 +125,9 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
     })();
 
     return async () => {
-      if (isPlaying) {
-        await audioPlayer.current.stopPlayer();
-        setIsPlaying(false);
-      }
+      await audioPlayer.current.stopPlayer();
+      audioPlayer.current.removePlayBackListener();
+      setIsPlaying(false);
     };
   }, [alarmId]);
 
@@ -159,12 +158,20 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         await audioPlayer.current.pausePlayer();
         setIsPlaying(false);
       } else {
-        // TODO: 멈춘 부분부터 재생
-        // 기존: 처음부터 다시 재생됨
-        // TODO: 음성 재생이 모두 끝날 시 멈춤 아이콘에서 재생 아이콘으로 변경
-        // 기존: 음성 재생이 끝나도 멈춤 아이콘이 표시되어, 다시 듣기가 어려움.
-        await audioPlayer.current.resumePlayer();
+        const playResult = await audioPlayer.current.startPlayer(
+          voiceFile.fileUrl,
+        );
+        console.log('재생 시작:', playResult);
         setIsPlaying(true);
+
+        // 재생 상태 감지
+        audioPlayer.current.addPlayBackListener(e => {
+          console.log('재생 위치:', e.currentPosition, '총 길이:', e.duration);
+          if (e.currentPosition >= e.duration) {
+            console.log('재생 끝');
+            setIsPlaying(false); // 재생 끝나면 아이콘 변경
+          }
+        });
       }
     } catch (error) {
       console.log(error);
