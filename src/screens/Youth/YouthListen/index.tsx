@@ -20,15 +20,17 @@ import {
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 
 // 아이콘 import
+import {postComment} from '@apis/providedFile';
 import PlayIcon from '@assets/svgs/play_youth.svg';
 import SendIcon from '@assets/svgs/send.svg';
 import SmileIcon from '@assets/svgs/smile.svg';
-import SmileWhiteIcon from '@assets/svgs/smile_white.svg';
+import SmileGrayIcon from '@assets/svgs/smile_gray.svg';
 import StopIcon from '@assets/svgs/stop.svg';
-import {postComment} from '@apis/providedFile';
 import BG from '@components/atom/BG';
+import Toast from '@components/atom/Toast';
+import {COLORS} from '@constants/Colors';
+import {EMOTION_OPTIONS_YOUTH} from '@constants/letter';
 import {EmotionType} from '@type/api/providedFile';
-import {EMOTION_OPTIONS} from '@constants/letter';
 
 // 네비게이션 Props 타입 정의
 type YouthProps = NativeStackScreenProps<
@@ -42,7 +44,6 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
   const [message, setMessage] = useState(''); // 메시지 입력값
   const [isClickedEmotion, setIsClickedEmotion] = useState(false); // 감정 표현 클릭 여부
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false); // 키보드 표시 여부
-  const imageUri = null; // 프로필 이미지 URI
   const animation = useRef<LottieView>(null); // 애니메이션 ref
   const [isPlaying, setIsPlaying] = useState(false); // 오디오 재생 여부
   const [voiceFile, setVoiceFile] = useState<VoiceFileResponseData>(
@@ -50,6 +51,8 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
   ); // 음성 파일 데이터
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태
   const audioPlayer = useRef(new AudioRecorderPlayer()); // 오디오 플레이어 ref
+  const [isToast, setIsToast] = useState(false); // 토스트 메시지 표시 상태
+  const [toastMessage, setToastMessage] = useState(''); // 토스트 메시지
 
   // 초기 로딩 처리
   useEffect(() => {
@@ -89,10 +92,9 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
 
   // 음성 파일 로드 및 재생
   useEffect(() => {
+    if (!alarmId) return;
+
     (async () => {
-      if (!alarmId) {
-        return;
-      }
       try {
         const res = await getVoiceFiles({alarmId});
         console.log(res);
@@ -109,8 +111,10 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
             'https://ip-file-upload-test.s3.ap-northeast-2.amazonaws.com/mom.mp4',
           voiceFileId: 1,
           providedFileId: 1,
+          // content:
+          //   '아침 거르고 빈속으로 있으면 힘들어요\n가볍게라도 꼭 챙겨 드시길 바라요',
           content:
-            '아침 거르고 빈속으로 있으면 힘들어요\n가볍게라도 꼭 챙겨 드시길 바라요',
+            '안녕하세요, 요즘 많이 힘드셨죠? 하루하루\n버텨내느라 정말 수고 많았어요. 혹시 오늘,\n잠깐이라도 햇빛을 쬐러 창밖으로 걸어 나와 볼래요? 햇빛을 조금 쬐면 기분이 훨씬 나아질 거예요.\n주변에 괜찮은 카페가 있다면 따뜻한 음료도 한 잔\n마셔보세요. 작은 변화가 큰 힘이 되니까요. 제가\n항상 당신을 응원하고 있어요.',
         };
         setVoiceFile(mockVoiceFile);
         setTimeout(async () => {
@@ -128,24 +132,22 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
     };
   }, [alarmId]);
 
-  const handleMessageSend = async ({
-    emotionType,
-  }: {
-    emotionType?: EmotionType;
-  }) => {
-    Alert.alert('성공', '편지를 성공적으로 보냈어요');
+  const handleMessageSend = async (emotionType?: EmotionType) => {
+    setIsToast(true);
+    setToastMessage('전송 완료');
+
     if (!emotionType && !message) {
       return;
     }
     try {
-      // await postComment({
-      //   providedFileId: voiceFile.providedFileId,
-      //   message: emotionType ?? message,
-      // });
+      await postComment({
+        providedFileId: voiceFile.providedFileId,
+        message: emotionType ?? message,
+      });
       setMessage('');
     } catch (error) {
       console.log(error);
-      // Alert.alert('오류', '편지를 보내는 중 오류가 발생했어요');
+      Alert.alert('오류', '편지를 보내는 중 오류가 발생했어요');
     }
   };
 
@@ -177,10 +179,10 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
 
   // 메인 UI 렌더링
   return (
-    <BG type="solid">
+    <BG type="main">
       {!isKeyboardVisible && (
         <View
-          className="absolute left-0 bottom-0 w-full h-full"
+          className="absolute left-0 bottom-[40] w-full h-full"
           style={{transform: [{scale: 1.1}]}}>
           <LottieView
             ref={animation}
@@ -193,48 +195,60 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
           />
         </View>
       )}
+
       <View className="flex-1">
         <AppBar
           exitCallbackFn={() => navigation.goBack()}
           className="absolute top-[0] w-full"
         />
 
-        <View className="pt-[149] flex-1 items-center">
-          {/* 프로필 이미지 영역 */}
-          <View className="relative w-[78] h-[78] justify-center items-center">
-            <Image
-              source={
-                imageUri
-                  ? {uri: imageUri}
-                  : require('@assets/pngs/logo/app/app_logo_yellow.png')
-              }
-              className="w-[70] h-[70]"
-              style={{borderRadius: 35}}
-            />
-            <View
-              className="absolute left-0 bottom-0 w-[78] h-[78] border border-yellowPrimary"
-              style={{borderRadius: 39}}
+        <View className="h-[100] " />
+
+        <View className="flex-1 items-center">
+          {/* 프로필 */}
+          <View className="flex-row self-start px-[30]">
+            <View className="relative w-[31] h-[31] justify-center items-center">
+              {/* TODO: 봉사자 프로필 사진 표시 */}
+              <Image
+                source={
+                  null
+                    ? {uri: null}
+                    : require('@assets/pngs/logo/app/app_logo_yellow.png')
+                }
+                className="w-[25] h-[25]"
+                style={{borderRadius: 25}}
+              />
+              <View
+                className="absolute left-0 bottom-0 w-[31] h-[31] border border-yellowPrimary"
+                style={{borderRadius: 31}}
+              />
+            </View>
+            <View className="w-[10]" />
+            {/* TODO: 봉사자 닉네임 표시 */}
+            <Txt
+              type="title4"
+              text="네잎클로바육칠팔구십일"
+              className="text-yellowPrimary"
             />
           </View>
 
-          {/* 봉사자 정보 및 스크립트 */}
-          <Txt
-            type="body2"
-            text="별님"
-            className="text-yellowPrimary mt-[13] mb-[25] text-center"
-          />
-          <View className="px-[32] h-[110]">
+          <View className="h-[33] " />
+
+          {/* 스크립트 */}
+          <View className="px-[30] h-[244]">
             <ScrollView>
               <Txt
-                type="title3"
+                type="body3"
                 text={voiceFile.content ?? ''}
-                className="text-gray200 text-center"
+                className="text-white"
               />
             </ScrollView>
           </View>
 
+          <View className="h-[33] " />
+
           {/* 재생/정지 버튼 */}
-          <Pressable onPress={handlePlayButtonClick} className="mt-[52]">
+          <Pressable onPress={handlePlayButtonClick} className="w-[69] h-[69]">
             {isPlaying ? <StopIcon /> : <PlayIcon />}
           </Pressable>
 
@@ -252,18 +266,16 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
                   alignItems: 'center',
                 }}
                 className="pl-[25] w-full mb-[27]">
-                {EMOTION_OPTIONS.map((emotion, index) => (
+                {EMOTION_OPTIONS_YOUTH.map((emotion, index) => (
                   <Pressable
                     key={emotion.label}
                     className={`bg-blue400 py-[9] pl-[14] pr-[19] ${
-                      index === EMOTION_OPTIONS.length - 1
+                      index === EMOTION_OPTIONS_YOUTH.length - 1
                         ? 'mr-[50]'
                         : 'mr-[10]'
-                    } flex-row items-center justify-center`}
+                    } flex-row items-center justify-center active:bg-blue500`}
                     style={{borderRadius: 50}}
-                    onPress={() =>
-                      handleMessageSend({emotionType: emotion.type})
-                    }>
+                    onPress={() => handleMessageSend(emotion.type)}>
                     {emotion.icon}
                     <Txt
                       type="body3"
@@ -280,21 +292,22 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
                 value={message}
                 onChangeText={setMessage}
                 placeholder="감사의 말을 전해보세요"
-                placeholderTextColor={'#A0A0A0'}
-                className={`mr-[15] text-gray100 py-[8] px-[27] font-r bg-blue400 border ${
+                placeholderTextColor={COLORS.gray300}
+                className={`h-[40] mr-[15] text-gray100 py-[8] pl-[27] pr-[45] font-r bg-blue400 border ${
                   isKeyboardVisible
                     ? 'border-gray200 w-full'
                     : 'border-blue400 w-[307]'
                 }`}
-                style={{fontSize: 16, borderRadius: 100}}
-                onSubmitEditing={handleMessageSend}
+                style={{fontSize: 15, borderRadius: 100}}
+                onSubmitEditing={() => handleMessageSend()}
+                maxLength={160}
               />
               {!!message && (
                 <Pressable
                   className={`absolute ${
                     isKeyboardVisible ? 'right-[32]' : 'right-[88]'
                   }`}
-                  onPress={handleMessageSend}>
+                  onPress={() => handleMessageSend()}>
                   <SendIcon />
                 </Pressable>
               )}
@@ -302,13 +315,19 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
                 <Pressable
                   className=""
                   onPress={() => setIsClickedEmotion(prev => !prev)}>
-                  {isClickedEmotion ? <SmileWhiteIcon /> : <SmileIcon />}
+                  {isClickedEmotion ? <SmileGrayIcon /> : <SmileIcon />}
                 </Pressable>
               )}
             </View>
           </View>
         </View>
       </View>
+
+      <Toast
+        text={toastMessage}
+        isToast={isToast}
+        setIsToast={() => setIsToast(false)}
+      />
     </BG>
   );
 };

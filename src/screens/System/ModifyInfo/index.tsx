@@ -2,6 +2,7 @@ import ProfileCameraIcon from '@assets/svgs/ProfileCamera.svg';
 import AnimatedView from '@components/atom/AnimatedView';
 import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
+import BottomMenu from '@components/atom/BottomMenu';
 import Button from '@components/atom/Button';
 import TextInput from '@components/atom/TextInput';
 import Txt from '@components/atom/Txt';
@@ -155,33 +156,13 @@ const ModifyInfoScreen = () => {
               visible={clickedUpload}
               style={{borderRadius: 10}}
               className="bg-blue500 mb-[24]">
-              <View className="h-[43] justify-center items-center">
-                <Txt
-                  type="caption1"
-                  text="프로필 사진 설정"
-                  className="text-gray300"
-                />
-              </View>
-              <View className="bg-blue600 h-[1]" />
-              <Pressable
-                className="h-[61] justify-center items-center"
-                onPress={selectImage}>
-                <Txt
-                  type="body3"
-                  text="앨범에서 사진 선택"
-                  className="text-white"
-                />
-              </Pressable>
-              <View className="bg-blue600 h-[1]" />
-              <Pressable
-                className="h-[61] justify-center items-center"
-                onPress={handleDefaultImageClick}>
-                <Txt
-                  type="body3"
-                  text="기본 이미지 적용"
-                  className="text-white"
-                />
-              </Pressable>
+              <BottomMenu
+                title="프로필 사진 설정"
+                children={[
+                  {title: '앨범에서 사진 선택', onPress: selectImage},
+                  {title: '기본 이미지 적용', onPress: handleDefaultImageClick},
+                ]}
+              />
             </AnimatedView>
             <Button text="취소" onPress={() => setClickedUpload(false)} />
           </Pressable>
