@@ -74,20 +74,25 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
     }
 
     const fcmToken = await AsyncStorage.getItem('fcmToken');
+    const birth = birthday.toISOString();
 
     const data: MemberRequestData = {
       gender,
+      birth,
       name: nickname,
       profileImage: imageLocation ?? '',
       role: role as Role,
-      birth: birthday.toISOString(),
       fcmToken: fcmToken ?? '',
     };
     try {
       postMember(data);
 
+      await AsyncStorage.setItem('gender', gender);
+      await AsyncStorage.setItem('birth', birth);
       await AsyncStorage.setItem('nickname', nickname);
+      await AsyncStorage.setItem('profileImage', imageLocation);
       await AsyncStorage.setItem('role', role);
+
       if (role === 'YOUTH') {
         navigation.navigate('YouthOnboardingScreen');
         return;

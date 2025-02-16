@@ -13,7 +13,7 @@ import {useEffect, useState} from 'react';
 import {Alert} from 'react-native';
 
 // API 및 타입 임포트
-import {getMember} from '@apis/member';
+import useGetMember from '@hooks/auth/useGetMember';
 import {Role} from '@type/api/member';
 import navigateToYouthListenScreen from '@utils/navigateToYouthListenScreen';
 import SplashScreen from 'react-native-splash-screen';
@@ -25,60 +25,37 @@ const AppInner = () => {
   // 상태 관리
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태
   const [role, setRole] = useState<Role | null>(null); // 사용자 역할
-  const [isNavigationReady, setIsNavigationReady] = useState(false); // 네비게이션 준비 상태
+  const {data: memberData, isError: isErrorMember} = useGetMember();
 
   // 로그인 상태 및 사용자 정보 확인
   useEffect(() => {
     (async () => {
-      try {
-        // await AsyncStorage.removeItem('accessToken');
-        // await AsyncStorage.removeItem('role');
-        // await AsyncStorage.setItem('role', 'YOUTH');
-        // await AsyncStorage.setItem('role', 'HELPER');
-        console.log('role: ', await AsyncStorage.getItem('role'));
-        const token = await AsyncStorage.getItem('accessToken');
-        setIsLoggedIn(!!token);
-
-        if (!token) {
-          return;
-        }
-
-        // 사용자 정보 가져오기
-        const {result} = await getMember();
-        console.log('getMember(): ', result);
-        setRole(result.role);
-      } catch (error) {
-        console.error(error);
-        Alert.alert(
-          '오류',
-          `회원 정보를 불러오는 중 오류가 발생했어요\n${error}`,
-        );
-      }
+      const token = await AsyncStorage.getItem('accessToken');
+      setIsLoggedIn(!!token);
     })();
   }, []);
 
-  // 네비게이션 준비 상태 설정
   useEffect(() => {
-    // console.log('isLoggedIn: ', isLoggedIn);
-    // console.log('role: ', role);
-    if (isLoggedIn && role) {
-      setIsNavigationReady(true);
-    }
-  }, [isLoggedIn, role]);
+    if (!memberData) return;
+    const {result} = memberData;
+    setRole(result.role);
+  }, [memberData]);
+
+  useEffect(() => {
+    if (!isErrorMember) return;
+    Alert.alert('오류', '사용자 정보를 가져오는데 실패했어요');
+  }, [isErrorMember]);
 
   // 스플래시 스크린 숨기기
   useEffect(() => {
-    SplashScreen.hide();
-    // if (isNavigationReady && role) {
-    //   SplashScreen.hide();
-    // }
-  }, [isNavigationReady, role]);
+    if (isLoggedIn) {
+      SplashScreen.hide();
+    }
+  }, [isLoggedIn]);
 
   // 알람 처리 및 청년 리스닝 화면 이동
   useEffect(() => {
-    if (!isNavigationReady || role === 'HELPER') {
-      return;
-    }
+    if (!isLoggedIn || role === 'HELPER') return;
 
     (async () => {
       // 알람 관련 데이터 가져오기
@@ -94,7 +71,7 @@ const AppInner = () => {
         await AsyncStorage.removeItem('alarmId');
       }
     })();
-  }, [isNavigationReady, role]);
+  }, [isLoggedIn, role]);
 
   // 네비게이션 스택 렌더링
   return (
@@ -107,7 +84,6 @@ const AppInner = () => {
         <Stack.Group>
           {role === 'HELPER' ? (
             // 헬퍼인 경우
-            
             <Stack.Screen name="AppTabNav" component={AppTabNav} />
           ) : (
             // 청년인 경우
