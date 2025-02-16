@@ -371,7 +371,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
         />
         <Txt
           type="caption1"
-          text={`신고한 글은 삭제돼요`}
+          text="삭제한 글은 되돌릴 수 없어요"
           className="text-gray300 mb-[29] text-center"
         />
       </Modal>
