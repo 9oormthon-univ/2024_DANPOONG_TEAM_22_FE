@@ -22,6 +22,7 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
       const token: KakaoOAuthToken = await login();
       console.log('token', token);
 
+      // TODO: 이메일 정보 저장하기
       const profile: KakaoProfile = await getProfile();
       console.log({profile});
 

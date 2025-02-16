@@ -3,11 +3,13 @@ import Txt from '@components/atom/Txt';
 import {COLORS} from '@constants/Colors';
 import {useRef} from 'react';
 import {TextInput as RNTextInput, View} from 'react-native';
+
 interface TextInputProps {
   value: string;
   onChangeText: (text: string) => void;
   placeholder?: string;
-  isError: boolean;
+  isError?: boolean;
+  isSuccess?: boolean;
   message?: string;
 }
 
@@ -16,6 +18,7 @@ const TextInput = ({
   onChangeText,
   placeholder = '텍스트를 입력해주세요',
   isError = false,
+  isSuccess = false,
   message,
 }: TextInputProps) => {
   const textInputRef = useRef<RNTextInput>(null);
@@ -57,7 +60,7 @@ const TextInput = ({
             text={message}
             className={`text-gray400 self-start pl-[9] ${
               isError ? 'text-red' : ''
-            }`}
+            } ${isSuccess ? 'text-green-400' : ''}`}
           />
         </>
       )}
