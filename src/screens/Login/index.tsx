@@ -3,7 +3,12 @@ import KakaoIcon from '@assets/svgs/kakao.svg';
 import BG from '@components/atom/BG';
 import Txt from '@components/atom/Txt';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {KakaoOAuthToken, login} from '@react-native-seoul/kakao-login';
+import {
+  getProfile,
+  KakaoOAuthToken,
+  KakaoProfile,
+  login,
+} from '@react-native-seoul/kakao-login';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {Image, Linking, Pressable, View} from 'react-native';
@@ -16,6 +21,9 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
     try {
       const token: KakaoOAuthToken = await login();
       console.log('token', token);
+
+      const profile: KakaoProfile = await getProfile();
+      console.log({profile});
 
       // iOS에서는 macAddress를 가져오는 것이 정책상 허용되지 않음
       const {result} = await postLogin({
