@@ -11,8 +11,8 @@ import useGetHelperNum from '@hooks/member/useGetHelperNum';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {YouthStackParamList} from '@stackNav/Youth';
-import {useEffect, useState} from 'react';
-import {Alert, ImageBackground, Pressable, View} from 'react-native';
+import {useEffect, useRef, useState} from 'react';
+import {Alert, Animated, ImageBackground, Pressable, View} from 'react-native';
 
 type YouthProps = NativeStackScreenProps<
   YouthStackParamList,
@@ -46,6 +46,11 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
     isError: isAlarmComfortError,
     error: alarmComfortError,
   } = useGetAlarmComfort();
+  const animations = useRef(
+    VOICE_MENU.map(() => new Animated.Value(0)),
+  ).current;
+  const textOpacity = useRef(new Animated.Value(1)).current;
+
   console.log('alarmComfortData', alarmComfortData);
   useEffect(() => {
     (async () => {
@@ -99,7 +104,31 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
     }
   }, [isAlarmComfortError, alarmComfortError]);
 
-  // return <LoadingScreen />;
+  const animateMenu = (toValue: number) => {
+    const animationsArray = VOICE_MENU.map((_, index) =>
+      Animated.timing(animations[index], {
+        toValue,
+        duration: 300,
+        useNativeDriver: true,
+        delay: index * 100,
+      }),
+    );
+    Animated.stagger(
+      100,
+      toValue === 1 ? [...animationsArray].reverse() : animationsArray,
+    ).start();
+  };
+
+  const handleMenuToggle = () => {
+    setClicked(prev => !prev);
+    animateMenu(clicked ? 0 : 1);
+    Animated.timing(textOpacity, {
+      toValue: clicked ? 1 : 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+
   return (
     <ImageBackground
       source={require('@assets/pngs/background/youthMain.png')}
@@ -138,45 +167,56 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
         className={`absolute items-end w-full h-full ${
           clicked ? 'bg-black/50' : ''
         }`}
-        onPress={() => setClicked(false)}>
+        onPress={handleMenuToggle}>
         <View className="absolute bottom-[90] right-[41] items-end">
-          {clicked && (
-            <View className="mb-[11] items-end">
-              {VOICE_MENU.map(({alarmCategory, alarmCategoryKoreanName}) => (
-                <View
-                  className="flex-row items-center mb-[14]"
-                  key={alarmCategory}>
-                  <Txt
-                    type="button"
-                    text={alarmCategoryKoreanName}
-                    className="text-white"
-                  />
-                  <View className="w-[16]" />
-                  <Pressable
-                    className="bg-blue400 h-[61] w-[61] justify-center items-center active:bg-blue600"
-                    style={{borderRadius: 100}}
-                    onPress={() => handleButtonClick(alarmCategory)}>
-                    {
-                      VOICE_MENU.find(
-                        menu => menu.alarmCategory === alarmCategory,
-                      )?.icon
-                    }
-                  </Pressable>
-                </View>
-              ))}
-            </View>
-          )}
+          {VOICE_MENU.map(({alarmCategory, alarmCategoryKoreanName}, index) => (
+            <Animated.View
+              key={alarmCategory}
+              style={{
+                opacity: animations[index],
+                transform: [
+                  {
+                    translateY: animations[index].interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [20, 0],
+                    }),
+                  },
+                ],
+              }}
+              className="flex-row items-center mb-[14]">
+              <Txt
+                type="button"
+                text={alarmCategoryKoreanName}
+                className="text-white"
+              />
+              <View className="w-[16]" />
+              <Pressable
+                className="bg-blue400 h-[61] w-[61] justify-center items-center active:bg-blue600"
+                style={{borderRadius: 100}}
+                onPress={() => handleButtonClick(alarmCategory)}>
+                {
+                  VOICE_MENU.find(menu => menu.alarmCategory === alarmCategory)
+                    ?.icon
+                }
+              </Pressable>
+            </Animated.View>
+          ))}
           <View className="flex-row items-center">
-            {!clicked && (
-              <Txt type="button" text="위로 받기" className="text-white" />
-            )}
+            <Animated.View style={{opacity: textOpacity}}>
+              {!clicked && (
+                <Txt type="button" text="위로 받기" className="text-white" />
+              )}
+              {clicked && (
+                <Txt type="button" text="위로 받기" className="text-white" />
+              )}
+            </Animated.View>
             <View className="w-[16]" />
             <Pressable
               className={`${
                 clicked ? 'bg-yellowPrimary' : 'bg-blue500'
               } flex-row justify-center items-center h-[61] w-[61]`}
               style={{borderRadius: 100}}
-              onPress={() => setClicked(prev => !prev)}>
+              onPress={handleMenuToggle}>
               {clicked ? <CloseBlackIcon /> : <LogoIcon />}
             </Pressable>
           </View>
