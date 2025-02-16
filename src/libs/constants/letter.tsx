@@ -1,8 +1,12 @@
-import {EmotionType, LetterResponseData} from '@type/api/providedFile';
 import FightingIcon from '@assets/svgs/emotion/emotion_fighting.svg';
+import FightingBlackIcon from '@assets/svgs/emotion/emotion_fighting_black.svg';
 import LoveIcon from '@assets/svgs/emotion/emotion_love.svg';
+import LoveBlackIcon from '@assets/svgs/emotion/emotion_love_black.svg';
 import StarIcon from '@assets/svgs/emotion/emotion_star.svg';
+import StarBlackIcon from '@assets/svgs/emotion/emotion_star_black.svg';
 import ThumbIcon from '@assets/svgs/emotion/emotion_thumb.svg';
+import ThumbBlackIcon from '@assets/svgs/emotion/emotion_thumb_black.svg';
+import {EmotionType, LetterResponseData} from '@type/api/providedFile';
 import {ReactNode} from 'react';
 
 const currentDate = new Date().toISOString();
@@ -73,6 +77,17 @@ export const EMOTION_OPTIONS: {
   {icon: <ThumbIcon />, label: '도움돼요', type: 'HELPFUL'},
   {icon: <FightingIcon />, label: '힘낼게요', type: 'MOTIVATED'},
   {icon: <LoveIcon />, label: '사랑해요', type: 'LOVE'},
+];
+
+export const EMOTION_OPTIONS_YOUTH: {
+  icon: ReactNode;
+  label: string;
+  type: EmotionType;
+}[] = [
+  {icon: <StarBlackIcon />, label: '고마워요', type: 'THANK_YOU'},
+  {icon: <ThumbBlackIcon />, label: '도움돼요', type: 'HELPFUL'},
+  {icon: <FightingBlackIcon />, label: '힘낼게요', type: 'MOTIVATED'},
+  {icon: <LoveBlackIcon />, label: '사랑해요', type: 'LOVE'},
 ];
 
 export {LETTERS_DATA};
