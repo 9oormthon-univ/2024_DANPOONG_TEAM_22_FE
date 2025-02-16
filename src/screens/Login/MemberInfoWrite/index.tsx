@@ -121,11 +121,14 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
           goBackCallbackFn={openModal}
           className="absolute top-[0] w-full"
         />
-        <View className="items-center pt-[110]">
+
+        <View className="h-[136]" />
+
+        <View className="items-center">
           <Txt
             type="title2"
             text={`${nickname ?? ''} 님,`}
-            className="text-white mt-[26]"
+            className="text-white"
           />
           <Txt
             type="title2"
@@ -133,7 +136,9 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
             className="text-white"
           />
 
-          <View className="mt-[30] px-[46] w-full">
+          <View className="h-[81]" />
+
+          <View className="px-[30] w-full">
             <Pressable
               onPress={() => setOpen(true)}
               className={`w-full h-[48] justify-center border px-[22] ${
