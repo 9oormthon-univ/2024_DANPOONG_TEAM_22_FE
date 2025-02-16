@@ -423,6 +423,7 @@ const YouthOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
   const canJumpPageIdx = 2;
 
   return (
+    // TODO: 페이지 내에서 배경 이미지가 바뀔 때 AppBar 영역 배경색도 바뀌어야 함
     <BG type="main">
       <>
         {currentPageIdx !== canJumpPageIdx && (

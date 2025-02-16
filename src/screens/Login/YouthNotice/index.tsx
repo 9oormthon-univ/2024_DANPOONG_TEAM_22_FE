@@ -1,4 +1,3 @@
-import {postMember} from '@apis/member';
 import AlarmIcon from '@assets/svgs/alarm.svg';
 import LocationIcon from '@assets/svgs/location.svg';
 import AppBar from '@components/atom/AppBar';
@@ -6,11 +5,12 @@ import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Toast from '@components/atom/Toast';
 import Txt from '@components/atom/Txt';
+import usePostYouth from '@hooks/auth/usePostYouth';
 import Geolocation from '@react-native-community/geolocation';
 import {CompositeScreenProps} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {MemberDetailRequestData} from '@type/api/member';
+import {YouthRequestData} from '@type/api/member';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
 import {useState} from 'react';
 import {Alert, Platform, ScrollView, View} from 'react-native';
@@ -43,6 +43,7 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
   const {wakeUpTime, breakfast, lunch, dinner, sleepTime} = route.params;
   const [isToast, setIsToast] = useState(false); // 토스트 메시지 표시 상태
   const [toastMessage, setToastMessage] = useState(''); // 토스트 메시지
+  const {mutate: postYouth} = usePostYouth();
 
   // 위치 정보 권한 요청
   const requestLocationPermission = async () => {
@@ -102,21 +103,19 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
         console.log('pos', pos);
 
         (async () => {
-          const data: MemberDetailRequestData = {
-            youthMemberInfoDto: {
-              wakeUpTime,
-              breakfast,
-              lunch,
-              dinner,
-              sleepTime,
-              latitude: pos.coords.latitude,
-              longitude: pos.coords.longitude,
-            },
+          const data: YouthRequestData = {
+            wakeUpTime,
+            breakfast,
+            lunch,
+            dinner,
+            sleepTime,
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
           };
 
           try {
-            const {result} = await postMember(data);
-            console.log(result);
+            // TODO: api 테스트
+            postYouth(data);
 
             navigation.navigate('YouthStackNav', {
               screen: 'YouthHomeScreen',

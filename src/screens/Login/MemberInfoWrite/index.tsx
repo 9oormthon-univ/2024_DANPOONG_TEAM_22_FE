@@ -1,4 +1,3 @@
-import {postMember} from '@apis/member';
 import uploadImageToS3 from '@apis/util';
 import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
@@ -6,12 +5,14 @@ import Button from '@components/atom/Button';
 import DismissKeyboardView from '@components/atom/DismissKeyboardView';
 import Modal from '@components/atom/Modal';
 import Txt from '@components/atom/Txt';
+import usePostMember from '@hooks/auth/usePostMember';
 import useLoading from '@hooks/useLoading';
 import useModal from '@hooks/useModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {Gender, MemberCommonRequestData, Role} from '@type/api/member';
+import {Gender, MemberRequestData, Role} from '@type/api/member';
+import calculateAge from '@utils/calculateAge';
 import formatDateDot from '@utils/formatDateDot';
 import {useEffect, useState} from 'react';
 import {Alert, Image, Keyboard, Pressable, View} from 'react-native';
@@ -31,6 +32,7 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const [open, setOpen] = useState(false);
   const {visible, openModal, closeModal} = useModal();
   const [visible2, setVisible2] = useState(false);
+  const {mutate: postMember} = usePostMember();
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
@@ -47,20 +49,6 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
       hideSubscription.remove();
     };
   }, []);
-
-  const calculateAge = (birthday: Date) => {
-    const today = new Date();
-    const age = today.getFullYear() - birthday.getFullYear();
-    const monthDifference = today.getMonth() - birthday.getMonth();
-    // 만 나이
-    if (
-      monthDifference < 0 ||
-      (monthDifference === 0 && today.getDate() < birthday.getDate())
-    ) {
-      return age - 1;
-    }
-    return age;
-  };
 
   const handleNext = async () => {
     if (!gender || !birthday) return;
@@ -87,7 +75,7 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
 
     const fcmToken = await AsyncStorage.getItem('fcmToken');
 
-    const data: MemberCommonRequestData = {
+    const data: MemberRequestData = {
       gender,
       name: nickname,
       profileImage: imageLocation ?? '',
@@ -96,8 +84,7 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
       fcmToken: fcmToken ?? '',
     };
     try {
-      const {result} = await postMember(data);
-      console.log(result);
+      postMember(data);
 
       await AsyncStorage.setItem('nickname', nickname);
       await AsyncStorage.setItem('role', role);
