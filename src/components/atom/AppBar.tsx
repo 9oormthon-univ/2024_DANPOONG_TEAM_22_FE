@@ -3,27 +3,62 @@ import Txt from '@components/atom/Txt';
 import {Pressable, View, ViewStyle, ActivityIndicator} from 'react-native';
 import ChevronLeftWhiteIcon from '@assets/svgs/chevron/chevron_left_white.svg';
 import ExitWhiteIcon from '@assets/svgs/exit_white.svg';
-
 // AppBar 컴포넌트의 props 타입 정의
 type AppBarProps = {
-  title?: string; // 상단 제목
-  goBackCallbackFn?: () => void; // 뒤로가기 버튼 클릭 시 실행될 함수
-  exitCallbackFn?: () => void; // 나가기 버튼 클릭 시 실행될 함수
-  confirmCallbackFn?: () => void; // 완료 버튼 클릭 시 실행될 함수
-  className?: string; // 추가 스타일 클래스
-  style?: ViewStyle | ViewStyle[]; // 추가 스타일 객체
+  title?: string;
+  goBackCallbackFn?: () => void;
+  exitCallbackFn?: () => void;
+  confirmCallbackFn?: () => void;
+  skipCallbackFn?: () => void;
+  className?: string;
+  style?: ViewStyle | ViewStyle[];
   isLoading?: boolean; // 로딩 상태(완료버튼 클릭시 로딩 상태)
-};
 
+};
 // AppBar 컴포넌트
 const AppBar = ({
   title,
   goBackCallbackFn,
   exitCallbackFn,
   confirmCallbackFn,
+  skipCallbackFn,
   isLoading,
   ...props
 }: Readonly<AppBarProps>) => {
+  const renderRightButton = (
+    exitCallbackFn?: () => void,
+    confirmCallbackFn?: () => void,
+    skipCallbackFn?: () => void,
+  ) => {
+    if (exitCallbackFn)
+      return (
+        <Pressable
+          className="flex-1 py-[18] flex-row justify-end"
+          onPress={exitCallbackFn}>
+          <ExitWhiteIcon />
+        </Pressable>
+      );
+    if (confirmCallbackFn)
+      return (
+        <Pressable
+          className="flex-1 py-[18] flex-row justify-end"
+          onPress={confirmCallbackFn}>
+          {isLoading ? 
+          <ActivityIndicator size="small" color="#fafafa" /> : 
+          <Txt type="title4" text="완료" className="text-white"/>}
+        </Pressable>
+      );
+    if (skipCallbackFn)
+      return (
+        <Pressable
+          className="flex-1 py-[18] flex-row justify-end"
+          onPress={skipCallbackFn}>
+          <Txt type="button" text="건너뛰기" className="text-white " />
+        </Pressable>
+      );
+    return <View className="flex-1" />;
+  };
+
   return (
     // 메인 컨테이너
     <View
@@ -48,23 +83,7 @@ const AppBar = ({
       ) : (
         <View className="flex-1" />
       )}
-      {/* 오른쪽 영역: 나가기 버튼, 완료 버튼 또는 빈 공간 */}
-      {exitCallbackFn ? (
-        <Pressable
-          className="flex-1 py-[18] flex-row justify-end"
-          onPress={exitCallbackFn}>
-          <ExitWhiteIcon />
-        </Pressable>
-        
-      ) : confirmCallbackFn ? (
-        <Pressable className="flex-1 py-[18] flex-row justify-end" onPress={confirmCallbackFn}>
-          {isLoading ? 
-          <ActivityIndicator size="small" color="#fafafa" /> : 
-          <Txt type="title4" text="완료" className="text-white"/>}
-        </Pressable>
-      ) : (
-        <View className="flex-1" />
-      )}
+      {renderRightButton(exitCallbackFn, confirmCallbackFn, skipCallbackFn)}
     </View>
   );
 };

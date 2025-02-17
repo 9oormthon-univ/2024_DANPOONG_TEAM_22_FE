@@ -1,3 +1,4 @@
+import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import Txt from '@components/atom/Txt';
@@ -11,11 +12,16 @@ import {
   Dimensions,
   Image,
   ImageBackground,
-  Pressable,
   Text,
   View,
 } from 'react-native';
 import {SlidingDot} from 'react-native-animated-pagination-dots';
+import {
+  PanGestureHandler,
+  PanGestureHandlerEventPayload,
+  State,
+} from 'react-native-gesture-handler';
+import {ValueOf} from 'react-native-gesture-handler/lib/typescript/typeUtils';
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -42,7 +48,7 @@ const preloadImages = async () => {
 
 const Page1 = ({nickname, onNext}: Readonly<PageProps>) => {
   return (
-    <View className="flex-1 items-center mt-[220]">
+    <View className="flex-1 items-center mt-[150]">
       <Txt
         type="body2"
         text={`${nickname} 님,\n이런 말 들어본 적 있나요?`}
@@ -82,7 +88,7 @@ const Page2 = ({onNext}: Readonly<PageProps>) => {
           text={
             '내일모래는\n자립준비청년의 일상에\n따스한 목소리를 전하기 위해 만들어졌어요'
           }
-          className="text-gray200 text-center mt-[200]"
+          className="text-white text-center mt-[130]"
         />
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
           <Button text="다음" onPress={onNext} />
@@ -101,7 +107,7 @@ const Page3 = ({nickname, onNext}: Readonly<PageProps>) => {
         <Txt
           type="body2"
           text={`${nickname} 님의 말 한마디에는\n자립준비청년의 일상을\n밝게 비출 힘이 있어요`}
-          className="text-gray200 text-center mt-[200]"
+          className="text-white text-center mt-[130]"
         />
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
           <Button text="다음" onPress={onNext} />
@@ -122,7 +128,7 @@ const Page4 = ({onNext}: Readonly<PageProps>) => {
           text={
             '내일모래와 함께 내일도, 모레도,\n청년의 일상을 비추러 가볼래요?'
           }
-          className="text-gray200 text-center mt-[200]"
+          className="text-gray100 text-center mt-[130]"
         />
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
           <Button text="다음" onPress={onNext} />
@@ -150,14 +156,14 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
     preloadImages();
   }, []);
 
-  const goNext = () => {
+  const handleSkip = () => {
     navigation.navigate('VolunteerNoticeScreen');
     setCurrentPageIdx(0);
   };
 
   const handleNext = () => {
     if (currentPageIdx === PAGE_COUNT - 1) {
-      goNext();
+      handleSkip();
       return;
     }
     // 페이드 아웃 애니메이션
@@ -176,6 +182,40 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
     });
   };
 
+  const handlePrevious = () => {
+    if (currentPageIdx === 0) return;
+    // 페이드 아웃 애니메이션
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setCurrentPageIdx(prevIdx => prevIdx - 1);
+      // 페이드 인 애니메이션
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    });
+  };
+
+  const handleSwipe = ({
+    nativeEvent,
+  }: {
+    nativeEvent: PanGestureHandlerEventPayload & {state: ValueOf<typeof State>};
+  }) => {
+    if (nativeEvent.state === State.END) {
+      if (nativeEvent.translationX < -50) {
+        // Swipe left
+        handleNext();
+      } else if (nativeEvent.translationX > 50) {
+        // Swipe right
+        handlePrevious();
+      }
+    }
+  };
+
   const PAGE_COUNT = 4;
   const width = Dimensions.get('window').width;
 
@@ -187,13 +227,12 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
   ];
 
   return (
-    <BG type={currentPageIdx === 3 ? 'gradation' : 'main'}>
+    <BG
+      type={
+        currentPageIdx === 2 || currentPageIdx === 3 ? 'gradation' : 'main'
+      }>
       <>
-        <Pressable
-          className="absolute top-[42] right-[22] z-10"
-          onPress={goNext}>
-          <Txt type="button" text="건너뛰기" className="text-white" />
-        </Pressable>
+        <AppBar skipCallbackFn={handleSkip} />
 
         <View className="absolute top-[100] left-1/2 -translate-x-1/2">
           <SlidingDot
@@ -208,9 +247,11 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
         </View>
 
         <View className="flex-1">
-          <Animated.View style={{flex: 1, opacity: fadeAnim}}>
-            {pages[currentPageIdx]}
-          </Animated.View>
+          <PanGestureHandler onHandlerStateChange={handleSwipe}>
+            <Animated.View style={{flex: 1, opacity: fadeAnim}}>
+              {pages[currentPageIdx]}
+            </Animated.View>
+          </PanGestureHandler>
         </View>
       </>
     </BG>

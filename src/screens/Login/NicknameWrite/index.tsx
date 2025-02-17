@@ -2,15 +2,18 @@ import CameraIcon from '@assets/svgs/camera.svg';
 import AnimatedView from '@components/atom/AnimatedView';
 import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
+import BottomMenu from '@components/atom/BottomMenu';
 import Button from '@components/atom/Button';
 import DismissKeyboardView from '@components/atom/DismissKeyboardView';
 import Modal from '@components/atom/Modal';
+import TextInput from '@components/atom/TextInput';
 import Txt from '@components/atom/Txt';
 import useModal from '@hooks/useModal';
+import useValidateInput from '@hooks/useValidateInput';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {useEffect, useState} from 'react';
-import {Image, Keyboard, Pressable, TextInput, View} from 'react-native';
+import {Image, Keyboard, Pressable, View} from 'react-native';
 import {
   ImageLibraryOptions,
   ImagePickerResponse,
@@ -22,14 +25,6 @@ type AuthProps = NativeStackScreenProps<
   'NicknameWriteScreen'
 >;
 
-const NICKNAME_MESSAGES = {
-  SUCCESS: '사용 가능한 닉네임이에요',
-  DEFAULT: '2자 이상 10자 이내의 한글, 영문, 숫자만 입력해주세요',
-  TOO_SHORT: '2자 이상 입력하세요',
-  NO_SPACES: '공백을 제거해주세요',
-  NO_SPECIAL_CHARS: '특수문자를 제거해주세요',
-};
-
 const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const {role} = route.params;
   const defaultImageUri =
@@ -37,10 +32,14 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
       ? require('@assets/pngs/profile/youthDefault.png')
       : require('@assets/pngs/profile/volunteerDefault.png');
   const [imageUri, setImageUri] = useState<string | null>(null);
-  const [nickname, setNickname] = useState('');
-  const [nicknameStatus, setNicknameStatus] = useState(
-    NICKNAME_MESSAGES.DEFAULT,
-  );
+  const {
+    value: nickname,
+    setValue: setNickname,
+    isValid: isValidNickname,
+    isError: isErrorNickname,
+    isSuccess: isSuccessNickname,
+    message: nicknameMessage,
+  } = useValidateInput({type: 'nickname'});
   const [clickedUpload, setClickedUpload] = useState(false);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const {visible, openModal, closeModal} = useModal();
@@ -61,7 +60,7 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
     };
   }, []);
 
-  const selectImage = async () => {
+  const selectImage = () => {
     const options: ImageLibraryOptions = {
       mediaType: 'photo', // 'photo', 'video', 또는 'mixed' 중 선택 가능
     };
@@ -105,20 +104,6 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
 
   const handleNicknameChange = (text: string) => {
     setNickname(text);
-    const regex = /^[ㄱ-ㅎ가-힣ㅏ-ㅣa-zA-Z0-9]{2,10}$/;
-    if (text === '') {
-      setNicknameStatus(NICKNAME_MESSAGES.DEFAULT);
-    } else if (text.length < 2) {
-      setNicknameStatus(NICKNAME_MESSAGES.TOO_SHORT);
-    } else if (/\s/.test(text)) {
-      setNicknameStatus(NICKNAME_MESSAGES.NO_SPACES);
-    } else if (/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g.test(text)) {
-      setNicknameStatus(NICKNAME_MESSAGES.NO_SPECIAL_CHARS);
-    } else if (regex.test(text)) {
-      setNicknameStatus(NICKNAME_MESSAGES.SUCCESS);
-    } else {
-      setNicknameStatus(NICKNAME_MESSAGES.DEFAULT);
-    }
   };
 
   return (
@@ -128,16 +113,21 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
           goBackCallbackFn={openModal}
           className="absolute top-[0] w-full"
         />
-        <View className="items-center mt-[149]">
+
+        <View className="h-[120]" />
+
+        <View className="items-center px-[30]">
           <Txt
             type="title2"
             text={'내일모래가 당신을\n어떻게 부를까요?'}
             className="text-white text-center"
           />
 
+          <View className="h-[40]" />
+
           <Pressable
             onPress={() => setClickedUpload(true)}
-            className="mt-[50] relative">
+            className="relative">
             <View
               className={`w-[107] h-[107] ${
                 imageUri ? 'border border-gray200' : ''
@@ -155,20 +145,15 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
             </View>
           </Pressable>
 
+          <View className="h-[31]" />
+
           <TextInput
             value={nickname}
             onChangeText={handleNicknameChange}
+            isError={isErrorNickname}
+            isSuccess={isSuccessNickname}
             placeholder="닉네임을 입력해주세요"
-            placeholderTextColor={'#A0A0A0'}
-            className={`text-center px-[10] font-m text-yellowPrimary border-b ${
-              nickname ? 'border-yellow200' : 'border-gray400'
-            } mt-[31]`}
-            style={{fontSize: 22}}
-          />
-          <Txt
-            type="caption1"
-            text={nicknameStatus}
-            className="text-gray400 mt-[15]"
+            message={nicknameMessage}
           />
         </View>
 
@@ -190,33 +175,13 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
               visible={clickedUpload}
               style={{borderRadius: 10}}
               className="bg-blue500 mb-[24]">
-              <View className="h-[43] justify-center items-center">
-                <Txt
-                  type="caption1"
-                  text="프로필 사진 설정"
-                  className="text-gray300"
-                />
-              </View>
-              <View className="bg-blue600 h-[1]" />
-              <Pressable
-                className="h-[61] justify-center items-center"
-                onPress={selectImage}>
-                <Txt
-                  type="body3"
-                  text="앨범에서 사진 선택"
-                  className="text-white"
-                />
-              </Pressable>
-              <View className="bg-blue600 h-[1]" />
-              <Pressable
-                className="h-[61] justify-center items-center"
-                onPress={handleDefaultImageClick}>
-                <Txt
-                  type="body3"
-                  text="기본 이미지 적용"
-                  className="text-white"
-                />
-              </Pressable>
+              <BottomMenu
+                title="프로필 사진 설정"
+                children={[
+                  {title: '앨범에서 사진 선택', onPress: selectImage},
+                  {title: '기본 이미지 적용', onPress: handleDefaultImageClick},
+                ]}
+              />
             </AnimatedView>
 
             <Button text="취소" onPress={() => setClickedUpload(false)} />
@@ -230,7 +195,7 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
           <Button
             text="다음"
             onPress={handleNext}
-            disabled={nicknameStatus !== NICKNAME_MESSAGES.SUCCESS}
+            disabled={!isValidNickname}
           />
         </View>
       )}

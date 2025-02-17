@@ -4,6 +4,7 @@ import {
   CommentRequestData,
   LettersRequestData,
   LettersResponseData,
+  ReportRequestData,
   SummaryResponseData,
 } from '@type/api/providedFile';
 
@@ -37,4 +38,17 @@ const getLetters = async ({
   return res.data;
 };
 
-export {postComment, getSummary, getLetters};
+const postReport = async ({
+  providedFileId,
+  reason,
+}: Readonly<ReportRequestData>) => {
+  const res = await client.post<ResultResponseData<boolean>>(
+    `/api/v1/${providedFileId}/report`,
+    {
+      reason,
+    },
+  );
+  return res.data;
+};
+
+export {getLetters, getSummary, postComment, postReport};

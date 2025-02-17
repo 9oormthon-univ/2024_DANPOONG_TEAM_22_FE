@@ -22,6 +22,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {trackAppStart, trackScreenView} from '@utils/tracker';
+import {PortalProvider} from '@gorhom/portal';
 
 // 쿼리 클라이언트 설정
 const queryClient = new QueryClient({
@@ -155,11 +156,15 @@ function App(): React.JSX.Element {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <GestureHandlerRootView style={{flex: 1}}>
-        <NavigationContainer ref={navigationRef} onStateChange={onStateChange}>
-          <AppInner />
-        </NavigationContainer>
-      </GestureHandlerRootView>
+      <PortalProvider>
+        <GestureHandlerRootView style={{flex: 1}}>
+          <NavigationContainer
+            ref={navigationRef}
+            onStateChange={onStateChange}>
+            <AppInner />
+          </NavigationContainer>
+        </GestureHandlerRootView>
+      </PortalProvider>
     </QueryClientProvider>
   );
 }
