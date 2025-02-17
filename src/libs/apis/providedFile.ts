@@ -29,11 +29,13 @@ const getSummary = async () => {
 };
 
 const getLetters = async ({
-  parentCategoryId,
+  parentCategory,
   pageable,
 }: Readonly<LettersRequestData>) => {
   const res = await client.get<ResultResponseData<LettersResponseData>>(
-    `/api/v1/providedfile/list?parent_category_id=${parentCategoryId}&page=${pageable.page}&size=${pageable.size}&sort=${pageable.sort}`,
+    parentCategory
+      ? `/api/v1/providedfile/list?parentCategory=${parentCategory}&page=${pageable.page}&size=${pageable.size}&sort=${pageable.sort}`
+      : `/api/v1/providedfile/list?page=${pageable.page}&size=${pageable.size}&sort=${pageable.sort}`,
   );
   return res.data;
 };

@@ -84,7 +84,7 @@ export const EMOTION_OPTIONS_YOUTH: {
   label: string;
   type: EmotionType;
 }[] = [
-  {icon: <StarBlackIcon />, label: '고마워요', type: 'THANK_YOU'},
+  {icon: <StarBlackIcon />, label: '감사해요', type: 'THANK_YOU'},
   {icon: <ThumbBlackIcon />, label: '도움돼요', type: 'HELPFUL'},
   {icon: <FightingBlackIcon />, label: '힘낼게요', type: 'MOTIVATED'},
   {icon: <LoveBlackIcon />, label: '사랑해요', type: 'LOVE'},
