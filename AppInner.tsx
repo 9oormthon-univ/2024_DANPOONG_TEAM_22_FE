@@ -25,13 +25,16 @@ const AppInner = () => {
   // 상태 관리
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태
   const [role, setRole] = useState<Role | null>(null); // 사용자 역할
-  const {data: memberData, isError: isErrorMember} = useGetMember();
+  const [token, setToken] = useState<string | null>(null); // 액세스 토큰
+  const {data: memberData, isError: isErrorMember} = useGetMember(token);
 
   // 로그인 상태 및 사용자 정보 확인
   useEffect(() => {
     (async () => {
       const token = await AsyncStorage.getItem('accessToken');
       setIsLoggedIn(!!token);
+      setToken(token);
+      if (!token) SplashScreen.hide();
     })();
   }, []);
 
@@ -39,19 +42,13 @@ const AppInner = () => {
     if (!memberData) return;
     const {result} = memberData;
     setRole(result.role);
+    SplashScreen.hide();
   }, [memberData]);
 
   useEffect(() => {
     if (!isErrorMember) return;
     Alert.alert('오류', '사용자 정보를 가져오는데 실패했어요');
   }, [isErrorMember]);
-
-  // 스플래시 스크린 숨기기
-  useEffect(() => {
-    if (isLoggedIn) {
-      SplashScreen.hide();
-    }
-  }, [isLoggedIn]);
 
   // 알람 처리 및 청년 리스닝 화면 이동
   useEffect(() => {
