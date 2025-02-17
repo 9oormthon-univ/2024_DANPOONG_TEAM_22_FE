@@ -17,6 +17,7 @@ import useGetMember from '@hooks/auth/useGetMember';
 import SplashScreen from '@screens/Splash';
 import {Role} from '@type/api/member';
 import navigateToYouthListenScreen from '@utils/navigateToYouthListenScreen';
+import {default as RNSplashScreen} from 'react-native-splash-screen';
 
 // 네비게이션 스택 생성
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -31,6 +32,8 @@ const AppInner = () => {
 
   // 로그인 상태 및 사용자 정보 확인
   useEffect(() => {
+    // react-native-splash-screen에서 제공하는 hide 함수를 사용해도 스택 쌓이는 게 보이는 문제가 있어서,
+    // isInitializing 상태로 관리해서 페이지 이동 로직 전까지 스플래시 스크린 컴포넌트를 표시하도록 함
     (async () => {
       // await AsyncStorage.removeItem('accessToken'); // 로그아웃 테스트용
       const token = await AsyncStorage.getItem('accessToken');
@@ -38,6 +41,7 @@ const AppInner = () => {
       setToken(token);
       if (!token) {
         setIsInitializing(false); // 비로그인 상태에서도 스플래시 숨기기
+        RNSplashScreen.hide();
       }
     })();
   }, []);
@@ -48,6 +52,7 @@ const AppInner = () => {
     }
     if (memberData || isErrorMember) {
       setIsInitializing(false); // 데이터 로드 완료 후 스플래시 숨기기
+      RNSplashScreen.hide();
     }
     if (isErrorMember) {
       Alert.alert('오류', '사용자 정보를 가져오는데 실패했어요');
