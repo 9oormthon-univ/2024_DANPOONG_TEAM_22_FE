@@ -80,7 +80,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
     (async () => {
       try {
         const alarmCategoryRes = await getAlarmCategory();
-        console.log(alarmCategoryRes.result);
+        console.log({alarmCategoryRes: alarmCategoryRes.result});
         const categories = alarmCategoryRes.result.map(item => ({
           category: item.alarmCategory,
           label: item.alarmCategoryKoreanName,
@@ -88,7 +88,6 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
         setParentCategories(categories);
 
         const res = await getLetters({
-          parentCategoryId: 1,
           pageable: {page: 0, size: 10, sort: 'createdAt,desc'},
         });
         console.log(res);
