@@ -27,9 +27,15 @@ const Toast = ({
         useNativeDriver: true,
       }).start();
 
-      // 3초 후 토스트 숨기기
+      // 3초 후 페이드아웃 애니메이션 실행 후 토스트 숨기기
       const timer = setTimeout(() => {
-        setIsToast();
+        Animated.timing(opacity, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: true,
+        }).start(() => {
+          setIsToast();
+        });
       }, 3000);
 
       // 컴포넌트 언마운트 시 타이머 정리
