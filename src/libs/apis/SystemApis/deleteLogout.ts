@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import Config from 'react-native-config';
 
 interface DeleteLogoutResponse {
   timestamp: string;
@@ -15,7 +16,7 @@ export const deleteLogout = async (): Promise<DeleteLogoutResponse> => {
     const accessToken = await AsyncStorage.getItem('accessToken');
 
     const response = await axios.delete<DeleteLogoutResponse>(
-      '/api/v1/auth/logout',
+      `${Config.API_URL}/api/v1/auth/logout`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
