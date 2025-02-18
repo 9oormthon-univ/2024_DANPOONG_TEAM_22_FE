@@ -213,53 +213,45 @@ const playRecording = async () => {
 
   // 음성 분석 업로드 함수 
   const uploadAnalysis = async () => {
-    // 컴포넌트가 언마운트된 경우 진행하지 않음
-    if (!isMountedRef.current) return;
-
     try {
-      // const res = await postVoiceAnalysis(voiceFileId);
-      if (!isMountedRef.current) return;
-      // const {code, message} = res;
-      
-      const code = 'ANALYSIS002' as 'ANALYSIS001' | 'ANALYSIS002' | 'ANALYSIS003' | 'ANALYSIS006' | 'ANALYSIS107' | 'COMMON200';
-      const message = '테스트 메시지';
+      console.log('분석 시작: isMountedRef.current =', isMountedRef.current);
+      const res = await postVoiceAnalysis(voiceFileId);
+      const {code, message} = res;
+      console.log('분석 응답:', res);
       switch(code) {
         case 'ANALYSIS001':
-          // 아직 분석 중이면 5초 후 재시도; 언마운트되지 않은 경우에만 타이머 설정
           console.log('재시도 - ANALYSIS001 ', new Date());
           if (isMountedRef.current) {
             analysisTimeoutRef.current = setTimeout(uploadAnalysis, 5000);
           }
           break;
         case 'ANALYSIS002':
-          if (!isMountedRef.current) return;
           navigation.navigate('RCDError', {type: 'Include inappropriate content', message});
           break;
         case 'ANALYSIS003':
-          if (!isMountedRef.current) return;
           navigation.navigate('RCDError', {type: 'text has not been read as it is', message});
           break;
         case 'ANALYSIS006':
-          if (!isMountedRef.current) return;
           navigation.navigate('RCDError', {type: 'notAnalyzing', message});
           break;
         case 'ANALYSIS107':
-          if (!isMountedRef.current) return;
           navigation.navigate('RCDError', {type: 'invalidScript', message});
           break;
         case 'COMMON200':
-          if (!isMountedRef.current) return;
           console.log('COMMON200');
           navigation.navigate('RCDFeedBack');
           break;
         default:
-          if (!isMountedRef.current) return;
           navigation.navigate('RCDError', {type: 'server', message});
           break;
       }
       
     } catch (error: any) {
-      if (!isMountedRef.current) return;
+      console.error('분석 에러:', error);
+      if (!isMountedRef.current) {
+        console.log('에러 처리 중 컴포넌트가 언마운트되어 처리를 중단합니다.');
+        return;
+      }
       const errorCode = error.response?.data.code;
       const message = error.response?.data.message;
       switch(errorCode) {

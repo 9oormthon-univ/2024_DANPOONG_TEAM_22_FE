@@ -14,6 +14,7 @@ export const postVoiceAnalysis = async (
     const response = await client.post<PostVoiceAnalysisResponse>(
       `/api/v1/voicefiles/analysis/${voiceFileId}`,
     );
+    console.log('postVoiceAnalysis', response.data);
     return response.data;
   } catch (error) {
     console.log('음성 파일 분석 오류:', error);
