@@ -184,7 +184,7 @@ const Page3 = ({onNext}: Readonly<PageProps>) => {
 
     setTimeout(async () => {
       await audioPlayer.current.startPlayer(mockFileUrl);
-    }, 1000);
+    }, 500);
 
     return () => {
       (async () => {
