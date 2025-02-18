@@ -151,7 +151,7 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
         <View className="flex-row items-center">
           <Txt
             type="title2"
-            text={`${helperNumData?.result.youthMemberNum}명의 목소리`}
+            text={`${helperNumData?.result.youthMemberNum ?? '0'}명의 목소리`}
             className="text-yellowPrimary"
           />
           <Txt type="title2" text="가" className="text-white" />
@@ -164,64 +164,66 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
       </View>
 
       <Pressable
-        className={`absolute items-end w-full h-full ${
-          clicked ? 'bg-black/50' : ''
+        className={`absolute items-end w-full h-full bg-black/50 ${
+          clicked ? '' : 'hidden'
         }`}
-        onPress={clicked ? handleMenuToggle : null}>
-        <View className="absolute bottom-[90] right-[41] items-end">
-          {VOICE_MENU.map(({alarmCategory, alarmCategoryKoreanName}, index) => (
-            <Animated.View
-              key={alarmCategory}
-              style={{
-                opacity: animations[index],
-                transform: [
-                  {
-                    translateY: animations[index].interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [20, 0],
-                    }),
-                  },
-                ],
-              }}
-              className="flex-row items-center mb-[14]">
-              <Txt
-                type="button"
-                text={alarmCategoryKoreanName}
-                className="text-white"
-              />
-              <View className="w-[16]" />
-              <Pressable
-                className="bg-blue400 h-[61] w-[61] justify-center items-center active:bg-blue600"
-                style={{borderRadius: 100}}
-                onPress={() => handleButtonClick(alarmCategory)}>
+        onPress={clicked ? handleMenuToggle : null}
+      />
+
+      <View className="absolute bottom-[90] right-[41] items-end">
+        {VOICE_MENU.map(({alarmCategory, alarmCategoryKoreanName}, index) => (
+          <Animated.View
+            key={alarmCategory}
+            style={{
+              opacity: animations[index],
+              transform: [
                 {
-                  VOICE_MENU.find(menu => menu.alarmCategory === alarmCategory)
-                    ?.icon
-                }
-              </Pressable>
-            </Animated.View>
-          ))}
-          <View className="flex-row items-center">
-            <Animated.View style={{opacity: textOpacity}}>
-              {!clicked && (
-                <Txt type="button" text="위로 받기" className="text-white" />
-              )}
-              {clicked && (
-                <Txt type="button" text="위로 받기" className="text-white" />
-              )}
-            </Animated.View>
+                  translateY: animations[index].interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [20, 0],
+                  }),
+                },
+              ],
+            }}
+            className="flex-row items-center mb-[14]">
+            <Txt
+              type="button"
+              text={alarmCategoryKoreanName}
+              className="text-white"
+            />
             <View className="w-[16]" />
             <Pressable
-              className={`${
-                clicked ? 'bg-yellowPrimary' : 'bg-blue500'
-              } flex-row justify-center items-center h-[61] w-[61]`}
+              className="bg-blue400 h-[61] w-[61] justify-center items-center active:bg-blue600"
               style={{borderRadius: 100}}
-              onPress={handleMenuToggle}>
-              {clicked ? <CloseBlackIcon /> : <LogoIcon />}
+              onPress={() => handleButtonClick(alarmCategory)}
+              disabled={!clicked}>
+              {
+                VOICE_MENU.find(menu => menu.alarmCategory === alarmCategory)
+                  ?.icon
+              }
             </Pressable>
-          </View>
+          </Animated.View>
+        ))}
+        <View className="flex-row items-center">
+          <Animated.View style={{opacity: textOpacity}}>
+            {!clicked && (
+              <Txt type="button" text="위로 받기" className="text-white" />
+            )}
+            {clicked && (
+              <Txt type="button" text="위로 받기" className="text-white" />
+            )}
+          </Animated.View>
+          <View className="w-[16]" />
+          <Pressable
+            className={`${
+              clicked ? 'bg-yellowPrimary' : 'bg-blue500'
+            } flex-row justify-center items-center h-[61] w-[61]`}
+            style={{borderRadius: 100}}
+            onPress={handleMenuToggle}>
+            {clicked ? <CloseBlackIcon /> : <LogoIcon />}
+          </Pressable>
         </View>
-      </Pressable>
+      </View>
     </ImageBackground>
   );
 };

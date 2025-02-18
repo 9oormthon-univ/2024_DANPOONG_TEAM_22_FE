@@ -11,6 +11,7 @@ interface TextInputProps {
   isError?: boolean;
   isSuccess?: boolean;
   message?: string;
+  maxLength?: number;
 }
 
 // TextInput 컴포넌트
@@ -21,6 +22,7 @@ const TextInput = ({
   isError = false,
   isSuccess = false,
   message,
+  maxLength,
 }: TextInputProps) => {
   // TextInput 레퍼런스 생성
   const textInputRef = useRef<RNTextInput>(null);
@@ -47,6 +49,7 @@ const TextInput = ({
           cursorColor={COLORS.white}
           multiline
           textAlign="left"
+          maxLength={maxLength}
         />
         {isError && (
           <View className="m-[16px]">

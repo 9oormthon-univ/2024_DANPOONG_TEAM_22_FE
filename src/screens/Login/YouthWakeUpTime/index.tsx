@@ -71,7 +71,7 @@ const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {
               onPress={() => setShowHourBottomSheet(true)}
               className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
               <Txt
-                type="title1"
+                type="title2"
                 text={hour.includes('자정') ? '오전 12시' : hour}
                 className="text-white"
               />
@@ -81,7 +81,7 @@ const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {
             <Pressable
               onPress={() => setShowMinuteBottomSheet(true)}
               className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
-              <Txt type="title1" text={minute} className="text-white" />
+              <Txt type="title2" text={minute} className="text-white" />
               <ChevronBottomGrayIcon />
             </Pressable>
           </View>

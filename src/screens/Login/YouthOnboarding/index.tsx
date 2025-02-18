@@ -1,7 +1,7 @@
 import LogoRoundIcon from '@assets/svgs/logoRound.svg';
-import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
+import SkipBar from '@components/atom/SkipBar';
 import Txt from '@components/atom/Txt';
 import {COLORS} from '@constants/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -50,7 +50,7 @@ const Page1 = ({nickname, onNext}: Readonly<PageProps>) => {
       source={require('@assets/pngs/background/youthOnboarding1.png')}
       className="flex-1 items-center">
       <View className="flex-1 w-full">
-        <View className="h-[130]" />
+        <View className="h-[200]" />
         <Txt
           type="body2"
           text={`${nickname} 님,\n지금도 내일모래에는\n당신을 위해 목소리를 내는\n사람들이 있어요`}
@@ -101,7 +101,7 @@ const Page2 = ({
       source={require('@assets/pngs/background/youthOnboarding2.png')}
       className="flex-1 items-center">
       <View className="flex-1 w-full">
-        <View className="h-[130]" />
+        <View className="h-[200]" />
         <Animated.Text
           style={{
             color: textColor,
@@ -184,7 +184,7 @@ const Page3 = ({onNext}: Readonly<PageProps>) => {
 
     setTimeout(async () => {
       await audioPlayer.current.startPlayer(mockFileUrl);
-    }, 1000);
+    }, 500);
 
     return () => {
       (async () => {
@@ -276,7 +276,7 @@ const Page4 = ({onNext}: Readonly<PageProps>) => {
         source={require('@assets/pngs/background/youthOnboarding3.png')}
         style={{...StyleSheet.absoluteFillObject, opacity: opacityAnim}}>
         <View className="flex-1 w-full">
-          <View className="h-[130]" />
+          <View className="h-[200]" />
           <Txt
             type="body2"
             text={`이제부터 내일모래가 내일도, 모레도,\n당신의 일상에 따스한 목소리를 전달해줄게요`}
@@ -291,7 +291,7 @@ const Page4 = ({onNext}: Readonly<PageProps>) => {
         source={require('@assets/pngs/background/youthOnboarding4.png')}
         style={{...StyleSheet.absoluteFillObject, opacity: nextOpacityAnim}}>
         <View className="flex-1 w-full">
-          <View className="h-[130]" />
+          <View className="h-[200]" />
           <Txt
             type="body2"
             text={`이제부터 내일모래가 내일도, 모레도,\n당신의 일상에 따스한 목소리를 전달해줄게요`}
@@ -423,12 +423,13 @@ const YouthOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
   const canJumpPageIdx = 2;
 
   return (
-    // TODO: 페이지 내에서 배경 이미지가 바뀔 때 AppBar 영역 배경색도 바뀌어야 함
     <BG type="main">
       <>
         {currentPageIdx !== canJumpPageIdx && (
           <>
-            <AppBar skipCallbackFn={handleSkip} />
+            <View className="absolute top-0 left-0 w-full z-10">
+              <SkipBar onSkip={handleSkip} />
+            </View>
 
             <View className="absolute top-[100] left-1/2 -translate-x-1/2">
               <SlidingDot

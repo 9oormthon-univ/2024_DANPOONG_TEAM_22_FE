@@ -20,11 +20,6 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
   const handleLogin = async ({loginType}: {loginType: string}) => {
     try {
       const token: KakaoOAuthToken = await login();
-      console.log('token', token);
-
-      // TODO: 이메일 정보 저장하기
-      const profile: KakaoProfile = await getProfile();
-      console.log({profile});
 
       // iOS에서는 macAddress를 가져오는 것이 정책상 허용되지 않음
       const {result} = await postLogin({
@@ -35,12 +30,14 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
         loginType,
       });
 
-      const {accessToken, refreshToken, memberId, serviceMember} = result;
-      console.log('serviceMember', serviceMember);
+      const {accessToken, refreshToken, memberId} = result;
 
       await AsyncStorage.setItem('accessToken', accessToken);
       await AsyncStorage.setItem('refreshToken', refreshToken);
       await AsyncStorage.setItem('memberId', String(memberId));
+
+      const profile: KakaoProfile = await getProfile();
+      await AsyncStorage.setItem('email', profile.email);
 
       navigation.navigate('RoleSelectScreen');
     } catch (error) {

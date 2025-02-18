@@ -1,6 +1,6 @@
-import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
+import SkipBar from '@components/atom/SkipBar';
 import Txt from '@components/atom/Txt';
 import {COLORS} from '@constants/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -48,32 +48,39 @@ const preloadImages = async () => {
 
 const Page1 = ({nickname, onNext}: Readonly<PageProps>) => {
   return (
-    <View className="flex-1 items-center mt-[150]">
-      <Txt
-        type="body2"
-        text={`${nickname} 님,\n이런 말 들어본 적 있나요?`}
-        className="text-white text-center mb-[26]"
-      />
-      <Text
-        className="text-yellow200 font-[Voltaire-Regular]"
-        style={{fontSize: 48}}>
-        “
-      </Text>
-      <Text
-        className="text-yellow200 text-center font-[LeeSeoyun-Regular] mb-[26]"
-        style={{fontSize: 25, lineHeight: 25 * 1.5}}>
-        {'아이 하나를 키우는데\n온 동네가 필요하다'}
-      </Text>
-      <Text
-        className="text-yellow200 font-[Voltaire-Regular]"
-        style={{fontSize: 48}}>
-        ”
-      </Text>
-      <Txt type="body2" text="라는 말이요" className="text-white text-center" />
-      <View className="absolute left-0 bottom-[55] w-full px-[30]">
-        <Button text="다음" onPress={onNext} />
+    <>
+      <View className="h-[200]" />
+      <View className="flex-1 items-center">
+        <Txt
+          type="body2"
+          text={`${nickname} 님,\n이런 말 들어본 적 있나요?`}
+          className="text-white text-center mb-[26]"
+        />
+        <Text
+          className="text-yellow200 font-[Voltaire-Regular]"
+          style={{fontSize: 48}}>
+          “
+        </Text>
+        <Text
+          className="text-yellow200 text-center font-[LeeSeoyun-Regular] mb-[26]"
+          style={{fontSize: 25, lineHeight: 25 * 1.5}}>
+          {'아이 하나를 키우는데\n온 동네가 필요하다'}
+        </Text>
+        <Text
+          className="text-yellow200 font-[Voltaire-Regular]"
+          style={{fontSize: 48}}>
+          ”
+        </Text>
+        <Txt
+          type="body2"
+          text="라는 말이요"
+          className="text-white text-center"
+        />
+        <View className="absolute left-0 bottom-[55] w-full px-[30]">
+          <Button text="다음" onPress={onNext} />
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 
@@ -83,12 +90,13 @@ const Page2 = ({onNext}: Readonly<PageProps>) => {
       source={require('@assets/pngs/background/volunteerOnboarding1.png')}
       className="flex-1 items-center">
       <View className="flex-1 w-full">
+        <View className="h-[200]" />
         <Txt
           type="body2"
           text={
             '내일모래는\n자립준비청년의 일상에\n따스한 목소리를 전하기 위해 만들어졌어요'
           }
-          className="text-white text-center mt-[130]"
+          className="text-white text-center"
         />
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
           <Button text="다음" onPress={onNext} />
@@ -104,10 +112,11 @@ const Page3 = ({nickname, onNext}: Readonly<PageProps>) => {
       source={require('@assets/pngs/background/volunteerOnboarding2.png')}
       className="flex-1 items-center">
       <View className="flex-1 w-full">
+        <View className="h-[200]" />
         <Txt
           type="body2"
           text={`${nickname} 님의 말 한마디에는\n자립준비청년의 일상을\n밝게 비출 힘이 있어요`}
-          className="text-white text-center mt-[130]"
+          className="text-white text-center"
         />
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
           <Button text="다음" onPress={onNext} />
@@ -123,12 +132,13 @@ const Page4 = ({onNext}: Readonly<PageProps>) => {
       source={require('@assets/pngs/background/volunteerOnboarding3.png')}
       className="flex-1 items-center">
       <View className="flex-1 w-full">
+        <View className="h-[200]" />
         <Txt
           type="body2"
           text={
             '내일모래와 함께 내일도, 모레도,\n청년의 일상을 비추러 가볼래요?'
           }
-          className="text-gray100 text-center mt-[130]"
+          className="text-gray100 text-center"
         />
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
           <Button text="다음" onPress={onNext} />
@@ -232,7 +242,9 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
         currentPageIdx === 2 || currentPageIdx === 3 ? 'gradation' : 'main'
       }>
       <>
-        <AppBar skipCallbackFn={handleSkip} />
+        <View className="absolute top-0 left-0 w-full z-10">
+          <SkipBar onSkip={handleSkip} />
+        </View>
 
         <View className="absolute top-[100] left-1/2 -translate-x-1/2">
           <SlidingDot
