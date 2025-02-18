@@ -1,36 +1,41 @@
-import BG from '@components/atom/BG';
-import Txt from '@components/atom/Txt';
-import {View, Pressable, Image} from 'react-native';
-import AppBar from '@components/atom/AppBar';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {SystemStackParamList} from '@type/nav/SystemStackParamList';
-import ProfileCameraIcon from '@assets/svgs/ProfileCamera.svg';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useState, useEffect} from 'react';
-import TextInput from '@components/atom/TextInput';
-import Button from '@components/atom/Button';
-import AnimatedView from '@components/atom/AnimatedView';
-import {
-  launchImageLibrary,
-  ImageLibraryOptions,
-  ImagePickerResponse,
-} from 'react-native-image-picker';
-import Modal from '@components/atom/Modal';
-import useModal from '@hooks/useModal';
-import uploadImageToS3 from '@apis/util';
 import {
   patchMemberInfo,
   PatchMemberInfoRequest,
 } from '@apis/SystemApis/patchMemberInfo';
+import uploadImageToS3 from '@apis/util';
+import ProfileCameraIcon from '@assets/svgs/ProfileCamera.svg';
+import AnimatedView from '@components/atom/AnimatedView';
+import AppBar from '@components/atom/AppBar';
+import BG from '@components/atom/BG';
+import Button from '@components/atom/Button';
+import Modal from '@components/atom/Modal';
+import TextInput from '@components/atom/TextInput';
+import Txt from '@components/atom/Txt';
+import useModal from '@hooks/useModal';
+import useValidateInput from '@hooks/useValidateInput';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {SystemStackParamList} from '@type/nav/SystemStackParamList';
+import {useEffect, useState} from 'react';
+import {Alert, Image, Pressable, View} from 'react-native';
+import {
+  ImageLibraryOptions,
+  ImagePickerResponse,
+  launchImageLibrary,
+} from 'react-native-image-picker';
+
 const ModifyInfoScreen = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
   const [role, setRole] = useState('');
-  const [isError, setIsError] = useState(false); // 에러 상태
-  const [errorMessages, setErrorMessages] = useState<string[]>([]);
-  // 닉네임 관련 state
-  const [nickname, setNickname] = useState('');
-  const [initialNickname, setInitialNickname] = useState('');
-  const [isNicknameChanged, setIsNicknameChanged] = useState(false);
+  const [originalNickname, setOriginalNickname] = useState('');
+  const {
+    value: nickname,
+    setValue: setNickname,
+    isValid: isValidNickname,
+    isError: isErrorNickname,
+    isSuccess: isSuccessNickname,
+    message: nicknameMessage,
+  } = useValidateInput({type: 'nickname'});
   // 프로필 이미지 관련 state
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [clickedUpload, setClickedUpload] = useState(false);
@@ -44,32 +49,8 @@ const ModifyInfoScreen = () => {
       ? require('@assets/pngs/profile/youthDefault.png')
       : require('@assets/pngs/profile/volunteerDefault.png');
 
-  // 닉네임 유효성 검사 함수
-  const validateNickname = (text: string) => {
-    const errors: string[] = [];
-
-    if (text.length < 2) {
-      errors.push('2자 이상 입력하세요');
-    }
-    if (text.length > 10) {
-      errors.push('10자 이내로 입력하세요');
-    }
-    if (/\s/.test(text)) {
-      errors.push('공백을 제거해주세요');
-    }
-    if (/[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]/.test(text)) {
-      errors.push('특수문자를 제거해주세요');
-    }
-
-    setErrorMessages(errors);
-    setIsError(errors.length > 0);
-  };
-
-  // 텍스트 변경 핸들러
-  const onChangeText = (newText: string) => {
-    setNickname(newText);
-    validateNickname(newText);
-    setIsNicknameChanged(newText !== initialNickname);
+  const handleNicknameChange = (text: string) => {
+    setNickname(text);
   };
 
   useEffect(() => {
@@ -81,8 +62,8 @@ const ModifyInfoScreen = () => {
       const storedFcmToken = await AsyncStorage.getItem('fcmToken');
       if (storedRole) setRole(storedRole);
       if (storedNickname) {
+        setOriginalNickname(storedNickname);
         setNickname(storedNickname);
-        setInitialNickname(storedNickname);
       }
       if (storedProfileImage) setImageUri(storedProfileImage);
       if (storedBirth) setBirth(storedBirth);
@@ -92,6 +73,10 @@ const ModifyInfoScreen = () => {
 
   //완료 버튼 클릭 함수
   const confirmCallbackFn = async () => {
+    if (!isValidNickname) {
+      Alert.alert('닉네임을 확인해주세요');
+      return;
+    }
     if (isLoading) return;
     setIsLoading(true);
     try {
@@ -108,9 +93,11 @@ const ModifyInfoScreen = () => {
           }
         }
       }
+      const isNicknameChanged = originalNickname !== nickname;
       if (isNicknameChanged) {
         await AsyncStorage.setItem('nickname', nickname);
       }
+
       const request: PatchMemberInfoRequest = {
         name: nickname,
         gender: 'MALE',
@@ -166,6 +153,7 @@ const ModifyInfoScreen = () => {
   // 나가기 버튼 클릭 함수
   const goBackCallbackFn = () => {
     if (isLoading) return;
+    const isNicknameChanged = originalNickname !== nickname;
     if (isNicknameChanged || isImageChanged) {
       openModal();
     } else {
@@ -174,68 +162,62 @@ const ModifyInfoScreen = () => {
   };
 
   return (
-    <>
-      <BG type="solid">
-        <AppBar
-          title="내 정보 수정"
-          goBackCallbackFn={goBackCallbackFn}
-          confirmCallbackFn={confirmCallbackFn}
-          isLoading={isLoading}
-        />
-        {/* 프로필 이미지 영역 */}
-        <View className="flex-1 items-center pt-[38]">
-          <Pressable onPress={() => !isLoading && setClickedUpload(true)}>
-            <View className="relative w-[107] h-[107]">
-              {imageUri ? (
-                <Image
-                  source={{uri: imageUri}}
-                  style={{width: '100%', height: '100%', borderRadius: 53.5}}
-                />
-              ) : (
-                <Image
-                  source={defaultImageUri}
-                  style={{width: '100%', height: '100%', borderRadius: 53.5}}
-                />
-              )}
-              <ProfileCameraIcon className="absolute right-[-8] bottom-[0]" />
-            </View>
-          </Pressable>
-          {/* 공백백*/}
-          <View className="h-[39]" />
-          {/* 닉네임 수정 Section */}
-          <View className="w-full px-px gap-y-[10]">
-            <Txt
-              type="caption1"
-              text="닉네임"
-              className="ml-[9] mb-[8px] text-gray200"
-            />
-            <TextInput
-              placeholder="닉네임을 입력해주세요."
-              value={nickname}
-              onChangeText={onChangeText}
-              isError={isError}
-              maxLength={10}
-            />
-            {errorMessages.length > 0 ? (
-              errorMessages.map((error, index) => (
-                <Txt
-                  key={index}
-                  type="caption1"
-                  text={error}
-                  className="ml-[9] text-red"
-                />
-              ))
+    <BG type="solid">
+      <AppBar
+        title="내 정보 수정"
+        goBackCallbackFn={goBackCallbackFn}
+        confirmCallbackFn={confirmCallbackFn}
+        isLoading={isLoading}
+      />
+      {/* 프로필 이미지 영역 */}
+      <View className="flex-1 items-center pt-[38]">
+        <Pressable onPress={() => !isLoading && setClickedUpload(true)}>
+          <View className="relative w-[107] h-[107]">
+            {imageUri ? (
+              <Image
+                source={{uri: imageUri}}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: 53.5,
+                }}
+              />
             ) : (
-              <Txt
-                type="caption1"
-                text="2자 이상 10자 이내의 한글,영문,숫자 입력 가능합니다."
-                className="ml-[9] text-gray400"
+              <Image
+                source={defaultImageUri}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: 53.5,
+                }}
               />
             )}
+            <ProfileCameraIcon className="absolute right-[-8] bottom-[0]" />
           </View>
+        </Pressable>
+        {/* 공백백*/}
+        <View className="h-[39]" />
+        {/* 닉네임 수정 Section */}
+        <View className="w-full px-px gap-y-[10]">
+          <Txt
+            type="caption1"
+            text="닉네임"
+            className="ml-[9] mb-[8px] text-gray200"
+          />
+          <TextInput
+            value={nickname}
+            onChangeText={handleNicknameChange}
+            isError={isErrorNickname}
+            isSuccess={isSuccessNickname}
+            placeholder="닉네임을 입력해주세요"
+            message={nicknameMessage}
+            maxLength={10}
+          />
         </View>
+      </View>
 
-        {/* 이미지 수정 모달 (앨범에서 사진 선택 / 기본 이미지 적용) */}
+      {/* 이미지 수정 모달 (앨범에서 사진 선택 / 기본 이미지 적용) */}
+      <>
         {clickedUpload && (
           <Pressable
             onPress={() => !isLoading && setClickedUpload(false)}
@@ -280,7 +262,8 @@ const ModifyInfoScreen = () => {
             </Pressable>
           </Pressable>
         )}
-      </BG>
+      </>
+
       <Modal
         type="info"
         visible={visible}
@@ -300,7 +283,7 @@ const ModifyInfoScreen = () => {
           className="text-gray300 mb-[32]"
         />
       </Modal>
-    </>
+    </BG>
   );
 };
 
