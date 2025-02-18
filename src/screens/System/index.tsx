@@ -46,8 +46,8 @@ const SystemScreen = () => {
         <View className="w-full h-[5px] bg-blue600" />
         {/* 시스템 메뉴 버튼들 */}
         <SystemButton title="내 계정" sub="로그아웃 및 회원탈퇴하기" onPress={()=>{navigation.navigate('MyAccount')}} type="button"/>
-        <SystemButton title="알림 설정" sub="이용약관 확인하기" onPress={()=>{navigation.navigate('NotificationSetting')}} type="button"/>
-        <SystemButton title="서비스 안내" sub="개인정보정책 확인하기" onPress={()=>{navigation.navigate('Service')}} type="button"/>
+        <SystemButton title="알림 설정" sub="알림 수신 설정하기" onPress={()=>{navigation.navigate('NotificationSetting')}} type="button"/>
+        <SystemButton title="서비스" sub="내일모래 정보 확인하기" onPress={()=>{navigation.navigate('Service')}} type="button"/>
       </View>
     </BG>
   );

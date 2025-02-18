@@ -57,7 +57,7 @@ export async function resumeRecordingAndroid(): Promise<unknown> {
 }
 
 // 녹음 종료, 파일 경로 반환
-export async function stopRecordingAndroid(): Promise<string | void> {
+export async function stopRecordingAndroid(): Promise<string | null> {
   if (Platform.OS === 'android') {
     try {
       const filePath = await WavRecorder.stopRecording();
@@ -65,8 +65,10 @@ export async function stopRecordingAndroid(): Promise<string | void> {
       return filePath;
     } catch (error) {
       console.error('녹음 종료 오류:', error);
+      return null;
     }
   }
+  return null;
 }
 
 // 녹음된 파일 재생

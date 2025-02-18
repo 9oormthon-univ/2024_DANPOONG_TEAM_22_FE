@@ -78,7 +78,7 @@ public class WavRecorderModule extends ReactContextBaseJavaModule {
             recordingThread.start();
 
             // 성공적으로 녹음을 시작했음을 React Native 쪽에 전달
-            promise.resolve("녹음 시작됨");
+            promise.resolve("안드로이드 녹음 시작됨");
         } catch (Exception e) {
             promise.reject("START_ERROR", e);
         }

@@ -10,7 +10,7 @@ import { View, Pressable } from "react-native";
 import Txt from "@components/atom/Txt";
 import { COLORS } from "@constants/Colors";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
-
+import { postAlarmSettingToggle, PostAlarmSettingToggleRequest } from "@apis/SystemApis/postAlarm-settingToggle";
 type Notification = {
   id: string;
   title: string;
@@ -26,29 +26,10 @@ const NotificationSettingScreen = () => {
   const [selectedNotificationId, setSelectedNotificationId] = useState<string | null>(null);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
-  // API 제작 중이라 mock 알림 7개를 사용합니다.
-  const fetchNotifications = async () => {
-    const mockNotifications: Notification[] = Array.from({ length: 7 }, (_, idx) => {
-      // 각 알림의 시간은 8시부터 순차적으로 증가하도록 설정
-      const time = new Date();
-      time.setHours(8 + idx, 0, 0);
-      return {
-        id: String(idx + 1),
-        title: `${idx + 1}번째 알림`,
-        sub: "서브 제목",
-        time,
-        isOn: idx % 2 === 0, // 짝수 인덱스는 켜짐(true), 홀수는 꺼짐(false)
-      };
-    });
-    setNotifications(mockNotifications);
-  };
-
   useEffect(() => {
     (async () => {
       const storedRole = await AsyncStorage.getItem('role');
       if (storedRole) setRole(storedRole);
-      // 화면 진입 시 mock 알림 데이터를 불러옵니다.
-      fetchNotifications();
     })();
   }, []);
 
@@ -87,7 +68,7 @@ const NotificationSettingScreen = () => {
   return (
     <BG type="solid">
       <AppBar title="알림 설정" goBackCallbackFn={() => { navigation.goBack(); }} />
-      {role == 'HELPER' ? (
+      {role !== 'HELPER' ? (
         <>
           <SystemButton
             title="청년들이 당신의 목소리를 기다려요!"
@@ -105,22 +86,24 @@ const NotificationSettingScreen = () => {
           />
         </>
       ) : (
-        <>
-          {/* mock 데이터 기반의 알림들을 NotiButton으로 렌더링 */}
-          {notifications.map(notification => (
-            <NotiButton
-              key={notification.id}
-              title={notification.time.toLocaleTimeString([], {
-                hour: 'numeric',
-                minute: '2-digit',
-                hour12: false,
-              })}
-              sub={notification.title}
-              isOn={notification.isOn}
-              setIsOn={() => toggleNotification(notification.id)}
-              onPress={() => handleNotiButtonPress(notification.id)}
-            />
-          ))}
+        <>      
+        {[
+          { sub: "기상" },
+          { sub: "날씨" }, 
+          { sub: "아침 식사" },
+          { sub: "점심 식사" },
+          { sub: "저녁 식사" },
+          { sub: "취침" }
+        ].map((item) => (
+          <NotiButton
+            key={item.sub}
+            title="00시 00분"
+            sub={item.sub}
+            onPress={() => {}}
+            isOn={false}
+            setIsOn={() => {}}
+          />
+        ))}
         </>
       )}
       {/* 시간 변경용 DateTimePicker */}

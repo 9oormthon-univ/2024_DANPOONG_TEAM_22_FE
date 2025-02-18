@@ -52,7 +52,7 @@ const RCDRecordScreen = ({ route }: { route: RouteProp<HomeStackParamList, 'RCDR
   // 컴포넌트 언마운트 여부 및 재시도 타이머 관리 ref
   const isMountedRef = useRef(true);
   const analysisTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-const [isAndroid] = useState<boolean>(Platform.OS === 'android');
+ const [isAndroid] = useState<boolean>(Platform.OS === 'android');
 
   // 컴포넌트 마운트/언마운트 시 녹음 상태 초기화
   useEffect(() => {
@@ -75,7 +75,7 @@ const [isAndroid] = useState<boolean>(Platform.OS === 'android');
       const currentMetering = await (isAndroid 
         ? getCurrentMeteringAndroid() 
         : getCurrentMeteringIOS());
-      console.log('currentMetering', currentMetering);
+      // console.log('currentMetering', currentMetering);
       if (currentMetering !== undefined) {
         setVolumeList(prev => [...prev, currentMetering]);
       }
@@ -165,15 +165,20 @@ const refreshRCDStates = async () => {
       console.log('녹음이 진행되지 않았습니다.');
       return;
     }
+    let tmpPath: string | null = null;
+
     if(isAndroid){
-      await stopRecordingAndroid();
+      tmpPath = await stopRecordingAndroid();
     } else {
       await stopRecordingIOS();
+    }
+    if(tmpPath){
+      setUri(tmpPath);
     }
     setIsRecording(false);
     setIsDone(true);
   }
-const playRecording = async (uri: string) => {
+const playRecording = async () => {
   if (!uri || isPlaying) return;
   setIsPlaying(true);
   if(isAndroid){
@@ -194,12 +199,13 @@ const playRecording = async (uri: string) => {
       const formData = new FormData();
       formData.append('file', {
         uri: Platform.OS === 'android' ? `file://${uri}` : uri,
-        name: 'recording.m4a',
-        type: 'audio/mp4',
+        name: 'recording.wav',
+        type: 'audio/wav',
       } as any);
 
       await postSaveVoice(voiceFileId, formData);
       await uploadAnalysis();
+      setIsUploading(false);
     } catch (error: any) {
       console.log('음성 파일 업로드 오류:', error);
     }
@@ -211,9 +217,12 @@ const playRecording = async (uri: string) => {
     if (!isMountedRef.current) return;
 
     try {
-      const res = await postVoiceAnalysis(voiceFileId);
+      // const res = await postVoiceAnalysis(voiceFileId);
       if (!isMountedRef.current) return;
-      const {code, message} = res;
+      // const {code, message} = res;
+      
+      const code = 'ANALYSIS002' as 'ANALYSIS001' | 'ANALYSIS002' | 'ANALYSIS003' | 'ANALYSIS006' | 'ANALYSIS107' | 'COMMON200';
+      const message = '테스트 메시지';
       switch(code) {
         case 'ANALYSIS001':
           // 아직 분석 중이면 5초 후 재시도; 언마운트되지 않은 경우에만 타이머 설정
@@ -238,11 +247,17 @@ const playRecording = async (uri: string) => {
           if (!isMountedRef.current) return;
           navigation.navigate('RCDError', {type: 'invalidScript', message});
           break;
+        case 'COMMON200':
+          if (!isMountedRef.current) return;
+          console.log('COMMON200');
+          navigation.navigate('RCDFeedBack');
+          break;
         default:
           if (!isMountedRef.current) return;
           navigation.navigate('RCDError', {type: 'server', message});
           break;
       }
+      
     } catch (error: any) {
       if (!isMountedRef.current) return;
       const errorCode = error.response?.data.code;

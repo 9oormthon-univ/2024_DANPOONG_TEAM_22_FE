@@ -47,7 +47,7 @@ const RCDWave = ({volumeList, isPlaying, recording, isDone}: RCDWaveProps) => {
         }),
         Animated.timing(translateXAnim, {
           toValue: 0,
-          duration: volumeList.length * 100 + 800,
+          duration: isAndroid ? volumeList.length * 50 + 400 : volumeList.length * 100 + 800,
           easing: Easing.linear,
           useNativeDriver: true,
         }),

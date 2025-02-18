@@ -18,7 +18,7 @@ import {
 import Modal from "@components/atom/Modal";
 import useModal from "@hooks/useModal";
 import uploadImageToS3 from "@apis/util";
-
+import { patchMemberInfo, PatchMemberInfoRequest } from "@apis/SystemApis/patchMemberInfo";
 const ModifyInfoScreen = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
   const [role, setRole] = useState('');
@@ -34,7 +34,8 @@ const ModifyInfoScreen = () => {
   const [isImageChanged, setIsImageChanged] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const {visible, openModal, closeModal} = useModal();
-
+  const [birth, setBirth] = useState('');
+  const [fcmToken, setFcmToken] = useState('');
   const defaultImageUri =
     role === 'YOUTH'
       ? require('@assets/pngs/profile/youthDefault.png')
@@ -75,12 +76,16 @@ const ModifyInfoScreen = () => {
       const storedRole = await AsyncStorage.getItem('role');
       const storedNickname = await AsyncStorage.getItem('nickname');
       const storedProfileImage = await AsyncStorage.getItem('profileImage');
+      const storedBirth = await AsyncStorage.getItem('birth');
+      const storedFcmToken = await AsyncStorage.getItem('fcmToken');
       if (storedRole) setRole(storedRole);
       if (storedNickname) {
         setNickname(storedNickname);
         setInitialNickname(storedNickname);
       }
       if (storedProfileImage) setImageUri(storedProfileImage);
+      if (storedBirth) setBirth(storedBirth);
+      if (storedFcmToken) setFcmToken(storedFcmToken);
     })();
   }, []);
 
@@ -105,6 +110,16 @@ const ModifyInfoScreen = () => {
       if (isNicknameChanged) {
         await AsyncStorage.setItem('nickname', nickname);
       }
+      const request: PatchMemberInfoRequest = {
+        name: nickname,
+        gender: 'MALE',
+        profileImage: imageUri ?? '',
+        role: role as 'HELPER' | 'YOUTH',
+        birth: birth,
+        fcmToken: fcmToken,
+      };
+      const memberId = await patchMemberInfo(request);
+      console.log('회원 정보 수정 완료:', memberId);
     } finally {
       setIsLoading(false);
       navigation.goBack();
