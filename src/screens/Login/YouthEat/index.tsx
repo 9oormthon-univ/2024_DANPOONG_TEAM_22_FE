@@ -90,7 +90,7 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
                   onPress={() => setShowBreakfastHourBottomSheet(true)}
                   className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
                   <Txt
-                    type="title1"
+                    type="title2"
                     text={
                       breakfastHour.includes('자정')
                         ? '오전 12시'
@@ -105,7 +105,7 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
                   onPress={() => setShowBreakfastMinuteBottomSheet(true)}
                   className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
                   <Txt
-                    type="title1"
+                    type="title2"
                     text={breakfastMinute}
                     className="text-white"
                   />
@@ -125,7 +125,7 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
                   onPress={() => setShowLunchHourBottomSheet(true)}
                   className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
                   <Txt
-                    type="title1"
+                    type="title2"
                     text={lunchHour.includes('자정') ? '오전 12시' : lunchHour}
                     className="text-white"
                   />
@@ -136,7 +136,7 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
                   onPress={() => setShowLunchMinuteBottomSheet(true)}
                   className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
                   <Txt
-                    type="title1"
+                    type="title2"
                     text={lunchMinute}
                     className="text-white"
                   />
@@ -156,7 +156,7 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
                   onPress={() => setShowDinnerHourBottomSheet(true)}
                   className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
                   <Txt
-                    type="title1"
+                    type="title2"
                     text={
                       dinnerHour.includes('자정') ? '오전 12시' : dinnerHour
                     }
@@ -169,7 +169,7 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
                   onPress={() => setShowDinnerMinuteBottomSheet(true)}
                   className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
                   <Txt
-                    type="title1"
+                    type="title2"
                     text={dinnerMinute}
                     className="text-white"
                   />
