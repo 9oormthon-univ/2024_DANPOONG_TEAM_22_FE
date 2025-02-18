@@ -151,7 +151,7 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
         <View className="flex-row items-center">
           <Txt
             type="title2"
-            text={`${helperNumData?.result.youthMemberNum}명의 목소리`}
+            text={`${helperNumData?.result.youthMemberNum ?? '0'}명의 목소리`}
             className="text-yellowPrimary"
           />
           <Txt type="title2" text="가" className="text-white" />
