@@ -154,6 +154,7 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
             isSuccess={isSuccessNickname}
             placeholder="닉네임을 입력해주세요"
             message={nicknameMessage}
+            maxLength={10}
           />
         </View>
 
