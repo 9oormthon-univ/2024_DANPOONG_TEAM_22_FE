@@ -1,19 +1,17 @@
 // 필요한 컴포넌트 및 아이콘 import
-import Txt from '@components/atom/Txt';
-import {Pressable, View, ViewStyle, ActivityIndicator} from 'react-native';
 import ChevronLeftWhiteIcon from '@assets/svgs/chevron/chevron_left_white.svg';
 import ExitWhiteIcon from '@assets/svgs/exit_white.svg';
+import Txt from '@components/atom/Txt';
+import {ActivityIndicator, Pressable, View, ViewStyle} from 'react-native';
 // AppBar 컴포넌트의 props 타입 정의
 type AppBarProps = {
   title?: string;
   goBackCallbackFn?: () => void;
   exitCallbackFn?: () => void;
   confirmCallbackFn?: () => void;
-  skipCallbackFn?: () => void;
   className?: string;
   style?: ViewStyle | ViewStyle[];
   isLoading?: boolean; // 로딩 상태(완료버튼 클릭시 로딩 상태)
-
 };
 // AppBar 컴포넌트
 const AppBar = ({
@@ -21,14 +19,12 @@ const AppBar = ({
   goBackCallbackFn,
   exitCallbackFn,
   confirmCallbackFn,
-  skipCallbackFn,
   isLoading,
   ...props
 }: Readonly<AppBarProps>) => {
   const renderRightButton = (
     exitCallbackFn?: () => void,
     confirmCallbackFn?: () => void,
-    skipCallbackFn?: () => void,
   ) => {
     if (exitCallbackFn)
       return (
@@ -43,17 +39,11 @@ const AppBar = ({
         <Pressable
           className="flex-1 py-[18] flex-row justify-end"
           onPress={confirmCallbackFn}>
-          {isLoading ? 
-          <ActivityIndicator size="small" color="#fafafa" /> : 
-          <Txt type="title4" text="완료" className="text-white"/>}
-        </Pressable>
-      );
-    if (skipCallbackFn)
-      return (
-        <Pressable
-          className="flex-1 py-[18] flex-row justify-end"
-          onPress={skipCallbackFn}>
-          <Txt type="button" text="건너뛰기" className="text-white " />
+          {isLoading ? (
+            <ActivityIndicator size="small" color="#fafafa" />
+          ) : (
+            <Txt type="title4" text="완료" className="text-white" />
+          )}
         </Pressable>
       );
     return <View className="flex-1" />;
@@ -83,7 +73,7 @@ const AppBar = ({
       ) : (
         <View className="flex-1" />
       )}
-      {renderRightButton(exitCallbackFn, confirmCallbackFn, skipCallbackFn)}
+      {renderRightButton(exitCallbackFn, confirmCallbackFn)}
     </View>
   );
 };
