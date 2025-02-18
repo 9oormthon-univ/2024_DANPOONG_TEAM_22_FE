@@ -23,7 +23,7 @@ type SummaryResponseData = {
 };
 
 type LettersRequestData = {
-  parentCategoryId?: number;
+  parentCategory?: string;
   pageable: {
     page: number;
     size: number;

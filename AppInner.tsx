@@ -14,15 +14,17 @@ import {Alert} from 'react-native';
 
 // API 및 타입 임포트
 import useGetMember from '@hooks/auth/useGetMember';
+import SplashScreen from '@screens/Splash';
 import {Role} from '@type/api/member';
 import navigateToYouthListenScreen from '@utils/navigateToYouthListenScreen';
-import SplashScreen from 'react-native-splash-screen';
+import {default as RNSplashScreen} from 'react-native-splash-screen';
 
 // 네비게이션 스택 생성
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const AppInner = () => {
   // 상태 관리
+  const [isInitializing, setIsInitializing] = useState(true); // 초기 로딩 상태 추가
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태
   const [role, setRole] = useState<Role | null>(null); // 사용자 역할
   const [token, setToken] = useState<string | null>(null); // 액세스 토큰
@@ -30,25 +32,32 @@ const AppInner = () => {
 
   // 로그인 상태 및 사용자 정보 확인
   useEffect(() => {
+    // react-native-splash-screen에서 제공하는 hide 함수를 사용해도 스택 쌓이는 게 보이는 문제가 있어서,
+    // isInitializing 상태로 관리해서 페이지 이동 로직 전까지 스플래시 스크린 컴포넌트를 표시하도록 함
     (async () => {
+      // await AsyncStorage.removeItem('accessToken'); // 로그아웃 테스트용
       const token = await AsyncStorage.getItem('accessToken');
       setIsLoggedIn(!!token);
       setToken(token);
-      if (!token) SplashScreen.hide();
+      if (!token) {
+        setIsInitializing(false); // 비로그인 상태에서도 스플래시 숨기기
+        RNSplashScreen.hide();
+      }
     })();
   }, []);
 
   useEffect(() => {
-    if (!memberData) return;
-    const {result} = memberData;
-    setRole(result.role);
-    SplashScreen.hide();
-  }, [memberData]);
-
-  useEffect(() => {
-    if (!isErrorMember) return;
-    Alert.alert('오류', '사용자 정보를 가져오는데 실패했어요');
-  }, [isErrorMember]);
+    if (memberData) {
+      setRole(memberData.result.role);
+    }
+    if (memberData || isErrorMember) {
+      setIsInitializing(false); // 데이터 로드 완료 후 스플래시 숨기기
+      RNSplashScreen.hide();
+    }
+    if (isErrorMember) {
+      Alert.alert('오류', '사용자 정보를 가져오는데 실패했어요');
+    }
+  }, [memberData, isErrorMember]);
 
   // 알람 처리 및 청년 리스닝 화면 이동
   useEffect(() => {
@@ -69,6 +78,11 @@ const AppInner = () => {
       }
     })();
   }, [isLoggedIn, role]);
+
+  // 초기 로딩 중이면 스플래시 화면 유지
+  if (isInitializing) {
+    return <SplashScreen />;
+  }
 
   // 네비게이션 스택 렌더링
   return (
