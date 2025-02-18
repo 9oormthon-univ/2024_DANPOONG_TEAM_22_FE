@@ -90,9 +90,8 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
       await AsyncStorage.setItem('gender', gender);
       await AsyncStorage.setItem('birth', birth);
       await AsyncStorage.setItem('nickname', nickname);
-      await AsyncStorage.setItem('profileImage', imageLocation);
       await AsyncStorage.setItem('role', role);
-
+      await AsyncStorage.setItem('profileImage', imageLocation ?? '');
       if (role === 'YOUTH') {
         navigation.navigate('YouthOnboardingScreen');
         return;

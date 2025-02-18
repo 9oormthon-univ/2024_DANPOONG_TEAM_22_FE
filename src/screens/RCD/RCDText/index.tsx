@@ -10,26 +10,18 @@ import {
   RouteProp,
   useNavigation,
 } from '@react-navigation/native';
-import {useState, useRef, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {ScrollView} from 'react-native-gesture-handler';
 import {postSaveScript} from '@apis/RCDApis/postSaveScript';
 import Toast from '@components/atom/Toast';
 import AppBar from '@components/atom/AppBar';
-import TextInput from '@components/molecule/ShadowTextInput';
-/**
- * RCD 텍스트 입력 화면 컴포넌트
- * @param route - 네비게이션 라우트 파라미터
- */
-const RCDTextScreen = ({
-  route,
-}: {
-  route: RouteProp<HomeStackParamList, 'RCDText'>;
-}) => {
+import ShadowTextInput from '@components/molecule/ShadowTextInput';
 
+//   RCD 텍스트 입력 화면 컴포넌트
+const RCDTextScreen = ({ route }: { route: RouteProp<HomeStackParamList, 'RCDText'> }) => {
   // 라우트 파라미터 추출
   const {item, gptRes, alarmId, type} = route.params;
-  
   // 상태 관리
   const [text, setText] = useState(''); // 텍스트 입력값
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>(); // 네비게이션
@@ -41,7 +33,7 @@ const RCDTextScreen = ({
   useEffect(() => {
     setText(gptRes?.result.content || '');
   }, []);
-
+  
   // 텍스트 변경 핸들러
   const onChangeText = (text: string) => {
     setText(text);
@@ -103,11 +95,11 @@ const RCDTextScreen = ({
           />
         </View>
         {/* 텍스트 입력 섹션 */}
-          <TextInput
-            value={text}
-            onChangeText={onChangeText}
-            placeholder="15초 동안 녹음할 말을 작성해주세요"
-            isError={isError}
+        <ShadowTextInput
+          value={text}
+          onChangeText={onChangeText}
+          placeholder="15초 동안 녹음할 말을 작성해주세요"
+          isError={isError}
           />
         <View className="mb-[51]"/>
 

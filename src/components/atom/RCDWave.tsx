@@ -1,5 +1,5 @@
 import {useEffect, useState, useRef} from 'react';
-import {View, Dimensions, ViewStyle, Animated, Easing} from 'react-native';
+import {View, Dimensions, ViewStyle, Animated, Easing, Platform} from 'react-native';
 const {width} = Dimensions.get('window');
 
 type RCDWaveProps = {
@@ -19,10 +19,8 @@ const RCDWave = ({volumeList, isPlaying, recording, isDone}: RCDWaveProps) => {
     justifyContent: 'flex-end',
     paddingRight: width / 2,
   });
+  const isAndroid = Platform.OS === 'android';
 
-  // useEffect(() => {
-  //   console.log('volumeList', volumeList);
-  // }, [volumeList]);
   // 녹음 시작 시 웨이브 초기화
   useEffect(() => {
     if (recording) {
@@ -49,7 +47,7 @@ const RCDWave = ({volumeList, isPlaying, recording, isDone}: RCDWaveProps) => {
         }),
         Animated.timing(translateXAnim, {
           toValue: 0,
-          duration: volumeList.length * 100 + 800,
+          duration: isAndroid ? volumeList.length * 50 + 400 : volumeList.length * 100 + 800,
           easing: Easing.linear,
           useNativeDriver: true,
         }),
@@ -58,12 +56,17 @@ const RCDWave = ({volumeList, isPlaying, recording, isDone}: RCDWaveProps) => {
   }, [isPlaying, volumeList.length]);
 
   const calculate_height = (item: number) => {
-    if (item <= -50) {
-      // 구간 1: -160 ~ -50 -> 10% ~ 20%
-      return ((item + 50) / 50) * 10 + 10;
-    } else {
-      // 구간 2: -50 ~ 0 -> 20% ~ 70%
-      return ((item + 50) / 50) * 50 + 20;
+    if(isAndroid) {
+      // 구간: 0 ~ 100 -> 10% ~ 70%
+      return (item / 100) * 60 + 10;
+    }else{
+      if (item <= -50) {
+        // 구간 1: -160 ~ -50 -> 10% ~ 20%
+        return ((item + 50) / 50) * 10 + 10;
+      } else {
+        // 구간 2: -50 ~ 0 -> 20% ~ 70%
+        return ((item + 50) / 50) * 50 + 20;
+      }
     }
   };
 

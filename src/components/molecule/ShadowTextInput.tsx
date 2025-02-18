@@ -14,15 +14,14 @@ const ShadowTextInput = ({
   value,
   onChangeText,
   placeholder = "텍스트를 입력해주세요",
-  isError = false,
-  height = 340,
+  isError = false
 }: ShadowTextInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const textInputRef = useRef<RNTextInput>(null);
 
   return (
     <View
-      className={`flex-1 w-full h-[${height}] rounded-card border-[1px] border-transparent ${
+      className={`flex-1 w-full h-[340px] rounded-card border-[1px] border-transparent ${
         isFocused && 'border-gray300'
       } ${isError && 'border-[#f13a1e] bg-error'}`}>
       <ShadowView>

@@ -13,6 +13,7 @@ import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.facebook.soloader.SoLoader
 
 import com.dooboolab.audiorecorderplayer.RNAudioRecorderPlayerPackage;
+import com.wavrecorder.WavRecorderPackage
 
 class MainApplication : Application(), ReactApplication {
 
@@ -23,6 +24,7 @@ class MainApplication : Application(), ReactApplication {
               // Packages that cannot be autolinked yet can be added manually here, for example:
               // add(MyReactNativePackage())
               add(RNAudioRecorderPlayerPackage())
+              add(WavRecorderPackage())
             }
 
         override fun getJSMainModuleName(): String = "index"

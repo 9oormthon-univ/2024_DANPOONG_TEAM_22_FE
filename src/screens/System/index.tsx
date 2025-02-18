@@ -1,8 +1,8 @@
 // 필요한 컴포넌트
 import BG from '@components/atom/BG';
 import Txt from '@components/atom/Txt';
-import { Pressable, View } from 'react-native';
-import { useNavigation, NavigationProp} from '@react-navigation/native';
+import { Pressable, View, Image } from 'react-native';
+import { useNavigation, NavigationProp, useIsFocused } from '@react-navigation/native';
 import { SystemStackParamList } from '@type/nav/SystemStackParamList';
 import SystemButton from '@components/atom/SystemButton';
 import { useEffect, useState } from 'react';
@@ -18,35 +18,43 @@ const SystemScreen = () => {
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('');
+  const [profileImage, setProfileImage] = useState('');
+  const isFocused = useIsFocused();
+
   useEffect(() => {
-    (async () => {
-      const storedNickname = await AsyncStorage.getItem('nickname');
-      const storedEmail = await AsyncStorage.getItem('email');
-      const storedRole = await AsyncStorage.getItem('role');
-      if (storedNickname) setNickname(storedNickname);
-      if (storedEmail) setEmail(storedEmail);
-      if (storedRole) setRole(storedRole);
-    })();
-  }, []);
+    if (isFocused) {
+      (async () => {
+        const storedNickname = await AsyncStorage.getItem('nickname');
+        const storedEmail = await AsyncStorage.getItem('email');
+        const storedRole = await AsyncStorage.getItem('role');
+        const storedProfileImage = await AsyncStorage.getItem('profileImage');
+        if (storedNickname) setNickname(storedNickname);
+        if (storedEmail) setEmail(storedEmail);
+        if (storedRole) setRole(storedRole);
+        if (storedProfileImage) setProfileImage(storedProfileImage);
+      })();
+    }
+  }, [isFocused]);
+
   return (
     <BG type="solid">
       {/* 메인 컨테이너 */}
       <View className="flex-1 items-center pt-[8]">
         {/* 프로필 버튼 */}
-        <AccountButton nickname={nickname} email={email} role={role} />
+        <AccountButton nickname={nickname} email={email} role={role} profileImage={profileImage} />
         {/* 구분선 */}
         <View className="w-full h-[5px] bg-blue600" />
         {/* 시스템 메뉴 버튼들 */}
         <SystemButton title="내 계정" sub="로그아웃 및 회원탈퇴하기" onPress={()=>{navigation.navigate('MyAccount')}} type="button"/>
-        <SystemButton title="알림 설정" sub="이용약관 확인하기" onPress={()=>{navigation.navigate('NotificationSetting')}} type="button"/>
-        <SystemButton title="서비스 안내" sub="개인정보정책 확인하기" onPress={()=>{navigation.navigate('Service')}} type="button"/>
+        <SystemButton title="알림 설정" sub="알림 수신 설정하기" onPress={()=>{navigation.navigate('NotificationSetting')}} type="button"/>
+        <SystemButton title="서비스" sub="내일모래 정보 확인하기" onPress={()=>{navigation.navigate('Service')}} type="button"/>
       </View>
     </BG>
   );
 };
 export default SystemScreen;
 
-const AccountButton = ({nickname, email, role}:{nickname: string, email: string, role: string})=>{
+const AccountButton = ({nickname, email, role, profileImage}:{nickname: string, email: string, role: string, profileImage: string})=>{
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
   return (
     // 버튼 컨테이너
@@ -54,7 +62,7 @@ const AccountButton = ({nickname, email, role}:{nickname: string, email: string,
     onPress={()=>{navigation.navigate('ModifyInfo')}}
     className="w-full h-[165] flex-row justify-between items-center px-px">
       {/* 프로필 이미지 */}
-      {role == 'HELPER' ? <ProfileIcon/> : <ProfileIcon2 />}
+      {profileImage ? <Image source={{uri: profileImage}} className="w-[71px] h-[71px] rounded-full" /> : role == 'HELPER' ? <ProfileIcon/> : <ProfileIcon2 />}
       {/* 간격 조정 */}
       <View className="w-[23px]" />
       {/* 텍스트 영역 */}

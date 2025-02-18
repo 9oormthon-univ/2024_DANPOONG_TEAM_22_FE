@@ -13,6 +13,7 @@ interface TextInputProps {
   message?: string;
 }
 
+// TextInput 컴포넌트
 const TextInput = ({
   value,
   onChangeText,
@@ -21,6 +22,7 @@ const TextInput = ({
   isSuccess = false,
   message,
 }: TextInputProps) => {
+  // TextInput 레퍼런스 생성
   const textInputRef = useRef<RNTextInput>(null);
 
   return (

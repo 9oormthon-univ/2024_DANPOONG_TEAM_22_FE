@@ -2,7 +2,7 @@
 export type RCDBtnBarProps = {
     record: () => void
     // pause: () => void
-    play: () => void
+    play: (uri: string) => void
     upload: () => void
     isPlaying: boolean
     // isPaused: boolean
