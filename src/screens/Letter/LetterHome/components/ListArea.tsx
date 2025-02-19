@@ -29,10 +29,7 @@ const ListArea = ({
             />
           </View>
         ) : (
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            // className="h-[550]"
-            nestedScrollEnabled>
+          <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
             <View className="">
               {list.map((letter, idx) => (
                 <View
