@@ -24,11 +24,14 @@ const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'L
     const [youthMemberNum, setYouthMemberNum] = useState<number>(0);
     const {reasons, otherReason} = route.params;
     const [role, setRole] = useState('');
+    const [nickname, setNickname] = useState('');
     useEffect(() => {
 
         (async () => {
             const storedRole = await AsyncStorage.getItem('role');
+            const storedNickname = await AsyncStorage.getItem('nickname');
             if (storedRole) setRole(storedRole);
+            if (storedNickname) setNickname(storedNickname);
         })();
     }, []);
 
@@ -50,11 +53,11 @@ const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'L
 
     const handleDeleteMember = async () => {
         try {
+
             const data: DeleteMemberRequest = {
                 reasonList: [...reasons, otherReason]
             };
             await deleteMember(data);
-            // 네비게이션 리셋과 토큰 제거 로직 호출
             await redirectToAuthScreen();
         } catch (error) {
             if (__DEV__) {
@@ -73,7 +76,7 @@ const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'L
                     <View>
                     {/* 안내 문구 */}
                     <View className="w-full px-px py-[42]">
-                        <Txt type="title4" text={`${youthMemberNum}명의 청년들이\n닉네임님의 목소리를 들을 수 없게 돼요`} className="text-white" />
+                        <Txt type="title4" text={`${youthMemberNum}명의 청년들이\n${nickname}님의 목소리를 들을 수 없게 돼요`} className="text-white" />
                         <View className="w-full flex-row mt-[21]">
                         <Txt type="title4" text={`정말 `} className="text-white" />
                         <Txt type="title4" text="내일모래" className="text-yellowPrimary" />

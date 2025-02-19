@@ -8,13 +8,15 @@ interface ShadowTextInputProps {
   placeholder?: string;
   isError?: boolean;
   height?: number;
+  maxLength?: number;
 }
 
 const ShadowTextInput = ({
   value,
   onChangeText,
   placeholder = "텍스트를 입력해주세요",
-  isError = false
+  isError = false,
+  maxLength = 150
 }: ShadowTextInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const textInputRef = useRef<RNTextInput>(null);
@@ -23,7 +25,7 @@ const ShadowTextInput = ({
     <View
       className={`flex-1 w-full h-[340px] rounded-card border-[1px] border-transparent ${
         isFocused && 'border-gray300'
-      } ${isError && 'border-[#f13a1e] bg-error'}`}>
+      } ${isError && 'border-red  bg-red/10'}`}>
       <ShadowView>
         <RNTextInput
           ref={textInputRef}
@@ -36,7 +38,7 @@ const ShadowTextInput = ({
             letterSpacing: 20 * -0.025,
             color: '#fafafa',
           }}
-          className={'w-full h-auto p-[33] '}
+          className={'w-full h-auto p-[33] bg-transparent'}
           placeholder={placeholder}
           placeholderTextColor="#a0a0a0"
           autoCapitalize="none"
@@ -45,6 +47,7 @@ const ShadowTextInput = ({
           textAlign="left"
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          maxLength={maxLength}
         />
         <TouchableOpacity
           onPress={() => {
@@ -52,7 +55,7 @@ const ShadowTextInput = ({
               textInputRef.current.focus();
             }
           }}
-          className="flex-1"
+          className="flex-1 bg-transparent"
         />
       </ShadowView>
     </View>

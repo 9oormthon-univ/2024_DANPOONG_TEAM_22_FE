@@ -15,18 +15,10 @@ import Notice2 from '@assets/svgs/Notice2.svg';
 
 // 타입 임포트
 import { HomeStackParamList } from '@type/nav/HomeStackParamList';
-  /**
- * 녹음 오류 화면 컴포넌트
- * @param route - 라우트 객체 (오류 타입 정보 포함)
- */
-const RCDErrorScreen = ({
-  route,
-}: {
-  route: RouteProp<HomeStackParamList, 'RCDError'>;
-}) => {
 
+const RCDErrorScreen = ({ route }: { route: RouteProp<HomeStackParamList, 'RCDError'> }) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
-  const {type,message} = route.params;
+  const {type,message,errorType} = route.params;
 
   return (
     <BG type="solid">
@@ -35,7 +27,7 @@ const RCDErrorScreen = ({
       <AppBar
         title=""
         exitCallbackFn={() => {
-          navigation.goBack();
+          navigation.navigate('RCDList',{type:type});
     }}
     className="absolute top-[0] w-full"
   />

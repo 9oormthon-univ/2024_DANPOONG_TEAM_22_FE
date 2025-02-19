@@ -1,7 +1,7 @@
 import ErrorIcon from '@assets/svgs/TextInputError.svg';
 import Txt from '@components/atom/Txt';
 import {COLORS} from '@constants/Colors';
-import {useRef} from 'react';
+import {useRef, useState} from 'react';
 import {TextInput as RNTextInput, View} from 'react-native';
 
 interface TextInputProps {
@@ -12,6 +12,7 @@ interface TextInputProps {
   isSuccess?: boolean;
   message?: string;
   maxLength?: number;
+  autoFocus?: boolean;
 }
 
 // TextInput 컴포넌트
@@ -23,18 +24,25 @@ const TextInput = ({
   isSuccess = false,
   message,
   maxLength,
+  autoFocus = false,
 }: TextInputProps) => {
   // TextInput 레퍼런스 생성
   const textInputRef = useRef<RNTextInput>(null);
+  const [isFocused, setIsFocused] = useState(false);
 
   return (
     <>
       <View
-        className={`flex-row h-[60px] items-center justify-between w-full rounded-lg border-[1px] border-gray300 bg-[#fafafa1a]`}>
+        className={`flex-row h-auto items-center justify-between w-full rounded-lg border-[1px] border-gray300 ${
+          (!isFocused || !autoFocus) ? 'bg-[#fafafa1a]' : 'bg-transparent'
+        }`}>
         <RNTextInput
+          autoFocus={autoFocus}
           ref={textInputRef}
           onChangeText={onChangeText}
           value={value}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           style={{
             fontFamily: 'WantedSans-Regular',
             fontSize: 18,

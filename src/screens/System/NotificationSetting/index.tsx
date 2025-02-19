@@ -9,80 +9,71 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { View, Pressable } from "react-native";
 import Txt from "@components/atom/Txt";
 import { COLORS } from "@constants/Colors";
-import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
-import { postAlarmSettingToggle, PostAlarmSettingToggleRequest } from "@apis/SystemApis/postAlarm-settingToggle";
-type Notification = {
-  id: string;
-  title: string;
-  sub: string;
-  time: Date;
-  isOn: boolean;
-};
+import TimeSelectBottomSheet from "@components/atom/TimeSelectBottomSheet";
+import ToggleSwitch from "@components/atom/ToggleSwitch";
+
 
 const NotificationSettingScreen = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [role, setRole] = useState('');
-  const [selectedNotificationId, setSelectedNotificationId] = useState<string | null>(null);
-  const [showTimePicker, setShowTimePicker] = useState(false);
-
+  const [role, setRole] = useState('YOUTH');
+  // 알림 설정 켜짐 여부 , 시간, 분 배열
+  const [isNotificationsOn, setIsNotificationsOn] = useState<boolean[]>(role === 'HELPER' ? [false, false] : [false, false, false, false, false, false]);
+  const [notificationsHours, setNotificationsHours] = useState<string[]>(role === 'HELPER' ? ['오전 00시', '오전 00시'] : ['오전 00시', '오전 00시', '오전 00시', '오전 00시', '오전 00시', '오전 00시']);
+  const [notificationsMinutes, setNotificationsMinutes] = useState<string[]>(role === 'HELPER' ? ['00분', '00분'] : ['00분', '00분', '00분', '00분', '00분', '00분']);
+  // 알림 설정 시간 선택 모달
+  const [showHourBottomSheet, setShowHourBottomSheet] = useState(false);
+  const [showMinuteBottomSheet, setShowMinuteBottomSheet] = useState(false);
+  const [hour, setHour] = useState('오전 00시');
+  const [minute, setMinute] = useState('00분');
+  const [index, setIndex] = useState<number | undefined>(undefined);
   useEffect(() => {
     (async () => {
       const storedRole = await AsyncStorage.getItem('role');
-      if (storedRole) setRole(storedRole);
+      if (storedRole) setRole('YOUTH') 
+        // setRole(storedRole);
     })();
+    // 여기 밑에 초기화 하는 부분 api받아서 처리 할 예정
+    if(role === 'HELPER'){
+      setNotificationsHours(['오전 00시', '오전 00시']);
+      setNotificationsMinutes(['00분', '00분']);
+      setIsNotificationsOn([false, false]);
+    }else{
+      setNotificationsHours(['오전 00시', '오전 00시', '오전 00시', '오전 00시', '오전 00시', '오전 00시']);
+      setNotificationsMinutes(['00분', '00분', '00분', '00분', '00분', '00분']);
+      setIsNotificationsOn([false, false, false, false, false, false]);
+    }
   }, []);
 
-  // NotiButton의 토글 상태 변경 함수
-  const toggleNotification = (id: string) => {
-    setNotifications(prev =>
-      prev.map(noti =>
-        noti.id === id ? { ...noti, isOn: !noti.isOn } : noti
-      )
-    );
+  const notiTimeHandler = (index: number) => {
+    setShowHourBottomSheet(true);
+    setIndex(index);
   };
 
-  // NotiButton 클릭 시 해당 알림의 시간을 조정하기 위한 DateTimePicker 표시
-  const handleNotiButtonPress = (id: string) => {
-    setSelectedNotificationId(id);
-    setShowTimePicker(true);
-  };
-
-  // DateTimePicker에서 시간 변경 시 호출되는 함수
-  const onChangeTime = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    setShowTimePicker(false);
-    if (selectedDate && selectedNotificationId) {
-      setNotifications(prev =>
-        prev.map(noti =>
-          noti.id === selectedNotificationId ? { ...noti, time: selectedDate } : noti
-        )
-      );
-      // 변경된 시간을 서버에 업데이트하는 API 요청 추가 가능
+  useEffect(() => {
+    if(!showMinuteBottomSheet && index !== undefined){
+      setNotificationsHours(prev => prev.map((time, i) => i === index ? `${hour}` : time));
+      setNotificationsMinutes(prev => prev.map((time, i) => i === index ? `${minute}` : time));
     }
-    setSelectedNotificationId(null);
-  };
-
-  // 선택된 알림의 정보를 찾습니다.
-  const selectedNotification = notifications.find(noti => noti.id === selectedNotificationId);
+  }, [showMinuteBottomSheet]);
 
   return (
     <BG type="solid">
       <AppBar title="알림 설정" goBackCallbackFn={() => { navigation.goBack(); }} />
-      {role !== 'HELPER' ? (
+      {role === 'HELPER' ? (
         <>
           <SystemButton
             title="청년들이 당신의 목소리를 기다려요!"
             sub="지금 눌러서 목소리 녹음하기"
-            onPress={() => {}}
             type="toggle"
-            isOn={true}
+            isOn={isNotificationsOn[0]}
+            onPress={() => {setIsNotificationsOn(prev => prev.map((_, index) => index === 0 ? !prev[0] : prev[index]));}}
           />
           <SystemButton
             title="청년들로부터 감사 편지가 도착했어요!"
             sub="지금 눌러서 확인하기"
-            onPress={() => {}}
             type="toggle"
-            isOn={false}
+            isOn={isNotificationsOn[1]}
+            onPress={() => {setIsNotificationsOn(prev => prev.map((_, index) => index === 1 ? !prev[1] : prev[index]));}}
           />
         </>
       ) : (
@@ -94,28 +85,36 @@ const NotificationSettingScreen = () => {
           { sub: "점심 식사" },
           { sub: "저녁 식사" },
           { sub: "취침" }
-        ].map((item) => (
+        ].map((item,i) => (
           <NotiButton
             key={item.sub}
-            title="00시 00분"
+            title={notificationsHours[i] + ' ' + notificationsMinutes[i]}
             sub={item.sub}
-            onPress={() => {}}
-            isOn={false}
-            setIsOn={() => {}}
+            onPress={() => {notiTimeHandler(i)}}
+            isOn={isNotificationsOn[i]}
+            setIsOn={() => {setIsNotificationsOn(prev => prev.map((_, index) => index === i ? !prev[i] : prev[index]));}}
           />
         ))}
         </>
       )}
-      {/* 시간 변경용 DateTimePicker */}
-      {showTimePicker && selectedNotification && (
-        <DateTimePicker
-          value={selectedNotification.time}
-          mode="time"
-          is24Hour={true}
-          display="spinner"
-          onChange={onChangeTime}
-        />
-      )}
+       {showHourBottomSheet && (
+          <TimeSelectBottomSheet
+            type="hour"
+            value={'오전 12시'}
+            setValue={setHour}
+            onClose={() => setShowHourBottomSheet(false)}
+            onSelect={() => setShowMinuteBottomSheet(true)}
+          />
+        )}
+
+        {showMinuteBottomSheet && (
+          <TimeSelectBottomSheet
+            type="minute"
+            value={'00'}
+            setValue={setMinute}
+            onClose={() => setShowMinuteBottomSheet(false)}
+          />
+        )}
     </BG>
   );
 };
@@ -132,20 +131,11 @@ const NotiButton = ({ title, sub, onPress, isOn, setIsOn }:
       android_ripple={{ color: COLORS.blue600 }}
     >
       <View className="flex-row justify-start items-end gap-x-[13]">
-        <Txt type="title2" text={title} className="text-white" />
+        <Txt type="title3" text={title} className="text-white" />
         <Txt type="button" text={sub} className="text-gray300" />
       </View>
       {/* 토글 UI */}
-      <View
-        className={`w-[51px] h-[29px] rounded-[89.5px] ${isOn ? 'bg-yellowPrimary' : 'bg-gray400'} justify-center px-[2px]`}
-        onTouchEnd={(e) => { 
-          e.stopPropagation();
-          setIsOn(); 
-        }}>
-        <View
-          className={`w-[25px] h-[25px] rounded-full bg-white transition-all duration-200 ${isOn ? 'ml-[22px]' : 'ml-0'}`}
-        />
-      </View>
+      <ToggleSwitch isOn={isOn} onToggle={setIsOn} />
     </Pressable>
   );
 };
