@@ -6,7 +6,6 @@ import Button from '@components/atom/Button';
 import Modal from '@components/atom/Modal';
 import Toast from '@components/atom/Toast';
 import Txt from '@components/atom/Txt';
-import VirtualizedView from '@components/atom/VirtualizedView';
 import {LETTERS_DATA} from '@constants/letter';
 import {Portal} from '@gorhom/portal';
 import useGetSummary from '@hooks/providedFile/useGetSummary';
@@ -15,11 +14,12 @@ import useModal from '@hooks/useModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import ListArea from '@screens/Letter/LetterHome/components/ListArea';
+import ListCategory from '@screens/Letter/LetterHome/components/ListCategory';
 import ListHeader from '@screens/Letter/LetterHome/components/ListHeader';
 import {LetterResponseData} from '@type/api/providedFile';
 import {LetterStackParamList} from '@type/nav/LetterStackParamList';
 import {useEffect, useState} from 'react';
-import {Alert, Pressable, View} from 'react-native';
+import {Alert, Pressable, ScrollView, View} from 'react-native';
 
 type LetterProps = NativeStackScreenProps<
   LetterStackParamList,
@@ -134,9 +134,15 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
 
   return (
     <View className="bg-blue700 flex-1">
-      {/* <ScrollView stickyHeaderIndices={[2]}> */}
-      <VirtualizedView>
+      <ScrollView stickyHeaderIndices={[1]}>
         <ListHeader nickname={nickname} summaryData={summaryData} />
+        {/* 편지 카테고리 */}
+        <ListCategory
+          nickname={nickname}
+          selectedFilterIdx={selectedFilterIdx}
+          setSelectedFilterIdx={setSelectedFilterIdx}
+          parentCategories={parentCategories}
+        />
         {/* 편지 리스트 */}
         <ListArea
           nickname={nickname}
@@ -144,19 +150,8 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
           // list={LETTERS_DATA}
           setClickedMoreDot={setClickedMoreDot}
           setSelectedFileId={setSelectedFileId}
-          selectedFilterIdx={selectedFilterIdx}
-          setSelectedFilterIdx={setSelectedFilterIdx}
-          parentCategories={parentCategories}
-          // parentCategories={[
-          //   {category: 'WAKE_UP1', label: '기상'},
-          //   {category: 'WAKE_UP2', label: '기상'},
-          //   {category: 'WAKE_UP3', label: '기상'},
-          //   {category: 'WAKE_UP4', label: '기상'},
-          //   {category: 'SLEEP', label: '취침'},
-          // ]}
         />
-        {/* </ScrollView> */}
-      </VirtualizedView>
+      </ScrollView>
 
       <Portal>
         <Pressable

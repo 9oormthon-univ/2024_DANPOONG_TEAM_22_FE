@@ -84,6 +84,7 @@ const ListHeader = ({
           </View>
         ))}
       </View>
+      <View className="h-[45]" />
     </View>
   );
 };
