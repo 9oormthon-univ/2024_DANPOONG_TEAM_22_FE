@@ -50,29 +50,6 @@ const ListArea = ({
               ))}
             </View>
           </ScrollView>
-
-          // <FlatList
-          //   data={list}
-          //   keyExtractor={item =>
-          //     `${item.createdAt}-${item.providedFileId}-filteredLettersData`
-          //   }
-          //   renderItem={({item, index}) => (
-          //     <View>
-          //       <LetterCard
-          //         letter={item}
-          //         idx={index}
-          //         onPressMoreDot={() => {
-          //           setClickedMoreDot(true);
-          //           setSelectedFileId(item.providedFileId);
-          //         }}
-          //       />
-          //       <View className="mb-[30]" />
-          //     </View>
-          //   )}
-          //   showsVerticalScrollIndicator={false}
-          //   nestedScrollEnabled
-          //   contentContainerStyle={{paddingBottom: 20}}
-          // />
         )}
       </View>
     </View>
