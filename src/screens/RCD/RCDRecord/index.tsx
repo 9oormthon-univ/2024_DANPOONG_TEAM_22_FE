@@ -205,7 +205,6 @@ const playRecording = async () => {
 
       await postSaveVoice(voiceFileId, formData);
       await uploadAnalysis();
-      setIsUploading(false);
     } catch (error: any) {
       console.log('음성 파일 업로드 오류:', error);
     }
@@ -214,35 +213,39 @@ const playRecording = async () => {
   // 음성 분석 업로드 함수 
   const uploadAnalysis = async () => {
     try {
-      console.log('분석 시작: isMountedRef.current =', isMountedRef.current);
       const res = await postVoiceAnalysis(voiceFileId);
       const {code, message} = res;
-      console.log('분석 응답:', res);
       switch(code) {
         case 'ANALYSIS001':
           console.log('재시도 - ANALYSIS001 ', new Date());
-          if (isMountedRef.current) {
             analysisTimeoutRef.current = setTimeout(uploadAnalysis, 5000);
-          }
           break;
         case 'ANALYSIS002':
-          navigation.navigate('RCDError', {type: 'Include inappropriate content', message});
+          setIsUploading(false);
+
+          navigation.navigate('RCDError', {type: type, message,errorType:'Include inappropriate content'});
           break;
         case 'ANALYSIS003':
-          navigation.navigate('RCDError', {type: 'text has not been read as it is', message});
+          setIsUploading(false);
+
+          navigation.navigate('RCDError', {type: type, message,errorType:'text has not been read as it is'});
           break;
         case 'ANALYSIS006':
-          navigation.navigate('RCDError', {type: 'notAnalyzing', message});
+          setIsUploading(false);
+
+          navigation.navigate('RCDError', {type: type, message,errorType:'notAnalyzing'});
           break;
         case 'ANALYSIS107':
-          navigation.navigate('RCDError', {type: 'invalidScript', message});
+          setIsUploading(false);
+
+          navigation.navigate('RCDError', {type: type, message,errorType:'invalidScript'});
           break;
         case 'COMMON200':
-          console.log('COMMON200');
+          setIsUploading(false);
           navigation.navigate('RCDFeedBack');
           break;
         default:
-          navigation.navigate('RCDError', {type: 'server', message});
+          navigation.navigate('RCDError', {type: type, message,errorType:'server'});
           break;
       }
       
@@ -258,13 +261,13 @@ const playRecording = async () => {
         case 'ANALYSIS004':
         case 'ANALYSIS005':
         case 'ANALYSIS108':
-          if (isMountedRef.current) {
-            navigation.navigate('RCDError', {type: 'server', message});
-          }
+            setIsUploading(false);
+
+            navigation.navigate('RCDError', {type: type, message,errorType:'server'});
           break;
         default:
           if (isMountedRef.current) {
-            navigation.navigate('RCDError', {type: 'server', message});
+            navigation.navigate('RCDError', {type: type, message,errorType:'server'});
           }
           break;
       }
