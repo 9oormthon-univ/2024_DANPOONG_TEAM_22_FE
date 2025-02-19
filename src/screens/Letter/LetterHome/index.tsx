@@ -1,13 +1,13 @@
-import {getAlarmCategory} from '@apis/alarm';
-import {getLetters} from '@apis/providedFile';
 import AnimatedView from '@components/atom/AnimatedView';
 import BottomMenu from '@components/atom/BottomMenu';
 import Button from '@components/atom/Button';
 import Modal from '@components/atom/Modal';
 import Toast from '@components/atom/Toast';
 import Txt from '@components/atom/Txt';
-import {LETTERS_DATA} from '@constants/letter';
+// import {LETTERS_DATA} from '@constants/letter';
 import {Portal} from '@gorhom/portal';
+import useGetAlarmCategory from '@hooks/alarm/useGetAlarmCategory';
+import useGetLetters from '@hooks/providedFile/useGetLetters';
 import useGetSummary from '@hooks/providedFile/useGetSummary';
 import usePostReport from '@hooks/providedFile/usePostReport';
 import useModal from '@hooks/useModal';
@@ -28,29 +28,7 @@ type LetterProps = NativeStackScreenProps<
 
 const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   const [nickname, setNickname] = useState('');
-
-  const {
-    data: summaryData,
-    isError: isSummaryError,
-    error: summaryError,
-  } = useGetSummary();
-
-  useEffect(() => {
-    if (isSummaryError) {
-      console.error(summaryError);
-      Alert.alert('오류', '편지 요약 정보를 불러오는 중 오류가 발생했어요');
-    }
-  }, [isSummaryError, summaryError]);
-
-  useEffect(() => {
-    (async () => {
-      const nickname = await AsyncStorage.getItem('nickname');
-      setNickname(nickname ?? '');
-    })();
-  }, []);
-
   const [selectedFilterIdx, setSelectedFilterIdx] = useState(0);
-  const [lettersData, setLettersData] = useState<LetterResponseData[]>([]);
   const [filteredLettersData, setFilteredLettersData] = useState<
     LetterResponseData[]
   >([]);
@@ -58,6 +36,10 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
     {category: string; label: string}[]
   >([]);
   const [clickedMoreDot, setClickedMoreDot] = useState(false);
+  const [selectedFileId, setSelectedFileId] = useState<number | null>(null);
+  const [isToast, setIsToast] = useState(false); // 토스트 메시지 표시 상태
+  const [toastMessage, setToastMessage] = useState(''); // 토스트 메시지
+  const {mutate: postReport} = usePostReport();
   const {
     visible: visibleReport,
     openModal: openModalReport,
@@ -68,6 +50,21 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
     openModal: openModalDelete,
     closeModal: closeModalDelete,
   } = useModal();
+  const {
+    data: summaryData,
+    isError: isSummaryError,
+    error: summaryError,
+  } = useGetSummary();
+  const {
+    data: alarmCategoryData,
+    isError: isAlarmCategoryError,
+    error: alarmCategoryError,
+  } = useGetAlarmCategory();
+  const {
+    data: lettersData,
+    isError: isLettersError,
+    error: lettersError,
+  } = useGetLetters({pageable: {page: 0, size: 10, sort: 'createdAt,desc'}});
 
   useEffect(() => {
     (async () => {
@@ -77,44 +74,54 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   }, []);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const alarmCategoryRes = await getAlarmCategory();
-        console.log({alarmCategoryRes: alarmCategoryRes.result});
-        const categories = alarmCategoryRes.result.map(item => ({
-          category: item.alarmCategory,
-          label: item.alarmCategoryKoreanName,
-        }));
-        setParentCategories(categories);
-
-        const res = await getLetters({
-          pageable: {page: 0, size: 10, sort: 'createdAt,desc'},
-        });
-        console.log(res);
-        // setLettersData(res.result.content);
-        // setFilteredLettersData(res.result.content);
-        setLettersData(LETTERS_DATA);
-        setFilteredLettersData(LETTERS_DATA);
-      } catch (error) {
-        console.error(error);
-        Alert.alert('오류', '편지 정보를 불러오는 중 오류가 발생했어요');
-      }
-    })();
-  }, []);
+    if (isSummaryError) {
+      console.error(summaryError);
+      Alert.alert('오류', '편지 요약 정보를 불러오는 중 오류가 발생했어요');
+    }
+  }, [isSummaryError]);
 
   useEffect(() => {
-    console.log('lettersData', lettersData);
-    const filteredLetters = lettersData.filter(
+    if (isAlarmCategoryError) {
+      console.error(alarmCategoryError);
+      Alert.alert('오류', '알람 카테고리를 불러오는 중 오류가 발생했어요');
+    }
+  }, [isAlarmCategoryError]);
+
+  useEffect(() => {
+    if (isLettersError) {
+      console.error(lettersError);
+      Alert.alert('오류', '편지 정보를 불러오는 중 오류가 발생했어요');
+    }
+  }, [isLettersError]);
+
+  useEffect(() => {
+    if (!alarmCategoryData) return;
+    console.log({alarmCategoryData});
+    const categories = alarmCategoryData.result.map(item => ({
+      category: item.alarmCategory,
+      label: item.alarmCategoryKoreanName,
+    }));
+    setParentCategories(categories);
+  }, [alarmCategoryData]);
+
+  useEffect(() => {
+    if (!lettersData) return;
+    console.log({lettersData});
+    setFilteredLettersData(lettersData.result.content);
+    // setFilteredLettersData(LETTERS_DATA);
+  }, [lettersData]);
+
+  useEffect(() => {
+    const filteredLetters = lettersData?.result.content.filter(
       letter => letter.alarmType === parentCategories[selectedFilterIdx].label,
     );
-    console.log('filteredLetters', filteredLetters);
+    // const filteredLetters = LETTERS_DATA.filter(
+    //   letter => letter.alarmType === parentCategories[selectedFilterIdx].label,
+    // );
+    console.log({filteredLetters});
+    if (!filteredLetters) return;
     setFilteredLettersData(filteredLetters);
   }, [selectedFilterIdx]);
-
-  const [selectedFileId, setSelectedFileId] = useState<number | null>(null);
-  const [isToast, setIsToast] = useState(false); // 토스트 메시지 표시 상태
-  const [toastMessage, setToastMessage] = useState(''); // 토스트 메시지
-  const {mutate: postReport} = usePostReport();
 
   const handleReportClick = () => {
     if (!selectedFileId) return;
