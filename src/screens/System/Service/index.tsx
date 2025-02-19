@@ -24,6 +24,7 @@ const ServiceScreen = () => {
     }
   };
   const handleUpdate = async () => {
+    if(!isUpdateAvailable)return;
     const storeUrl = Platform.select({
       ios: 'https://apps.apple.com/app/[YOUR_APP_ID]', // 앱스토어 URL
       android: 'market://details?id=[YOUR_PACKAGE_NAME]', // 플레이스토어 URL

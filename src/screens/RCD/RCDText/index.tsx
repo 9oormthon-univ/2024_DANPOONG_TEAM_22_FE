@@ -98,7 +98,7 @@ const RCDTextScreen = ({ route }: { route: RouteProp<HomeStackParamList, 'RCDTex
         <ShadowTextInput
           value={text}
           onChangeText={onChangeText}
-          placeholder="15초 동안 녹음할 말을 작성해주세요"
+          placeholder={`${type === 'DAILY' ? '15' : '30'}초 동안 녹음할 말을 작성해주세요`}
           isError={isError}
           />
         <View className="mb-[51]"/>

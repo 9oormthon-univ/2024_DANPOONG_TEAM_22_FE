@@ -6,7 +6,7 @@ import { NavigationProp } from "@react-navigation/native";
 import { SystemStackParamList } from "@type/nav/SystemStackParamList";
 import { View, Pressable, KeyboardAvoidingView, ScrollView, Platform } from "react-native";
 import { LeaveReasons } from "@constants/LeaveReasons";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Button from "@components/atom/Button";
 import TextInput from "@components/atom/TextInput";
 
@@ -14,7 +14,8 @@ const LeaveAccountScreen = () => {
     const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
     const [selectedReasons, setSelectedReasons] = useState<string[]>([]);
     const [detailReason, setDetailReason] = useState('');
-    const scrollViewRef = useRef<ScrollView>(null);
+
+    const [isDetailTyping, setIsDetailTyping] = useState(false);
 
     const toggleReason = (reason: string) => {
         setSelectedReasons(prev => 
@@ -32,7 +33,7 @@ const LeaveAccountScreen = () => {
         >
             <BG type="solid">
                 <AppBar title="회원 탈퇴" goBackCallbackFn={() => navigation.goBack()} />
-                <ScrollView ref={scrollViewRef} contentContainerStyle={{ flexGrow: 1 }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                     {/* 전체 컨테이너 */}
                     <View className="flex-1 items-center">
                         {/* 안내 문구 */}
@@ -41,7 +42,7 @@ const LeaveAccountScreen = () => {
                             <Txt type="body4" text="더 나은 내일모래가 될 수 있도록 의견을 들려주세요" className="text-gray300" />
                         </View>
                         {/* 구분선 */}
-                        <View className="w-full h-[5px] bg-blue600"></View>
+                        <View className="w-full h-[5px] bg-blue600"/>
                         {/* 이유 선택 컨테이너 */}
                         {LeaveReasons.map((reason, index) => (
                             <ReasonItem 
@@ -55,16 +56,17 @@ const LeaveAccountScreen = () => {
                             <ReasonItem 
                                 reason="기타" 
                                 isSelected={selectedReasons.includes("기타")}
-                                onPress={() => toggleReason("기타")}
+                                onPress={() => {toggleReason("기타"); setIsDetailTyping(true)}}
                             />
                             {selectedReasons.includes("기타") && (
-                                <View className="w-full px-px">
+                                <View className="w-full px-px" onTouchStart={() => {setIsDetailTyping(true)}}>
                                 <TextInput  
+                                    autoFocus
                                     value={detailReason}
                                     onChangeText={setDetailReason}
                                     placeholder="내용을 입력해주세요"
-                                    height={114}
                                     isError={false}
+                                    maxLength={160}
                                 />
                                 </View>
                             )}
@@ -77,6 +79,30 @@ const LeaveAccountScreen = () => {
                         </View>
                     </View>
                 </ScrollView>
+                {isDetailTyping && (
+                    <View className="absolute top-0 right-0 h-full w-full z-[9]">
+                        <BG type="solid">
+                            <View className="mt-[64]"> 
+                                <ReasonItem 
+                                reason="기타" 
+                                isSelected={selectedReasons.includes("기타")}
+                                onPress={() => {toggleReason("기타"); setIsDetailTyping(false)}}
+                            />
+                                <View className="w-full px-px">
+                                    <TextInput  
+                                        autoFocus
+                                        value={detailReason}
+                                        onChangeText={setDetailReason}
+                                        placeholder="내용을 입력해주세요"
+                                        isError={false}
+                                        maxLength={160}
+                                />
+                                </View>               
+                             </View>
+                             <View className="flex-1" onTouchStart={() => {setIsDetailTyping(false)}}/>
+                        </BG>
+                    </View>
+                )}
             </BG>
         </KeyboardAvoidingView>
     );
