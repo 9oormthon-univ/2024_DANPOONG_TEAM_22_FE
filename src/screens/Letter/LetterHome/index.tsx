@@ -120,7 +120,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
     if (!selectedFileId) return;
     postReport({providedFileId: selectedFileId, reason: ''});
     setIsToast(true);
-    setToastMessage('신고되었어요');
+    setToastMessage('신고한 편지가 삭제되었어요');
     closeModalReport();
   };
 
@@ -128,7 +128,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
     if (!selectedFileId) return;
     // TODO: 삭제 API 호출
     setIsToast(true);
-    setToastMessage('삭제되었어요');
+    setToastMessage('편지가 삭제되었어요');
     closeModalDelete();
   };
 
