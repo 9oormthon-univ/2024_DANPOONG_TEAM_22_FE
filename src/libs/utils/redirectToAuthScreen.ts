@@ -4,13 +4,13 @@ import { CommonActions } from '@react-navigation/native';
 
 //로그인 화면으로 이동
 export const redirectToAuthScreen = async () => {
-  if (!navigationRef.current?.isReady()) {
+  if (!navigationRef.isReady()) {
     console.error('네비게이션이 준비되지 않았습니다.');
     return;
   }
 
   // 로그인 화면으로 이동
-  navigationRef.current.dispatch(
+  navigationRef.dispatch(
     CommonActions.reset({
       index: 0,
       routes: [{ name: 'AuthStackNav' }],

@@ -53,7 +53,7 @@ const AppBar = ({
     // 메인 컨테이너
     <View
       {...props}
-      className={`flex-row items-center justify-between px-[16] border-b border-b-white/5 ${props.className}`}
+      className={`flex-row items-center justify-between px-[16] border-b border-b-white/5 z-10 ${props.className}`}
       style={[props.style]}>
       {/* 왼쪽 영역: 뒤로가기 버튼 또는 빈 공간 */}
       {goBackCallbackFn ? (

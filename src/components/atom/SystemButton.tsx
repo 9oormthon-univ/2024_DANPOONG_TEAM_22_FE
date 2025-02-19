@@ -1,6 +1,7 @@
 import { View } from "react-native";
 import { Pressable } from "react-native";
 import Txt from "./Txt";
+import ToggleSwitch from "@components/atom/ToggleSwitch";
 //
 import BackIcon from "@assets/svgs/Back.svg";
 import KakaoLogo from "@assets/svgs/KakaoLogo.svg";
@@ -14,7 +15,7 @@ const SystemButton = ({
   kakaoLogo,
   onPress,
   type,
-  isOn
+  isOn,
 }: {
   title: string;
   sub?: string;
@@ -44,13 +45,7 @@ const SystemButton = ({
         {/* 화살표 아이콘 */}
         {type === 'button' && <BackIcon />}
         {type === 'toggle' && (
-          <View className={`w-[51px] h-[29px] rounded-[89.5px] ${isOn ? 'bg-yellowPrimary' : 'bg-gray400'} justify-center px-[2px]`}>
-            <View 
-              className={`w-[25px] h-[25px] rounded-full bg-white transition-all duration-200 ${
-                isOn ? 'ml-[22px]' : 'ml-0'
-              }`} 
-            />
-          </View>
+            <ToggleSwitch isOn={isOn ?? false} onToggle={onPress ?? (() => {})} />
         )}
         {type === 'link' && <ArrowRightUpIcon />}
       </Pressable>
