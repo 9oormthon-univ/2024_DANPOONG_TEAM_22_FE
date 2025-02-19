@@ -17,6 +17,8 @@ import useGetMember from '@hooks/auth/useGetMember';
 import SplashScreen from '@screens/Splash';
 import {Role} from '@type/api/member';
 import navigateToYouthListenScreen from '@utils/navigateToYouthListenScreen';
+import navigateToYouthOnboardingScreen from '@utils/navigateToYouthOnboardingScreen';
+import {navigationRef} from 'App';
 import {default as RNSplashScreen} from 'react-native-splash-screen';
 
 // 네비게이션 스택 생성
@@ -29,11 +31,14 @@ const AppInner = () => {
   const [role, setRole] = useState<Role | null>(null); // 사용자 역할
   const [token, setToken] = useState<string | null>(null); // 액세스 토큰
   const {data: memberData, isError: isErrorMember} = useGetMember(token);
+  const [isNavigationReady, setIsNavigationReady] = useState(false);
 
   // 로그인 상태 및 사용자 정보 확인
   useEffect(() => {
-    // react-native-splash-screen에서 제공하는 hide 함수를 사용해도 스택 쌓이는 게 보이는 문제가 있어서,
-    // isInitializing 상태로 관리해서 페이지 이동 로직 전까지 스플래시 스크린 컴포넌트를 표시하도록 함
+    /**
+     * react-native-splash-screen에서 제공하는 hide 함수를 사용해도 스택 쌓이는 게 보이는 문제가 있어서,
+     * isInitializing 상태로 관리해서 페이지 이동 로직 전까지 스플래시 스크린 컴포넌트를 표시하도록 함.
+     */
     (async () => {
       // await AsyncStorage.removeItem('accessToken'); // 로그아웃 테스트용
       const token = await AsyncStorage.getItem('accessToken');
@@ -47,17 +52,36 @@ const AppInner = () => {
   }, []);
 
   useEffect(() => {
-    if (memberData) {
-      setRole(memberData.result.role);
+    const unsubscribe = navigationRef.addListener('state', () => {
+      setIsNavigationReady(true);
+    });
+
+    return unsubscribe;
+  }, [navigationRef]);
+
+  useEffect(() => {
+    if (role === 'HELPER' || !isNavigationReady || !memberData) return;
+
+    const isSignupAllCompleted =
+      memberData?.result.youthMemberInfoDto?.latitude;
+    if (!isSignupAllCompleted) {
+      navigateToYouthOnboardingScreen(); // 네비게이션 준비 후 실행
     }
-    if (memberData || isErrorMember) {
-      setIsInitializing(false); // 데이터 로드 완료 후 스플래시 숨기기
-      RNSplashScreen.hide();
-    }
-    if (isErrorMember) {
-      Alert.alert('오류', '사용자 정보를 가져오는데 실패했어요');
-    }
-  }, [memberData, isErrorMember]);
+  }, [role, isNavigationReady, memberData]);
+
+  useEffect(() => {
+    if (!isErrorMember) return;
+    Alert.alert('오류', '사용자 정보를 가져오는데 실패했어요');
+    setIsInitializing(false); // 데이터 로드 완료 후 스플래시 숨기기
+    RNSplashScreen.hide();
+  }, [isErrorMember]);
+
+  useEffect(() => {
+    if (!memberData) return;
+    setRole(memberData.result.role);
+    setIsInitializing(false); // 데이터 로드 완료 후 스플래시 숨기기
+    RNSplashScreen.hide();
+  }, [memberData]);
 
   // 알람 처리 및 청년 리스닝 화면 이동
   useEffect(() => {
@@ -98,7 +122,10 @@ const AppInner = () => {
             <Stack.Screen name="AppTabNav" component={AppTabNav} />
           ) : (
             // 청년인 경우
-            <Stack.Screen name="YouthStackNav" component={YouthStackNav} />
+            <Stack.Group>
+              <Stack.Screen name="YouthStackNav" component={YouthStackNav} />
+              <Stack.Screen name="AuthStackNav" component={AuthStackNav} />
+            </Stack.Group>
           )}
         </Stack.Group>
       ) : (

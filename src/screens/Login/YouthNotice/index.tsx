@@ -119,7 +119,6 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
 
             navigation.navigate('YouthStackNav', {
               screen: 'YouthHomeScreen',
-              params: {},
             });
           } catch (error) {
             console.log(error);
