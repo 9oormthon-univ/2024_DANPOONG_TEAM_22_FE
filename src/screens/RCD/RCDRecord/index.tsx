@@ -1,41 +1,41 @@
-// 필요한 React 및 React Native 컴포넌트 임포트
+// React 관련 임포트
 import {useEffect, useRef, useState} from 'react';
-import {
-  ScrollView,
-  View,
-  Platform,
-  PermissionsAndroid,
-  Linking,
-  Alert,
-} from 'react-native';
+import {  ScrollView,  View,  Platform, ActivityIndicator } from 'react-native';
 
-// 오디오 녹음 관련 라이브러리 임포트
-import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+// 네비게이션 관련 임포트
+import { NavigationProp, RouteProp, useNavigation } from '@react-navigation/native';
+import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 
-// 커스텀 컴포넌트 임포트
+// API 임포트
+import {postSaveVoice} from '@apis/RCDApis/postSaveVoice';
+import {postVoiceAnalysis} from '@apis/RCDApis/postVoiceAnalysis';
+
+// 컴포넌트 임포트
 import RCDWave from '@components/atom/RCDWave';
 import BG from '@components/atom/BG';
 import RCDBtnBar from '@components/molecule/RCDBtnBar';
 import RCDTimer from '@components/atom/RCDTimer';
 import Txt from '@components/atom/Txt';
-
-// 네비게이션 관련 임포트
-import {
-  NavigationProp,
-  RouteProp,
-  useNavigation,
-} from '@react-navigation/native';
-import {HomeStackParamList} from '@type/nav/HomeStackParamList';
-
-// API 및 파일시스템 관련 임포트
-import {postSaveVoice} from '@apis/RCDApis/postSaveVoice';
 import AppBar from '@components/atom/AppBar';
-// import RNFS from 'react-native-fs';
-import { postVoiceAnalysis } from '@apis/RCDApis/postVoiceAnalysis';
-import { ActivityIndicator } from 'react-native';
 
-import { startRecordingAndroid, pauseRecordingAndroid, resumeRecordingAndroid, stopRecordingAndroid, playRecordingAndroid ,stopEverythingAndroid, getCurrentMeteringAndroid} from './RecordAndroid';
-import { startRecordingIOS, stopRecordingIOS, playSoundIOS, stopEverythingIOS, getCurrentMeteringIOS } from './Record';
+// 녹음 관련 임포트
+import { 
+  startRecordingAndroid, 
+  pauseRecordingAndroid, 
+  resumeRecordingAndroid, 
+  stopRecordingAndroid, 
+  playRecordingAndroid,
+  stopEverythingAndroid, 
+  getCurrentMeteringAndroid
+} from './RecordAndroid';
+import { 
+  startRecordingIOS, 
+  stopRecordingIOS, 
+  playSoundIOS, 
+  stopEverythingIOS, 
+  getCurrentMeteringIOS 
+} from './Record';
+
 // 녹음 화면 컴포넌트
 const RCDRecordScreen = ({ route }: { route: RouteProp<HomeStackParamList, 'RCDRecord'> }) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
@@ -99,41 +99,41 @@ const refreshRCDStates = async () => {
     }
   };
 
-   // 마이크 권한 체크 함수 
-   const checkPermission = async () => {
-    if (Platform.OS === 'android') {
-      try {
-        const permission = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-        );
+  //  // 마이크 권한 체크 함수 
+  //  const checkPermission = async () => {
+  //   if (Platform.OS === 'android') {
+  //     try {
+  //       const permission = await PermissionsAndroid.request(
+  //         PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+  //       );
 
-        if (permission === PermissionsAndroid.RESULTS.GRANTED) {
-          return true;
-        } else {
-          const hasNeverAskAgain = permission === 'never_ask_again';
+  //       if (permission === PermissionsAndroid.RESULTS.GRANTED) {
+  //         return true;
+  //       } else {
+  //         const hasNeverAskAgain = permission === 'never_ask_again';
 
-          if (hasNeverAskAgain) {
-            Alert.alert(
-              '권한 필요',
-              '녹음을 위해 마이크 권한이 필요합니다. 설정에서 권한을 활성화해주세요.',
-              [
-                {text: '취소', style: 'cancel'},
-                {
-                  text: '설정으로 이동',
-                  onPress: () => Linking.openSettings(),
-                },
-              ],
-            );
-          }
-          return false;
-        }
-      } catch (err) {
-        console.log('checkPermission error', err);
-        return false;
-      }
-    }
-    return true;
-  };
+  //         if (hasNeverAskAgain) {
+  //           Alert.alert(
+  //             '권한 필요',
+  //             '녹음을 위해 마이크 권한이 필요합니다. 설정에서 권한을 활성화해주세요.',
+  //             [
+  //               {text: '취소', style: 'cancel'},
+  //               {
+  //                 text: '설정으로 이동',
+  //                 onPress: () => Linking.openSettings(),
+  //               },
+  //             ],
+  //           );
+  //         }
+  //         return false;
+  //       }
+  //     } catch (err) {
+  //       console.log('checkPermission error', err);
+  //       return false;
+  //     }
+  //   }
+  //   return true;
+  // };
  const startRecording = async () => {
   console.log('startRecording');
   if (isRecording) {
@@ -223,22 +223,22 @@ const playRecording = async () => {
         case 'ANALYSIS002':
           setIsUploading(false);
 
-          navigation.navigate('RCDError', {type: type, message,errorType:'Include inappropriate content'});
+          navigation.navigate('RCDError', {type: type, message,errorType:'bad'});
           break;
         case 'ANALYSIS003':
           setIsUploading(false);
 
-          navigation.navigate('RCDError', {type: type, message,errorType:'text has not been read as it is'});
+          navigation.navigate('RCDError', {type: type, message,errorType:'notsame'});
           break;
         case 'ANALYSIS006':
           setIsUploading(false);
 
-          navigation.navigate('RCDError', {type: type, message,errorType:'notAnalyzing'});
+          navigation.navigate('RCDError', {type: type, message,errorType:'wrong'});
           break;
         case 'ANALYSIS107':
           setIsUploading(false);
 
-          navigation.navigate('RCDError', {type: type, message,errorType:'invalidScript'});
+          navigation.navigate('RCDError', {type: type, message,errorType:'wrong'});
           break;
         case 'COMMON200':
           setIsUploading(false);

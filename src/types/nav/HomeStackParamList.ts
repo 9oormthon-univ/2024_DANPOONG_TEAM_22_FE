@@ -13,12 +13,15 @@ export type HomeStackParamList = {
   };
 
 
-  type RCDErrorType = 
-  'text has not been read as it is' |// 텍스트를 그대로 읽지 않았습니다.
-  'Include inappropriate content' |// 부적절한 내용이 포함되어 있습니다.
-  'notAnalyzing'|// 분석 중이지 않습니다.
-  'invalidScript' | // GPT: 올바르지 않은 스크립트입니다.
-  'server'; // 서버 오류
+  type RCDErrorType = 'noisy' | 'bad'|'wrong'|'notsame'|'server';
+
+
+
+  // 'text has not been read as it is' |// 텍스트를 그대로 읽지 않았습니다.
+  // 'Include inappropriate content' |// 부적절한 내용이 포함되어 있습니다.
+  // 'notAnalyzing'|// 분석 중이지 않습니다.
+  // 'invalidScript' | // GPT: 올바르지 않은 스크립트입니다.
+  // 'server'; // 서버 오류
 
 //  code 200 but need to handle:
 // 텍스트를 그대로 읽지 않았습니다.

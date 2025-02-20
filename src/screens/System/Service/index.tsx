@@ -18,7 +18,7 @@ const ServiceScreen = () => {
 
   const openWebsite = async () => {
     try {
-      await Linking.openURL('https://nm-site.vercel.app/');
+      await Linking.openURL('https://www.naeilmorae.co.kr');
     } catch (error) {
       console.error('웹사이트를 여는데 실패했습니다:', error);
     }

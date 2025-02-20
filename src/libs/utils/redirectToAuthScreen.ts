@@ -9,14 +9,11 @@ export const redirectToAuthScreen = async () => {
     return;
   }
 
-  // 로그인 화면으로 이동
-  navigationRef.dispatch(
-    CommonActions.reset({
+  if (navigationRef) {
+    navigationRef.reset({
       index: 0,
       routes: [{ name: 'AuthStackNav' }],
-    }),
-  );
-
+    });}
   // 모든 인증 관련 데이터 제거
   await AsyncStorage.multiRemove(['accessToken', 'refreshToken']);
 };
