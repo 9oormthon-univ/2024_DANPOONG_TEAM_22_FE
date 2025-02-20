@@ -342,6 +342,8 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         text={toastMessage}
         isToast={isToast}
         setIsToast={() => setIsToast(false)}
+        position="left"
+        type="check"
       />
     </BG>
   );
