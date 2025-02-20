@@ -12,13 +12,38 @@ type MemberRequestData = {
 };
 
 type YouthRequestData = {
-  wakeUpTime: string;
-  sleepTime: string;
-  breakfast: string;
-  lunch: string;
-  dinner: string;
   latitude: number;
   longitude: number;
+  wakeUpTime: {
+    hour: number;
+    minute: number;
+    second: number;
+    nano: number;
+  };
+  sleepTime: {
+    hour: number;
+    minute: number;
+    second: number;
+    nano: number;
+  };
+  breakfast: {
+    hour: number;
+    minute: number;
+    second: number;
+    nano: number;
+  };
+  lunch: {
+    hour: number;
+    minute: number;
+    second: number;
+    nano: number;
+  };
+  dinner: {
+    hour: number;
+    minute: number;
+    second: number;
+    nano: number;
+  };
 };
 
 type MemberResponseData = {memberId: number};
