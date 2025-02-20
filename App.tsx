@@ -16,7 +16,7 @@ import {
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
 import AppInner, {navigateToYouthListenScreen} from 'AppInner';
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 // import pushNoti from '@utils/pushNoti';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -38,6 +38,7 @@ export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
 function App(): React.JSX.Element {
   const routeNameRef = useRef<string | undefined>();
+  const [isNavigationReady, setIsNavigationReady] = useState(false);
 
   // GTM 초기화
   useEffect(() => {
@@ -160,8 +161,9 @@ function App(): React.JSX.Element {
         <GestureHandlerRootView style={{flex: 1}}>
           <NavigationContainer
             ref={navigationRef}
-            onStateChange={onStateChange}>
-            <AppInner />
+            onStateChange={onStateChange}
+            onReady={() => setIsNavigationReady(true)}>
+            {isNavigationReady && <AppInner />}
           </NavigationContainer>
         </GestureHandlerRootView>
       </PortalProvider>

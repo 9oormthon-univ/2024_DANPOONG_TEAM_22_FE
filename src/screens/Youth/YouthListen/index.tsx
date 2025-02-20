@@ -132,12 +132,22 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
   }, [alarmId]);
 
   const handleMessageSend = async (emotionType?: EmotionType) => {
-    setIsToast(true);
-    setToastMessage('전송 완료');
+    if (!emotionType && !message) return;
 
-    if (!emotionType && !message) {
-      return;
+    if (emotionType) {
+      const emotion = EMOTION_OPTIONS_YOUTH.find(
+        option => option.type === emotionType,
+      );
+      if (!emotion) return;
+      setIsToast(true);
+      setToastMessage(`‘${emotion.label}’ 전송 완료`);
     }
+
+    if (message) {
+      setIsToast(true);
+      setToastMessage('메시지 전송 완료');
+    }
+
     try {
       await postComment({
         providedFileId: voiceFile.providedFileId,
