@@ -141,9 +141,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
       if (!emotion) return;
       setIsToast(true);
       setToastMessage(`‘${emotion.label}’ 전송 완료`);
-    }
-
-    if (message) {
+    } else {
       setIsToast(true);
       setToastMessage('메시지 전송 완료');
     }
