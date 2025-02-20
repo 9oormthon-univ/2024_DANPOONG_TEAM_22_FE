@@ -256,6 +256,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
         isToast={isToast}
         setIsToast={() => setIsToast(false)}
         position="bottom"
+        type="check"
       />
     </View>
   );
