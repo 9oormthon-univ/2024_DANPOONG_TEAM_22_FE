@@ -1,6 +1,15 @@
 import { Platform, NativeModules, NativeEventEmitter} from 'react-native';
 // Android 전용 WavRecorder 네이티브 모듈 
 const { WavRecorder } = NativeModules;
+
+// WavRecorder가 addListener, removeListeners 제공하지 않으면 Dummy 메서드로 채워줍니다.
+if (WavRecorder && !WavRecorder.addListener) {
+  WavRecorder.addListener = () => {};
+}
+if (WavRecorder && !WavRecorder.removeListeners) {
+  WavRecorder.removeListeners = () => {};
+}
+
 const volumeEmitter = new NativeEventEmitter(WavRecorder);
 /**
  * 볼륨 업데이트 이벤트 리스너를 추가합니다.
