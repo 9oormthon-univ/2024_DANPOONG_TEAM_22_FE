@@ -1,5 +1,4 @@
-const convertToDate = (hour: string, minute: string): Date => {
-  const now = new Date();
+export const extractNumberFromDateString = (hour: string, minute: string) => {
   const isPM = hour.includes('오후');
   let hourValue = parseInt(hour.replace(/[^0-9]/g, ''), 10); // 숫자만 추출
 
@@ -12,9 +11,20 @@ const convertToDate = (hour: string, minute: string): Date => {
 
   const minuteValue = parseInt(minute.replace(/[^0-9]/g, ''), 10); // 숫자만 추출
 
-  // 현재 날짜에 시, 분을 설정한 Date 객체 생성
+  return {hourValue, minuteValue};
+};
+
+// 현재 날짜에 시, 분을 설정한 Date 객체 생성
+export const convertToDate = (hour: string, minute: string): Date => {
+  const {hourValue, minuteValue} = extractNumberFromDateString(hour, minute);
+  const now = new Date();
   now.setHours(hourValue, minuteValue, 0, 0);
   return now;
 };
 
-export default convertToDate;
+export const TIME_SEPARATOR = ':';
+
+export const joinTime = (hour: string, minute: string) => {
+  const {hourValue, minuteValue} = extractNumberFromDateString(hour, minute);
+  return `${hourValue}${TIME_SEPARATOR}${minuteValue}`;
+};
