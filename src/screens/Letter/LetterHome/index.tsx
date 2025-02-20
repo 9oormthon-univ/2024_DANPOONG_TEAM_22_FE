@@ -7,6 +7,7 @@ import Txt from '@components/atom/Txt';
 // import {LETTERS_DATA} from '@constants/letter';
 import {Portal} from '@gorhom/portal';
 import useGetAlarmCategory from '@hooks/alarm/useGetAlarmCategory';
+import useDeleteLetter from '@hooks/providedFile/useDeleteLetter';
 import useGetLetters from '@hooks/providedFile/useGetLetters';
 import useGetSummary from '@hooks/providedFile/useGetSummary';
 import usePostReport from '@hooks/providedFile/usePostReport';
@@ -42,6 +43,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   const [isToast, setIsToast] = useState(false); // 토스트 메시지 표시 상태
   const [toastMessage, setToastMessage] = useState(''); // 토스트 메시지
   const {mutate: postReport} = usePostReport();
+  const {mutate: deleteLetter} = useDeleteLetter();
   const {
     visible: visibleReport,
     openModal: openModalReport,
@@ -144,7 +146,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
 
   const handleDeleteClick = () => {
     if (!selectedFileId) return;
-    // TODO: 삭제 API 호출
+    deleteLetter({providedFileId: selectedFileId, reason: ''});
     setIsToast(true);
     setToastMessage('편지가 삭제되었어요');
     closeModalDelete();
