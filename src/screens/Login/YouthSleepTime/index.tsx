@@ -7,7 +7,7 @@ import Txt from '@components/atom/Txt';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {DEFAULT_TIME} from '@screens/Login/YouthWakeUpTime';
 import {AuthStackParamList} from '@stackNav/Auth';
-import convertToDate from '@utils/convertToDate';
+import {joinTime} from '@utils/convertToDate';
 import {useState} from 'react';
 import {Pressable, View} from 'react-native';
 
@@ -24,14 +24,14 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const [showMinuteBottomSheet, setShowMinuteBottomSheet] = useState(false);
 
   const handleNext = async () => {
-    const sleepTime = convertToDate(hour, minute);
+    const sleepTime = joinTime(hour, minute);
 
     navigation.navigate('YouthNoticeScreen', {
       wakeUpTime,
       breakfast,
       lunch,
       dinner,
-      sleepTime: sleepTime.toISOString(),
+      sleepTime,
     });
   };
 

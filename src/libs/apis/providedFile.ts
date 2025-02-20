@@ -53,4 +53,15 @@ const postReport = async ({
   return res.data;
 };
 
-export {getLetters, getSummary, postComment, postReport};
+const deleteLetter = async ({
+  providedFileId,
+  reason,
+}: Readonly<ReportRequestData>) => {
+  const res = await client.delete<ResultResponseData<boolean>>(
+    `/api/v1/${providedFileId}`,
+    {data: {reason}},
+  );
+  return res.data;
+};
+
+export {deleteLetter, getLetters, getSummary, postComment, postReport};

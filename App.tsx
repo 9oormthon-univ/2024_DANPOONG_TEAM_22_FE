@@ -18,7 +18,7 @@ import {RootStackParamList} from '@type/nav/RootStackParamList';
 import AppInner, {navigateToYouthListenScreen} from 'AppInner';
 import {useEffect, useRef, useState} from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-// import pushNoti from '@utils/pushNoti';
+import pushNoti from '@utils/pushNoti';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {trackAppStart, trackScreenView} from '@utils/tracker';

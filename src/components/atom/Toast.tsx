@@ -2,6 +2,7 @@
 import {View, Animated} from 'react-native';
 import Txt from '@components/atom/Txt';
 import Bang from '@assets/svgs/Bang.svg';
+import CheckYellowIcon from '@assets/svgs/checkYellow.svg';
 import {useEffect} from 'react';
 
 // Toast 컴포넌트의 props 타입 정의
@@ -9,10 +10,14 @@ const Toast = ({
   text,
   isToast,
   setIsToast,
+  position = 'top',
+  type = 'notice',
 }: {
   text: string; // 토스트 메시지 텍스트
   isToast: boolean; // 토스트 표시 여부
   setIsToast: () => void; // 토스트 상태 변경 함수
+  position?: 'top' | 'bottom'; // 토스트 표시 위치
+  type?: 'notice' | 'check'; // 토스트 타입
 }) => {
   // 애니메이션을 위한 opacity 값
   const opacity = new Animated.Value(0);
@@ -53,14 +58,17 @@ const Toast = ({
 
   // 토스트 UI 렌더링
   return (
-    <View className="w-full items-center justify-center absolute top-[100] ">
+    <View
+      className={`w-full items-center justify-center absolute ${
+        position === 'top' ? 'top-[100]' : 'bottom-[89]'
+      }`}>
       <Animated.View
-        className="w-auto h-auto flex-row bg-blue400 px-[27] py-[16] z-50"
+        className="w-auto h-auto flex-row bg-blue400 px-[25] py-[16] z-50"
         style={{
           borderRadius: 50,
           opacity,
         }}>
-        <Bang />
+        {type === 'check' ? <CheckYellowIcon /> : <Bang />}
         <View className="ml-[14]" />
         <Txt type="body4" text={text} className="text-white text-center" />
       </Animated.View>
