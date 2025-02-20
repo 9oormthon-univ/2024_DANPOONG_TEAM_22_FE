@@ -134,7 +134,7 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
       source={require('@assets/pngs/background/youthMain.png')}
       className="flex-1">
       <Pressable
-        className="flex-row self-start items-center px-[33.5] pt-[32.5]"
+        className="flex-row self-start items-center px-[30] pt-[32.5]"
         onPress={() => navigation.navigate('SystemStackNav')}>
         <SettingSmallIcon />
         <View className="w-[6.5]" />
