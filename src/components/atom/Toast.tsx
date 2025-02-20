@@ -9,10 +9,12 @@ const Toast = ({
   text,
   isToast,
   setIsToast,
+  position = 'top',
 }: {
   text: string; // 토스트 메시지 텍스트
   isToast: boolean; // 토스트 표시 여부
   setIsToast: () => void; // 토스트 상태 변경 함수
+  position?: 'top' | 'bottom'; // 토스트 표시 위치
 }) => {
   // 애니메이션을 위한 opacity 값
   const opacity = new Animated.Value(0);
@@ -53,7 +55,10 @@ const Toast = ({
 
   // 토스트 UI 렌더링
   return (
-    <View className="w-full items-center justify-center absolute top-[100] ">
+    <View
+      className={`w-full items-center justify-center absolute ${
+        position === 'top' ? 'top-[100]' : 'bottom-[89]'
+      }`}>
       <Animated.View
         className="w-auto h-auto flex-row bg-blue400 px-[27] py-[16] z-50"
         style={{

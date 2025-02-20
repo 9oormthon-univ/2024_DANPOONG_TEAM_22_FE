@@ -4,7 +4,7 @@ import Button from '@components/atom/Button';
 import Modal from '@components/atom/Modal';
 import Toast from '@components/atom/Toast';
 import Txt from '@components/atom/Txt';
-// import {LETTERS_DATA} from '@constants/letter';
+import {LETTERS_DATA} from '@constants/letter';
 import {Portal} from '@gorhom/portal';
 import useGetAlarmCategory from '@hooks/alarm/useGetAlarmCategory';
 import useDeleteLetter from '@hooks/providedFile/useDeleteLetter';
@@ -114,23 +114,23 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   useEffect(() => {
     if (!lettersData) return;
     console.log({lettersData});
-    setFilteredLettersData(lettersData.result.content);
-    // setFilteredLettersData(LETTERS_DATA);
+    // setFilteredLettersData(lettersData.result.content);
+    setFilteredLettersData(LETTERS_DATA);
   }, [lettersData]);
 
   useEffect(() => {
     if (!lettersData) return;
     if (selectedFilterIdx === 0) {
-      setFilteredLettersData(lettersData.result.content);
-      // setFilteredLettersData(LETTERS_DATA);
+      // setFilteredLettersData(lettersData.result.content);
+      setFilteredLettersData(LETTERS_DATA);
       return;
     }
-    const filteredLetters = lettersData.result.content.filter(
-      letter => letter.alarmType === parentCategories[selectedFilterIdx].label,
-    );
-    // const filteredLetters = LETTERS_DATA.filter(
-    //   letter => letter.alarmType === parentCategories[selectedFilterIdx]?.label,
+    // const filteredLetters = lettersData.result.content.filter(
+    //   letter => letter.alarmType === parentCategories[selectedFilterIdx].label,
     // );
+    const filteredLetters = LETTERS_DATA.filter(
+      letter => letter.alarmType === parentCategories[selectedFilterIdx]?.label,
+    );
     console.log({filteredLetters});
     if (!filteredLetters) return;
     setFilteredLettersData(filteredLetters);
@@ -255,6 +255,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
         text={toastMessage}
         isToast={isToast}
         setIsToast={() => setIsToast(false)}
+        position="bottom"
       />
     </View>
   );
