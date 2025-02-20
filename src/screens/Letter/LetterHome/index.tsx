@@ -26,6 +26,8 @@ type LetterProps = NativeStackScreenProps<
   'LetterHomeScreen'
 >;
 
+type Category = {category: string; label: string};
+
 const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   const [nickname, setNickname] = useState('');
   const [selectedFilterIdx, setSelectedFilterIdx] = useState(0);
@@ -97,10 +99,13 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   useEffect(() => {
     if (!alarmCategoryData) return;
     console.log({alarmCategoryData});
-    const categories = alarmCategoryData.result.map(item => ({
-      category: item.alarmCategory,
-      label: item.alarmCategoryKoreanName,
-    }));
+    const categories: Category[] = [
+      {category: 'ALL', label: '전체'},
+      ...alarmCategoryData.result.map(item => ({
+        category: item.alarmCategory,
+        label: item.alarmCategoryKoreanName,
+      })),
+    ];
     setParentCategories(categories);
   }, [alarmCategoryData]);
 
@@ -112,11 +117,17 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   }, [lettersData]);
 
   useEffect(() => {
-    const filteredLetters = lettersData?.result.content.filter(
+    if (!lettersData) return;
+    if (selectedFilterIdx === 0) {
+      setFilteredLettersData(lettersData.result.content);
+      // setFilteredLettersData(LETTERS_DATA);
+      return;
+    }
+    const filteredLetters = lettersData.result.content.filter(
       letter => letter.alarmType === parentCategories[selectedFilterIdx].label,
     );
     // const filteredLetters = LETTERS_DATA.filter(
-    //   letter => letter.alarmType === parentCategories[selectedFilterIdx].label,
+    //   letter => letter.alarmType === parentCategories[selectedFilterIdx]?.label,
     // );
     console.log({filteredLetters});
     if (!filteredLetters) return;
