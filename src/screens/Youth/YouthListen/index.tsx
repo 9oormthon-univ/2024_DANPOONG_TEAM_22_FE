@@ -102,7 +102,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         setTimeout(async () => {
           await audioPlayer.current.startPlayer(res.result.fileUrl);
           setIsPlaying(true);
-        }, 2000);
+        }, 500);
       } catch (error) {
         console.log(error);
         // Alert.alert('오류', '음성 파일을 불러오는 중 오류가 발생했어요');
