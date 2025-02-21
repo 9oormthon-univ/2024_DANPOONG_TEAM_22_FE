@@ -220,8 +220,17 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
         confirmText="신고">
         <Txt
           type="title4"
-          text={`[${'청년1'}]의 글을 신고하시겠어요?`}
-          className="text-white mt-[26] mb-[13]"
+          // text={`[${
+          //   lettersData?.result.content.find(
+          //     letter => letter.providedFileId === selectedFileId,
+          //   )?.member.name ?? ''
+          // }]의 글을 신고하시겠어요?`}
+          text={`[${
+            LETTERS_DATA.find(
+              letter => letter.providedFileId === selectedFileId,
+            )?.member.name ?? ''
+          }]의 글을 신고하시겠어요?`}
+          className="text-white mt-[26] mb-[13] text-center"
         />
         <Txt
           type="caption1"
@@ -237,11 +246,19 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
         onConfirm={handleDeleteClick}
         buttonRatio="1:1"
         confirmText="삭제">
-        {/* TODO: 청년 닉네임 표시 */}
         <Txt
           type="title4"
-          text={`[${'청년1'}]의 글을 삭제하시겠어요?`}
-          className="text-white mt-[26] mb-[13]"
+          // text={`[${
+          //   lettersData?.result.content.find(
+          //     letter => letter.providedFileId === selectedFileId,
+          //   )?.member.name ?? ''
+          // }]의 글을 삭제하시겠어요?`}
+          text={`[${
+            LETTERS_DATA.find(
+              letter => letter.providedFileId === selectedFileId,
+            )?.member.name ?? ''
+          }]의 글을 삭제하시겠어요?`}
+          className="text-white mt-[26] mb-[13] text-center"
         />
         <Txt
           type="caption1"
