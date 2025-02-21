@@ -7,6 +7,7 @@
  * - 쿼리 클라이언트 설정
  */
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import {
   createNavigationContainerRef,
@@ -15,14 +16,14 @@ import {
 } from '@react-navigation/native';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
-import AppInner, {navigateToYouthListenScreen} from 'AppInner';
+import navigateToYouthListenScreen from '@utils/navigateToYouthListenScreen';
+import pushNoti from '@utils/pushNoti';
+import AppInner from 'AppInner';
 import {useEffect, useRef, useState} from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import pushNoti from '@utils/pushNoti';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {trackAppStart, trackScreenView} from '@utils/tracker';
 import {PortalProvider} from '@gorhom/portal';
+import {trackAppStart, trackScreenView} from '@utils/tracker';
 
 // 쿼리 클라이언트 설정
 const queryClient = new QueryClient({
@@ -35,6 +36,8 @@ const queryClient = new QueryClient({
 
 // 네비게이션 참조 생성
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
+
+type RemoteMessageData = {alarmId: string};
 
 function App(): React.JSX.Element {
   const routeNameRef = useRef<string | undefined>();
@@ -84,7 +87,7 @@ function App(): React.JSX.Element {
 
       const unsubscribe = messaging().onMessage(async remoteMessage => {
         console.log('Foreground', remoteMessage);
-        const {alarmId} = remoteMessage.data;
+        const {alarmId} = remoteMessage.data as RemoteMessageData;
 
         pushNoti.displayNotification({
           title: '내일모래',
@@ -113,7 +116,7 @@ function App(): React.JSX.Element {
         .then(remoteMessage => {
           (async () => {
             if (remoteMessage) {
-              const {alarmId} = remoteMessage.data;
+              const {alarmId} = remoteMessage.data as RemoteMessageData;
               // AsyncStorage에 알림 데이터 저장
               await AsyncStorage.setItem('alarmId', alarmId);
             }
@@ -124,7 +127,7 @@ function App(): React.JSX.Element {
       messaging().onNotificationOpenedApp(remoteMessage => {
         (async () => {
           if (remoteMessage) {
-            const {alarmId} = remoteMessage.data;
+            const {alarmId} = remoteMessage.data as RemoteMessageData;
             navigateToYouthListenScreen({
               alarmId: Number(alarmId),
             });
