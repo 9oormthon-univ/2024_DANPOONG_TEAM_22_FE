@@ -325,7 +325,7 @@ const playRecording = async () => {
                   className="text-gray200"
                 />
                 <View className="mt-[28]">
-                  <Txt type="title2" text={content} className="text-white" />
+                  <Txt type={type === 'INFO' ? 'title2' : 'body3'} text={content} className="text-white" />
                 </View>
               </ScrollView>
             </View>
