@@ -106,6 +106,11 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
     setNickname(text);
   };
 
+  const bottomMenuData = [
+    {title: '앨범에서 사진 선택', onPress: selectImage},
+    {title: '기본 이미지 적용', onPress: handleDefaultImageClick},
+  ];
+
   return (
     <BG type="main">
       <DismissKeyboardView>
@@ -176,13 +181,7 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
               visible={clickedUpload}
               style={{borderRadius: 10}}
               className="bg-blue500 mb-[24]">
-              <BottomMenu
-                title="프로필 사진 설정"
-                children={[
-                  {title: '앨범에서 사진 선택', onPress: selectImage},
-                  {title: '기본 이미지 적용', onPress: handleDefaultImageClick},
-                ]}
-              />
+              <BottomMenu title="프로필 사진 설정" data={bottomMenuData} />
             </AnimatedView>
 
             <Button text="취소" onPress={() => setClickedUpload(false)} />

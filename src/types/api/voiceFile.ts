@@ -1,3 +1,5 @@
+import {FileMemberResponseData} from '@type/api/member';
+
 type VoiceFilesRequestData = {
   alarmId: number;
 };
@@ -7,11 +9,7 @@ type VoiceFileResponseData = {
   fileUrl: string;
   providedFileId: number;
   content: string;
-  member: {
-    id: number;
-    name: string;
-    profileImage: string;
-  };
+  member: FileMemberResponseData;
 };
 
-export type {VoiceFilesRequestData, VoiceFileResponseData};
+export type {VoiceFileResponseData, VoiceFilesRequestData};
