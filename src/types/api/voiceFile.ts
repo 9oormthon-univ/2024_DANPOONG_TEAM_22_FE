@@ -7,6 +7,11 @@ type VoiceFileResponseData = {
   fileUrl: string;
   providedFileId: number;
   content: string;
+  member: {
+    id: number;
+    name: string;
+    profileImage: string;
+  };
 };
 
 export type {VoiceFilesRequestData, VoiceFileResponseData};
