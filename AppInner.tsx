@@ -40,7 +40,10 @@ const AppInner = () => {
      * isInitializing 상태로 관리해서 페이지 이동 로직 전까지 스플래시 스크린 컴포넌트를 표시하도록 함.
      */
     (async () => {
-      // await AsyncStorage.removeItem('accessToken'); // 로그아웃 테스트용
+      /** 로그아웃 테스트용 - 주석 해제해서 사용 */
+      // await AsyncStorage.removeItem('accessToken');
+      // await AsyncStorage.removeItem('role');
+
       const token = await AsyncStorage.getItem('accessToken');
       setIsLoggedIn(!!token);
       setToken(token);
