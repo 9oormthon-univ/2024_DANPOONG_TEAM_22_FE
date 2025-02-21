@@ -124,10 +124,12 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
       }
     })();
 
-    return async () => {
-      await audioPlayer.current.stopPlayer();
-      audioPlayer.current.removePlayBackListener();
-      setIsPlaying(false);
+    return () => {
+      (async () => {
+        await audioPlayer.current.stopPlayer();
+        audioPlayer.current.removePlayBackListener();
+        setIsPlaying(false);
+      })();
     };
   }, [alarmId]);
 
