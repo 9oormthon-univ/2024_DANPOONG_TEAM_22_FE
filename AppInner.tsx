@@ -85,7 +85,7 @@ const AppInner = () => {
 
   // 알람 처리 및 청년 리스닝 화면 이동
   useEffect(() => {
-    if (!isLoggedIn || role === 'HELPER') return;
+    if (!isLoggedIn || role === 'HELPER' || !isNavigationReady) return;
 
     (async () => {
       // 알람 관련 데이터 가져오기
@@ -101,7 +101,7 @@ const AppInner = () => {
         await AsyncStorage.removeItem('alarmId');
       }
     })();
-  }, [isLoggedIn, role]);
+  }, [isLoggedIn, role, isNavigationReady]);
 
   // 초기 로딩 중이면 스플래시 화면 유지
   if (isInitializing) {
