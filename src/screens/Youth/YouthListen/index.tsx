@@ -115,6 +115,11 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
           //   '아침 거르고 빈속으로 있으면 힘들어요\n가볍게라도 꼭 챙겨 드시길 바라요',
           content:
             '안녕하세요, 요즘 많이 힘드셨죠? 하루하루\n버텨내느라 정말 수고 많았어요. 혹시 오늘,\n잠깐이라도 햇빛을 쬐러 창밖으로 걸어 나와 볼래요? 햇빛을 조금 쬐면 기분이 훨씬 나아질 거예요.\n주변에 괜찮은 카페가 있다면 따뜻한 음료도 한 잔\n마셔보세요. 작은 변화가 큰 힘이 되니까요. 제가\n항상 당신을 응원하고 있어요.',
+          member: {
+            id: 0,
+            name: '네잎클로바',
+            profileImage: '',
+          },
         };
         setVoiceFile(mockVoiceFile);
         setTimeout(async () => {
@@ -228,8 +233,8 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
               {/* TODO: 봉사자 프로필 사진 표시 */}
               <Image
                 source={
-                  null
-                    ? {uri: null}
+                  voiceFile.member.profileImage
+                    ? {uri: voiceFile.member.profileImage}
                     : require('@assets/pngs/logo/app/app_logo_yellow.png')
                 }
                 className="w-[25] h-[25]"
@@ -244,7 +249,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
             {/* TODO: 봉사자 닉네임 표시 */}
             <Txt
               type="title4"
-              text="네잎클로바육칠팔구십일"
+              text={voiceFile.member.name}
               className="text-yellowPrimary"
             />
           </View>
