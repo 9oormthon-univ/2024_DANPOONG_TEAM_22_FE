@@ -56,7 +56,14 @@ type HelperNumResponseData = {
   youthMemberNum: number;
 };
 
+type FileMemberResponseData = {
+  id: number;
+  name: string;
+  profileImage: string;
+};
+
 export type {
+  FileMemberResponseData,
   Gender,
   HelperNumResponseData,
   MemberInfoResponseData,
