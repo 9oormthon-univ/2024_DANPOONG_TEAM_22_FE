@@ -4,6 +4,7 @@ import Button from '@components/atom/Button';
 import SkipBar from '@components/atom/SkipBar';
 import Txt from '@components/atom/Txt';
 import {COLORS} from '@constants/Colors';
+import {VOICE_DELAY_MS} from '@constants/voice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {PageProps} from '@screens/Login/VolunteerOnboarding';
@@ -184,7 +185,7 @@ const Page3 = ({onNext}: Readonly<PageProps>) => {
 
     setTimeout(async () => {
       await audioPlayer.current.startPlayer(mockFileUrl);
-    }, 500);
+    }, VOICE_DELAY_MS);
 
     return () => {
       (async () => {

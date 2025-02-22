@@ -31,6 +31,7 @@ import Toast from '@components/atom/Toast';
 import {COLORS} from '@constants/Colors';
 import {EMOTION_OPTIONS_YOUTH} from '@constants/letter';
 import {EmotionType} from '@type/api/providedFile';
+import {VOICE_DELAY_MS} from '@constants/voice';
 
 // 네비게이션 Props 타입 정의
 type YouthProps = NativeStackScreenProps<
@@ -119,7 +120,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
               setIsPlaying(false); // 재생 끝나면 아이콘 변경
             }
           });
-        }, 500);
+        }, VOICE_DELAY_MS);
       } catch (error) {
         console.log(error);
         Alert.alert('알림', '제공할 수 있는 응원 음성이 없어요');
