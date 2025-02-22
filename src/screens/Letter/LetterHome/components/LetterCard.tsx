@@ -7,15 +7,10 @@ import {Image, Pressable, View} from 'react-native';
 
 type LetterCardProps = {
   letter: LetterResponseData;
-  idx: number;
   onPressMoreDot?: () => void;
 };
 
-const LetterCard = ({
-  letter,
-  idx,
-  onPressMoreDot,
-}: Readonly<LetterCardProps>) => {
+const LetterCard = ({letter, onPressMoreDot}: Readonly<LetterCardProps>) => {
   const renderCategoryText = () => {
     if (letter.alarmType === '위로' || letter.alarmType === '칭찬') {
       return (

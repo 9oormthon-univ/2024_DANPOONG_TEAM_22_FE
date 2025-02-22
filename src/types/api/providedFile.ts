@@ -43,6 +43,8 @@ type LetterResponseData = {
 
 type LettersResponseData = {
   content: LetterResponseData[];
+  totalPages: number;
+  number: number;
 };
 
 export type {

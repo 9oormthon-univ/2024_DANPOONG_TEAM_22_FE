@@ -71,7 +71,7 @@ const LETTERS_DATA: LetterResponseData[] = [
     },
   },
   {
-    providedFileId: 8,
+    providedFileId: 6,
     createdAt: currentDate,
     thanksMessage:
       '요새 잠을 많이 못 자서 체력적으로 많이 지치고 힘들었는데 덕분에 힘이 나요. 정말 감사합니다.',
@@ -83,7 +83,7 @@ const LETTERS_DATA: LetterResponseData[] = [
     },
   },
   {
-    providedFileId: 9,
+    providedFileId: 7,
     createdAt: currentDate,
     thanksMessage:
       '많이 우울하고 저만 뒤처지는 느낌이 들었는데 덕분에 힘을 낼 수 있었어요. 정말 감사합니다.',
@@ -95,7 +95,7 @@ const LETTERS_DATA: LetterResponseData[] = [
     },
   },
   {
-    providedFileId: 10,
+    providedFileId: 8,
     createdAt: currentDate,
     thanksMessage:
       '위로의 말이 듣고 싶었어요. 덕분에 마음이 편해졌어요. 정말 감사합니다.',
@@ -103,6 +103,73 @@ const LETTERS_DATA: LetterResponseData[] = [
     member: {
       id: 0,
       name: '북극곰',
+      profileImage: '',
+    },
+  },
+  {
+    providedFileId: 9,
+    createdAt: currentDate,
+    thanksMessage:
+      '위로가 됐어요. 감사합니다 덕분에 힘이 나요. 정말 감사합니다.',
+    alarmType: '위로',
+    member: {
+      id: 0,
+      name: '호두',
+      profileImage: '',
+    },
+  },
+  {
+    providedFileId: 10,
+    createdAt: currentDate,
+    thanksMessage: '걱정이 많았는데 덕분에 안심이 됐어요 감사합니다.',
+    alarmType: '칭찬',
+    member: {
+      id: 0,
+      name: '땅콩',
+      profileImage: '',
+    },
+  },
+  {
+    providedFileId: 11,
+    createdAt: currentDate,
+    thanksMessage: '감사합니다. 덕분에 힘이 나요. 정말 감사합니다.',
+    alarmType: '칭찬',
+    member: {
+      id: 0,
+      name: '초코파이',
+      profileImage: '',
+    },
+  },
+  {
+    providedFileId: 12,
+    createdAt: currentDate,
+    thanksMessage: '힘이 되는 말씀 너무 감사합니다!',
+    alarmType: '외출',
+    member: {
+      id: 0,
+      name: '초코파이',
+      profileImage: '',
+    },
+  },
+  {
+    providedFileId: 13,
+    createdAt: currentDate,
+    thanksMessage: '위로해주셔서 감사해요! 덕분에 마음에 편해졌어요.',
+    alarmType: '위로',
+    member: {
+      id: 0,
+      name: '호떡',
+      profileImage: '',
+    },
+  },
+  {
+    providedFileId: 14,
+    createdAt: currentDate,
+    thanksMessage: '마음이 한결 편해졌어요. 정말 감사드립니다.',
+    alarmType: '위로',
+    member: {
+      id: 0,
+      name: '블루베리',
       profileImage: '',
     },
   },
