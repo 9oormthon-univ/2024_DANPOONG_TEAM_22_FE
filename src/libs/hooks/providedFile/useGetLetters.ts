@@ -7,7 +7,7 @@ const useGetLetters = ({
   pageable,
 }: Readonly<LettersRequestData>) => {
   return useInfiniteQuery({
-    queryKey: ['getLetters', parentCategory, 'test7'],
+    queryKey: ['getLetters', parentCategory],
     queryFn: ({pageParam}) =>
       getLetters({parentCategory, pageable: {...pageable, page: pageParam}}),
     initialPageParam: 0,
