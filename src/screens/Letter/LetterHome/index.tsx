@@ -75,7 +75,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useGetLetters({pageable: {page: 0, size: 5, sort: 'createdAt,desc'}});
+  } = useGetLetters({pageable: {page: 0, size: 10, sort: 'createdAt,desc'}});
 
   const lettersFlatData =
     lettersData?.pages.flatMap(page => page.result.content) || [];
@@ -221,8 +221,8 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
           backgroundColor: COLORS.blue600,
         }}
         ListFooterComponent={
-          isFetchingNextPage ? (
-            <ActivityIndicator color={COLORS.white} className="mb-[100]" />
+          hasNextPage ? (
+            <ActivityIndicator color={COLORS.white} size="large" />
           ) : null
         }
       />
