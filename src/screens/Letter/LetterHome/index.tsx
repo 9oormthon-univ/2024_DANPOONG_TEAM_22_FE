@@ -4,7 +4,6 @@ import Button from '@components/atom/Button';
 import Modal from '@components/atom/Modal';
 import Toast from '@components/atom/Toast';
 import Txt from '@components/atom/Txt';
-import {LETTERS_DATA} from '@constants/letter';
 import {Portal} from '@gorhom/portal';
 import useGetAlarmCategory from '@hooks/alarm/useGetAlarmCategory';
 import useDeleteLetter from '@hooks/providedFile/useDeleteLetter';
@@ -114,22 +113,17 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   useEffect(() => {
     if (!lettersData) return;
     console.log({lettersData});
-    // setFilteredLettersData(lettersData.result.content);
-    setFilteredLettersData(LETTERS_DATA);
+    setFilteredLettersData(lettersData.result.content);
   }, [lettersData]);
 
   useEffect(() => {
     if (!lettersData) return;
     if (selectedFilterIdx === 0) {
-      // setFilteredLettersData(lettersData.result.content);
-      setFilteredLettersData(LETTERS_DATA);
+      setFilteredLettersData(lettersData.result.content);
       return;
     }
-    // const filteredLetters = lettersData.result.content.filter(
-    //   letter => letter.alarmType === parentCategories[selectedFilterIdx].label,
-    // );
-    const filteredLetters = LETTERS_DATA.filter(
-      letter => letter.alarmType === parentCategories[selectedFilterIdx]?.label,
+    const filteredLetters = lettersData.result.content.filter(
+      letter => letter.alarmType === parentCategories[selectedFilterIdx].label,
     );
     console.log({filteredLetters});
     if (!filteredLetters) return;
@@ -184,7 +178,6 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
         <ListArea
           nickname={nickname}
           list={filteredLettersData}
-          // list={LETTERS_DATA}
           setClickedMoreDot={setClickedMoreDot}
           setSelectedFileId={setSelectedFileId}
         />
@@ -220,13 +213,8 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
         confirmText="신고">
         <Txt
           type="title4"
-          // text={`[${
-          //   lettersData?.result.content.find(
-          //     letter => letter.providedFileId === selectedFileId,
-          //   )?.member.name ?? ''
-          // }]의 글을 신고하시겠어요?`}
           text={`[${
-            LETTERS_DATA.find(
+            lettersData?.result.content.find(
               letter => letter.providedFileId === selectedFileId,
             )?.member.name ?? ''
           }]의 글을 신고하시겠어요?`}
@@ -248,13 +236,8 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
         confirmText="삭제">
         <Txt
           type="title4"
-          // text={`[${
-          //   lettersData?.result.content.find(
-          //     letter => letter.providedFileId === selectedFileId,
-          //   )?.member.name ?? ''
-          // }]의 글을 삭제하시겠어요?`}
           text={`[${
-            LETTERS_DATA.find(
+            lettersData?.result.content.find(
               letter => letter.providedFileId === selectedFileId,
             )?.member.name ?? ''
           }]의 글을 삭제하시겠어요?`}
