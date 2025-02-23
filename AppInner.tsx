@@ -63,10 +63,10 @@ const AppInner = () => {
   }, [navigationRef]);
 
   useEffect(() => {
-    if (role === 'HELPER' || !isNavigationReady || !memberData) return;
+    if (role !== 'YOUTH' || !isNavigationReady || !memberData) return;
 
     const isSignupAllCompleted =
-      memberData?.result.youthMemberInfoDto?.latitude;
+      memberData?.result.youthMemberInfoDto?.wakeUpTime;
     if (!isSignupAllCompleted) {
       navigateToYouthOnboardingScreen(); // 네비게이션 준비 후 실행
     }
@@ -81,7 +81,17 @@ const AppInner = () => {
 
   useEffect(() => {
     if (!memberData) return;
-    setRole(memberData.result.role);
+    const {name, gender, profileImage, role, birth} = memberData.result;
+    setRole(role);
+    (async () => {
+      await AsyncStorage.setItem('nickname', name);
+      await AsyncStorage.setItem('gender', gender);
+      await AsyncStorage.setItem('profileImage', profileImage);
+      await AsyncStorage.setItem('role', role);
+      await AsyncStorage.setItem('birth', birth);
+    })();
+    console.log('is here?');
+
     setIsInitializing(false); // 데이터 로드 완료 후 스플래시 숨기기
     RNSplashScreen.hide();
   }, [memberData]);
@@ -106,6 +116,26 @@ const AppInner = () => {
     })();
   }, [isLoggedIn, role, isNavigationReady]);
 
+  // role에 따라 렌더할 스크린 분기하는 함수
+  const renderScreenByRole = () => {
+    if (role === 'HELPER') {
+      return (
+        <Stack.Group>
+          <Stack.Screen name="AppTabNav" component={AppTabNav} />
+          <Stack.Screen name="AuthStackNav" component={AuthStackNav} />
+        </Stack.Group>
+      );
+    }
+    if (role === 'YOUTH') {
+      return (
+        <Stack.Group>
+          <Stack.Screen name="YouthStackNav" component={YouthStackNav} />
+          <Stack.Screen name="AuthStackNav" component={AuthStackNav} />
+        </Stack.Group>
+      );
+    }
+  };
+
   // 초기 로딩 중이면 스플래시 화면 유지
   if (isInitializing) {
     return <SplashScreen />;
@@ -117,23 +147,9 @@ const AppInner = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      {isLoggedIn ? (
+      {isLoggedIn && role !== 'GUEST' ? (
         // 로그인 상태일 때
-        <Stack.Group>
-          {role === 'HELPER' ? (
-            // 헬퍼인 경우
-            <Stack.Group>
-              <Stack.Screen name="AppTabNav" component={AppTabNav} />
-              <Stack.Screen name="AuthStackNav" component={AuthStackNav} />
-            </Stack.Group>
-          ) : (
-            // 청년인 경우
-            <Stack.Group>
-              <Stack.Screen name="YouthStackNav" component={YouthStackNav} />
-              <Stack.Screen name="AuthStackNav" component={AuthStackNav} />
-            </Stack.Group>
-          )}
-        </Stack.Group>
+        renderScreenByRole()
       ) : (
         // 비로그인 상태일 때
         <Stack.Group>

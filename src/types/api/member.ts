@@ -1,6 +1,6 @@
 type Gender = 'MALE' | 'FEMALE';
 
-type Role = 'ADMIN' | 'YOUTH' | 'HELPER';
+type Role = 'ADMIN' | 'YOUTH' | 'HELPER' | 'GUEST';
 
 type MemberRequestData = {
   name: string;
