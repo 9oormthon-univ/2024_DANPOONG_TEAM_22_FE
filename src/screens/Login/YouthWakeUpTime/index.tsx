@@ -6,7 +6,7 @@ import TimeSelectBottomSheet from '@components/atom/TimeSelectBottomSheet';
 import Txt from '@components/atom/Txt';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {joinTime} from '@utils/convertToDate';
+import {joinTime} from '@utils/joinTime';
 import {useState} from 'react';
 import {Pressable, View} from 'react-native';
 
