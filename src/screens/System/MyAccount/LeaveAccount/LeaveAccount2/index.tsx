@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // apis
 import { getMemberYouthNum } from "@apis/SystemApis/getMemberYouth-num";
 import { deleteMember, DeleteMemberRequest } from "@apis/SystemApis/deleteMember";
+import { getVoicefilesRetention, VoicefilesRetentionResponse } from "@apis/SystemApis/getVoicefilesRetention";
 // utils
 import { redirectToAuthScreen } from "@utils/redirectToAuthScreen";
 // components
@@ -25,8 +26,12 @@ const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'L
     const {reasons, otherReason} = route.params;
     const [role, setRole] = useState('');
     const [nickname, setNickname] = useState('');
+    const [voicefilesRetention, setVoicefilesRetention] = useState<VoicefilesRetentionResponse['result']>({
+        voiceCount: 0,
+        thanksCount: 0,
+        messageCount: 0
+    });
     useEffect(() => {
-
         (async () => {
             const storedRole = await AsyncStorage.getItem('role');
             const storedNickname = await AsyncStorage.getItem('nickname');
@@ -95,16 +100,16 @@ const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'L
     
                     <View className="rounded-bl-[10px] rounded-br-[10px] w-full bg-blue600 pt-[30] pb-[5] px-px">
                         {[
-                            { icon: <DiaICon />, text: "청년의 일상을 비추는 목소리" },
-                            { icon: <View className="w-[22px] h-[22px]"><LetterIcon className="text-blue400" /></View>, text: "청년에게 받은 편지" },
-                            { icon: <HeartIcon />, text: "청년에게 받은 감사표현" }
+                            { icon: <DiaICon />, text: "청년의 일상을 비추는 목소리", count: voicefilesRetention.voiceCount },
+                            { icon: <View className="w-[22px] h-[22px]"><LetterIcon className="text-blue400" /></View>, text: "청년에게 받은 편지", count: voicefilesRetention.messageCount },
+                            { icon: <HeartIcon />, text: "청년에게 받은 감사표현", count: voicefilesRetention.thanksCount }
                         ].map((item, idx) => (
                             <View key={`${item.text}-${idx}`} className="flex-row justify-between mb-[25px]">
                                 <View className="flex-row items-center gap-[14px]">
                                 {item.icon}
                                 <Txt type="caption1" text={item.text} className="text-white" />
                                 </View>
-                                <Txt type="caption1" text="999개" className="text-yellowPrimary" />
+                                <Txt type="caption1" text={`${item.count}개`} className="text-yellowPrimary" />
                             </View>
                         ))}
                     </View>
