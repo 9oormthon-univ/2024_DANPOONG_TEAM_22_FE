@@ -1,46 +1,16 @@
 import client from '@apis/client';
 
-interface GetMemberInfoYouthResponse {
+export interface GetMemberInfoYouthResponse {
     timestamp: string;
     code: string;
     message: string;
     result: {
-        wakeUpTime: {
-            hour: number;
-            minute: number;
-            second: number;
-            nano: number;
-        };
-        sleepTime: {
-            hour: number;
-            minute: number;
-            second: number;
-            nano: number;
-        };
-        breakfast: {
-            hour: number;
-            minute: number;
-            second: number;
-            nano: number;
-        };
-        lunch: {
-            hour: number;
-            minute: number;
-            second: number;
-            nano: number;
-        };
-        dinner: {
-            hour: number;
-            minute: number;
-            second: number;
-            nano: number;
-        };
-        outgoingTime: {
-            hour: number;
-            minute: number;
-            second: number;
-            nano: number;
-        };
+        wakeUpTime: string;
+        sleepTime: string;
+        breakfast: string;
+        lunch: string;
+        dinner: string;
+        outgoingTime: string;
         wakeUpAlarm: boolean;
         sleepAlarm: boolean;
         breakfastAlarm: boolean;
