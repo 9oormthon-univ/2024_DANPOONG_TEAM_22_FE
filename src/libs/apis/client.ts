@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {handleLogout} from '@utils/handleLogout';
 import axios from 'axios';
 import Config from 'react-native-config';
-import { handleLogout } from '@utils/handleLogout';
 
 const client = axios.create({
   baseURL: Config.API_URL,
@@ -83,17 +83,17 @@ client.interceptors.response.use(
             if (!refreshToken) {
               throw new Error('[401] 로그인이 필요합니다.');
             }
-            
+
             // 2. 새로운 accessToken 요청
             const response = await axios.post(
               `${process.env.EXPO_PUBLIC_API_URL}/api/v1/auth/token/refresh`,
-              { refreshToken }
+              {refreshToken},
             );
             const accessToken = response.data.result.accessToken;
-            
+
             // 3. 새 accessToken 저장
             await AsyncStorage.setItem('accessToken', accessToken);
-            
+
             // 4. 실패했던 원래 요청 재시도
             const originalRequest = error.config;
             originalRequest.headers.Authorization = `Bearer ${accessToken}`;
@@ -101,19 +101,14 @@ client.interceptors.response.use(
           } catch (refreshError) {
             // 5. 토큰 갱신 실패 시
             await handleLogout();
-            const errorMessage = error.response.status === 401
-              ? '[401] 인증이 만료되었습니다. 다시 로그인해주세요.'
-              : '[403] 접근 권한이 없습니다. 다시 로그인해주세요.';
+            const errorMessage =
+              error.response.status === 401
+                ? '[401] 인증이 만료되었습니다. 다시 로그인해주세요.'
+                : '[403] 접근 권한이 없습니다. 다시 로그인해주세요.';
             throw new Error(errorMessage);
           }
-        case 404:
-          throw new Error('[404] 요청한 리소스를 찾을 수 없습니다.');
-        case 500:
-          throw new Error('[500] 서버 오류가 발생했습니다.');
         default:
-          throw new Error(
-            `[${error.response.status}] 알 수 없는 오류가 발생했습니다.`,
-          );
+          throw error;
       }
     } else if (error.request) {
       // 네트워크 오류 처리
@@ -123,7 +118,5 @@ client.interceptors.response.use(
     }
   },
 );
-
-
 
 export default client;

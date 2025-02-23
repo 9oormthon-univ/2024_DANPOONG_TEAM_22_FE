@@ -34,6 +34,7 @@ import {EMOTION_OPTIONS_YOUTH} from '@constants/letter';
 import {VOICE_DELAY_MS, VOICE_LOADING_MS} from '@constants/voice';
 import useDeleteComment from '@hooks/providedFile/useDeleteComment';
 import {EmotionType} from '@type/api/providedFile';
+import {AxiosError} from 'axios';
 
 // 네비게이션 Props 타입 정의
 type YouthProps = NativeStackScreenProps<
@@ -199,7 +200,11 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
       setMessage('');
     } catch (error) {
       console.log(error);
-      Alert.alert('오류', '편지를 보내는 중 오류가 발생했어요');
+      if (((error as AxiosError).response?.data as any).code === 'PF003') {
+        Alert.alert('오류', '전송 가능 횟수를 초과했어요');
+      } else {
+        Alert.alert('오류', '메시지를 보내는 중 오류가 발생했어요');
+      }
     }
   };
 
