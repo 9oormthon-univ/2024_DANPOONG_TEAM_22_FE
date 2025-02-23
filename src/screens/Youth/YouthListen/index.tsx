@@ -97,42 +97,49 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
     };
   }, []);
 
-  // 음성 파일 로드 및 재생
   useEffect(() => {
-    if (!alarmId) return;
+    if (!alarmId) {
+      return;
+    }
 
     (async () => {
       try {
         const res = await getVoiceFiles({alarmId});
         console.log(res);
         setVoiceFile(res.result);
-        setTimeout(async () => {
-          const playResult = await audioPlayer.current.startPlayer(
-            voiceFile.fileUrl,
-          );
-          console.log('재생 시작:', playResult);
-          setIsPlaying(true);
-
-          // 재생 상태 감지
-          audioPlayer.current.addPlayBackListener(e => {
-            console.log(
-              '재생 위치:',
-              e.currentPosition,
-              '총 길이:',
-              e.duration,
-            );
-            if (e.currentPosition >= e.duration) {
-              console.log('재생 끝');
-              setIsPlaying(false); // 재생 끝나면 아이콘 변경
-            }
-          });
-        }, VOICE_DELAY_MS);
       } catch (error) {
         console.log(error);
         Alert.alert('알림', '제공할 수 있는 응원 음성이 없어요');
         navigation.goBack();
       }
     })();
+  }, [alarmId]);
+
+  useEffect(() => {
+    if (!voiceFile.fileUrl) return;
+
+    const startPlaying = async () => {
+      try {
+        const playResult = await audioPlayer.current.startPlayer(
+          voiceFile.fileUrl,
+        );
+        console.log('재생 시작:', playResult);
+        setIsPlaying(true);
+
+        audioPlayer.current.addPlayBackListener(e => {
+          console.log('재생 위치:', e.currentPosition, '총 길이:', e.duration);
+          if (e.currentPosition >= e.duration) {
+            console.log('재생 끝');
+            setIsPlaying(false);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+        Alert.alert('오류', '오디오 재생 중 오류가 발생했어요');
+      }
+    };
+
+    setTimeout(startPlaying, VOICE_DELAY_MS);
 
     return () => {
       (async () => {
@@ -141,10 +148,12 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         setIsPlaying(false);
       })();
     };
-  }, [alarmId]);
+  }, [voiceFile.fileUrl]);
 
   const handleMessageSend = async (emotionType?: EmotionType) => {
-    if (!emotionType && !message) return;
+    if (!emotionType && !message) {
+      return;
+    }
 
     if (emotionType) {
       const emotion = EMOTION_OPTIONS_YOUTH.find(
