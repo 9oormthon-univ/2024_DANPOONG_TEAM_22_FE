@@ -22,6 +22,19 @@ const postComment = async ({
   return res.data;
 };
 
+const deleteComment = async ({
+  providedFileId,
+  message,
+}: Readonly<CommentRequestData>) => {
+  const res = await client.delete<ResultResponseData<boolean>>(
+    `/api/v1/providedfile/${providedFileId}/comment`,
+    {
+      data: {message},
+    },
+  );
+  return res.data;
+};
+
 const getSummary = async () => {
   const res = await client.get<ResultResponseData<SummaryResponseData>>(
     '/api/v1/providedfile/summary',
@@ -89,4 +102,11 @@ const deleteLetter = async ({
   return res.data;
 };
 
-export {deleteLetter, getLetters, getSummary, postComment, postReport};
+export {
+  deleteComment,
+  deleteLetter,
+  getLetters,
+  getSummary,
+  postComment,
+  postReport,
+};

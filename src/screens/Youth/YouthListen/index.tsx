@@ -30,8 +30,9 @@ import BG from '@components/atom/BG';
 import Toast from '@components/atom/Toast';
 import {COLORS} from '@constants/Colors';
 import {EMOTION_OPTIONS_YOUTH} from '@constants/letter';
-import {EmotionType} from '@type/api/providedFile';
 import {VOICE_DELAY_MS} from '@constants/voice';
+import useDeleteComment from '@hooks/providedFile/useDeleteComment';
+import {EmotionType} from '@type/api/providedFile';
 
 // 네비게이션 Props 타입 정의
 type YouthProps = NativeStackScreenProps<
@@ -54,6 +55,10 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
   const audioPlayer = useRef(new AudioRecorderPlayer()); // 오디오 플레이어 ref
   const [isToast, setIsToast] = useState(false); // 토스트 메시지 표시 상태
   const [toastMessage, setToastMessage] = useState(''); // 토스트 메시지
+  const [sentEmotions, setSentEmotions] = useState<{
+    [key in EmotionType]?: boolean;
+  }>({}); // 전송된 감정 표현
+  const {mutate: deleteComment} = useDeleteComment();
 
   // 초기 로딩 처리
   useEffect(() => {
@@ -144,7 +149,31 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
       const emotion = EMOTION_OPTIONS_YOUTH.find(
         option => option.type === emotionType,
       );
-      if (!emotion) return;
+      if (!emotion) {
+        return;
+      }
+
+      if (sentEmotions[emotionType]) {
+        try {
+          deleteComment({
+            providedFileId: voiceFile.providedFileId,
+            message: emotionType,
+          });
+          setSentEmotions(prev => {
+            const updated = {...prev};
+            delete updated[emotionType];
+            return updated;
+          });
+          setIsToast(true);
+          setToastMessage(`‘${emotion.label}’ 전송 취소`);
+        } catch (error) {
+          console.log(error);
+          Alert.alert('오류', '감정 표현을 취소하는 중 오류가 발생했어요');
+        }
+        return;
+      }
+
+      setSentEmotions(prev => ({...prev, [emotionType]: true}));
       setIsToast(true);
       setToastMessage(`‘${emotion.label}’ 전송 완료`);
     } else {
@@ -282,7 +311,9 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
                       index === EMOTION_OPTIONS_YOUTH.length - 1
                         ? 'mr-[50]'
                         : 'mr-[10]'
-                    } flex-row items-center justify-center active:bg-blue500`}
+                    } flex-row items-center justify-center active:bg-blue500 ${
+                      sentEmotions[emotion.type] ? 'bg-blue500' : ''
+                    }`}
                     style={{borderRadius: 50}}
                     onPress={() => handleMessageSend(emotion.type)}>
                     {emotion.icon}
