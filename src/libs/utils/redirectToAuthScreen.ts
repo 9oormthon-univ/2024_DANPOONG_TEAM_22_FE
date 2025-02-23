@@ -1,6 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { navigationRef } from "App";
-import { CommonActions } from '@react-navigation/native';
 
 //로그인 화면으로 이동
 export const redirectToAuthScreen = async () => {
