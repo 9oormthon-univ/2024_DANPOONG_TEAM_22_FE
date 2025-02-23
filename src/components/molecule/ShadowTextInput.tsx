@@ -37,8 +37,9 @@ const ShadowTextInput = ({
             lineHeight: 30,
             letterSpacing: 20 * -0.025,
             color: '#fafafa',
+            textAlignVertical: 'top',
           }}
-          className={'w-full h-auto p-[33] bg-transparent'}
+          className={'w-full h-auto px-[33] py-[30] bg-transparent'}
           placeholder={placeholder}
           placeholderTextColor="#a0a0a0"
           autoCapitalize="none"

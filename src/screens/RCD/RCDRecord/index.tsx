@@ -1,9 +1,10 @@
 // React 관련 임포트
 import {useEffect, useRef, useState} from 'react';
 import {  ScrollView,  View,  Platform, ActivityIndicator } from 'react-native';
+import React from 'react';
 
 // 네비게이션 관련 임포트
-import { NavigationProp, RouteProp, useNavigation } from '@react-navigation/native';
+import { NavigationProp, RouteProp, useNavigation, useFocusEffect } from '@react-navigation/native';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 
 // API 임포트
@@ -47,6 +48,7 @@ const RCDRecordScreen = ({ route }: { route: RouteProp<HomeStackParamList, 'RCDR
   const [volumeList, setVolumeList] = useState<number[]>([]);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isDone, setIsDone] = useState<boolean>(false);
+  const [shouldRefresh, setShouldRefresh] = useState<boolean>(false);
   // 업로드 상태 관리
   const [isUploading, setIsUploading] = useState<boolean>(false);
   // 컴포넌트 언마운트 여부 및 재시도 타이머 관리 ref
@@ -69,6 +71,13 @@ const RCDRecordScreen = ({ route }: { route: RouteProp<HomeStackParamList, 'RCDR
       }
     };
   }, []);
+
+  // 화면에 포커스될 때마다 상태 초기화
+  useFocusEffect(
+    React.useCallback(() => {
+      refreshRCDStates();
+    }, [])
+  );
 
   // 녹음 중 볼륨 모니터링
   // useEffect(() => {
@@ -119,6 +128,7 @@ const refreshRCDStates = async () => {
     setVolumeList([]);
     setIsRecording(false);
     setUri(null);
+    setShouldRefresh(true);
   } catch (e) {
     console.log('refresh error', e);
   }
@@ -244,10 +254,10 @@ const playRecording = async () => {
   const uploadAnalysis = async () => {
     try {
       const res = await postVoiceAnalysis(voiceFileId);
-      const {code, message} = res;
+      const {code} = res;
       switch(code) {
         case 'ANALYSIS001':
-          console.log('재시도 - ANALYSIS001 ', new Date());
+          // console.log('재시도 - ANALYSIS001 ', new Date());
             analysisTimeoutRef.current = setTimeout(uploadAnalysis, 5000);
           break;
         case 'ANALYSIS003':
@@ -281,9 +291,7 @@ const playRecording = async () => {
             navigation.navigate('RCDError', {type: type, errorType:'server'});
           break;
         default:
-          if (isMountedRef.current) {
             navigation.navigate('RCDError', {type: type, errorType:'server'});
-          }
           break;
       }
     } 
@@ -329,6 +337,8 @@ const playRecording = async () => {
                 stop={stopRecording}
                 type={type}
                 onTimeUpdate={(elapsedTime) => setElapsedTime(elapsedTime)}
+                shouldRefresh={shouldRefresh}
+                setShouldRefresh={setShouldRefresh}
               />
               <View className="w-full px-px mt-[40] mb-[70]">
                 <RCDBtnBar

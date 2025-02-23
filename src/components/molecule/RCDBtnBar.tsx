@@ -43,7 +43,7 @@ const RCDBtnBar = ({
           color="gray300"
           onPress={async () => {
             await refresh();
-            await record();
+            // await record();
           }}
         />
       )}
