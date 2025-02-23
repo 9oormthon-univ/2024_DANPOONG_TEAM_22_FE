@@ -9,14 +9,18 @@ import {
   KakaoProfile,
   login,
 } from '@react-native-seoul/kakao-login';
+import {CompositeScreenProps} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
+import {RootStackParamList} from '@type/nav/RootStackParamList';
 import {Image, Linking, Pressable, View} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
 type AuthProps = NativeStackScreenProps<AuthStackParamList, 'LoginScreen'>;
+type RootProps = NativeStackScreenProps<RootStackParamList>;
+type Props = CompositeScreenProps<AuthProps, RootProps>;
 
-const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
+const LoginScreen = ({navigation}: Readonly<Props>) => {
   const handleLogin = async ({loginType}: {loginType: string}) => {
     try {
       const token: KakaoOAuthToken = await login();
@@ -30,7 +34,15 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
         loginType,
       });
 
-      const {accessToken, refreshToken, memberId} = result;
+      const {
+        accessToken,
+        refreshToken,
+        memberId,
+        role,
+        infoRegistered,
+        locationRegistered,
+      } = result;
+      console.log({role, locationRegistered});
 
       await AsyncStorage.setItem('accessToken', accessToken);
       await AsyncStorage.setItem('refreshToken', refreshToken);
@@ -39,7 +51,20 @@ const LoginScreen = ({navigation}: Readonly<AuthProps>) => {
       const profile: KakaoProfile = await getProfile();
       await AsyncStorage.setItem('email', profile.email);
 
-      navigation.navigate('RoleSelectScreen');
+      if (!infoRegistered) {
+        navigation.navigate('RoleSelectScreen');
+        return;
+      }
+
+      if (role === 'YOUTH') {
+        if (locationRegistered) {
+          navigation.navigate('YouthStackNav', {screen: 'YouthHomeScreen'});
+        } else {
+          navigation.navigate('YouthOnboardingScreen');
+        }
+      } else if (role === 'HELPER') {
+        navigation.navigate('AppTabNav');
+      }
     } catch (error) {
       console.error('login error:', error);
     }
