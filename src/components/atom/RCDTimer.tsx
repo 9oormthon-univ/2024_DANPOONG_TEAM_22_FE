@@ -8,9 +8,10 @@ type RCDTimerProps = {
   recording: boolean; // 녹음 중 여부를 따져 타이머를 시작시키기 위함
   stop: () => void; //시간이 되면 녹음을 중지
   type: RecordType; //타이머 초를 결정하기 위함
+  onTimeUpdate?: (elapsedTime: number) => void; // 경과 시간을 전달하기 위한 콜백 추가
 };
 
-const RCDTimer = ({recording, stop, type}: RCDTimerProps) => {
+const RCDTimer = ({recording, stop, type, onTimeUpdate}: RCDTimerProps) => {
   const [targetTime, setTargetTime] = useState<Date | null>(null);
   const [remainingTime, setRemainingTime] = useState(
     type === 'COMFORT' ? 30000 : 15000,
@@ -32,6 +33,11 @@ const RCDTimer = ({recording, stop, type}: RCDTimerProps) => {
       const now = new Date();
       const diff = targetTime.getTime() - now.getTime();
       setRemainingTime(diff);
+
+      // 경과 시간 계산 및 콜백 호출
+      const totalTime = type === 'COMFORT' ? 30000 : 15000;
+      const elapsedTime = totalTime - diff;
+      onTimeUpdate?.(elapsedTime);
 
       if (diff <= 0) {
         stop();

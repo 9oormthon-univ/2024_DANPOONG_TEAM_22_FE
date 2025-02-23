@@ -6,6 +6,7 @@ import Button from '@components/atom/Button';
 import Toast from '@components/atom/Toast';
 import Txt from '@components/atom/Txt';
 import usePostYouth from '@hooks/auth/usePostYouth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geolocation from '@react-native-community/geolocation';
 import {CompositeScreenProps} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -158,7 +159,8 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
           try {
             // TODO: api 테스트
             postYouth(data);
-
+            AsyncStorage.setItem('lat', pos.coords.latitude.toString());
+            AsyncStorage.setItem('lng', pos.coords.longitude.toString());
             navigation.navigate('YouthStackNav', {
               screen: 'YouthHomeScreen',
             });

@@ -13,7 +13,7 @@ import {
 import {useState, useEffect} from 'react';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {ScrollView} from 'react-native-gesture-handler';
-import {postSaveScript} from '@apis/RCDApis/postSaveScript';
+import {postVoicefilesAlarmIdSelf} from '@apis/RCDApis/postVoicefilesAlarmIdSelf';
 import Toast from '@components/atom/Toast';
 import AppBar from '@components/atom/AppBar';
 import ShadowTextInput from '@components/molecule/ShadowTextInput';
@@ -28,7 +28,7 @@ const RCDTextScreen = ({ route }: { route: RouteProp<HomeStackParamList, 'RCDTex
   const [isError, setIsError] = useState(false); // 에러 상태
   const [isToast, setIsToast] = useState(false); // 토스트 메시지 표시 상태
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
-
+  const [errorMessage, setErrorMessage] = useState('부적절한 언어가 있어요'); // 에러 메시지
   // 초기 마운트 시 GPT 응답 내용으로 텍스트 설정
   useEffect(() => {
     setText(gptRes?.result.content || '');
@@ -47,7 +47,23 @@ const RCDTextScreen = ({ route }: { route: RouteProp<HomeStackParamList, 'RCDTex
     try {
       setIsLoading(true);
       const content: string = text;
-      const res = await postSaveScript(alarmId, content);
+      console.log('content', content);
+      const res = await postVoicefilesAlarmIdSelf(alarmId, content);
+      
+      if (res.code && res.code === 'ANALYSIS200') {
+        setErrorMessage('주제와 다른 내용이 있어요');
+        setIsError(true);
+        setIsToast(true);
+        return;
+      }
+
+      if (res.code && res.code === 'ANALYSIS201') {
+        setErrorMessage('부적절한 언어가 있어요');
+        setIsError(true);
+        setIsToast(true);
+        return;
+      }
+
       const voiceFileId = res.result.voiceFileId;
       navigation.navigate('RCDRecord', {
         type,
@@ -75,7 +91,7 @@ const RCDTextScreen = ({ route }: { route: RouteProp<HomeStackParamList, 'RCDTex
       />
       {/* 에러 토스트 메시지 */}
       <Toast
-        text="부적절한 언어가 있어요"
+        text={errorMessage}
         isToast={isToast}
         setIsToast={() => setIsToast(false)}
       />

@@ -7,9 +7,10 @@ type RCDWaveProps = {
   isPlaying: boolean;
   recording: boolean;
   isDone: boolean;
+  elapsedTime: number;
 };
 
-const RCDWave = ({volumeList, isPlaying, recording, isDone}: RCDWaveProps) => {
+const RCDWave = ({volumeList, isPlaying, recording, isDone, elapsedTime}: RCDWaveProps) => {
   const circleSize = 8;
   const lineSize = 1;
   // 웨이브 애니메이션을 위한 translateX 값
@@ -47,13 +48,13 @@ const RCDWave = ({volumeList, isPlaying, recording, isDone}: RCDWaveProps) => {
         }),
         Animated.timing(translateXAnim, {
           toValue: 0,
-          duration: isAndroid ? volumeList.length * 37 + 200 : volumeList.length * 100 + 800,
+          duration: elapsedTime+500,
           easing: Easing.linear,
           useNativeDriver: true,
         }),
       ]).start();
     }
-  }, [isPlaying, volumeList.length]);
+  }, [isPlaying, volumeList.length, elapsedTime]);
 
   const calculate_height = (item: number) => {
     if(isAndroid) {

@@ -8,12 +8,11 @@ export const redirectToAuthScreen = async () => {
     console.error('네비게이션이 준비되지 않았습니다.');
     return;
   }
-
   if (navigationRef) {
     navigationRef.reset({
       index: 0,
       routes: [{ name: 'AuthStackNav' }],
     });}
   // 모든 인증 관련 데이터 제거
-  await AsyncStorage.multiRemove(['accessToken', 'refreshToken']);
+  // await AsyncStorage.multiRemove(['accessToken', 'refreshToken']);
 };

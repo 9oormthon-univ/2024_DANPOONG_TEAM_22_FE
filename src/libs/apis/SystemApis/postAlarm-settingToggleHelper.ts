@@ -1,8 +1,8 @@
-//청년 알림 설정 수정 API
+//봉사자 알림 수정 api
 import client from '@apis/client';
 
 export interface PostAlarmSettingToggleRequest {
-  alarmCategory: 'WAKE_UP' | 'GO_OUT' | 'MEAL_BREAKFAST' | 'MEAL_LAUNCH' | 'MEAL_DINNER' | 'SLEEP';
+  alarmCategory: 'WELCOME_REMINDER' | 'THANK_YOU_MESSAGE';
   enabled: boolean;
 }
 
@@ -14,7 +14,7 @@ interface PostAlarmSettingToggleResponse {
 export const postAlarmSettingToggle = async (data: PostAlarmSettingToggleRequest): Promise<boolean> => {
   try {
     const response = await client.post<PostAlarmSettingToggleResponse>(
-      `/api/v1/alarm-setting/toggle/${data.alarmCategory}/${data.enabled}`,
+      `/api/v1/alarm-setting/toggle/helper/${data.alarmCategory}/${data.enabled}`,
     );
     return response.data.code === '200';
   } catch (error) {

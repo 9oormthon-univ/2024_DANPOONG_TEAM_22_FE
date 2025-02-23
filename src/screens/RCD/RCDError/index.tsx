@@ -20,7 +20,7 @@ import { HomeStackParamList } from '@type/nav/HomeStackParamList';
 
 const RCDErrorScreen = ({ route }: { route: RouteProp<HomeStackParamList, 'RCDError'> }) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
-  const {type,message,errorType} = route.params;
+  const {type,errorType} = route.params;
 
   return (
     <BG type="solid">
@@ -38,7 +38,7 @@ const RCDErrorScreen = ({ route }: { route: RouteProp<HomeStackParamList, 'RCDEr
     {/* 오류 메시지 섹션 */}
     <View className="absolute top-[194] items-center">
       {/* 오류 타입에 따른 아이콘 표시 */}
-      {errorType === 'noisy' ? <Notice1 /> : 
+      {errorType === 'noisy' ? <Notice2 /> : 
        errorType === 'bad' ? <Notice2 /> :
        errorType === 'wrong' ? <Notice3 /> :
       <Notice4 />}
