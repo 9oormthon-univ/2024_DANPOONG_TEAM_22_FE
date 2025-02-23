@@ -47,6 +47,8 @@ const LoginScreen = ({navigation}: Readonly<Props>) => {
       await AsyncStorage.setItem('accessToken', accessToken);
       await AsyncStorage.setItem('refreshToken', refreshToken);
       await AsyncStorage.setItem('memberId', String(memberId));
+      await AsyncStorage.setItem('role', role);
+      // 닉네임도 저장
 
       const profile: KakaoProfile = await getProfile();
       await AsyncStorage.setItem('email', profile.email);
