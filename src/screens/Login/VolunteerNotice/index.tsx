@@ -16,6 +16,7 @@ import {RootStackParamList} from '@type/nav/RootStackParamList';
 import {useState} from 'react';
 import {Alert, Platform, ScrollView, View} from 'react-native';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
+import { navigationRef } from "App";
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -104,7 +105,7 @@ const VolunteerNoticeScreen = ({navigation}: Readonly<Props>) => {
     const notificationGranted = await requestNotificationPermission();
 
     if (audioGranted && notificationGranted) {
-      tabNavigation.reset({
+      navigationRef.reset({
         index: 0,
         routes: [{name: 'AppTabNav'}],
       });
