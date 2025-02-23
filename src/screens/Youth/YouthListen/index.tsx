@@ -31,6 +31,7 @@ import Toast from '@components/atom/Toast';
 import {COLORS} from '@constants/Colors';
 import {EMOTION_OPTIONS_YOUTH} from '@constants/letter';
 import {EmotionType} from '@type/api/providedFile';
+import {VOICE_DELAY_MS} from '@constants/voice';
 
 // 네비게이션 Props 타입 정의
 type YouthProps = NativeStackScreenProps<
@@ -100,34 +101,39 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         console.log(res);
         setVoiceFile(res.result);
         setTimeout(async () => {
-          await audioPlayer.current.startPlayer(res.result.fileUrl);
+          const playResult = await audioPlayer.current.startPlayer(
+            voiceFile.fileUrl,
+          );
+          console.log('재생 시작:', playResult);
           setIsPlaying(true);
-        }, 2000);
+
+          // 재생 상태 감지
+          audioPlayer.current.addPlayBackListener(e => {
+            console.log(
+              '재생 위치:',
+              e.currentPosition,
+              '총 길이:',
+              e.duration,
+            );
+            if (e.currentPosition >= e.duration) {
+              console.log('재생 끝');
+              setIsPlaying(false); // 재생 끝나면 아이콘 변경
+            }
+          });
+        }, VOICE_DELAY_MS);
       } catch (error) {
         console.log(error);
-        // Alert.alert('오류', '음성 파일을 불러오는 중 오류가 발생했어요');
-        const mockVoiceFile: VoiceFileResponseData = {
-          fileUrl:
-            'https://ip-file-upload-test.s3.ap-northeast-2.amazonaws.com/mom.mp4',
-          voiceFileId: 1,
-          providedFileId: 1,
-          // content:
-          //   '아침 거르고 빈속으로 있으면 힘들어요\n가볍게라도 꼭 챙겨 드시길 바라요',
-          content:
-            '안녕하세요, 요즘 많이 힘드셨죠? 하루하루\n버텨내느라 정말 수고 많았어요. 혹시 오늘,\n잠깐이라도 햇빛을 쬐러 창밖으로 걸어 나와 볼래요? 햇빛을 조금 쬐면 기분이 훨씬 나아질 거예요.\n주변에 괜찮은 카페가 있다면 따뜻한 음료도 한 잔\n마셔보세요. 작은 변화가 큰 힘이 되니까요. 제가\n항상 당신을 응원하고 있어요.',
-        };
-        setVoiceFile(mockVoiceFile);
-        setTimeout(async () => {
-          await audioPlayer.current.startPlayer(mockVoiceFile.fileUrl);
-          setIsPlaying(true);
-        }, 1000);
+        Alert.alert('알림', '제공할 수 있는 응원 음성이 없어요');
+        navigation.goBack();
       }
     })();
 
-    return async () => {
-      await audioPlayer.current.stopPlayer();
-      audioPlayer.current.removePlayBackListener();
-      setIsPlaying(false);
+    return () => {
+      (async () => {
+        await audioPlayer.current.stopPlayer();
+        audioPlayer.current.removePlayBackListener();
+        setIsPlaying(false);
+      })();
     };
   }, [alarmId]);
 
@@ -141,9 +147,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
       if (!emotion) return;
       setIsToast(true);
       setToastMessage(`‘${emotion.label}’ 전송 완료`);
-    }
-
-    if (message) {
+    } else {
       setIsToast(true);
       setToastMessage('메시지 전송 완료');
     }
@@ -168,24 +172,12 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         await audioPlayer.current.pausePlayer();
         setIsPlaying(false);
       } else {
-        const playResult = await audioPlayer.current.startPlayer(
-          voiceFile.fileUrl,
-        );
-        console.log('재생 시작:', playResult);
+        await audioPlayer.current.startPlayer(voiceFile.fileUrl);
         setIsPlaying(true);
-
-        // 재생 상태 감지
-        audioPlayer.current.addPlayBackListener(e => {
-          console.log('재생 위치:', e.currentPosition, '총 길이:', e.duration);
-          if (e.currentPosition >= e.duration) {
-            console.log('재생 끝');
-            setIsPlaying(false); // 재생 끝나면 아이콘 변경
-          }
-        });
       }
     } catch (error) {
       console.log(error);
-      // Alert.alert('오류', '오디오 재생 중 오류가 발생했어요');
+      Alert.alert('오류', '오디오 재생 중 오류가 발생했어요');
     }
   };
 
@@ -228,8 +220,8 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
               {/* TODO: 봉사자 프로필 사진 표시 */}
               <Image
                 source={
-                  null
-                    ? {uri: null}
+                  voiceFile?.member?.profileImage
+                    ? {uri: voiceFile?.member?.profileImage}
                     : require('@assets/pngs/logo/app/app_logo_yellow.png')
                 }
                 className="w-[25] h-[25]"
@@ -244,7 +236,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
             {/* TODO: 봉사자 닉네임 표시 */}
             <Txt
               type="title4"
-              text="네잎클로바육칠팔구십일"
+              text={voiceFile?.member?.name}
               className="text-yellowPrimary"
             />
           </View>
@@ -256,7 +248,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
             <ScrollView>
               <Txt
                 type="body3"
-                text={voiceFile.content ?? ''}
+                text={voiceFile?.content ?? ''}
                 className="text-white"
               />
             </ScrollView>
@@ -344,6 +336,8 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         text={toastMessage}
         isToast={isToast}
         setIsToast={() => setIsToast(false)}
+        position="left"
+        type="check"
       />
     </BG>
   );

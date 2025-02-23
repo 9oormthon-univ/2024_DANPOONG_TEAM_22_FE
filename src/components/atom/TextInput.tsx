@@ -34,7 +34,7 @@ const TextInput = ({
     <>
       <View
         className={`flex-row h-auto items-center justify-between w-full rounded-lg border-[1px] border-gray300 ${
-          (!isFocused || !autoFocus) ? 'bg-[#fafafa1a]' : 'bg-transparent'
+          !isFocused || !autoFocus ? 'bg-[#fafafa1a]' : 'bg-transparent'
         }`}>
         <RNTextInput
           autoFocus={autoFocus}
@@ -73,7 +73,7 @@ const TextInput = ({
             text={message}
             className={`text-gray400 self-start pl-[9] ${
               isError ? 'text-red' : ''
-            } ${isSuccess ? 'text-green-400' : ''}`}
+            } ${isSuccess ? 'text-yellowPrimary' : ''}`}
           />
         </>
       )}

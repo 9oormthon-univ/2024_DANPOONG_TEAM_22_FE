@@ -6,7 +6,7 @@ import TimeSelectBottomSheet from '@components/atom/TimeSelectBottomSheet';
 import Txt from '@components/atom/Txt';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import convertToDate from '@utils/convertToDate';
+import {joinTime} from '@utils/convertToDate';
 import {useState} from 'react';
 import {Pressable, View} from 'react-native';
 
@@ -30,10 +30,8 @@ const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {
   const [showMinuteBottomSheet, setShowMinuteBottomSheet] = useState(false);
 
   const handleNext = async () => {
-    const wakeUpTime = convertToDate(hour, minute);
-
     navigation.navigate('YouthEatScreen', {
-      wakeUpTime: wakeUpTime.toISOString(),
+      wakeUpTime: joinTime(hour, minute),
     });
   };
 

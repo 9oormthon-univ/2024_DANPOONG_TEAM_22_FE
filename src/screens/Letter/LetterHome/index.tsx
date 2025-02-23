@@ -4,34 +4,41 @@ import Button from '@components/atom/Button';
 import Modal from '@components/atom/Modal';
 import Toast from '@components/atom/Toast';
 import Txt from '@components/atom/Txt';
-// import {LETTERS_DATA} from '@constants/letter';
+import {COLORS} from '@constants/Colors';
 import {Portal} from '@gorhom/portal';
 import useGetAlarmCategory from '@hooks/alarm/useGetAlarmCategory';
+import useDeleteLetter from '@hooks/providedFile/useDeleteLetter';
 import useGetLetters from '@hooks/providedFile/useGetLetters';
 import useGetSummary from '@hooks/providedFile/useGetSummary';
 import usePostReport from '@hooks/providedFile/usePostReport';
 import useModal from '@hooks/useModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import ListArea from '@screens/Letter/LetterHome/components/ListArea';
+import LetterCard from '@screens/Letter/LetterHome/components/LetterCard';
 import ListCategory from '@screens/Letter/LetterHome/components/ListCategory';
+import ListEmpty from '@screens/Letter/LetterHome/components/ListEmpty';
 import ListHeader from '@screens/Letter/LetterHome/components/ListHeader';
 import {LetterResponseData} from '@type/api/providedFile';
 import {LetterStackParamList} from '@type/nav/LetterStackParamList';
 import {useEffect, useState} from 'react';
-import {Alert, Pressable, ScrollView, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  Pressable,
+  View,
+} from 'react-native';
 
 type LetterProps = NativeStackScreenProps<
   LetterStackParamList,
   'LetterHomeScreen'
 >;
 
+type Category = {category: string; label: string};
+
 const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   const [nickname, setNickname] = useState('');
   const [selectedFilterIdx, setSelectedFilterIdx] = useState(0);
-  const [filteredLettersData, setFilteredLettersData] = useState<
-    LetterResponseData[]
-  >([]);
   const [parentCategories, setParentCategories] = useState<
     {category: string; label: string}[]
   >([]);
@@ -40,6 +47,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   const [isToast, setIsToast] = useState(false); // 토스트 메시지 표시 상태
   const [toastMessage, setToastMessage] = useState(''); // 토스트 메시지
   const {mutate: postReport} = usePostReport();
+  const {mutate: deleteLetter} = useDeleteLetter();
   const {
     visible: visibleReport,
     openModal: openModalReport,
@@ -64,7 +72,13 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
     data: lettersData,
     isError: isLettersError,
     error: lettersError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
   } = useGetLetters({pageable: {page: 0, size: 10, sort: 'createdAt,desc'}});
+
+  const lettersFlatData =
+    lettersData?.pages.flatMap(page => page.result.content) || [];
 
   useEffect(() => {
     (async () => {
@@ -97,31 +111,15 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   useEffect(() => {
     if (!alarmCategoryData) return;
     console.log({alarmCategoryData});
-    const categories = alarmCategoryData.result.map(item => ({
-      category: item.alarmCategory,
-      label: item.alarmCategoryKoreanName,
-    }));
+    const categories: Category[] = [
+      {category: 'ALL', label: '전체'},
+      ...alarmCategoryData.result.map(item => ({
+        category: item.alarmCategory,
+        label: item.alarmCategoryKoreanName,
+      })),
+    ];
     setParentCategories(categories);
   }, [alarmCategoryData]);
-
-  useEffect(() => {
-    if (!lettersData) return;
-    console.log({lettersData});
-    setFilteredLettersData(lettersData.result.content);
-    // setFilteredLettersData(LETTERS_DATA);
-  }, [lettersData]);
-
-  useEffect(() => {
-    const filteredLetters = lettersData?.result.content.filter(
-      letter => letter.alarmType === parentCategories[selectedFilterIdx].label,
-    );
-    // const filteredLetters = LETTERS_DATA.filter(
-    //   letter => letter.alarmType === parentCategories[selectedFilterIdx].label,
-    // );
-    console.log({filteredLetters});
-    if (!filteredLetters) return;
-    setFilteredLettersData(filteredLetters);
-  }, [selectedFilterIdx]);
 
   const handleReportClick = () => {
     if (!selectedFileId) return;
@@ -133,32 +131,101 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
 
   const handleDeleteClick = () => {
     if (!selectedFileId) return;
-    // TODO: 삭제 API 호출
+    deleteLetter({providedFileId: selectedFileId, reason: ''});
     setIsToast(true);
     setToastMessage('편지가 삭제되었어요');
     closeModalDelete();
   };
 
+  const bottomMenuData = [
+    {
+      title: '신고하기',
+      onPress: () => {
+        openModalReport();
+        setClickedMoreDot(false);
+      },
+    },
+    {
+      title: '삭제하기',
+      onPress: () => {
+        openModalDelete();
+        setClickedMoreDot(false);
+      },
+    },
+  ];
+
+  const stickyHeaderMockData: LetterResponseData = {
+    providedFileId: -1,
+    createdAt: '',
+    thanksMessage: '',
+    alarmType: '식사',
+    member: {
+      id: 0,
+      name: '',
+      profileImage: '',
+    },
+  };
+
+  const filteredData = [
+    stickyHeaderMockData,
+    ...(selectedFilterIdx === 0
+      ? lettersFlatData
+      : lettersFlatData.filter(
+          letter =>
+            letter.alarmType === parentCategories[selectedFilterIdx]?.label,
+        )),
+  ];
+
   return (
-    <View className="bg-blue700 flex-1">
-      <ScrollView stickyHeaderIndices={[1]}>
-        <ListHeader nickname={nickname} summaryData={summaryData} />
-        {/* 편지 카테고리 */}
-        <ListCategory
-          nickname={nickname}
-          selectedFilterIdx={selectedFilterIdx}
-          setSelectedFilterIdx={setSelectedFilterIdx}
-          parentCategories={parentCategories}
-        />
-        {/* 편지 리스트 */}
-        <ListArea
-          nickname={nickname}
-          list={filteredLettersData}
-          // list={LETTERS_DATA}
-          setClickedMoreDot={setClickedMoreDot}
-          setSelectedFileId={setSelectedFileId}
-        />
-      </ScrollView>
+    <View className="flex-1">
+      <FlatList
+        data={filteredData}
+        keyExtractor={item => String(item.providedFileId)}
+        onEndReached={() => {
+          if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+        }}
+        onEndReachedThreshold={0.5}
+        ListHeaderComponent={
+          <ListHeader nickname={nickname} summaryData={summaryData} />
+        }
+        stickyHeaderIndices={[1]}
+        renderItem={({item}) => (
+          <>
+            {item.providedFileId === -1 && (
+              <>
+                <ListCategory
+                  nickname={nickname}
+                  selectedFilterIdx={selectedFilterIdx}
+                  setSelectedFilterIdx={setSelectedFilterIdx}
+                  parentCategories={parentCategories}
+                />
+                {filteredData.length === 1 && <ListEmpty />}
+              </>
+            )}
+            {item.providedFileId !== -1 && (
+              <View className="px-[30]">
+                <LetterCard
+                  letter={item}
+                  onPressMoreDot={() => {
+                    setClickedMoreDot(true);
+                    setSelectedFileId(item.providedFileId);
+                  }}
+                />
+                <View className="mb-[30]" />
+              </View>
+            )}
+          </>
+        )}
+        contentContainerStyle={{
+          paddingBottom: 150,
+          backgroundColor: COLORS.blue600,
+        }}
+        ListFooterComponent={
+          hasNextPage ? (
+            <ActivityIndicator color={COLORS.white} size="large" />
+          ) : null
+        }
+      />
 
       <Portal>
         <Pressable
@@ -172,24 +239,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
               visible={clickedMoreDot}
               style={{borderRadius: 10}}
               className="bg-blue500 mb-[24]">
-              <BottomMenu
-                children={[
-                  {
-                    title: '신고하기',
-                    onPress: () => {
-                      openModalReport();
-                      setClickedMoreDot(false);
-                    },
-                  },
-                  {
-                    title: '삭제하기',
-                    onPress: () => {
-                      openModalDelete();
-                      setClickedMoreDot(false);
-                    },
-                  },
-                ]}
-              />
+              <BottomMenu data={bottomMenuData} />
             </AnimatedView>
 
             <Button text="취소" onPress={() => setClickedMoreDot(false)} />
@@ -205,11 +255,14 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
         onConfirm={handleReportClick}
         buttonRatio="1:1"
         confirmText="신고">
-        {/* TODO: 청년 닉네임 표시 */}
         <Txt
           type="title4"
-          text={`[${'청년1'}]의 글을 신고하시겠어요?`}
-          className="text-white mt-[26] mb-[13]"
+          text={`[${
+            lettersFlatData.find(
+              letter => letter.providedFileId === selectedFileId,
+            )?.member.name ?? ''
+          }]의 글을 신고하시겠어요?`}
+          className="text-white mt-[26] mb-[13] text-center"
         />
         <Txt
           type="caption1"
@@ -225,11 +278,14 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
         onConfirm={handleDeleteClick}
         buttonRatio="1:1"
         confirmText="삭제">
-        {/* TODO: 청년 닉네임 표시 */}
         <Txt
           type="title4"
-          text={`[${'청년1'}]의 글을 삭제하시겠어요?`}
-          className="text-white mt-[26] mb-[13]"
+          text={`[${
+            lettersFlatData.find(
+              letter => letter.providedFileId === selectedFileId,
+            )?.member.name ?? ''
+          }]의 글을 삭제하시겠어요?`}
+          className="text-white mt-[26] mb-[13] text-center"
         />
         <Txt
           type="caption1"
@@ -242,6 +298,8 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
         text={toastMessage}
         isToast={isToast}
         setIsToast={() => setIsToast(false)}
+        position="bottom"
+        type="check"
       />
     </View>
   );

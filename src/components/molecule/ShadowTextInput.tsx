@@ -14,9 +14,9 @@ interface ShadowTextInputProps {
 const ShadowTextInput = ({
   value,
   onChangeText,
-  placeholder = "텍스트를 입력해주세요",
+  placeholder = '텍스트를 입력해주세요',
   isError = false,
-  maxLength = 150
+  maxLength = 150,
 }: ShadowTextInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const textInputRef = useRef<RNTextInput>(null);
@@ -25,7 +25,7 @@ const ShadowTextInput = ({
     <View
       className={`flex-1 w-full h-[340px] rounded-card border-[1px] border-transparent ${
         isFocused && 'border-gray300'
-      } ${isError && 'border-red  bg-red/10'}`}>
+      } ${isError && 'border-red  bg-red/5'}`}>
       <ShadowView>
         <RNTextInput
           ref={textInputRef}
@@ -62,4 +62,4 @@ const ShadowTextInput = ({
   );
 };
 
-export default ShadowTextInput; 
+export default ShadowTextInput;
