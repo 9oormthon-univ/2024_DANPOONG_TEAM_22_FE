@@ -86,7 +86,7 @@ client.interceptors.response.use(
 
             // 2. 새로운 accessToken 요청
             const response = await axios.post(
-              `${process.env.EXPO_PUBLIC_API_URL}/api/v1/auth/token/refresh`,
+              `${Config.API_URL}/api/v1/auth/token/refresh`,
               {refreshToken},
             );
             const accessToken = response.data.result.accessToken;
