@@ -177,7 +177,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   ];
 
   return (
-    <View className="flex-1">
+    <View className="flex-1 bg-blue600">
       <FlatList
         data={filteredData}
         keyExtractor={item => String(item.providedFileId)}
