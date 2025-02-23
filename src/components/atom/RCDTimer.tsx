@@ -9,9 +9,11 @@ type RCDTimerProps = {
   stop: () => void; //시간이 되면 녹음을 중지
   type: RecordType; //타이머 초를 결정하기 위함
   onTimeUpdate?: (elapsedTime: number) => void; // 경과 시간을 전달하기 위한 콜백 추가
+  shouldRefresh?: boolean; // 리프레시 상태를 받는 prop 추가
+  setShouldRefresh?: (shouldRefresh: boolean) => void; // 리프레시 상태를 설정하기 위한 콜백 추가
 };
 
-const RCDTimer = ({recording, stop, type, onTimeUpdate}: RCDTimerProps) => {
+const RCDTimer = ({recording, stop, type, onTimeUpdate, shouldRefresh, setShouldRefresh}: RCDTimerProps) => {
   const [targetTime, setTargetTime] = useState<Date | null>(null);
   const [remainingTime, setRemainingTime] = useState(
     type === 'COMFORT' ? 30000 : 15000,
@@ -27,6 +29,20 @@ const RCDTimer = ({recording, stop, type, onTimeUpdate}: RCDTimerProps) => {
       setIsStopped(false);
     }
   }, [recording]);
+
+  const refreshTimer = () => {
+    setTargetTime(null);
+    setRemainingTime(type === 'COMFORT' ? 30000 : 15000);
+    setIsStopped(false);
+    setShouldRefresh?.(false);
+  };
+
+  useEffect(() => {
+    if (shouldRefresh) {
+      console.log('refreshTimer');
+      refreshTimer();
+    }
+  }, [shouldRefresh]);
 
   useInterval(() => {
     if (recording && targetTime && !isStopped) {
