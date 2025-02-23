@@ -233,7 +233,7 @@ const Page3 = ({onNext}: Readonly<PageProps>) => {
       <View className="px-[30]">
         <Txt
           type="title3"
-          text={`오늘 밖에 비가 온대.\n아침 꼭 챙겨 먹고 나가렴.\n오늘도 힘내!`}
+          text={`아침 거르고 빈속으로 있으면 힘들어.\n아침에 뭐라도 먹어야 에너지가 생기지.\n꼭 가볍게라도 챙겨 먹어!`}
           className="text-gray200"
         />
       </View>
