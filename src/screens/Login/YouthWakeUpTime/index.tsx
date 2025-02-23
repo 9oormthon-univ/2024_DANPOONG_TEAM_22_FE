@@ -45,7 +45,7 @@ const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {
           className="absolute top-[0] w-full"
         />
         <View className="w-full h-[3] bg-white/5 absolute top-[60]" />
-        <View className="w-[50%] h-[3] bg-yellowPrimary absolute top-[60]" />
+        <View className="w-[33%] h-[3] bg-yellowPrimary absolute top-[60]" />
 
         <View className="h-[180]" />
 
