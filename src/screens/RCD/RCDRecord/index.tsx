@@ -250,32 +250,18 @@ const playRecording = async () => {
           console.log('재시도 - ANALYSIS001 ', new Date());
             analysisTimeoutRef.current = setTimeout(uploadAnalysis, 5000);
           break;
-        case 'ANALYSIS002':
-          setIsUploading(false);
-
-          navigation.navigate('RCDError', {type: type, message,errorType:'bad'});
-          break;
         case 'ANALYSIS003':
           setIsUploading(false);
 
-          navigation.navigate('RCDError', {type: type, message,errorType:'notsame'});
-          break;
-        case 'ANALYSIS006':
-          setIsUploading(false);
-
-          navigation.navigate('RCDError', {type: type, message,errorType:'wrong'});
-          break;
-        case 'ANALYSIS107':
-          setIsUploading(false);
-
-          navigation.navigate('RCDError', {type: type, message,errorType:'wrong'});
+          navigation.navigate('RCDError', {type: type, errorType:'notsame'});
           break;
         case 'COMMON200':
           setIsUploading(false);
           navigation.navigate('RCDFeedBack');
           break;
         default:
-          navigation.navigate('RCDError', {type: type, message,errorType:'server'});
+          setIsUploading(false);
+          navigation.navigate('RCDError', {type: type,errorType:'noisy'});
           break;
       }
       
@@ -286,18 +272,17 @@ const playRecording = async () => {
         return;
       }
       const errorCode = error.response?.data.code;
-      const message = error.response?.data.message;
       switch(errorCode) {
         case 'ANALYSIS004':
         case 'ANALYSIS005':
         case 'ANALYSIS108':
             setIsUploading(false);
 
-            navigation.navigate('RCDError', {type: type, message,errorType:'server'});
+            navigation.navigate('RCDError', {type: type, errorType:'server'});
           break;
         default:
           if (isMountedRef.current) {
-            navigation.navigate('RCDError', {type: type, message,errorType:'server'});
+            navigation.navigate('RCDError', {type: type, errorType:'server'});
           }
           break;
       }
@@ -325,7 +310,7 @@ const playRecording = async () => {
                   className="text-gray200"
                 />
                 <View className="mt-[28]">
-                  <Txt type={type === 'INFO' ? 'title2' : 'body3'} text={content} className="text-white" />
+                  <Txt type={type === 'DAILY' ? 'title2' : 'body3'} text={content} className="text-white" />
                 </View>
               </ScrollView>
             </View>

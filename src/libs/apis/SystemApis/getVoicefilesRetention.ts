@@ -14,7 +14,7 @@ export interface VoicefilesRetentionResponse {
 export const getVoicefilesRetention = async (): Promise<VoicefilesRetentionResponse['result']> => {
   try {
     const response = await client.get<VoicefilesRetentionResponse>(
-      '/api/v1/system/voicefiles/retention'
+      '/api/v1/voicefiles/retention'
     );
     return response.data.result;
   } catch (error) {

@@ -31,6 +31,8 @@ const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'L
         thanksCount: 0,
         messageCount: 0
     });
+    
+    // 회원 역할, 닉네임 조회
     useEffect(() => {
         (async () => {
             const storedRole = await AsyncStorage.getItem('role');
@@ -39,7 +41,7 @@ const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'L
             if (storedNickname) setNickname(storedNickname);
         })();
     }, []);
-
+    // 청년 회원 수 조회
     useEffect(() => {
         const fetchYouthMemberNum = async () => {
             try {
@@ -55,6 +57,20 @@ const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'L
             fetchYouthMemberNum();
         }
     }, [role]);
+    // 음성 파일 보유 현황 조회
+    useEffect(() => {
+        const fetchVoicefilesRetention = async () => {
+            try {
+                const retention = await getVoicefilesRetention();
+                setVoicefilesRetention(retention);
+            } catch (error) {
+                if (__DEV__) {
+                    console.error('청년 회원 수 조회 실패:', error);
+                }
+            }
+        };
+        fetchVoicefilesRetention();
+    }, []);
 
     const handleDeleteMember = async () => {
         try {
