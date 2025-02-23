@@ -6,6 +6,7 @@ import Txt from '@components/atom/Txt';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {Role} from '@type/api/member';
+import {trackEvent} from '@utils/tracker';
 import {useState} from 'react';
 import {Image, Pressable, View} from 'react-native';
 
@@ -16,6 +17,7 @@ const RoleSelectScreen = ({navigation}: Readonly<AuthProps>) => {
 
   const handleNext = () => {
     if (!role) return;
+    trackEvent('usertype_selected', {user_type: role});
     navigation.navigate('NicknameWriteScreen', {role});
   };
 

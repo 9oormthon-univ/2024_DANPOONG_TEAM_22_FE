@@ -13,6 +13,7 @@ import useModal from '@hooks/useModal';
 import useValidateInput from '@hooks/useValidateInput';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
+import {trackEvent} from '@utils/tracker';
 import {useEffect, useState} from 'react';
 import {Image, Keyboard, Pressable, View} from 'react-native';
 import {
@@ -96,6 +97,7 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   };
 
   const handleNext = () => {
+    trackEvent('profile_set');
     navigation.navigate('MemberInfoWriteScreen', {
       role,
       nickname,

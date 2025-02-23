@@ -13,6 +13,7 @@ import {CompositeScreenProps} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
+import {trackEvent} from '@utils/tracker';
 import {Image, Linking, Pressable, View} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
@@ -97,7 +98,10 @@ const LoginScreen = ({navigation}: Readonly<Props>) => {
           <Pressable
             className="h-[52.8] bg-[#FEE500] justify-center items-center flex-row"
             style={{borderRadius: 7}}
-            onPress={() => handleLogin({loginType: 'KAKAO'})}>
+            onPress={() => {
+              handleLogin({loginType: 'KAKAO'});
+              trackEvent('signup_start');
+            }}>
             <KakaoIcon />
             <Txt
               type="body3"

@@ -1,7 +1,7 @@
 import analytics from '@react-native-firebase/analytics';
 
 // GTM에 이벤트 로그 전송
-const trackEvent = async (
+const trackGtmEvent = async (
   eventName: string,
   additionalParams: Record<string, any> = {},
 ) => {
@@ -13,4 +13,4 @@ const trackEvent = async (
   }
 };
 
-export default trackEvent;
+export default trackGtmEvent;

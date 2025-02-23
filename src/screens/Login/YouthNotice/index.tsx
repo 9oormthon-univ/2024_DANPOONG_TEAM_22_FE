@@ -6,14 +6,16 @@ import Button from '@components/atom/Button';
 import Toast from '@components/atom/Toast';
 import Txt from '@components/atom/Txt';
 import usePostYouth from '@hooks/auth/usePostYouth';
+import notifee, {AuthorizationStatus} from '@notifee/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geolocation from '@react-native-community/geolocation';
-import {CompositeScreenProps} from '@react-navigation/native';
+import {CompositeScreenProps, useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {YouthRequestData} from '@type/api/member';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
-import {useState} from 'react';
+import {trackEvent} from '@utils/tracker';
+import {useCallback, useRef, useState} from 'react';
 import {Alert, Platform, ScrollView, View} from 'react-native';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 
@@ -45,6 +47,33 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
   const [isToast, setIsToast] = useState(false); // 토스트 메시지 표시 상태
   const [toastMessage, setToastMessage] = useState(''); // 토스트 메시지
   const {mutate: postYouth} = usePostYouth();
+
+  const startTime = useRef(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      startTime.current = new Date().getTime();
+    }, []),
+  );
+
+  // 알림 권한 요청
+  const requestNotificationPermission = async () => {
+    try {
+      const settings = await notifee.requestPermission();
+      if (settings.authorizationStatus >= AuthorizationStatus.AUTHORIZED) {
+        setIsToast(true);
+        setToastMessage('알림 권한이 허용되었어요');
+        return true;
+      } else {
+        setIsToast(true);
+        setToastMessage('알림 권한이 거부되었어요');
+        return false;
+      }
+    } catch (error) {
+      console.error('알림 권한 요청 중 오류 발생:', error);
+      return false;
+    }
+  };
 
   // 위치 정보 권한 요청
   const requestLocationPermission = async () => {
@@ -83,7 +112,29 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
 
   // 시작하기 버튼 클릭 시 권한 요청
   const handleNext = async () => {
+    const notificationGranted = await requestNotificationPermission();
     const locationGranted = await requestLocationPermission();
+
+    trackEvent('permission_push', {
+      status: notificationGranted ? 'GRANTED' : 'DENIED',
+    });
+    trackEvent('permission_location', {
+      status: locationGranted ? 'GRANTED' : 'DENIED',
+    });
+
+    if (!notificationGranted) {
+      Alert.alert(
+        '권한 필요',
+        '알림 권한이 필요합니다. 설정에서 권한을 허용해주세요.',
+        [
+          {
+            text: '확인',
+            onPress: () => console.log('확인 버튼 클릭'),
+          },
+        ],
+      );
+      return;
+    }
 
     if (!locationGranted) {
       Alert.alert(
@@ -115,10 +166,19 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
           };
 
           try {
-            // TODO: api 테스트
             postYouth(data);
             AsyncStorage.setItem('lat', pos.coords.latitude.toString());
             AsyncStorage.setItem('lng', pos.coords.longitude.toString());
+
+            const endTime = new Date().getTime();
+            const viewTime = endTime - startTime.current;
+
+            trackEvent('onboarding_viewtime', {
+              user_type: 'YOUTH',
+              step: '3.8',
+              view_time: viewTime, // 밀리초 단위
+            });
+
             navigation.navigate('YouthStackNav', {
               screen: 'YouthHomeScreen',
             });

@@ -6,17 +6,15 @@ import Button from '@components/atom/Button';
 import Toast from '@components/atom/Toast';
 import Txt from '@components/atom/Txt';
 import notifee, {AuthorizationStatus} from '@notifee/react-native';
-import {CompositeScreenProps, useNavigation} from '@react-navigation/native';
-import {
-  NativeStackNavigationProp,
-  NativeStackScreenProps,
-} from '@react-navigation/native-stack';
+import {CompositeScreenProps, useFocusEffect} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
-import {useState} from 'react';
+import {trackEvent} from '@utils/tracker';
+import {navigationRef} from 'App';
+import {useCallback, useRef, useState} from 'react';
 import {Alert, Platform, ScrollView, View} from 'react-native';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
-import { navigationRef } from "App";
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -40,10 +38,15 @@ const NOTICE_CONTENTS = [
 ];
 
 const VolunteerNoticeScreen = ({navigation}: Readonly<Props>) => {
-  const tabNavigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [isToast, setIsToast] = useState(false); // 토스트 메시지 표시 상태
   const [toastMessage, setToastMessage] = useState(''); // 토스트 메시지
+  const startTime = useRef(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      startTime.current = new Date().getTime();
+    }, []),
+  );
 
   // 오디오 녹음 권한 요청
   const requestAudioPermission = async () => {
@@ -104,12 +107,14 @@ const VolunteerNoticeScreen = ({navigation}: Readonly<Props>) => {
     const audioGranted = await requestAudioPermission();
     const notificationGranted = await requestNotificationPermission();
 
-    if (audioGranted && notificationGranted) {
-      navigationRef.reset({
-        index: 0,
-        routes: [{name: 'AppTabNav'}],
-      });
-    } else {
+    trackEvent('permission_audio', {
+      status: audioGranted ? 'GRANTED' : 'DENIED',
+    });
+    trackEvent('permission_push', {
+      status: notificationGranted ? 'GRANTED' : 'DENIED',
+    });
+
+    if (!audioGranted) {
       Alert.alert(
         '권한 필요',
         '오디오 녹음 및 알림 권한이 필요합니다. 설정에서 권한을 허용해주세요.',
@@ -120,7 +125,36 @@ const VolunteerNoticeScreen = ({navigation}: Readonly<Props>) => {
           },
         ],
       );
+      return;
     }
+
+    if (!notificationGranted) {
+      Alert.alert(
+        '권한 필요',
+        '알림 권한이 필요합니다. 설정에서 권한을 허용해주세요.',
+        [
+          {
+            text: '확인',
+            onPress: () => console.log('확인 버튼 클릭'),
+          },
+        ],
+      );
+      return;
+    }
+
+    const endTime = new Date().getTime();
+    const viewTime = endTime - startTime.current;
+
+    trackEvent('onboarding_viewtime', {
+      user_type: 'HELPER',
+      step: '2.5',
+      view_time: viewTime, // 밀리초 단위
+    });
+
+    navigationRef.reset({
+      index: 0,
+      routes: [{name: 'AppTabNav'}],
+    });
   };
 
   return (

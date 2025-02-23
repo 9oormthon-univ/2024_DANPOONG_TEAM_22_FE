@@ -1,5 +1,5 @@
-import {default as trackAmplitudeEvent} from '@utils/amplitudeTracker';
-import {default as trackGtmEvent} from '@utils/gtmTracker';
+import trackAmplitudeEvent from '@utils/amplitudeTracker';
+import trackGtmEvent from '@utils/gtmTracker';
 import getCommonParams from '@utils/trackerUtils';
 
 // 공통 이벤트 추적 함수
@@ -10,6 +10,15 @@ const trackEvent = async (
   // 공통 파라미터 처리
   const commonParams = await getCommonParams();
 
+  // 개발 모드에서는 콘솔에 로그를 출력하고, 실제 로그는 쌓지 않음
+  if (__DEV__) {
+    console.log('trackEvent:', eventName, {
+      ...commonParams,
+      ...additionalParams,
+    });
+    return;
+  }
+
   // GTM과 Amplitude에 각각 이벤트를 전송
   trackGtmEvent(eventName, {...commonParams, ...additionalParams});
   trackAmplitudeEvent(eventName, {...commonParams, ...additionalParams});
@@ -17,38 +26,26 @@ const trackEvent = async (
 
 // 공통 이벤트 정의
 const trackAppStart = () => {
+  if (__DEV__) {
+    console.log('trackAppStart');
+    return;
+  }
+
   trackEvent('app_start');
-};
-
-const trackButtonClick = ({
-  buttonId,
-  buttonText,
-}: Readonly<{buttonId: string; buttonText: string}>) => {
-  trackEvent('button_click', {
-    button_id: buttonId,
-    button_text: buttonText,
-  });
-};
-
-const trackError = ({
-  errorCode,
-  errorMessage,
-  screenName,
-}: Readonly<{errorCode: string; errorMessage: string; screenName: string}>) => {
-  trackEvent('error_occurred', {
-    error_code: errorCode,
-    error_message: errorMessage,
-    screen_name: screenName,
-  });
 };
 
 const trackScreenView = async ({
   screenName,
 }: Readonly<{screenName: string}>) => {
+  if (__DEV__) {
+    console.log('trackScreenView:', screenName);
+    return;
+  }
+
   trackEvent('screen_view', {
     screen_name: screenName,
     screen_class: screenName,
   });
 };
 
-export {trackAppStart, trackButtonClick, trackError, trackScreenView};
+export {trackAppStart, trackEvent, trackScreenView};
