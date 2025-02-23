@@ -1,10 +1,9 @@
 // React 관련 import
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Pressable } from "react-native";
 
 // Navigation 관련 import
-import { useNavigation } from "@react-navigation/native";
-import { NavigationProp } from "@react-navigation/native";
+import { useNavigation, NavigationProp } from "@react-navigation/native";
 
 // Type, Constants 관련 import
 import { SystemStackParamList } from "@type/nav/SystemStackParamList";
@@ -17,111 +16,184 @@ import Txt from "@components/atom/Txt";
 import TimeSelectBottomSheet from "@components/atom/TimeSelectBottomSheet";
 import ToggleSwitch from "@components/atom/ToggleSwitch";
 // API 관련 import
-import { getMemberInfoYouth } from "@apis/SystemApis/getMemberInfoYouth";
-import { postAlarmSettingToggle } from "@apis/SystemApis/postAlarm-settingToggle";
+import { getMemberInfoYouth, GetMemberInfoYouthResponse} from "@apis/SystemApis/getMemberInfoYouth";
+import { postAlarmSettingToggle ,PostAlarmSettingToggleRequest} from "@apis/SystemApis/postAlarm-settingToggle";
+import { patchMemberInfoYouth , PatchMemberInfoYouthRequest} from "@apis/SystemApis/patchMemberInfoYouth";
+import convertTimeFormat from "@utils/convertTimeFormat";
+import parseTimeString from "@utils/parseTimeString";
 
+type MemberInfoYouthResponse = GetMemberInfoYouthResponse['result']
+type AlarmCategory = PostAlarmSettingToggleRequest['alarmCategory']
+
+// 알림 설정에 대한 기본 인터페이스 정의
+interface NotificationSetting {
+  sub: string;                // 알림 제목 (예: 기상, 취침 등)
+  alarmCategory: AlarmCategory; // 알림 카테고리 (API 요청용)  'WAKE_UP' | 'GO_OUT' | 'MEAL_BREAKFAST' | 'MEAL_LUNCH' | 'MEAL_DINNER' | 'SLEEP'
+  isOn: boolean;             // 현재 알림 활성화 상태
+  hour: string;              // 현재 설정된 시간
+  minute: string;            // 현재 설정된 분
+  initialIsOn: boolean;      // 초기 알림 활성화 상태 (변경 감지용)
+  initialHour: string;       // 초기 설정 시간 (변경 감지용)
+  initialMinute: string;     // 초기 설정 분 (변경 감지용)
+}
+
+// 알림 설정 구성을 위한 인터페이스
+interface NotificationConfig {
+  sub: string;               // 알림 제목
+  alarmCategory: AlarmCategory; // API 요청시 사용할 알림 카테고리
+  timeField: keyof Omit<MemberInfoYouthResponse, "wakeUpAlarm" | "sleepAlarm" | "breakfastAlarm" | "lunchAlarm" | "dinnerAlarm" | "outgoingAlarm">; // API 응답에서 시간 정보를 가져올 키
+  alarmField: keyof Omit<MemberInfoYouthResponse, "wakeUpTime" | "sleepTime" | "breakfast" | "lunch" | "dinner" | "outgoingTime">; // API 응답에서 알림 활성화 상태를 가져올 키
+}
+
+// 알림 설정 목록 정의
+const notificationsConfig: NotificationConfig[] = [
+  { sub: "기상", alarmCategory: "WAKE_UP", timeField: "wakeUpTime", alarmField: "wakeUpAlarm" },
+  { sub: "날씨", alarmCategory: "GO_OUT", timeField: "outgoingTime", alarmField: "outgoingAlarm" },
+  { sub: "아침 식사", alarmCategory: "MEAL_BREAKFAST", timeField: "breakfast", alarmField: "breakfastAlarm" },
+  { sub: "점심 식사", alarmCategory: "MEAL_LUNCH", timeField: "lunch", alarmField: "lunchAlarm" },
+  { sub: "저녁 식사", alarmCategory: "MEAL_DINNER", timeField: "dinner", alarmField: "dinnerAlarm" },
+  { sub: "취침", alarmCategory: "SLEEP", timeField: "sleepTime", alarmField: "sleepAlarm" },
+];
+
+// 알림 설정 화면 컴포넌트
 const NotificationSettingYouth = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
-  
-  // 알림 설정 켜짐 여부, 시간, 분 배열
-  const [isNotificationsOn, setIsNotificationsOn] = useState<boolean[]>([false, false, false, false, false, false]);
-  const [notificationsHours, setNotificationsHours] = useState<string[]>(['오전 00시', '오전 00시', '오전 00시', '오전 00시', '오전 00시', '오전 00시']);
-  const [notificationsMinutes, setNotificationsMinutes] = useState<string[]>(['00분', '00분', '00분', '00분', '00분', '00분']);
-  
-  // 알림 설정 시간 선택 모달
+  const [notifications, setNotifications] = useState<NotificationSetting[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // 모달 관련 임시 상태
   const [showHourBottomSheet, setShowHourBottomSheet] = useState(false);
   const [showMinuteBottomSheet, setShowMinuteBottomSheet] = useState(false);
-  const [hour, setHour] = useState('오전 00시');
-  const [minute, setMinute] = useState('00분');
-  const [index, setIndex] = useState<number | undefined>(undefined);
+  const [tempHour, setTempHour] = useState("오전 00시");
+  const [tempMinute, setTempMinute] = useState("00분");
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
-  const notiTimeHandler = (index: number) => {
-    setShowHourBottomSheet(true);
-    setIndex(index);
+  // API에서 정보를 가져와 notifications 상태를 세팅합니다.
+  const fetchMemberInfo = async () => {
+    const res = await getMemberInfoYouth();
+    const fetchedNotifications = notificationsConfig.map((config) => {
+      const parsedTime = parseTimeString(res[config.timeField]);
+      const formattedHour = `${parsedTime.hour < 12 ? "오전" : "오후"} ${parsedTime.hour % 12 || 12}시`;
+      const formattedMinute = `${String(parsedTime.minute).padStart(2, "0")}분`;
+      return {
+        sub: config.sub,
+        alarmCategory: config.alarmCategory,
+        isOn: res[config.alarmField],
+        hour: formattedHour,
+        minute: formattedMinute,
+        initialIsOn: res[config.alarmField],
+        initialHour: formattedHour,
+        initialMinute: formattedMinute,
+      };
+    });
+    setNotifications(fetchedNotifications);
   };
 
-  // 알림 설정 시간 선택 모달 종료 시 시간 설정
   useEffect(() => {
-    if(!showMinuteBottomSheet && index !== undefined){
-      setNotificationsHours(prev => prev.map((time, i) => i === index ? `${hour}` : time));
-      setNotificationsMinutes(prev => prev.map((time, i) => i === index ? `${minute}` : time));
-    }
-  }, [showMinuteBottomSheet]);
-
-  useEffect(() => {
-    const fetchMemberInfo = async () => {
-      const res = await getMemberInfoYouth();
-      
-      // 알림 설정 상태 업데이트
-      setIsNotificationsOn([
-        res.wakeUpAlarm,
-        res.outgoingAlarm,
-        res.breakfastAlarm, 
-        res.lunchAlarm,
-        res.dinnerAlarm,
-        res.sleepAlarm
-      ]);
-
-      // 시간 설정 업데이트
-      setNotificationsHours([
-        `${res.wakeUpTime.hour < 12 ? '오전' : '오후'} ${res.wakeUpTime.hour % 12 || 12}시`,
-        `${res.outgoingTime.hour < 12 ? '오전' : '오후'} ${res.outgoingTime.hour % 12 || 12}시`,
-        `${res.breakfast.hour < 12 ? '오전' : '오후'} ${res.breakfast.hour % 12 || 12}시`,
-        `${res.lunch.hour < 12 ? '오전' : '오후'} ${res.lunch.hour % 12 || 12}시`, 
-        `${res.dinner.hour < 12 ? '오전' : '오후'} ${res.dinner.hour % 12 || 12}시`,
-        `${res.sleepTime.hour < 12 ? '오전' : '오후'} ${res.sleepTime.hour % 12 || 12}시`
-      ]);
-
-      // 분 설정 업데이트 
-      setNotificationsMinutes([
-        `${String(res.wakeUpTime.minute).padStart(2, '0')}분`,
-        `${String(res.outgoingTime.minute).padStart(2, '0')}분`,
-        `${String(res.breakfast.minute).padStart(2, '0')}분`,
-        `${String(res.lunch.minute).padStart(2, '0')}분`,
-        `${String(res.dinner.minute).padStart(2, '0')}분`, 
-        `${String(res.sleepTime.minute).padStart(2, '0')}분`
-      ]);
-    };
     fetchMemberInfo();
   }, []);
 
+  // 모달에서 시간 선택 후 값 업데이트
+  useEffect(() => {
+    if (!showMinuteBottomSheet) {
+      setNotifications((prev) =>
+        prev.map((notif, i) =>
+          i === selectedIndex ? { ...notif, hour: tempHour, minute: tempMinute } : notif
+        )
+      );
+    }
+  }, [showMinuteBottomSheet]);
+
+  // 상태 변경 여부 체크
+  const isStateChanged = () => {
+    return notifications.some(
+      (notif) =>
+        notif.isOn !== notif.initialIsOn ||
+        notif.hour !== notif.initialHour ||
+        notif.minute !== notif.initialMinute
+    );
+  };
+
+  // 저장 버튼 클릭 시 API 호출
+  const confirmCallbackFn = async () => {
+    if (!isStateChanged()) return;
+    setIsLoading(true);
+    try {
+      await Promise.all(
+        notifications.map((notif) =>
+          postAlarmSettingToggle({
+            alarmCategory: notif.alarmCategory,
+            enabled: notif.isOn,
+          })
+        )
+      );
+      
+      // patchMemberInfoYouth 함수는 모든 키가 포함된 객체를 요구합니다.
+      const patchData: PatchMemberInfoYouthRequest = {
+        wakeUpTime: "",
+        sleepTime: "",
+        breakfast: "",
+        lunch: "",
+        dinner: "",
+        outgoingTime: "",
+      };
+      notificationsConfig.forEach((config, index) => {
+        patchData[config.timeField] = convertTimeFormat(
+          notifications[index].hour,
+          notifications[index].minute
+        );
+      });
+      await patchMemberInfoYouth(patchData);
+      navigation.goBack();
+    } catch (error) {
+      console.error("알림 설정 저장 실패:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // 모달을 통해 특정 알림 시간 변경
+  const notiTimeHandler = (index: number) => {
+    setSelectedIndex(index);
+    setShowHourBottomSheet(true);
+  };
+
   return (
     <BG type="solid">
-      <AppBar title="알림 설정" goBackCallbackFn={() => { navigation.goBack(); }} />
-      {/* 알림 설정 버튼 목록 */}
-      {[
-        { sub: "기상" },
-        { sub: "날씨" }, 
-        { sub: "아침 식사" },
-        { sub: "점심 식사" },
-        { sub: "저녁 식사" },
-        { sub: "취침" }
-      ].map((item,i) => (
+      <AppBar
+        title="알림 설정"
+        goBackCallbackFn={() => navigation.goBack()}
+        confirmCallbackFn={isStateChanged() ? confirmCallbackFn : undefined}
+        isLoading={isLoading}
+      />
+      {notifications.map((notif, i) => (
         <NotiButton
-          key={item.sub}
-          title={notificationsHours[i] + ' ' + notificationsMinutes[i]}
-          sub={item.sub}
-          onPress={() => {notiTimeHandler(i)}}
-          isOn={isNotificationsOn[i]}
-          setIsOn={() => {setIsNotificationsOn(prev => prev.map((_, index) => index === i ? !prev[i] : prev[index]));}}
+          key={notif.sub}
+          title={`${notif.hour} ${notif.minute}`}
+          sub={notif.sub}
+          onPress={() => notiTimeHandler(i)}
+          isOn={notif.isOn}
+          setIsOn={() =>
+            setNotifications((prev) =>
+              prev.map((n, idx) => (idx === i ? { ...n, isOn: !n.isOn } : n))
+            )
+          }
         />
       ))}
-
       {showHourBottomSheet && (
         <TimeSelectBottomSheet
           type="hour"
-          value={'오전 12시'}
-          setValue={setHour}
+          value={notifications[selectedIndex]?.hour || "오전 00시"}
+          setValue={setTempHour}
           onClose={() => setShowHourBottomSheet(false)}
           onSelect={() => setShowMinuteBottomSheet(true)}
         />
       )}
-
       {showMinuteBottomSheet && (
         <TimeSelectBottomSheet
           type="minute"
-          value={'00'}
-          setValue={setMinute}
+          value={notifications[selectedIndex]?.minute || "00분"}
+          setValue={setTempMinute}
           onClose={() => setShowMinuteBottomSheet(false)}
         />
       )}
@@ -129,14 +201,25 @@ const NotificationSettingYouth = () => {
   );
 };
 
-const NotiButton = ({ title, sub, onPress, isOn, setIsOn }:
-  { title: string, sub: string, onPress: () => void, isOn: boolean, setIsOn: () => void }) => {
+const NotiButton = ({
+  title,    // 시간 표시 (예: "오전 7시 00분")
+  sub,      // 알림 제목 (예: "기상")
+  onPress,  // 버튼 클릭 핸들러
+  isOn,     // 알림 활성화 상태
+  setIsOn,  // 알림 활성화 상태 변경 함수
+}: {
+  title: string;
+  sub: string;
+  onPress: () => void;
+  isOn: boolean;
+  setIsOn: () => void;
+}) => {
   return (
     <Pressable
       className="w-full flex-row justify-between items-center px-px py-[21]"
       onPress={onPress}
       style={({ pressed }) => ({
-        backgroundColor: pressed ? COLORS.blue600 : 'transparent'
+        backgroundColor: pressed ? COLORS.blue600 : "transparent",
       })}
       android_ripple={{ color: COLORS.blue600 }}
     >

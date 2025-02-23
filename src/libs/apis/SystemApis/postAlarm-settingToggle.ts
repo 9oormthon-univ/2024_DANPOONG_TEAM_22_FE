@@ -2,7 +2,7 @@
 import client from '@apis/client';
 
 export interface PostAlarmSettingToggleRequest {
-  alarmCategory: 'WAKE_UP' | 'GO_OUT' | 'MEAL_BREAKFAST' | 'MEAL_LAUNCH' | 'MEAL_DINNER' | 'SLEEP';
+  alarmCategory: 'WAKE_UP' | 'GO_OUT' | 'MEAL_BREAKFAST' | 'MEAL_LUNCH' | 'MEAL_DINNER' | 'SLEEP';
   enabled: boolean;
 }
 
