@@ -29,8 +29,9 @@ import StopIcon from '@assets/svgs/stop.svg';
 import BG from '@components/atom/BG';
 import Toast from '@components/atom/Toast';
 import {COLORS} from '@constants/Colors';
+import {KEYBOARD_DELAY_MS} from '@constants/common';
 import {EMOTION_OPTIONS_YOUTH} from '@constants/letter';
-import {VOICE_DELAY_MS} from '@constants/voice';
+import {VOICE_DELAY_MS, VOICE_LOADING_MS} from '@constants/voice';
 import useDeleteComment from '@hooks/providedFile/useDeleteComment';
 import {EmotionType} from '@type/api/providedFile';
 
@@ -65,7 +66,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
     setIsLoading(true);
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, VOICE_LOADING_MS);
 
     return () => clearTimeout(timer);
   }, []);
@@ -87,7 +88,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
     const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
       setTimeout(() => {
         setIsKeyboardVisible(false);
-      }, 100);
+      }, KEYBOARD_DELAY_MS);
     });
 
     return () => {
