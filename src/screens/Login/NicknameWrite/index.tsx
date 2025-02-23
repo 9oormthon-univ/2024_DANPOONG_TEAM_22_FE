@@ -8,6 +8,7 @@ import DismissKeyboardView from '@components/atom/DismissKeyboardView';
 import Modal from '@components/atom/Modal';
 import TextInput from '@components/atom/TextInput';
 import Txt from '@components/atom/Txt';
+import {KEYBOARD_DELAY_MS} from '@constants/common';
 import useModal from '@hooks/useModal';
 import useValidateInput from '@hooks/useValidateInput';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -51,7 +52,7 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
     const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
       setTimeout(() => {
         setIsKeyboardVisible(false);
-      }, 100);
+      }, KEYBOARD_DELAY_MS);
     });
 
     return () => {

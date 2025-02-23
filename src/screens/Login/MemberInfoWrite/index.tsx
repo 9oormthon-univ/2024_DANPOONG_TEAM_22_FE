@@ -5,6 +5,7 @@ import Button from '@components/atom/Button';
 import DismissKeyboardView from '@components/atom/DismissKeyboardView';
 import Modal from '@components/atom/Modal';
 import Txt from '@components/atom/Txt';
+import {KEYBOARD_DELAY_MS} from '@constants/common';
 import usePostMember from '@hooks/auth/usePostMember';
 import useLoading from '@hooks/useLoading';
 import useModal from '@hooks/useModal';
@@ -41,7 +42,7 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
     const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
       setTimeout(() => {
         setIsKeyboardVisible(false);
-      }, 100);
+      }, KEYBOARD_DELAY_MS);
     });
 
     return () => {

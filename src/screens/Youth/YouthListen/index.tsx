@@ -29,9 +29,11 @@ import StopIcon from '@assets/svgs/stop.svg';
 import BG from '@components/atom/BG';
 import Toast from '@components/atom/Toast';
 import {COLORS} from '@constants/Colors';
+import {KEYBOARD_DELAY_MS} from '@constants/common';
 import {EMOTION_OPTIONS_YOUTH} from '@constants/letter';
+import {VOICE_DELAY_MS, VOICE_LOADING_MS} from '@constants/voice';
+import useDeleteComment from '@hooks/providedFile/useDeleteComment';
 import {EmotionType} from '@type/api/providedFile';
-import {VOICE_DELAY_MS} from '@constants/voice';
 
 // 네비게이션 Props 타입 정의
 type YouthProps = NativeStackScreenProps<
@@ -54,13 +56,17 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
   const audioPlayer = useRef(new AudioRecorderPlayer()); // 오디오 플레이어 ref
   const [isToast, setIsToast] = useState(false); // 토스트 메시지 표시 상태
   const [toastMessage, setToastMessage] = useState(''); // 토스트 메시지
+  const [sentEmotions, setSentEmotions] = useState<{
+    [key in EmotionType]?: boolean;
+  }>({}); // 전송된 감정 표현
+  const {mutate: deleteComment} = useDeleteComment();
 
   // 초기 로딩 처리
   useEffect(() => {
     setIsLoading(true);
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, VOICE_LOADING_MS);
 
     return () => clearTimeout(timer);
   }, []);
@@ -82,7 +88,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
     const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
       setTimeout(() => {
         setIsKeyboardVisible(false);
-      }, 100);
+      }, KEYBOARD_DELAY_MS);
     });
 
     return () => {
@@ -91,42 +97,49 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
     };
   }, []);
 
-  // 음성 파일 로드 및 재생
   useEffect(() => {
-    if (!alarmId) return;
+    if (!alarmId) {
+      return;
+    }
 
     (async () => {
       try {
         const res = await getVoiceFiles({alarmId});
         console.log(res);
         setVoiceFile(res.result);
-        setTimeout(async () => {
-          const playResult = await audioPlayer.current.startPlayer(
-            voiceFile.fileUrl,
-          );
-          console.log('재생 시작:', playResult);
-          setIsPlaying(true);
-
-          // 재생 상태 감지
-          audioPlayer.current.addPlayBackListener(e => {
-            console.log(
-              '재생 위치:',
-              e.currentPosition,
-              '총 길이:',
-              e.duration,
-            );
-            if (e.currentPosition >= e.duration) {
-              console.log('재생 끝');
-              setIsPlaying(false); // 재생 끝나면 아이콘 변경
-            }
-          });
-        }, VOICE_DELAY_MS);
       } catch (error) {
         console.log(error);
         Alert.alert('알림', '제공할 수 있는 응원 음성이 없어요');
         navigation.goBack();
       }
     })();
+  }, [alarmId]);
+
+  useEffect(() => {
+    if (!voiceFile.fileUrl) return;
+
+    const startPlaying = async () => {
+      try {
+        const playResult = await audioPlayer.current.startPlayer(
+          voiceFile.fileUrl,
+        );
+        console.log('재생 시작:', playResult);
+        setIsPlaying(true);
+
+        audioPlayer.current.addPlayBackListener(e => {
+          console.log('재생 위치:', e.currentPosition, '총 길이:', e.duration);
+          if (e.currentPosition >= e.duration) {
+            console.log('재생 끝');
+            setIsPlaying(false);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+        Alert.alert('오류', '오디오 재생 중 오류가 발생했어요');
+      }
+    };
+
+    setTimeout(startPlaying, VOICE_DELAY_MS);
 
     return () => {
       (async () => {
@@ -135,16 +148,42 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         setIsPlaying(false);
       })();
     };
-  }, [alarmId]);
+  }, [voiceFile.fileUrl]);
 
   const handleMessageSend = async (emotionType?: EmotionType) => {
-    if (!emotionType && !message) return;
+    if (!emotionType && !message) {
+      return;
+    }
 
     if (emotionType) {
       const emotion = EMOTION_OPTIONS_YOUTH.find(
         option => option.type === emotionType,
       );
-      if (!emotion) return;
+      if (!emotion) {
+        return;
+      }
+
+      if (sentEmotions[emotionType]) {
+        try {
+          deleteComment({
+            providedFileId: voiceFile.providedFileId,
+            message: emotionType,
+          });
+          setSentEmotions(prev => {
+            const updated = {...prev};
+            delete updated[emotionType];
+            return updated;
+          });
+          setIsToast(true);
+          setToastMessage(`‘${emotion.label}’ 전송 취소`);
+        } catch (error) {
+          console.log(error);
+          Alert.alert('오류', '감정 표현을 취소하는 중 오류가 발생했어요');
+        }
+        return;
+      }
+
+      setSentEmotions(prev => ({...prev, [emotionType]: true}));
       setIsToast(true);
       setToastMessage(`‘${emotion.label}’ 전송 완료`);
     } else {
@@ -282,7 +321,9 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
                       index === EMOTION_OPTIONS_YOUTH.length - 1
                         ? 'mr-[50]'
                         : 'mr-[10]'
-                    } flex-row items-center justify-center active:bg-blue500`}
+                    } flex-row items-center justify-center active:bg-blue500 ${
+                      sentEmotions[emotion.type] ? 'bg-blue500' : ''
+                    }`}
                     style={{borderRadius: 50}}
                     onPress={() => handleMessageSend(emotion.type)}>
                     {emotion.icon}
