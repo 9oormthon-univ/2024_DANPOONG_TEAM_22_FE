@@ -1,9 +1,9 @@
 // 필요한 컴포넌트 및 아이콘 import
-import {View, Animated} from 'react-native';
-import Txt from '@components/atom/Txt';
 import Bang from '@assets/svgs/Bang.svg';
 import CheckYellowIcon from '@assets/svgs/checkYellow.svg';
+import Txt from '@components/atom/Txt';
 import {useEffect} from 'react';
+import {Animated, View} from 'react-native';
 
 // Toast 컴포넌트의 props 타입 정의
 const Toast = ({
@@ -59,12 +59,12 @@ const Toast = ({
   // 토스트 UI 렌더링
   return (
     <View
-      className={`absolute ${
+      className={`w-full items-center justify-center absolute ${
         position === 'top'
           ? 'top-[100]'
           : position === 'left'
-          ? 'top-[88] left-[25]'
-          : 'bottom-[89]'
+          ? 'top-[88] left-[25] items-start'
+          : 'bottom-[89] '
       }`}>
       <Animated.View
         className="w-auto h-auto flex-row bg-blue400 px-[25] py-[16] z-50"

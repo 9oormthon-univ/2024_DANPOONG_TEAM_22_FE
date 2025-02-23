@@ -16,7 +16,7 @@ const ListHeader = ({
   };
 
   return (
-    <View>
+    <View className="bg-blue700">
       <View className="h-[61]" />
       <Txt
         type="title2"

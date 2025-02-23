@@ -1,3 +1,5 @@
+import {FileMemberResponseData} from '@type/api/member';
+
 type AlarmType = '외출' | '기상' | '식사' | '취침' | '위로' | '우울' | '칭찬';
 
 type EmotionType = 'THANK_YOU' | 'HELPFUL' | 'MOTIVATED' | 'LOVE';
@@ -36,19 +38,22 @@ type LetterResponseData = {
   createdAt: string;
   thanksMessage: string;
   alarmType: AlarmType;
+  member: FileMemberResponseData;
 };
 
 type LettersResponseData = {
   content: LetterResponseData[];
+  totalPages: number;
+  number: number;
 };
 
 export type {
   AlarmType,
-  EmotionType,
   CommentRequestData,
+  EmotionType,
+  LetterResponseData,
+  LettersRequestData,
+  LettersResponseData,
   ReportRequestData,
   SummaryResponseData,
-  LettersRequestData,
-  LetterResponseData,
-  LettersResponseData,
 };

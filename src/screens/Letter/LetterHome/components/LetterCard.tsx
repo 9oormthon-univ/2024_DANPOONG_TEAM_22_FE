@@ -7,19 +7,12 @@ import {Image, Pressable, View} from 'react-native';
 
 type LetterCardProps = {
   letter: LetterResponseData;
-  idx: number;
   onPressMoreDot?: () => void;
 };
 
-const LetterCard = ({
-  letter,
-  idx,
-  onPressMoreDot,
-}: Readonly<LetterCardProps>) => {
-  const imageUri = null;
-
+const LetterCard = ({letter, onPressMoreDot}: Readonly<LetterCardProps>) => {
   const renderCategoryText = () => {
-    if (letter.alarmType === '위로') {
+    if (letter.alarmType === '위로' || letter.alarmType === '칭찬') {
       return (
         <Txt
           type="body4"
@@ -31,7 +24,7 @@ const LetterCard = ({
       return (
         <Txt
           type="body4"
-          text="이 해소된"
+          text="이 해소된 "
           className="text-white font-[LeeSeoyun-Regular]"
         />
       );
@@ -88,14 +81,14 @@ const LetterCard = ({
             {renderCategoryText()}
             <Txt
               type="body4"
-              text={`청년${idx + 1}`}
+              text={letter?.member?.name ?? ''}
               className="text-white mr-[10] max-w-[140]"
               numberOfLines={1}
             />
             <Image
               source={
-                imageUri
-                  ? {uri: imageUri}
+                letter?.member?.profileImage
+                  ? {uri: letter?.member?.profileImage}
                   : require('@assets/pngs/logo/app/app_logo_yellow.png')
               }
               className="w-[27] h-[27]"

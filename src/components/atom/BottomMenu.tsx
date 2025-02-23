@@ -3,10 +3,10 @@ import {Pressable, View} from 'react-native';
 
 type BottomMenuProps = {
   title?: string;
-  children: {title: string; onPress: () => void}[];
+  data: {title: string; onPress: () => void}[];
 };
 
-const BottomMenu = ({title, children}: Readonly<BottomMenuProps>) => {
+const BottomMenu = ({title, data}: Readonly<BottomMenuProps>) => {
   return (
     <>
       {title && (
@@ -15,16 +15,14 @@ const BottomMenu = ({title, children}: Readonly<BottomMenuProps>) => {
         </View>
       )}
       <View className="bg-blue600 h-[1]" />
-      {children.map(({title, onPress}, index) => (
+      {data.map(({title, onPress}, index) => (
         <View key={title}>
           <Pressable
             className="h-[61] justify-center items-center"
             onPress={onPress}>
             <Txt type="body3" text={title} className="text-white" />
           </Pressable>
-          {index !== children.length - 1 && (
-            <View className="bg-blue600 h-[1]" />
-          )}
+          {index !== data.length - 1 && <View className="bg-blue600 h-[1]" />}
         </View>
       ))}
     </>
