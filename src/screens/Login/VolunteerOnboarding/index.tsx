@@ -4,9 +4,11 @@ import SkipBar from '@components/atom/SkipBar';
 import Txt from '@components/atom/Txt';
 import {COLORS} from '@constants/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {useEffect, useRef, useState} from 'react';
+import {trackEvent} from '@utils/tracker';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {
   Animated,
   Dimensions,
@@ -47,6 +49,27 @@ const preloadImages = async () => {
 };
 
 const Page1 = ({nickname, onNext}: Readonly<PageProps>) => {
+  const startTime = useRef(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      startTime.current = new Date().getTime();
+    }, []),
+  );
+
+  const handleNext = () => {
+    const endTime = new Date().getTime();
+    const viewTime = endTime - startTime.current;
+
+    trackEvent('onboarding_viewtime', {
+      user_type: 'HELPER',
+      step: '2.1',
+      view_time: viewTime, // 밀리초 단위
+    });
+
+    onNext();
+  };
+
   return (
     <>
       <View className="h-[200]" />
@@ -77,7 +100,7 @@ const Page1 = ({nickname, onNext}: Readonly<PageProps>) => {
           className="text-white text-center"
         />
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
-          <Button text="다음" onPress={onNext} />
+          <Button text="다음" onPress={handleNext} />
         </View>
       </View>
     </>
@@ -85,6 +108,27 @@ const Page1 = ({nickname, onNext}: Readonly<PageProps>) => {
 };
 
 const Page2 = ({onNext}: Readonly<PageProps>) => {
+  const startTime = useRef(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      startTime.current = new Date().getTime();
+    }, []),
+  );
+
+  const handleNext = () => {
+    const endTime = new Date().getTime();
+    const viewTime = endTime - startTime.current;
+
+    trackEvent('onboarding_viewtime', {
+      user_type: 'HELPER',
+      step: '2.2',
+      view_time: viewTime, // 밀리초 단위
+    });
+
+    onNext();
+  };
+
   return (
     <ImageBackground
       source={require('@assets/pngs/background/volunteerOnboarding1.png')}
@@ -99,7 +143,7 @@ const Page2 = ({onNext}: Readonly<PageProps>) => {
           className="text-white text-center"
         />
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
-          <Button text="다음" onPress={onNext} />
+          <Button text="다음" onPress={handleNext} />
         </View>
       </View>
     </ImageBackground>
@@ -107,6 +151,27 @@ const Page2 = ({onNext}: Readonly<PageProps>) => {
 };
 
 const Page3 = ({nickname, onNext}: Readonly<PageProps>) => {
+  const startTime = useRef(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      startTime.current = new Date().getTime();
+    }, []),
+  );
+
+  const handleNext = () => {
+    const endTime = new Date().getTime();
+    const viewTime = endTime - startTime.current;
+
+    trackEvent('onboarding_viewtime', {
+      user_type: 'HELPER',
+      step: '2.3',
+      view_time: viewTime, // 밀리초 단위
+    });
+
+    onNext();
+  };
+
   return (
     <ImageBackground
       source={require('@assets/pngs/background/volunteerOnboarding2.png')}
@@ -119,7 +184,7 @@ const Page3 = ({nickname, onNext}: Readonly<PageProps>) => {
           className="text-white text-center"
         />
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
-          <Button text="다음" onPress={onNext} />
+          <Button text="다음" onPress={handleNext} />
         </View>
       </View>
     </ImageBackground>
@@ -127,6 +192,27 @@ const Page3 = ({nickname, onNext}: Readonly<PageProps>) => {
 };
 
 const Page4 = ({onNext}: Readonly<PageProps>) => {
+  const startTime = useRef(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      startTime.current = new Date().getTime();
+    }, []),
+  );
+
+  const handleNext = () => {
+    const endTime = new Date().getTime();
+    const viewTime = endTime - startTime.current;
+
+    trackEvent('onboarding_viewtime', {
+      user_type: 'HELPER',
+      step: '2.4',
+      view_time: viewTime, // 밀리초 단위
+    });
+
+    onNext();
+  };
+
   return (
     <ImageBackground
       source={require('@assets/pngs/background/volunteerOnboarding3.png')}
@@ -141,7 +227,7 @@ const Page4 = ({onNext}: Readonly<PageProps>) => {
           className="text-gray100 text-center"
         />
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
-          <Button text="다음" onPress={onNext} />
+          <Button text="다음" onPress={handleNext} />
         </View>
       </View>
     </ImageBackground>
@@ -165,6 +251,24 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
   useEffect(() => {
     preloadImages();
   }, []);
+
+  const trackSkipEvent = () => {
+    let step = '';
+    if (currentPageIdx === 0) {
+      step = '2.1';
+    } else if (currentPageIdx === 1) {
+      step = '2.2';
+    } else if (currentPageIdx === 2) {
+      step = '2.3';
+    } else if (currentPageIdx === 3) {
+      step = '2.4';
+    }
+
+    trackEvent('onboarding_skip_click', {
+      user_type: 'HELPER',
+      step,
+    });
+  };
 
   const handleSkip = () => {
     navigation.navigate('VolunteerNoticeScreen');
@@ -243,7 +347,12 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
       }>
       <>
         <View className="absolute top-0 left-0 w-full z-10">
-          <SkipBar onSkip={handleSkip} />
+          <SkipBar
+            onSkip={() => {
+              handleSkip();
+              trackSkipEvent();
+            }}
+          />
         </View>
 
         <View className="absolute top-[100] left-1/2 -translate-x-1/2">

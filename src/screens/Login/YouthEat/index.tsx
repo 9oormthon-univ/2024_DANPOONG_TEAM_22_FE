@@ -4,11 +4,13 @@ import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import TimeSelectBottomSheet from '@components/atom/TimeSelectBottomSheet';
 import Txt from '@components/atom/Txt';
+import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {DEFAULT_TIME} from '@screens/Login/YouthWakeUpTime';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {joinTime} from '@utils/joinTime';
-import {useState} from 'react';
+import {trackEvent} from '@utils/tracker';
+import {useCallback, useRef, useState} from 'react';
 import {Pressable, View} from 'react-native';
 
 type AuthProps = NativeStackScreenProps<AuthStackParamList, 'YouthEatScreen'>;
@@ -37,11 +39,25 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
     useState(false);
   const [showDinnerMinuteBottomSheet, setShowDinnerMinuteBottomSheet] =
     useState(false);
+  const startTime = useRef(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      startTime.current = new Date().getTime();
+    }, []),
+  );
 
   const handleNext = async () => {
     const breakfast = joinTime(breakfastHour, breakfastMinute);
     const lunch = joinTime(lunchHour, lunchMinute);
     const dinner = joinTime(dinnerHour, dinnerMinute);
+
+    const endTime = new Date().getTime();
+    const viewTime = endTime - startTime.current;
+
+    trackEvent('meal_time_set', {
+      view_time: viewTime, // 밀리초 단위
+    });
 
     navigation.navigate('YouthSleepTimeScreen', {
       wakeUpTime,

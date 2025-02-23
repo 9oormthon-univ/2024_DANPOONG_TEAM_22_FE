@@ -6,11 +6,13 @@ import Txt from '@components/atom/Txt';
 import {COLORS} from '@constants/Colors';
 import {VOICE_DELAY_MS} from '@constants/voice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {PageProps} from '@screens/Login/VolunteerOnboarding';
 import {AuthStackParamList} from '@stackNav/Auth';
+import {trackEvent} from '@utils/tracker';
 import LottieView from 'lottie-react-native';
-import {useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {
   Animated,
   Dimensions,
@@ -46,6 +48,27 @@ const preloadImages = async () => {
 };
 
 const Page1 = ({nickname, onNext}: Readonly<PageProps>) => {
+  const startTime = useRef(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      startTime.current = new Date().getTime();
+    }, []),
+  );
+
+  const handleNext = () => {
+    const endTime = new Date().getTime();
+    const viewTime = endTime - startTime.current;
+
+    trackEvent('onboarding_viewtime', {
+      user_type: 'YOUTH',
+      step: '3.1',
+      view_time: viewTime, // 밀리초 단위
+    });
+
+    onNext();
+  };
+
   return (
     <ImageBackground
       source={require('@assets/pngs/background/youthOnboarding1.png')}
@@ -58,7 +81,7 @@ const Page1 = ({nickname, onNext}: Readonly<PageProps>) => {
           className="text-white text-center"
         />
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
-          <Button text="다음" onPress={onNext} />
+          <Button text="다음" onPress={handleNext} />
         </View>
       </View>
     </ImageBackground>
@@ -72,6 +95,38 @@ const Page2 = ({
 }: Readonly<PageProps & {jumpStep: () => void}>) => {
   const contentOpacity = useRef(new Animated.Value(0)).current;
   const textColorAnim = useRef(new Animated.Value(0)).current;
+
+  const startTime = useRef(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      startTime.current = new Date().getTime();
+    }, []),
+  );
+
+  const trackViewTime = () => {
+    const endTime = new Date().getTime();
+    const viewTime = endTime - startTime.current;
+
+    trackEvent('onboarding_viewtime', {
+      user_type: 'YOUTH',
+      step: '3.2 & 3.3',
+      view_time: viewTime, // 밀리초 단위
+    });
+  };
+
+  const handleNext = () => {
+    trackViewTime();
+
+    trackEvent('push_demo_click');
+
+    onNext();
+  };
+
+  const handleJump = () => {
+    trackViewTime();
+    jumpStep();
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -134,7 +189,7 @@ const Page2 = ({
                 shadowRadius: 15,
                 elevation: 33, // Android only
               }}
-              onPress={onNext}>
+              onPress={handleNext}>
               <LogoRoundIcon />
               <View className="w-[16.81]" />
               <View>
@@ -166,7 +221,7 @@ const Page2 = ({
         </Animated.View>
 
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
-          <Button text="다음" onPress={jumpStep} />
+          <Button text="다음" onPress={handleJump} />
         </View>
       </View>
     </ImageBackground>
@@ -193,6 +248,31 @@ const Page3 = ({onNext}: Readonly<PageProps>) => {
       })();
     };
   }, []);
+
+  const startTime = useRef(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      startTime.current = new Date().getTime();
+    }, []),
+  );
+
+  const handleNext = () => {
+    const endTime = new Date().getTime();
+    const viewTime = endTime - startTime.current;
+
+    trackEvent('onboarding_viewtime', {
+      user_type: 'YOUTH',
+      step: '3.3.1',
+      view_time: viewTime, // 밀리초 단위
+    });
+
+    trackEvent('push_demo_listen', {
+      view_time: viewTime, // 밀리초 단위
+    });
+
+    onNext();
+  };
 
   return (
     <View className="flex-1 w-full ">
@@ -239,7 +319,7 @@ const Page3 = ({onNext}: Readonly<PageProps>) => {
       </View>
 
       <View className="absolute left-0 bottom-[55] w-full px-[30]">
-        <Button text="다음" onPress={onNext} />
+        <Button text="다음" onPress={handleNext} />
       </View>
     </View>
   );
@@ -271,6 +351,27 @@ const Page4 = ({onNext}: Readonly<PageProps>) => {
     return () => clearTimeout(timer);
   }, []);
 
+  const startTime = useRef(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      startTime.current = new Date().getTime();
+    }, []),
+  );
+
+  const handleNext = () => {
+    const endTime = new Date().getTime();
+    const viewTime = endTime - startTime.current;
+
+    trackEvent('onboarding_viewtime', {
+      user_type: 'YOUTH',
+      step: '3.4',
+      view_time: viewTime, // 밀리초 단위
+    });
+
+    onNext();
+  };
+
   return (
     <View className="flex-1 items-center">
       <AnimatedImageBackground
@@ -284,7 +385,7 @@ const Page4 = ({onNext}: Readonly<PageProps>) => {
             className="text-white text-center"
           />
           <View className="absolute left-0 bottom-[55] w-full px-[30]">
-            <Button text="다음" onPress={onNext} />
+            <Button text="다음" onPress={handleNext} />
           </View>
         </View>
       </AnimatedImageBackground>
@@ -299,7 +400,7 @@ const Page4 = ({onNext}: Readonly<PageProps>) => {
             className="text-white text-center"
           />
           <View className="absolute left-0 bottom-[55] w-full px-[30]">
-            <Button text="다음" onPress={onNext} />
+            <Button text="다음" onPress={handleNext} />
           </View>
         </View>
       </AnimatedImageBackground>
@@ -324,6 +425,24 @@ const YouthOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
   useEffect(() => {
     preloadImages();
   }, []);
+
+  const trackSkipEvent = () => {
+    let step = '';
+    if (currentPageIdx === 0) {
+      step = '3.1';
+    } else if (currentPageIdx === 1) {
+      step = '3.2 & 3.3';
+    } else if (currentPageIdx === 2) {
+      step = '3.3.1';
+    } else if (currentPageIdx === 3) {
+      step = '3.4';
+    }
+
+    trackEvent('onboarding_skip_click', {
+      user_type: 'YOUTH',
+      step,
+    });
+  };
 
   const handleSkip = () => {
     navigation.navigate('YouthWakeUpTimeScreen');
@@ -429,7 +548,12 @@ const YouthOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
         {currentPageIdx !== canJumpPageIdx && (
           <>
             <View className="absolute top-0 left-0 w-full z-10">
-              <SkipBar onSkip={handleSkip} />
+              <SkipBar
+                onSkip={() => {
+                  handleSkip();
+                  trackSkipEvent();
+                }}
+              />
             </View>
 
             <View className="absolute top-[100] left-1/2 -translate-x-1/2">

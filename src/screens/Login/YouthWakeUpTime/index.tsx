@@ -4,10 +4,12 @@ import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
 import TimeSelectBottomSheet from '@components/atom/TimeSelectBottomSheet';
 import Txt from '@components/atom/Txt';
+import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {joinTime} from '@utils/joinTime';
-import {useState} from 'react';
+import {trackEvent} from '@utils/tracker';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {Pressable, View} from 'react-native';
 
 type AuthProps = NativeStackScreenProps<
@@ -28,8 +30,22 @@ const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {
   const [minute, setMinute] = useState(DEFAULT_TIME.wakeUpTime.minute);
   const [showHourBottomSheet, setShowHourBottomSheet] = useState(false);
   const [showMinuteBottomSheet, setShowMinuteBottomSheet] = useState(false);
+  const startTime = useRef(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      startTime.current = new Date().getTime();
+    }, []),
+  );
 
   const handleNext = async () => {
+    const endTime = new Date().getTime();
+    const viewTime = endTime - startTime.current;
+
+    trackEvent('wakeup_time_set', {
+      view_time: viewTime, // 밀리초 단위
+    });
+
     navigation.navigate('YouthEatScreen', {
       wakeUpTime: joinTime(hour, minute),
     });

@@ -15,6 +15,7 @@ import {AuthStackParamList} from '@stackNav/Auth';
 import {Gender, MemberRequestData, Role} from '@type/api/member';
 import calculateAge from '@utils/calculateAge';
 import formatDateDot from '@utils/formatDateDot';
+import {trackEvent} from '@utils/tracker';
 import {useEffect, useState} from 'react';
 import {Alert, Image, Keyboard, Pressable, View} from 'react-native';
 import DatePicker from 'react-native-date-picker';
@@ -93,6 +94,10 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
       await AsyncStorage.setItem('nickname', nickname);
       await AsyncStorage.setItem('role', role);
       await AsyncStorage.setItem('profileImage', imageLocation ?? '');
+
+      trackEvent('birth_gender_input');
+      trackEvent('signup_complete', {user_type: role});
+
       if (role === 'YOUTH') {
         navigation.navigate('YouthOnboardingScreen');
         return;
