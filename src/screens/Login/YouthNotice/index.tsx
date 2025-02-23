@@ -13,7 +13,6 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {YouthRequestData} from '@type/api/member';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
-import {TIME_SEPARATOR} from '@utils/convertToDate';
 import {useState} from 'react';
 import {Alert, Platform, ScrollView, View} from 'react-native';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
@@ -105,55 +104,14 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
         console.log('pos', pos);
 
         (async () => {
-          const [wakeUpTimeHour, wakeUpTimeMinute] = wakeUpTime
-            .split(TIME_SEPARATOR)
-            .map(Number);
-          const [breakfastHour, breakfastMinute] = breakfast
-            .split(TIME_SEPARATOR)
-            .map(Number);
-          const [lunchHour, lunchMinute] = lunch
-            .split(TIME_SEPARATOR)
-            .map(Number);
-          const [dinnerHour, dinnerMinute] = dinner
-            .split(TIME_SEPARATOR)
-            .map(Number);
-          const [sleepTimeHour, sleepTimeMinute] = sleepTime
-            .split(TIME_SEPARATOR)
-            .map(Number);
-
           const data: YouthRequestData = {
             latitude: pos.coords.latitude,
             longitude: pos.coords.longitude,
-            wakeUpTime: {
-              hour: wakeUpTimeHour,
-              minute: wakeUpTimeMinute,
-              second: 0,
-              nano: 0,
-            },
-            sleepTime: {
-              hour: sleepTimeHour,
-              minute: sleepTimeMinute,
-              second: 0,
-              nano: 0,
-            },
-            breakfast: {
-              hour: breakfastHour,
-              minute: breakfastMinute,
-              second: 0,
-              nano: 0,
-            },
-            lunch: {
-              hour: lunchHour,
-              minute: lunchMinute,
-              second: 0,
-              nano: 0,
-            },
-            dinner: {
-              hour: dinnerHour,
-              minute: dinnerMinute,
-              second: 0,
-              nano: 0,
-            },
+            wakeUpTime,
+            sleepTime,
+            breakfast,
+            lunch,
+            dinner,
           };
 
           try {

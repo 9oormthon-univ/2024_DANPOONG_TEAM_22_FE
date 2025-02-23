@@ -1,4 +1,4 @@
-export const extractNumberFromDateString = (hour: string, minute: string) => {
+const extractNumberFromDateString = (hour: string, minute: string) => {
   const isPM = hour.includes('오후');
   let hourValue = parseInt(hour.replace(/[^0-9]/g, ''), 10); // 숫자만 추출
 
@@ -14,17 +14,13 @@ export const extractNumberFromDateString = (hour: string, minute: string) => {
   return {hourValue, minuteValue};
 };
 
-// 현재 날짜에 시, 분을 설정한 Date 객체 생성
-export const convertToDate = (hour: string, minute: string): Date => {
-  const {hourValue, minuteValue} = extractNumberFromDateString(hour, minute);
-  const now = new Date();
-  now.setHours(hourValue, minuteValue, 0, 0);
-  return now;
-};
-
-export const TIME_SEPARATOR = ':';
-
 export const joinTime = (hour: string, minute: string) => {
   const {hourValue, minuteValue} = extractNumberFromDateString(hour, minute);
-  return `${hourValue}${TIME_SEPARATOR}${minuteValue}`;
+
+  // 시간과 분을 두 자리 숫자로 포맷팅
+  const formattedHour = String(hourValue).padStart(2, '0');
+  const formattedMinute = String(minuteValue).padStart(2, '0');
+  const formattedSecond = '00'; // 초는 항상 00으로 설정
+
+  return `${formattedHour}:${formattedMinute}:${formattedSecond}`;
 };
