@@ -15,7 +15,7 @@ interface PostSaveScriptResponse {
   };
 }
 
-export const postSaveScript = async (
+export const postVoicefilesAlarmIdSelf = async (
   alarmId: number,
   content: string,
 ): Promise<PostSaveScriptResponse> => {

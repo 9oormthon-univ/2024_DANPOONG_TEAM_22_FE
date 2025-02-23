@@ -20,7 +20,7 @@ import { RCDNoticeSectionConstant } from '@constants/RCDNoticeSectionConstant';
 import { useState } from 'react';
 import { getTopText } from '@apis/RCDApis/getTopText';
 import { postAskGPT } from '@apis/RCDApis/postAskGPT';
-import { postSaveScript } from '@apis/RCDApis/postSaveScript';
+import { postSaveScript } from '@apis/RCDApis/postVoicefilesAlarmIdSelf';
 
 /**
  * 주의사항 섹션 컴포넌트

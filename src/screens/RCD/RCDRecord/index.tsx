@@ -53,6 +53,8 @@ const RCDRecordScreen = ({ route }: { route: RouteProp<HomeStackParamList, 'RCDR
   const isMountedRef = useRef(true);
   const analysisTimeoutRef = useRef<NodeJS.Timeout | null>(null);
  const [isAndroid] = useState<boolean>(Platform.OS === 'android');
+ // 경과 시간 관리
+ const [elapsedTime, setElapsedTime] = useState<number>(0);
 
   // 컴포넌트 마운트/언마운트 시 녹음 상태 초기화
   useEffect(() => {
@@ -69,35 +71,58 @@ const RCDRecordScreen = ({ route }: { route: RouteProp<HomeStackParamList, 'RCDR
   }, []);
 
   // 녹음 중 볼륨 모니터링
+  // useEffect(() => {
+  //   const monitorVolume = async () => {
+  //     if (!isRecording) return;
+  //     const currentMetering = await (isAndroid 
+  //       ? getCurrentMeteringAndroid() 
+  //       : getCurrentMeteringIOS());
+  //     // console.log('currentMetering', currentMetering);
+  //     if (currentMetering !== undefined) {
+  //       setVolumeList(prev => [...prev, currentMetering]);
+  //     }
+  //   };
+
+  //   monitorVolume();
+  // }, [isRecording, volumeList]);
+
   useEffect(() => {
     const monitorVolume = async () => {
       if (!isRecording) return;
-      const currentMetering = await (isAndroid 
-        ? getCurrentMeteringAndroid() 
-        : getCurrentMeteringIOS());
-      // console.log('currentMetering', currentMetering);
-      if (currentMetering !== undefined) {
-        setVolumeList(prev => [...prev, currentMetering]);
-      }
+      // 100ms마다 볼륨 측정
+      setTimeout(async () => {
+        const currentMetering = await (isAndroid 
+          ? getCurrentMeteringAndroid() 
+          : getCurrentMeteringIOS());
+          // console.log('currentMetering', currentMetering);
+        if (currentMetering !== undefined) {
+          setVolumeList(prev => [...prev, currentMetering]);
+        }
+      }, 50);
     };
 
     monitorVolume();
   }, [isRecording, volumeList]);
+
+
   
 // 녹음 관련 상태 초기화 함수 
 const refreshRCDStates = async () => {
   try {
-    isAndroid ? stopEverythingAndroid() : stopEverythingIOS();
+    if (isAndroid) {
+      await stopEverythingAndroid();
+    } else {
+      await stopEverythingIOS();
+    }
     setIsDone(false);
     setIsPlaying(false);
     setVolumeList([]);
     setIsRecording(false);
     setUri(null);
-    // console.log('refreshRCDStates!@');
-    } catch (e) {
-      console.log('refresh error', e);
-    }
-  };
+  } catch (e) {
+    console.log('refresh error', e);
+  }
+};
 
   //  // 마이크 권한 체크 함수 
   //  const checkPermission = async () => {
@@ -135,7 +160,7 @@ const refreshRCDStates = async () => {
   //   return true;
   // };
  const startRecording = async () => {
-  console.log('startRecording');
+  // console.log('startRecording');
   if (isRecording) {
     // 이미 녹음 중인 경우 중지
     await stopRecording();
@@ -196,6 +221,11 @@ const playRecording = async () => {
     if (!uri) return;
     setIsUploading(true);
     try {
+      if (isAndroid) {
+        await stopEverythingAndroid();
+      } else {
+        await stopEverythingIOS();
+      }
       const formData = new FormData();
       formData.append('file', {
         uri: Platform.OS === 'android' ? `file://${uri}` : uri,
@@ -220,32 +250,18 @@ const playRecording = async () => {
           console.log('재시도 - ANALYSIS001 ', new Date());
             analysisTimeoutRef.current = setTimeout(uploadAnalysis, 5000);
           break;
-        case 'ANALYSIS002':
-          setIsUploading(false);
-
-          navigation.navigate('RCDError', {type: type, message,errorType:'bad'});
-          break;
         case 'ANALYSIS003':
           setIsUploading(false);
 
-          navigation.navigate('RCDError', {type: type, message,errorType:'notsame'});
-          break;
-        case 'ANALYSIS006':
-          setIsUploading(false);
-
-          navigation.navigate('RCDError', {type: type, message,errorType:'wrong'});
-          break;
-        case 'ANALYSIS107':
-          setIsUploading(false);
-
-          navigation.navigate('RCDError', {type: type, message,errorType:'wrong'});
+          navigation.navigate('RCDError', {type: type, errorType:'notsame'});
           break;
         case 'COMMON200':
           setIsUploading(false);
           navigation.navigate('RCDFeedBack');
           break;
         default:
-          navigation.navigate('RCDError', {type: type, message,errorType:'server'});
+          setIsUploading(false);
+          navigation.navigate('RCDError', {type: type,errorType:'noisy'});
           break;
       }
       
@@ -256,18 +272,17 @@ const playRecording = async () => {
         return;
       }
       const errorCode = error.response?.data.code;
-      const message = error.response?.data.message;
       switch(errorCode) {
         case 'ANALYSIS004':
         case 'ANALYSIS005':
         case 'ANALYSIS108':
             setIsUploading(false);
 
-            navigation.navigate('RCDError', {type: type, message,errorType:'server'});
+            navigation.navigate('RCDError', {type: type, errorType:'server'});
           break;
         default:
           if (isMountedRef.current) {
-            navigation.navigate('RCDError', {type: type, message,errorType:'server'});
+            navigation.navigate('RCDError', {type: type, errorType:'server'});
           }
           break;
       }
@@ -295,7 +310,7 @@ const playRecording = async () => {
                   className="text-gray200"
                 />
                 <View className="mt-[28]">
-                  <Txt type="title2" text={content} className="text-white" />
+                  <Txt type={type === 'DAILY' ? 'title2' : 'body3'} text={content} className="text-white" />
                 </View>
               </ScrollView>
             </View>
@@ -306,12 +321,14 @@ const playRecording = async () => {
                 isPlaying={isPlaying}
                 recording={isRecording}
                 isDone={isDone}
+                elapsedTime={elapsedTime}
               />
               <View className="mt-[28]" />
               <RCDTimer
                 recording={isRecording}
                 stop={stopRecording}
                 type={type}
+                onTimeUpdate={(elapsedTime) => setElapsedTime(elapsedTime)}
               />
               <View className="w-full px-px mt-[40] mb-[70]">
                 <RCDBtnBar
