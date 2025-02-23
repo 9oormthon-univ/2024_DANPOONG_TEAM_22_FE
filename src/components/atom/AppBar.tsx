@@ -22,6 +22,8 @@ const AppBar = ({
   isLoading,
   ...props
 }: Readonly<AppBarProps>) => {
+
+  // 오른쪽 버튼 렌더링
   const renderRightButton = (
     exitCallbackFn?: () => void,
     confirmCallbackFn?: () => void,
@@ -46,7 +48,9 @@ const AppBar = ({
           )}
         </Pressable>
       );
-    return <View className="flex-1" />;
+    return <View className="flex-1 py-[18] flex-row justify-end" >
+            <Txt type="title4" text="" className="text-white" />
+            </View>;
   };
 
   return (
