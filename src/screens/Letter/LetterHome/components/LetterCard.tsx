@@ -59,7 +59,7 @@ const LetterCard = ({letter, onPressMoreDot}: Readonly<LetterCardProps>) => {
             <Txt
               type="body4"
               text={letter.thanksMessage}
-              className="text-white text-justify"
+              className="text-white"
             />
           </View>
 
