@@ -79,6 +79,10 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
     } else {
       animation.current?.pause();
     }
+
+    return () => {
+      animation.current?.pause();
+    };
   }, [isPlaying]);
 
   // 키보드 이벤트 리스너 설정
@@ -233,21 +237,21 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
   // 메인 UI 렌더링
   return (
     <BG type="main">
-      {!isKeyboardVisible && (
-        <View
-          className="absolute left-0 bottom-[40] w-full h-full"
-          style={{transform: [{scale: 1.1}]}}>
-          <LottieView
-            ref={animation}
-            style={{
-              flex: 1,
-            }}
-            source={require('@assets/lottie/voice.json')}
-            autoPlay
-            loop
-          />
-        </View>
-      )}
+      <View
+        className={`absolute left-0 bottom-[40] w-full h-full ${
+          isKeyboardVisible ? 'hidden' : ''
+        }`}
+        style={{transform: [{scale: 1.1}]}}>
+        <LottieView
+          ref={animation}
+          style={{
+            flex: 1,
+          }}
+          source={require('@assets/lottie/voice.json')}
+          autoPlay
+          loop
+        />
+      </View>
 
       <View className="flex-1">
         <AppBar
@@ -277,7 +281,6 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
               />
             </View>
             <View className="w-[10]" />
-            {/* TODO: 봉사자 닉네임 표시 */}
             <Txt
               type="title4"
               text={voiceFile?.member?.name}
