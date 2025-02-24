@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
+import {logRequest, logResponse, logResponseError} from '@utils/logger';
 import axios, {AxiosError, InternalAxiosRequestConfig} from 'axios';
 import {useEffect} from 'react';
 import {Alert} from 'react-native';
@@ -20,6 +21,7 @@ export const useAxiosInterceptor = () => {
       if (accessToken) {
         config.headers['Authorization'] = `Bearer ${accessToken}`;
       }
+      logRequest(config);
       return config;
     };
 
@@ -31,6 +33,7 @@ export const useAxiosInterceptor = () => {
 
     const errorHandler = async (error: any) => {
       const originalRequest = error.config;
+      logResponseError(error);
       if (error.response?.status === 401 && !originalRequest._retry) {
         const refreshToken = await AsyncStorage.getItem('refreshToken');
         console.log('refreshToken in interceptor', refreshToken);
@@ -58,10 +61,10 @@ export const useAxiosInterceptor = () => {
     };
 
     // Response interceptor for API calls
-    const responseInterceptor = client.interceptors.response.use(
-      response => response,
-      errorHandler,
-    );
+    const responseInterceptor = client.interceptors.response.use(response => {
+      logResponse(response);
+      return response;
+    }, errorHandler);
 
     const refreshAccessToken = async (refreshToken: string) => {
       try {
