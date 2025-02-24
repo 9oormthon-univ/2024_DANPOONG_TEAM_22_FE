@@ -23,6 +23,7 @@ import {useEffect, useRef, useState} from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import {PortalProvider} from '@gorhom/portal';
+import notifee, {EventType} from '@notifee/react-native';
 import {trackAppStart, trackScreenView} from '@utils/tracker';
 
 // 쿼리 클라이언트 설정
@@ -91,7 +92,8 @@ function App(): React.JSX.Element {
 
         pushNoti.displayNotification({
           title: '내일모래',
-          body: '따뜻한 목소리가 도착했어요',
+          body:
+            remoteMessage.notification?.title ?? '따뜻한 목소리가 도착했어요',
           data: {alarmId: Number(alarmId)},
         });
       });
@@ -110,18 +112,20 @@ function App(): React.JSX.Element {
 
       requestUserPermission();
 
-      // 종료 상태에서 알림을 통해 앱이 실행된 경우
-      messaging()
-        .getInitialNotification()
-        .then(remoteMessage => {
-          (async () => {
-            if (remoteMessage) {
-              const {alarmId} = remoteMessage.data as RemoteMessageData;
-              // AsyncStorage에 알림 데이터 저장
-              await AsyncStorage.setItem('alarmId', alarmId);
-            }
-          })();
-        });
+      notifee.onForegroundEvent(async ({type, detail}) => {
+        console.log('notifee onForegroundEvent', type, detail);
+        if (type === EventType.PRESS) {
+          // 처리할 이벤트 추가
+          console.log({
+            data: detail.notification?.data,
+            title: detail.notification?.title,
+          });
+        } else if (type === EventType.DISMISSED) {
+          // noti 삭제
+          notifee.cancelNotification(detail.notification?.id ?? '');
+          notifee.cancelDisplayedNotification(detail.notification?.id ?? '');
+        }
+      });
 
       // 백그라운드에서 알림을 통해 앱이 실행된 경우
       messaging().onNotificationOpenedApp(remoteMessage => {
@@ -134,6 +138,34 @@ function App(): React.JSX.Element {
           }
         })();
       });
+
+      notifee.onBackgroundEvent(async ({type, detail}) => {
+        console.log('notifee onBackgroundEvent', type, detail);
+        if (type === EventType.PRESS) {
+          // 처리할 이벤트 추가
+          console.log({
+            data: detail.notification?.data,
+            title: detail.notification?.title,
+          });
+        } else if (type === EventType.DISMISSED) {
+          // noti 삭제
+          notifee.cancelNotification(detail.notification?.id ?? '');
+          notifee.cancelDisplayedNotification(detail.notification?.id ?? '');
+        }
+      });
+
+      // 종료 상태에서 알림을 통해 앱이 실행된 경우
+      messaging()
+        .getInitialNotification()
+        .then(remoteMessage => {
+          (async () => {
+            if (remoteMessage) {
+              const {alarmId} = remoteMessage.data as RemoteMessageData;
+              // AsyncStorage에 알림 데이터 저장
+              await AsyncStorage.setItem('alarmId', alarmId);
+            }
+          })();
+        });
     })();
   }, []);
 
