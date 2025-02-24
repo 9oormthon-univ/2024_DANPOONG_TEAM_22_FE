@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {handleLogout} from '@utils/handleLogout';
+import {logRequest, logResponse, logResponseError} from '@utils/logger';
 import axios from 'axios';
 import Config from 'react-native-config';
 
@@ -17,22 +18,8 @@ client.interceptors.request.use(async config => {
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
-
     // 요청 로그 출력
-    console.log(
-      'Request:',
-      JSON.stringify(
-        {
-          url: config.url,
-          method: config.method,
-          headers: config.headers,
-          data: config.data,
-        },
-        null,
-        2,
-      ),
-    );
-
+    logRequest(config);
     return config;
   } catch (error) {
     console.log('토큰 가져오기 실패:', error);
@@ -44,35 +31,13 @@ client.interceptors.request.use(async config => {
 client.interceptors.response.use(
   response => {
     // 응답 로그 출력
-    console.log(
-      'Response:',
-      JSON.stringify(
-        {
-          url: response.config.url,
-          status: response.status,
-          data: response.data,
-        },
-        null,
-        2,
-      ),
-    );
+    logResponse(response);
     return response;
   },
   async error => {
     if (error.response) {
       // 응답 에러 로그 출력
-      console.log(
-        'Response Error:',
-        JSON.stringify(
-          {
-            url: error.config.url,
-            status: error.response.status,
-            data: error.response.data,
-          },
-          null,
-          2,
-        ),
-      );
+      logResponseError(error);
 
       switch (error.response.status) {
         case 401:
