@@ -187,13 +187,6 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         }
         return;
       }
-
-      setSentEmotions(prev => ({...prev, [emotionType]: true}));
-      setIsToast(true);
-      setToastMessage(`‘${emotion.label}’ 전송 완료`);
-    } else {
-      setIsToast(true);
-      setToastMessage('메시지 전송 완료');
     }
 
     try {
@@ -201,6 +194,23 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         providedFileId: voiceFile.providedFileId,
         message: emotionType ?? message,
       });
+
+      if (emotionType) {
+        const emotion = EMOTION_OPTIONS_YOUTH.find(
+          option => option.type === emotionType,
+        );
+        if (!emotion) {
+          return;
+        }
+
+        setSentEmotions(prev => ({...prev, [emotionType]: true}));
+        setIsToast(true);
+        setToastMessage(`‘${emotion.label}’ 전송 완료`);
+      } else {
+        setIsToast(true);
+        setToastMessage('메시지 전송 완료');
+      }
+
       setMessage('');
     } catch (error) {
       console.log(error);
