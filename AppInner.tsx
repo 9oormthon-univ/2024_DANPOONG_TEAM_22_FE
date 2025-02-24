@@ -10,10 +10,10 @@ import AppTabNav from './src/nav/tabNav/App';
 
 // React 관련 임포트
 import {useEffect, useState} from 'react';
-import {Alert} from 'react-native';
 
 // API 및 타입 임포트
 import useGetMember from '@hooks/auth/useGetMember';
+import {useAxiosInterceptor} from '@hooks/useAxiosInterceptor';
 import SplashScreen from '@screens/Splash';
 import {Role} from '@type/api/member';
 import navigateToYouthListenScreen from '@utils/navigateToYouthListenScreen';
@@ -30,8 +30,13 @@ const AppInner = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태
   const [role, setRole] = useState<Role | null>(null); // 사용자 역할
   const [token, setToken] = useState<string | null>(null); // 액세스 토큰
-  const {data: memberData, isError: isErrorMember} = useGetMember(token);
+  const {
+    data: memberData,
+    isError: isMemberError,
+    error: memberError,
+  } = useGetMember(token);
   const [isNavigationReady, setIsNavigationReady] = useState(false);
+  useAxiosInterceptor();
 
   // 로그인 상태 및 사용자 정보 확인
   useEffect(() => {
@@ -73,14 +78,16 @@ const AppInner = () => {
   }, [role, isNavigationReady, memberData]);
 
   useEffect(() => {
-    if (!isErrorMember) return;
-    Alert.alert('오류', '사용자 정보를 가져오는데 실패했어요');
+    if (!isMemberError) return;
+    // Alert.alert('오류', '사용자 정보를 가져오는데 실패했어요');
+    console.log({memberError});
     setIsInitializing(false); // 데이터 로드 완료 후 스플래시 숨기기
     RNSplashScreen.hide();
-  }, [isErrorMember]);
+  }, [isMemberError]);
 
   useEffect(() => {
     if (!memberData) return;
+    console.log({memberData});
     const {name, gender, profileImage, role, birth} = memberData.result;
     setRole(role);
     (async () => {
@@ -90,7 +97,6 @@ const AppInner = () => {
       await AsyncStorage.setItem('role', role);
       await AsyncStorage.setItem('birth', birth);
     })();
-    console.log('is here?');
 
     setIsInitializing(false); // 데이터 로드 완료 후 스플래시 숨기기
     RNSplashScreen.hide();
@@ -134,6 +140,13 @@ const AppInner = () => {
         </Stack.Group>
       );
     }
+    return (
+      <Stack.Group>
+        <Stack.Screen name="AuthStackNav" component={AuthStackNav} />
+        <Stack.Screen name="AppTabNav" component={AppTabNav} />
+        <Stack.Screen name="YouthStackNav" component={YouthStackNav} />
+      </Stack.Group>
+    );
   };
 
   // 초기 로딩 중이면 스플래시 화면 유지
@@ -147,7 +160,7 @@ const AppInner = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      {isLoggedIn && role !== 'GUEST' ? (
+      {isLoggedIn ? (
         // 로그인 상태일 때
         renderScreenByRole()
       ) : (
