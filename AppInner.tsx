@@ -110,6 +110,7 @@ const AppInner = () => {
     (async () => {
       // 알람 관련 데이터 가져오기
       const alarmId = await AsyncStorage.getItem('alarmId');
+      const alarmTitle = await AsyncStorage.getItem('alarmTitle');
 
       if (alarmId) {
         // 청년 리스닝 화면으로 이동
@@ -118,7 +119,11 @@ const AppInner = () => {
         });
         // 알람 데이터 삭제
         await AsyncStorage.removeItem('alarmId');
-        trackEvent('push_click', {entry_screen_name: 'YouthListenScreen'});
+        await AsyncStorage.removeItem('alarmTitle');
+        trackEvent('push_prefer', {
+          entry_screen_name: 'YouthListenScreen',
+          title: alarmTitle,
+        });
       }
     })();
   }, [isLoggedIn, role, isNavigationReady]);

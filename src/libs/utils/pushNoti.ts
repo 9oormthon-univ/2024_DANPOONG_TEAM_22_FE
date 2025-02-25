@@ -43,7 +43,10 @@ notifee.onForegroundEvent(({type, detail}) => {
     navigateToYouthListenScreen({
       alarmId: Number(alarmId),
     });
-    trackEvent('push_click', {entry_screen_name: 'YouthListenScreen'});
+    trackEvent('push_prefer', {
+      entry_screen_name: 'YouthListenScreen',
+      title: detail.notification?.title ?? '',
+    });
   } else if (type === EventType.DISMISSED) {
     // noti 삭제
     notifee.cancelNotification(detail.notification?.id ?? '');

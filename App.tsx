@@ -118,7 +118,10 @@ function App(): React.JSX.Element {
             navigateToYouthListenScreen({
               alarmId: Number(alarmId),
             });
-            trackEvent('push_click', {entry_screen_name: 'YouthListenScreen'});
+            trackEvent('push_prefer', {
+              entry_screen_name: 'YouthListenScreen',
+              title: remoteMessage.notification?.title ?? '',
+            });
           }
         })();
       });
@@ -133,6 +136,10 @@ function App(): React.JSX.Element {
               const {alarmId} = remoteMessage.data as RemoteMessageData;
               // AsyncStorage에 알림 데이터 저장
               await AsyncStorage.setItem('alarmId', alarmId);
+              await AsyncStorage.setItem(
+                'alarmTitle',
+                remoteMessage.notification?.title ?? '',
+              );
             }
           })();
         });
