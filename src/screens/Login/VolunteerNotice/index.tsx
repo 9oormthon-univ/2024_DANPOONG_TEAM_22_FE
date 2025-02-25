@@ -146,7 +146,6 @@ const VolunteerNoticeScreen = ({navigation}: Readonly<Props>) => {
     const viewTime = endTime - startTime.current;
 
     trackEvent('onboarding_viewtime', {
-      user_type: 'HELPER',
       step: '2.5',
       view_time: viewTime, // 밀리초 단위
     });

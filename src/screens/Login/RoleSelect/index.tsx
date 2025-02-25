@@ -17,7 +17,7 @@ const RoleSelectScreen = ({navigation}: Readonly<AuthProps>) => {
 
   const handleNext = () => {
     if (!role) return;
-    trackEvent('usertype_selected', {user_type: role});
+    trackEvent('usertype_selected');
     navigation.navigate('NicknameWriteScreen', {role});
   };
 

@@ -174,7 +174,6 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
             const viewTime = endTime - startTime.current;
 
             trackEvent('onboarding_viewtime', {
-              user_type: 'YOUTH',
               step: '3.8',
               view_time: viewTime, // 밀리초 단위
             });

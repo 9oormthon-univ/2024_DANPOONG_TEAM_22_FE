@@ -96,7 +96,7 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
       await AsyncStorage.setItem('profileImage', imageLocation ?? '');
 
       trackEvent('birth_gender_input');
-      trackEvent('signup_complete', {user_type: role});
+      trackEvent('signup_complete');
 
       if (role === 'YOUTH') {
         navigation.navigate('YouthOnboardingScreen');

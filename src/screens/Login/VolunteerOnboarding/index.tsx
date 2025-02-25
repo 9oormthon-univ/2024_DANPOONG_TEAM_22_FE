@@ -62,7 +62,6 @@ const Page1 = ({nickname, onNext}: Readonly<PageProps>) => {
     const viewTime = endTime - startTime.current;
 
     trackEvent('onboarding_viewtime', {
-      user_type: 'HELPER',
       step: '2.1',
       view_time: viewTime, // 밀리초 단위
     });
@@ -121,7 +120,6 @@ const Page2 = ({onNext}: Readonly<PageProps>) => {
     const viewTime = endTime - startTime.current;
 
     trackEvent('onboarding_viewtime', {
-      user_type: 'HELPER',
       step: '2.2',
       view_time: viewTime, // 밀리초 단위
     });
@@ -164,7 +162,6 @@ const Page3 = ({nickname, onNext}: Readonly<PageProps>) => {
     const viewTime = endTime - startTime.current;
 
     trackEvent('onboarding_viewtime', {
-      user_type: 'HELPER',
       step: '2.3',
       view_time: viewTime, // 밀리초 단위
     });
@@ -205,7 +202,6 @@ const Page4 = ({onNext}: Readonly<PageProps>) => {
     const viewTime = endTime - startTime.current;
 
     trackEvent('onboarding_viewtime', {
-      user_type: 'HELPER',
       step: '2.4',
       view_time: viewTime, // 밀리초 단위
     });
@@ -265,7 +261,6 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
     }
 
     trackEvent('onboarding_skip_click', {
-      user_type: 'HELPER',
       step,
     });
   };
