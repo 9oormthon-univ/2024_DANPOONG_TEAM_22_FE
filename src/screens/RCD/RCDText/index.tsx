@@ -144,6 +144,7 @@ const RCDTextScreen = ({
             type === 'DAILY' ? '15' : '30'
           }초 동안 녹음할 말을 작성해주세요`}
           isError={isError}
+          maxLength={type === 'DAILY' ? 150 : 300}
         />
         <View className="mb-[51]" />
 
