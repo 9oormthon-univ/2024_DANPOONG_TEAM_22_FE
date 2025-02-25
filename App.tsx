@@ -16,15 +16,14 @@ import {
 } from '@react-navigation/native';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
-import navigateToYouthListenScreen from '@utils/navigateToYouthListenScreen';
-import pushNoti from '@utils/pushNoti';
+import pushNoti, {RemoteMessageData} from '@utils/pushNoti';
 import AppInner from 'AppInner';
 import {useEffect, useRef, useState} from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import {PortalProvider} from '@gorhom/portal';
-import notifee, {EventType} from '@notifee/react-native';
-import {trackAppStart, trackScreenView} from '@utils/tracker';
+import navigateToYouthListenScreen from '@utils/navigateToYouthListenScreen';
+import {trackAppStart, trackEvent, trackScreenView} from '@utils/tracker';
 
 // 쿼리 클라이언트 설정
 const queryClient = new QueryClient({
@@ -37,8 +36,6 @@ const queryClient = new QueryClient({
 
 // 네비게이션 참조 생성
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
-
-type RemoteMessageData = {alarmId: string};
 
 function App(): React.JSX.Element {
   const routeNameRef = useRef<string | undefined>();
@@ -87,7 +84,7 @@ function App(): React.JSX.Element {
       }
 
       const unsubscribe = messaging().onMessage(async remoteMessage => {
-        console.log('Foreground', remoteMessage);
+        console.log('Foreground Push in App', remoteMessage);
         const {alarmId} = remoteMessage.data as RemoteMessageData;
 
         pushNoti.displayNotification({
@@ -112,46 +109,18 @@ function App(): React.JSX.Element {
 
       requestUserPermission();
 
-      notifee.onForegroundEvent(async ({type, detail}) => {
-        console.log('notifee onForegroundEvent', type, detail);
-        if (type === EventType.PRESS) {
-          // 처리할 이벤트 추가
-          console.log({
-            data: detail.notification?.data,
-            title: detail.notification?.title,
-          });
-        } else if (type === EventType.DISMISSED) {
-          // noti 삭제
-          notifee.cancelNotification(detail.notification?.id ?? '');
-          notifee.cancelDisplayedNotification(detail.notification?.id ?? '');
-        }
-      });
-
       // 백그라운드에서 알림을 통해 앱이 실행된 경우
       messaging().onNotificationOpenedApp(remoteMessage => {
         (async () => {
           if (remoteMessage) {
+            console.log('Background Push in App', remoteMessage);
             const {alarmId} = remoteMessage.data as RemoteMessageData;
             navigateToYouthListenScreen({
               alarmId: Number(alarmId),
             });
+            trackEvent('push_click', {entry_screen_name: 'YouthListenScreen'});
           }
         })();
-      });
-
-      notifee.onBackgroundEvent(async ({type, detail}) => {
-        console.log('notifee onBackgroundEvent', type, detail);
-        if (type === EventType.PRESS) {
-          // 처리할 이벤트 추가
-          console.log({
-            data: detail.notification?.data,
-            title: detail.notification?.title,
-          });
-        } else if (type === EventType.DISMISSED) {
-          // noti 삭제
-          notifee.cancelNotification(detail.notification?.id ?? '');
-          notifee.cancelDisplayedNotification(detail.notification?.id ?? '');
-        }
       });
 
       // 종료 상태에서 알림을 통해 앱이 실행된 경우
@@ -160,6 +129,7 @@ function App(): React.JSX.Element {
         .then(remoteMessage => {
           (async () => {
             if (remoteMessage) {
+              console.log('Quit Push in App', remoteMessage);
               const {alarmId} = remoteMessage.data as RemoteMessageData;
               // AsyncStorage에 알림 데이터 저장
               await AsyncStorage.setItem('alarmId', alarmId);

@@ -18,6 +18,7 @@ import SplashScreen from '@screens/Splash';
 import {Role} from '@type/api/member';
 import navigateToYouthListenScreen from '@utils/navigateToYouthListenScreen';
 import navigateToYouthOnboardingScreen from '@utils/navigateToYouthOnboardingScreen';
+import {trackEvent} from '@utils/tracker';
 import {navigationRef} from 'App';
 import {default as RNSplashScreen} from 'react-native-splash-screen';
 
@@ -115,9 +116,9 @@ const AppInner = () => {
         navigateToYouthListenScreen({
           alarmId: Number(alarmId),
         });
-
         // 알람 데이터 삭제
         await AsyncStorage.removeItem('alarmId');
+        trackEvent('push_click', {entry_screen_name: 'YouthListenScreen'});
       }
     })();
   }, [isLoggedIn, role, isNavigationReady]);
