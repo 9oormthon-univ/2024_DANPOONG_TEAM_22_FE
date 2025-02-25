@@ -15,15 +15,17 @@ import {RCDSelectButtonConstant} from '@constants/RCDSelectButtonConstant';
 import {
   NavigationProp,
   RouteProp,
+  useFocusEffect,
   useNavigation,
 } from '@react-navigation/native';
 
 // 타입 import
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {RecordType} from '@type/RecordType';
+import {trackEvent} from '@utils/tracker';
 
 // React 관련 import
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {ActivityIndicator, TouchableOpacity, View} from 'react-native';
 
 // SelectButton 컴포넌트의 Props 타입 정의
@@ -50,11 +52,30 @@ const SelectButton = ({
 }: SelectButtonProps) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
   const [isLoading, setIsLoading] = useState(false);
+  const startTime = useRef(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      startTime.current = new Date().getTime();
+    }, []),
+  );
 
   // GPT API 호출 및 네비게이션 처리
   const gptApiHandler = async () => {
     setIsLoading(true);
     try {
+      const endTime = new Date().getTime();
+      const viewTime = endTime - startTime.current;
+
+      trackEvent('script_option_select', {
+        type,
+        alarmCategory: item.alarmCategory,
+        koreanName: item.koreanName,
+        title: item.title,
+        gpt,
+        view_time: viewTime,
+      });
+
       if (gpt) {
         // console.log('alarmId:', alarmId);
         const res = await postAskGPT(alarmId);
@@ -111,7 +132,6 @@ const RCDSelectText = ({
 }: {
   route: RouteProp<HomeStackParamList, 'RCDSelectText'>;
 }) => {
-
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
   const {item, type} = route.params;
   const [subTitle, setSubTitle] = useState<string>('');
@@ -156,10 +176,10 @@ const RCDSelectText = ({
           </View>
         </View>
         {/* 선택 버튼 섹션 */}
-        {RCDSelectButtonConstant.map((button) => (
+        {RCDSelectButtonConstant.map(button => (
           <SelectButton
             key={button.head}
-            head={button.head}  
+            head={button.head}
             sub={button.sub}
             gpt={button.gpt}
             alarmId={alarmId}

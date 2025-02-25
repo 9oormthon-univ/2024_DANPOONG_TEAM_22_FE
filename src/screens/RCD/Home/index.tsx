@@ -1,15 +1,15 @@
 // React 및 React Native 관련 임포트
-import {View, TouchableOpacity, ImageBackground} from 'react-native';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {ImageBackground, TouchableOpacity, View} from 'react-native';
 
 // 커스텀 컴포넌트 임포트
-import Txt from '@components/atom/Txt';
 import BG from '@components/atom/BG';
+import Txt from '@components/atom/Txt';
 
 // 타입 및 상수 임포트
+import {RecordTypeConstant} from '@constants/RecordType';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {RecordType} from '@type/RecordType';
-import {RecordTypeConstant} from '@constants/RecordType';
 
 // SVG 아이콘 임포트
 import Main1 from '@assets/svgs/Main1.svg';
@@ -20,8 +20,9 @@ import MainArrow2 from '@assets/svgs/MainArrow2.svg';
 
 // API 및 스토리지 관련 임포트
 import {getYouthNum} from '@apis/RCDApis/getYouthNum';
-import {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {trackEvent} from '@utils/tracker';
+import {useEffect, useState} from 'react';
 
 /**
  * 홈 화면 컴포넌트
@@ -166,6 +167,7 @@ const SelectBtn = ({type}: {type: RecordType}) => {
     <TouchableOpacity
       onPress={() => {
         navigation.navigate('RCDList', {type});
+        trackEvent('recording_type_select', {type});
       }}
       className={`w-[168] h-[207] px-[25] py-[20] bg-blue700 border border-white/10 absolute ${addaptivePosition}`}
       style={{borderRadius: 10}}>
@@ -174,25 +176,25 @@ const SelectBtn = ({type}: {type: RecordType}) => {
         {type === RecordTypeConstant.DAILY ? <Main1 /> : <Main2 />}
       </View>
       {/* 텍스트와 화살표 */}
-        <View className="mt-[19] flex flex-row items-center">
-          <Txt
-            type="title3"
-            text={`${type === RecordTypeConstant.DAILY ? '일상' : '위로'}`}
-            className="text-white"
-          />
-          <Txt
-            type="title3"
-            text={`${type === RecordTypeConstant.COMFORT ? '의 말' : ' 알림'}`}
-            className="text-white "
-          />
-        </View>
-        {/* 녹음하기 텍스트와 화살표 */}
+      <View className="mt-[19] flex flex-row items-center">
+        <Txt
+          type="title3"
+          text={`${type === RecordTypeConstant.DAILY ? '일상' : '위로'}`}
+          className="text-white"
+        />
+        <Txt
+          type="title3"
+          text={`${type === RecordTypeConstant.COMFORT ? '의 말' : ' 알림'}`}
+          className="text-white "
+        />
+      </View>
+      {/* 녹음하기 텍스트와 화살표 */}
       <View className="mt-[45] flex flex-row items-center w-full">
-        <Txt type="title3" text="녹음하기" className="text-yellowPrimary"/>
-        <View className='absolute right-[-8]'>
-          <MainArrow2/>
-          </View>
+        <Txt type="title3" text="녹음하기" className="text-yellowPrimary" />
+        <View className="absolute right-[-8]">
+          <MainArrow2 />
         </View>
+      </View>
     </TouchableOpacity>
   );
 };

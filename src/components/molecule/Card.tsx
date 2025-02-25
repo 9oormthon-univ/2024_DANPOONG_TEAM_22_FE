@@ -1,12 +1,13 @@
 import {RCD} from '@apis/RCDApis/getRCDList';
 import Button from '@components/atom/Button';
-import StarIMG from '@components/atom/StarIMG';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {View} from 'react-native';
-import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import ShadowView from '@components/atom/ShadowView';
+import StarIMG from '@components/atom/StarIMG';
 import Txt from '@components/atom/Txt';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {RecordType} from '@type/RecordType';
+import {trackEvent} from '@utils/tracker';
+import {View} from 'react-native';
 const Card = ({
   item,
   gap,
@@ -40,6 +41,12 @@ const Card = ({
               text="녹음하기"
               onPress={() => {
                 navigation.navigate('RCDNotice', {type, item});
+                trackEvent('recording_topic_select', {
+                  type,
+                  alarmCategory: item.alarmCategory,
+                  koreanName: item.koreanName,
+                  title: item.title,
+                });
               }}
               disabled={false}
             />

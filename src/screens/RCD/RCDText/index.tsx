@@ -1,25 +1,31 @@
 // React Native 및 기본 컴포넌트 import
 import {View} from 'react-native';
 // 커스텀 컴포넌트 import
+import {postVoicefilesAlarmIdSelf} from '@apis/RCDApis/postVoicefilesAlarmIdSelf';
+import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
-import StarIMG from '@components/atom/StarIMG';
-import Txt from '@components/atom/Txt';
 import Button from '@components/atom/Button';
+import StarIMG from '@components/atom/StarIMG';
+import Toast from '@components/atom/Toast';
+import Txt from '@components/atom/Txt';
+import ShadowTextInput from '@components/molecule/ShadowTextInput';
 import {
   NavigationProp,
   RouteProp,
+  useFocusEffect,
   useNavigation,
 } from '@react-navigation/native';
-import {useState, useEffect} from 'react';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
+import {trackEvent} from '@utils/tracker';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
-import {postVoicefilesAlarmIdSelf} from '@apis/RCDApis/postVoicefilesAlarmIdSelf';
-import Toast from '@components/atom/Toast';
-import AppBar from '@components/atom/AppBar';
-import ShadowTextInput from '@components/molecule/ShadowTextInput';
 
 //   RCD 텍스트 입력 화면 컴포넌트
-const RCDTextScreen = ({ route }: { route: RouteProp<HomeStackParamList, 'RCDText'> }) => {
+const RCDTextScreen = ({
+  route,
+}: {
+  route: RouteProp<HomeStackParamList, 'RCDText'>;
+}) => {
   // 라우트 파라미터 추출
   const {item, gptRes, alarmId, type} = route.params;
   // 상태 관리
@@ -29,11 +35,19 @@ const RCDTextScreen = ({ route }: { route: RouteProp<HomeStackParamList, 'RCDTex
   const [isToast, setIsToast] = useState(false); // 토스트 메시지 표시 상태
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
   const [errorMessage, setErrorMessage] = useState('부적절한 언어가 있어요'); // 에러 메시지
+  const startTime = useRef(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      startTime.current = new Date().getTime();
+    }, []),
+  );
+
   // 초기 마운트 시 GPT 응답 내용으로 텍스트 설정
   useEffect(() => {
     setText(gptRes?.result.content || '');
   }, []);
-  
+
   // 텍스트 변경 핸들러
   const onChangeText = (text: string) => {
     setText(text);
@@ -49,7 +63,7 @@ const RCDTextScreen = ({ route }: { route: RouteProp<HomeStackParamList, 'RCDTex
       const content: string = text;
       console.log('content', content);
       const res = await postVoicefilesAlarmIdSelf(alarmId, content);
-      
+
       if (res.code && res.code === 'ANALYSIS200') {
         setErrorMessage('주제와 다른 내용이 있어요');
         setIsError(true);
@@ -69,6 +83,18 @@ const RCDTextScreen = ({ route }: { route: RouteProp<HomeStackParamList, 'RCDTex
         type,
         voiceFileId,
         content,
+      });
+
+      const endTime = new Date().getTime();
+      const viewTime = endTime - startTime.current;
+
+      trackEvent('script_edit_time', {
+        type,
+        alarmCategory: item.alarmCategory,
+        koreanName: item.koreanName,
+        title: item.title,
+        view_time: viewTime,
+        content: content,
       });
     } catch (e) {
       setIsError(true);
@@ -114,10 +140,12 @@ const RCDTextScreen = ({ route }: { route: RouteProp<HomeStackParamList, 'RCDTex
         <ShadowTextInput
           value={text}
           onChangeText={onChangeText}
-          placeholder={`${type === 'DAILY' ? '15' : '30'}초 동안 녹음할 말을 작성해주세요`}
+          placeholder={`${
+            type === 'DAILY' ? '15' : '30'
+          }초 동안 녹음할 말을 작성해주세요`}
           isError={isError}
-          />
-        <View className="mb-[51]"/>
+        />
+        <View className="mb-[51]" />
 
         {/* 버튼 섹션 */}
         <View className="w-full mb-[78]">
