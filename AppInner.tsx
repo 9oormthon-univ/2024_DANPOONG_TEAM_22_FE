@@ -92,6 +92,12 @@ const AppInner = () => {
     const {name, gender, profileImage, role, birth} = memberData.result;
     setRole(role);
 
+    if (role !== 'HELPER' && role !== 'YOUTH') {
+      setIsInitializing(false); // 데이터 로드 완료 후 스플래시 숨기기
+      RNSplashScreen.hide();
+      return;
+    }
+
     const saveMemberData = async () => {
       try {
         await AsyncStorage.setItem('nickname', name);
