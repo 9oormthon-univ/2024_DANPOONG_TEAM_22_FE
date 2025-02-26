@@ -118,7 +118,7 @@ const LoginScreen = ({navigation}: Readonly<Props>) => {
               style={{fontSize: 17.6}}
             />
           </Pressable>
-          {/* 이용약관, 개인정보처리방침 */}
+          {/* 서비스이용약관, 개인정보처리방침 */}
           <View className="mt-[18.2] flex-row justify-center">
             <View className="flex-row justify-center">
               <Txt
@@ -126,10 +126,9 @@ const LoginScreen = ({navigation}: Readonly<Props>) => {
                 text="계속 진행함에 따라 "
                 className="text-gray300"
               />
-              {/* TODO: 이용약관 링크 변경 */}
               <Pressable
                 onPress={() =>
-                  Linking.openURL('https://www.naeilmorae.co.kr/privacy')
+                  Linking.openURL('https://www.naeilmorae.co.kr/terms')
                 }>
                 <Txt type="caption2" text="이용약관" className="text-white" />
               </Pressable>
