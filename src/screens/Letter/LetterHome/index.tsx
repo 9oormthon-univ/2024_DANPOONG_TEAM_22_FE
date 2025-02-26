@@ -28,6 +28,7 @@ import {
   Pressable,
   View,
 } from 'react-native';
+import Skeleton from 'react-native-reanimated-skeleton';
 
 type LetterProps = NativeStackScreenProps<
   LetterStackParamList,
@@ -67,6 +68,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
     data: alarmCategoryData,
     isError: isAlarmCategoryError,
     error: alarmCategoryError,
+    isLoading: isAlarmCategoryLoading,
   } = useGetAlarmCategory();
   const {
     data: lettersData,
@@ -75,6 +77,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    isLoading: isLettersLoading,
   } = useGetLetters({pageable: {page: 0, size: 10, sort: 'createdAt,desc'}});
 
   const lettersFlatData =
@@ -193,13 +196,97 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
           <>
             {item.providedFileId === -1 && (
               <>
-                <ListCategory
-                  nickname={nickname}
-                  selectedFilterIdx={selectedFilterIdx}
-                  setSelectedFilterIdx={setSelectedFilterIdx}
-                  parentCategories={parentCategories}
-                />
-                {filteredData.length === 1 && <ListEmpty />}
+                <Skeleton
+                  isLoading={
+                    isAlarmCategoryLoading && parentCategories.length === 0
+                  }
+                  boneColor={COLORS.blue500}
+                  highlightColor={COLORS.blue400}
+                  containerStyle={{paddingHorizontal: 0}}
+                  layout={[
+                    {
+                      key: 'alarmCategory_wrapper',
+                      paddingVertical: 31,
+                      paddingHorizontal: 30,
+                      flexDirection: 'row',
+                      children: [
+                        {
+                          key: 'alarmCategory1',
+                          width: 60,
+                          height: 25,
+                          marginRight: 8,
+                          borderRadius: 50,
+                        },
+                        {
+                          key: 'alarmCategory2',
+                          width: 60,
+                          height: 25,
+                          marginRight: 8,
+                          borderRadius: 50,
+                        },
+                        {
+                          key: 'alarmCategory3',
+                          width: 60,
+                          height: 25,
+                          marginRight: 8,
+                          borderRadius: 50,
+                        },
+                        {
+                          key: 'alarmCategory4',
+                          width: 60,
+                          height: 25,
+                          marginRight: 8,
+                          borderRadius: 50,
+                        },
+                      ],
+                    },
+                    {
+                      key: 'alarmCategory_wrapper2',
+                      width: 140,
+                      height: 25,
+                      borderRadius: 50,
+                      marginLeft: 34,
+                      marginRight: 30,
+                      marginBottom: 43,
+                    },
+                  ]}>
+                  <ListCategory
+                    nickname={nickname}
+                    selectedFilterIdx={selectedFilterIdx}
+                    setSelectedFilterIdx={setSelectedFilterIdx}
+                    parentCategories={parentCategories}
+                  />
+                </Skeleton>
+                <Skeleton
+                  isLoading={isLettersLoading}
+                  boneColor={COLORS.blue500}
+                  highlightColor={COLORS.blue400}
+                  containerStyle={{paddingHorizontal: 30}}
+                  layout={[
+                    {
+                      key: 'letterCard1',
+                      width: '100%',
+                      height: 153,
+                      borderRadius: 10,
+                      marginBottom: 25,
+                    },
+                    {
+                      key: 'letterCard2',
+                      width: '100%',
+                      height: 153,
+                      borderRadius: 10,
+                      marginBottom: 25,
+                    },
+                    {
+                      key: 'letterCard3',
+                      width: '100%',
+                      height: 153,
+                      borderRadius: 10,
+                      marginBottom: 25,
+                    },
+                  ]}>
+                  {filteredData.length === 1 && <ListEmpty />}
+                </Skeleton>
               </>
             )}
             {item.providedFileId !== -1 && (
