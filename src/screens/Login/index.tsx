@@ -15,7 +15,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
 import {trackEvent} from '@utils/tracker';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {Image, Linking, Pressable, View} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
@@ -25,19 +25,7 @@ type Props = CompositeScreenProps<AuthProps, RootProps>;
 
 const LoginScreen = ({navigation}: Readonly<Props>) => {
   const [token, setToken] = useState<string | null>(null); // 액세스 토큰
-  const {data: memberData} = useGetMember(token);
-
-  useEffect(() => {
-    if (!memberData) return;
-    const {name, gender, profileImage, role, birth} = memberData.result;
-    (async () => {
-      await AsyncStorage.setItem('nickname', name);
-      await AsyncStorage.setItem('gender', gender);
-      await AsyncStorage.setItem('profileImage', profileImage);
-      await AsyncStorage.setItem('role', role);
-      await AsyncStorage.setItem('birth', birth);
-    })();
-  }, [memberData]);
+  const {refetch: refetchMember} = useGetMember(token);
 
   const handleLogin = async ({loginType}: {loginType: string}) => {
     try {
@@ -65,6 +53,7 @@ const LoginScreen = ({navigation}: Readonly<Props>) => {
       await AsyncStorage.setItem('memberId', String(memberId));
 
       setToken(accessToken);
+      await refetchMember();
 
       const profile: KakaoProfile = await getProfile();
       await AsyncStorage.setItem('email', profile.email);

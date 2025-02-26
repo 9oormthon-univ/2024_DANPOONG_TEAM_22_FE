@@ -91,16 +91,26 @@ const AppInner = () => {
     console.log({memberData});
     const {name, gender, profileImage, role, birth} = memberData.result;
     setRole(role);
-    (async () => {
-      await AsyncStorage.setItem('nickname', name);
-      await AsyncStorage.setItem('gender', gender);
-      await AsyncStorage.setItem('profileImage', profileImage);
-      await AsyncStorage.setItem('role', role);
-      await AsyncStorage.setItem('birth', birth);
-    })();
 
-    setIsInitializing(false); // 데이터 로드 완료 후 스플래시 숨기기
-    RNSplashScreen.hide();
+    const saveMemberData = async () => {
+      try {
+        await AsyncStorage.setItem('nickname', name);
+        await AsyncStorage.setItem('gender', gender);
+        await AsyncStorage.setItem('role', role);
+        await AsyncStorage.setItem('birth', birth);
+
+        if (profileImage) {
+          await AsyncStorage.setItem('profileImage', profileImage);
+        }
+      } catch (error) {
+        console.error('Error saving member data to AsyncStorage:', error);
+      } finally {
+        setIsInitializing(false); // 데이터 로드 완료 후 스플래시 숨기기
+        RNSplashScreen.hide();
+      }
+    };
+
+    saveMemberData();
   }, [memberData]);
 
   // 알람 처리 및 청년 리스닝 화면 이동
