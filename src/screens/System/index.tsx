@@ -7,6 +7,7 @@ import { SystemStackParamList } from '@type/nav/SystemStackParamList';
 import SystemButton from '@components/atom/SystemButton';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppBar from '@components/atom/AppBar';
 // 아이콘
 import BackIcon from '@assets/svgs/Back.svg';
 import ProfileIcon from '@assets/svgs/Profile.svg';
@@ -20,7 +21,7 @@ const SystemScreen = () => {
   const [role, setRole] = useState('');
   const [profileImage, setProfileImage] = useState('');
   const isFocused = useIsFocused();
-
+ 
   useEffect(() => {
     if (isFocused) {
       (async () => {
@@ -38,6 +39,7 @@ const SystemScreen = () => {
 
   return (
     <BG type="solid">
+      {role=='YOUTH' && <AppBar title="설정" exitCallbackFn={()=>{navigation.goBack()}}/>}
       {/* 메인 컨테이너 */}
       <View className="flex-1 items-center pt-[8]">
         {/* 프로필 버튼 */}
