@@ -15,7 +15,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
 import {trackEvent} from '@utils/tracker';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {Image, Linking, Pressable, View} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
@@ -25,19 +25,7 @@ type Props = CompositeScreenProps<AuthProps, RootProps>;
 
 const LoginScreen = ({navigation}: Readonly<Props>) => {
   const [token, setToken] = useState<string | null>(null); // 액세스 토큰
-  const {data: memberData} = useGetMember(token);
-
-  useEffect(() => {
-    if (!memberData) return;
-    const {name, gender, profileImage, role, birth} = memberData.result;
-    (async () => {
-      await AsyncStorage.setItem('nickname', name);
-      await AsyncStorage.setItem('gender', gender);
-      await AsyncStorage.setItem('profileImage', profileImage);
-      await AsyncStorage.setItem('role', role);
-      await AsyncStorage.setItem('birth', birth);
-    })();
-  }, [memberData]);
+  const {refetch: refetchMember} = useGetMember(token);
 
   const handleLogin = async ({loginType}: {loginType: string}) => {
     try {
@@ -65,6 +53,7 @@ const LoginScreen = ({navigation}: Readonly<Props>) => {
       await AsyncStorage.setItem('memberId', String(memberId));
 
       setToken(accessToken);
+      await refetchMember();
 
       const profile: KakaoProfile = await getProfile();
       await AsyncStorage.setItem('email', profile.email);
@@ -129,7 +118,7 @@ const LoginScreen = ({navigation}: Readonly<Props>) => {
               style={{fontSize: 17.6}}
             />
           </Pressable>
-          {/* 이용약관, 개인정보처리방침 */}
+          {/* 서비스이용약관, 개인정보처리방침 */}
           <View className="mt-[18.2] flex-row justify-center">
             <View className="flex-row justify-center">
               <Txt
@@ -137,10 +126,9 @@ const LoginScreen = ({navigation}: Readonly<Props>) => {
                 text="계속 진행함에 따라 "
                 className="text-gray300"
               />
-              {/* TODO: 이용약관 링크 변경 */}
               <Pressable
                 onPress={() =>
-                  Linking.openURL('https://www.naeilmorae.co.kr/privacy')
+                  Linking.openURL('https://www.naeilmorae.co.kr/terms')
                 }>
                 <Txt type="caption2" text="이용약관" className="text-white" />
               </Pressable>

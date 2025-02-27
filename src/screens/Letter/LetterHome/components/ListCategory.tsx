@@ -46,7 +46,7 @@ const ListCategory = ({
           ))}
         </View>
       </ScrollView>
-      <View className="flex-row items-center px-[30]">
+      <View className="flex-row items-center px-[30] ml-[4]">
         <Text
           className="text-white"
           style={{
