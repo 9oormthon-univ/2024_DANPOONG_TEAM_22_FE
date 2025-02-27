@@ -11,18 +11,27 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 
 // React Hooks import
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {trackEvent} from '@utils/tracker';
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useState} from 'react';
 /**
  * RCD 피드백 화면 컴포넌트
  * 녹음 완료 후 로딩 및 완료 상태를 보여주는 화면
  */
 const RCDFeedBackScreen = () => {
+  const [nickname, setNickname] = useState('');
   // 애니메이션 값 관리
   const opValue = useRef(new Animated.Value(0)).current;
   const subColor = useRef(new Animated.Value(0)).current;
   // 네비게이션 객체
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
+
+  useEffect(() => {
+    (async () => {
+      const nickname = await AsyncStorage.getItem('nickname');
+      setNickname(nickname ?? '');
+    })();
+  }, []);
 
   // 로딩이 끝나면 애니메이션 시작
   useEffect(() => {
@@ -103,7 +112,7 @@ const RCDFeedBackScreen = () => {
             lineHeight: 18 * 1.5,
             letterSpacing: 18 * -0.025,
           }}>
-          바람돌이님의 목소리 덕분에{'\n'}나그네가 힘차게 여행할 수 있을거예요
+          {`${nickname}님의 목소리 덕분에\n나그네가 힘차게 여행할 수 있을거예요`}
         </Animated.Text>
       </View>
     </View>
