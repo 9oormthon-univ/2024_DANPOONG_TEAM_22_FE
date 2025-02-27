@@ -1,18 +1,31 @@
+// API
 import {getAlarmCategoryDetail} from '@apis/alarm';
+
+// 아이콘
 import CloseBlackIcon from '@assets/svgs/closeBlack.svg';
 import FightingIcon from '@assets/svgs/emotion/emotion_fighting_gray.svg';
 import ThumbIcon from '@assets/svgs/emotion/emotion_thumb_gray.svg';
 import WaterIcon from '@assets/svgs/emotion/emotion_water_gray.svg';
 import LogoIcon from '@assets/svgs/Main2.svg';
 import SettingSmallIcon from '@assets/svgs/settingSmall.svg';
+
+// 컴포넌트
 import Txt from '@components/atom/Txt';
+
+// 상수
+import { COLORS } from '@constants/Colors';
+
+// 훅
 import useGetAlarmComfort from '@hooks/alarm/useGetAlarmComfort';
 import useGetHelperNum from '@hooks/member/useGetHelperNum';
+
+// 라이브러리
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {YouthStackParamList} from '@stackNav/Youth';
 import {useEffect, useRef, useState} from 'react';
 import {Alert, Animated, ImageBackground, Pressable, View} from 'react-native';
+import {StatusBar} from 'react-native';
 
 type YouthProps = NativeStackScreenProps<
   YouthStackParamList,
@@ -133,6 +146,11 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
     <ImageBackground
       source={require('@assets/pngs/background/youthMain.png')}
       className="flex-1">
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={COLORS.main200}
+        translucent={false}
+      />      
       <Pressable
         className="flex-row self-start items-center px-[30] pt-[32.5]"
         onPress={() => navigation.navigate('SystemStackNav')}>
