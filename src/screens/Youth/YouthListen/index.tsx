@@ -361,10 +361,8 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
                 onChangeText={setMessage}
                 placeholder="감사의 말을 전해보세요"
                 placeholderTextColor={COLORS.gray300}
-                className={`h-[40] mr-[15] text-gray100 py-[8] pl-[27] pr-[45] font-r bg-blue400 border ${
-                  isKeyboardVisible
-                    ? 'border-gray200 w-full'
-                    : 'border-blue400 w-[307]'
+                className={`h-[40] mr-[15] text-gray100 py-[8] pl-[27] pr-[45] font-r bg-blue400 border flex-[7.5] ${
+                  isKeyboardVisible ? 'border-gray200' : 'border-blue400'
                 }`}
                 style={{fontSize: 15, borderRadius: 100}}
                 onSubmitEditing={() => handleMessageSend()}
@@ -381,7 +379,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
               )}
               {!isKeyboardVisible && (
                 <Pressable
-                  className=""
+                  className="flex-[1]"
                   onPress={() => setIsClickedEmotion(prev => !prev)}>
                   {isClickedEmotion ? <SmileGrayIcon /> : <SmileIcon />}
                 </Pressable>
