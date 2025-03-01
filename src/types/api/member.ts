@@ -23,8 +23,9 @@ type YouthRequestData = {
 
 type MemberResponseData = {memberId: number};
 
-type MemberInfoResponseData = MemberRequestData & {
+type MemberInfoResponseData = Omit<MemberRequestData, 'name'> & {
   youthMemberInfoDto: YouthRequestData;
+  nickname: string;
 };
 
 type HelperNumResponseData = {

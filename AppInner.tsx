@@ -89,7 +89,7 @@ const AppInner = () => {
   useEffect(() => {
     if (!memberData) return;
     console.log({memberData});
-    const {name, gender, profileImage, role, birth} = memberData.result;
+    const {nickname, gender, profileImage, role, birth} = memberData.result;
     setRole(role);
 
     if (role !== 'HELPER' && role !== 'YOUTH') {
@@ -100,7 +100,7 @@ const AppInner = () => {
 
     const saveMemberData = async () => {
       try {
-        await AsyncStorage.setItem('nickname', name);
+        await AsyncStorage.setItem('nickname', nickname);
         await AsyncStorage.setItem('gender', gender);
         await AsyncStorage.setItem('role', role);
         await AsyncStorage.setItem('birth', birth);
