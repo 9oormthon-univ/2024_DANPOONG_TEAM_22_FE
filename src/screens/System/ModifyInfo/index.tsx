@@ -146,6 +146,7 @@ const ModifyInfoScreen = () => {
 
   // 기본 이미지를 적용하는 함수
   const handleDefaultImageClick = () => {
+    AsyncStorage.setItem('profileImage', '');
     setImageUri(null);
     setClickedUpload(false);
   };

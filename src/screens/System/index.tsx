@@ -24,6 +24,7 @@ const SystemScreen = () => {
  
   useEffect(() => {
     if (isFocused) {
+      setProfileImage('');
       (async () => {
         const storedNickname = await AsyncStorage.getItem('nickname');
         const storedEmail = await AsyncStorage.getItem('email');
