@@ -4,13 +4,7 @@ import Card from '@components/molecule/Card';
 import {FlatList, GestureHandlerRootView} from 'react-native-gesture-handler';
 import {RCD} from '@apis/RCDApis/getRCDList';
 import {RecordType} from '@type/RecordType';
-const Carousel = ({
-  entries,
-  type,
-}: {
-  entries: RCD[];
-  type: RecordType;
-}) => {
+const Carousel = ({entries, type}: {entries: RCD[]; type: RecordType}) => {
   const pageWidth = Dimensions.get('window').width - 60;
   //gap + offset = 30 이 되어야 함
   const gap = 14;
@@ -36,6 +30,7 @@ const Carousel = ({
         snapToInterval={pageWidth + gap}
         snapToAlignment="start"
         showsHorizontalScrollIndicator={false}
+        removeClippedSubviews={false}
       />
     </GestureHandlerRootView>
   );
