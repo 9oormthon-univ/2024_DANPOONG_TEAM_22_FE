@@ -209,6 +209,11 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
       } else {
         setIsToast(true);
         setToastMessage('메시지 전송 완료');
+
+        if (Keyboard.isVisible()) {
+          Keyboard.dismiss();
+          setIsKeyboardVisible(false);
+        }
       }
 
       setMessage('');
