@@ -27,7 +27,6 @@ import SmileIcon from '@assets/svgs/smile.svg';
 import SmileGrayIcon from '@assets/svgs/smile_gray.svg';
 import StopIcon from '@assets/svgs/stop.svg';
 import BG from '@components/atom/BG';
-import Toast from '@components/atom/Toast';
 import {COLORS} from '@constants/Colors';
 import {KEYBOARD_DELAY_MS} from '@constants/common';
 import {EMOTION_OPTIONS_YOUTH} from '@constants/letter';
@@ -35,6 +34,7 @@ import {VOICE_DELAY_MS, VOICE_LOADING_MS} from '@constants/voice';
 import useDeleteComment from '@hooks/providedFile/useDeleteComment';
 import {EmotionType} from '@type/api/providedFile';
 import {AxiosError} from 'axios';
+import Toast from 'react-native-toast-message';
 
 // 네비게이션 Props 타입 정의
 type YouthProps = NativeStackScreenProps<
@@ -55,8 +55,6 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
   ); // 음성 파일 데이터
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태
   const audioPlayer = useRef(new AudioRecorderPlayer()); // 오디오 플레이어 ref
-  const [isToast, setIsToast] = useState(false); // 토스트 메시지 표시 상태
-  const [toastMessage, setToastMessage] = useState(''); // 토스트 메시지
   const [sentEmotions, setSentEmotions] = useState<{
     [key in EmotionType]?: boolean;
   }>({}); // 전송된 감정 표현
@@ -179,8 +177,11 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
             delete updated[emotionType];
             return updated;
           });
-          setIsToast(true);
-          setToastMessage(`‘${emotion.label}’ 전송 취소`);
+          Toast.show({
+            type: 'custom',
+            text1: `‘${emotion.label}’ 전송 취소`,
+            props: {type: 'check', position: 'left'},
+          });
         } catch (error) {
           console.log(error);
           Alert.alert('오류', '감정 표현을 취소하는 중 오류가 발생했어요');
@@ -204,11 +205,18 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         }
 
         setSentEmotions(prev => ({...prev, [emotionType]: true}));
-        setIsToast(true);
-        setToastMessage(`‘${emotion.label}’ 전송 완료`);
+
+        Toast.show({
+          type: 'custom',
+          text1: `‘${emotion.label}’ 전송 완료`,
+          props: {type: 'check', position: 'left'},
+        });
       } else {
-        setIsToast(true);
-        setToastMessage('메시지 전송 완료');
+        Toast.show({
+          type: 'custom',
+          text1: '메시지 전송 완료',
+          props: {type: 'notice', position: 'left'},
+        });
 
         if (Keyboard.isVisible()) {
           Keyboard.dismiss();
@@ -393,14 +401,6 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
           </View>
         </View>
       </View>
-
-      <Toast
-        text={toastMessage}
-        isToast={isToast}
-        setIsToast={() => setIsToast(false)}
-        position="left"
-        type="check"
-      />
     </BG>
   );
 };
