@@ -21,9 +21,11 @@ import AppInner from 'AppInner';
 import {useEffect, useRef, useState} from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
+import CustomToast from '@components/atom/CustomToast';
 import {PortalProvider} from '@gorhom/portal';
 import navigateToYouthListenScreen from '@utils/navigateToYouthListenScreen';
 import {trackAppStart, trackEvent, trackScreenView} from '@utils/tracker';
+import Toast from 'react-native-toast-message';
 
 // 쿼리 클라이언트 설정
 const queryClient = new QueryClient({
@@ -176,6 +178,11 @@ function App(): React.JSX.Element {
             onStateChange={onStateChange}
             onReady={() => setIsNavigationReady(true)}>
             {isNavigationReady && <AppInner />}
+            <Toast
+              config={{custom: CustomToast}}
+              topOffset={0}
+              bottomOffset={0}
+            />
           </NavigationContainer>
         </GestureHandlerRootView>
       </PortalProvider>
