@@ -220,7 +220,10 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
 
         if (Keyboard.isVisible()) {
           Keyboard.dismiss();
-          setIsKeyboardVisible(false);
+
+          setTimeout(() => {
+            setIsKeyboardVisible(false);
+          }, KEYBOARD_DELAY_MS);
         }
       }
 
