@@ -211,20 +211,22 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
           text1: `‘${emotion.label}’ 전송 완료`,
           props: {type: 'check', position: 'left'},
         });
-      } else {
-        Toast.show({
-          type: 'custom',
-          text1: '메시지 전송 완료',
-          props: {type: 'notice', position: 'left'},
-        });
 
-        if (Keyboard.isVisible()) {
-          Keyboard.dismiss();
+        return;
+      }
 
-          setTimeout(() => {
-            setIsKeyboardVisible(false);
-          }, KEYBOARD_DELAY_MS);
-        }
+      Toast.show({
+        type: 'custom',
+        text1: '메시지 전송 완료',
+        props: {type: 'notice', position: 'left'},
+      });
+
+      if (Keyboard.isVisible()) {
+        Keyboard.dismiss();
+
+        setTimeout(() => {
+          setIsKeyboardVisible(false);
+        }, KEYBOARD_DELAY_MS);
       }
 
       setMessage('');
