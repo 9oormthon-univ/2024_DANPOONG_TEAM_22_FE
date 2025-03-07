@@ -53,7 +53,7 @@ const HomeScreen = () => {
       {/* 배경 이미지 */}
       <ImageBackground
         source={require('@assets/pngs/BGmain.png')}
-        style={{position: 'absolute', bottom: 0, width: '100%', height: 762}}
+        style={{position: 'absolute', bottom: -23, width: '100%', height: '100%'}}
       />
       {/* 전체 frame */}
       <View className="flex-1 px-[30] pt-[117]">
@@ -79,7 +79,7 @@ const HomeScreen = () => {
           />
         </View>
         {/* button section*/}
-        <View className="w-full h-[253] relative">
+        <View className="w-full h-[253] flex flex-row justify-between">
           <SelectBtn type={RecordTypeConstant.DAILY} />
           <SelectBtn type={RecordTypeConstant.COMFORT} />
           {/* {Object.values(RecordTypeConstant).map(type => (
@@ -157,20 +157,14 @@ export default HomeScreen;
 const SelectBtn = ({type}: {type: RecordType}) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
 
-  // 버튼 위치 설정
-  const addaptivePosition =
-    type === RecordTypeConstant.DAILY
-      ? 'top-[0] left-[0]'
-      : 'top-[0] right-[0]';
-
   return (
     <TouchableOpacity
       onPress={() => {
         navigation.navigate('RCDList', {type});
         trackEvent('recording_type_select', {type});
       }}
-      className={`w-[168] h-[207] px-[25] py-[20] bg-blue700 border border-white/10 absolute ${addaptivePosition}`}
-      style={{borderRadius: 10}}>
+      className="flex-1 h-[207] px-[25] py-[20] bg-blue700 border border-white/10"
+      style={{borderRadius: 10, maxWidth: 168}}>
       {/* 아이콘 */}
       <View className="">
         {type === RecordTypeConstant.DAILY ? <Main1 /> : <Main2 />}
