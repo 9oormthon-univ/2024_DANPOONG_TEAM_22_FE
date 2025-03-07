@@ -374,7 +374,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
                 onChangeText={setMessage}
                 placeholder="감사의 말을 전해보세요"
                 placeholderTextColor={COLORS.gray300}
-                className={`h-[40] mr-[15] text-gray100 py-[8] pl-[27] pr-[45] font-r bg-blue400 border flex-[7.5] ${
+                className={`h-[40] text-gray100 py-[8] pl-[27] pr-[45] font-r bg-blue400 border flex-[7.5] ${
                   isKeyboardVisible ? 'border-gray200' : 'border-blue400'
                 }`}
                 style={{fontSize: 15, borderRadius: 100}}
@@ -384,18 +384,21 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
               {!!message && (
                 <Pressable
                   className={`absolute ${
-                    isKeyboardVisible ? 'right-[32]' : 'right-[88]'
+                    isKeyboardVisible ? 'right-[8.5%]' : 'right-[21.5%]'
                   }`}
                   onPress={() => handleMessageSend()}>
                   <SendIcon />
                 </Pressable>
               )}
               {!isKeyboardVisible && (
-                <Pressable
-                  className="flex-[1]"
-                  onPress={() => setIsClickedEmotion(prev => !prev)}>
-                  {isClickedEmotion ? <SmileGrayIcon /> : <SmileIcon />}
-                </Pressable>
+                <>
+                  <View className="w-[15]" />
+                  <Pressable
+                    className="flex-[1]"
+                    onPress={() => setIsClickedEmotion(prev => !prev)}>
+                    {isClickedEmotion ? <SmileGrayIcon /> : <SmileIcon />}
+                  </Pressable>
+                </>
               )}
             </View>
           </View>
