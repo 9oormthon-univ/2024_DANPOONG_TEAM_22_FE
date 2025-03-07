@@ -293,7 +293,6 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
           {/* 프로필 */}
           <View className="flex-row self-start px-[30]">
             <View className="relative w-[31] h-[31] justify-center items-center">
-              {/* TODO: 봉사자 프로필 사진 표시 */}
               <Image
                 source={
                   voiceFile?.member?.profileImage
@@ -349,7 +348,8 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}
-                className="pl-[25] w-full mb-[27]">
+                className="pl-[25] w-full mb-[27]"
+                keyboardShouldPersistTaps="always">
                 {EMOTION_OPTIONS_YOUTH.map((emotion, index) => (
                   <Pressable
                     key={emotion.label}
