@@ -383,23 +383,17 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
               />
               {!!message && (
                 <Pressable
-                  className={`absolute ${
-                    isKeyboardVisible ? 'right-[8.5%]' : 'right-[21.5%]'
-                  }`}
+                  className={`absolute right-[21.5%]`}
                   onPress={() => handleMessageSend()}>
                   <SendIcon />
                 </Pressable>
               )}
-              {!isKeyboardVisible && (
-                <>
-                  <View className="w-[15]" />
-                  <Pressable
-                    className="flex-[1]"
-                    onPress={() => setIsClickedEmotion(prev => !prev)}>
-                    {isClickedEmotion ? <SmileGrayIcon /> : <SmileIcon />}
-                  </Pressable>
-                </>
-              )}
+              <View className="w-[15]" />
+              <Pressable
+                className="flex-[1]"
+                onPress={() => setIsClickedEmotion(prev => !prev)}>
+                {isClickedEmotion ? <SmileGrayIcon /> : <SmileIcon />}
+              </Pressable>
             </View>
           </View>
         </View>
