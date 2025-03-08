@@ -12,6 +12,7 @@ import {
   Alert,
   Image,
   Keyboard,
+  KeyboardAvoidingView,
   Pressable,
   ScrollView,
   TextInput,
@@ -264,146 +265,150 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
 
   // 메인 UI 렌더링
   return (
-    <BG type="main">
-      <View
-        className={`absolute left-0 bottom-[40] w-full h-full ${
-          isKeyboardVisible ? 'hidden' : ''
-        }`}
-        style={{transform: [{scale: 1.1}]}}>
-        <LottieView
-          ref={animation}
-          style={{
-            flex: 1,
-          }}
-          source={require('@assets/lottie/voice.json')}
-          autoPlay
-          loop
-        />
-      </View>
+    <KeyboardAvoidingView behavior="padding">
+      <BG type="main">
+        <View
+          className={`absolute left-0 bottom-[40] w-full h-full ${
+            isKeyboardVisible ? 'hidden' : ''
+          }`}
+          style={{transform: [{scale: 1.2}]}}>
+          <LottieView
+            ref={animation}
+            style={{
+              flex: 1,
+            }}
+            source={require('@assets/lottie/voice.json')}
+            autoPlay
+            loop
+          />
+        </View>
 
-      <View className="flex-1">
-        <AppBar
-          exitCallbackFn={() => navigation.goBack()}
-          className="absolute top-[0] w-full"
-        />
+        <View className="flex-1">
+          <AppBar
+            exitCallbackFn={() => navigation.goBack()}
+            className="absolute top-[0] w-full"
+          />
 
-        <View className="h-[100] " />
+          <View className="h-[100] " />
 
-        <View className="flex-1 items-center">
-          {/* 프로필 */}
-          <View className="flex-row self-start px-[30]">
-            <View className="relative w-[31] h-[31] justify-center items-center">
-              <Image
-                source={
-                  voiceFile?.member?.profileImage
-                    ? {uri: voiceFile?.member?.profileImage}
-                    : require('@assets/pngs/logo/app/app_logo_yellow.png')
-                }
-                className="w-[25] h-[25]"
-                style={{borderRadius: 25}}
-              />
-              <View
-                className="absolute left-0 bottom-0 w-[31] h-[31] border border-yellowPrimary"
-                style={{borderRadius: 31}}
+          <View className="flex-1 items-center">
+            {/* 프로필 */}
+            <View className="flex-row self-start px-[30]">
+              <View className="relative w-[31] h-[31] justify-center items-center">
+                <Image
+                  source={
+                    voiceFile?.member?.profileImage
+                      ? {uri: voiceFile?.member?.profileImage}
+                      : require('@assets/pngs/logo/app/app_logo_yellow.png')
+                  }
+                  className="w-[25] h-[25]"
+                  style={{borderRadius: 25}}
+                />
+                <View
+                  className="absolute left-0 bottom-0 w-[31] h-[31] border border-yellowPrimary"
+                  style={{borderRadius: 31}}
+                />
+              </View>
+              <View className="w-[10]" />
+              <Txt
+                type="title4"
+                text={voiceFile?.member?.name}
+                className="text-yellowPrimary"
               />
             </View>
-            <View className="w-[10]" />
-            <Txt
-              type="title4"
-              text={voiceFile?.member?.name}
-              className="text-yellowPrimary"
-            />
-          </View>
 
-          <View className="h-[33] " />
+            <View className="h-[33] " />
 
-          {/* 스크립트 */}
-          <View className="px-[30] h-[244]">
-            <ScrollView>
-              <Txt
-                type="body3"
-                text={voiceFile?.content ?? ''}
-                className="text-white"
-              />
-            </ScrollView>
-          </View>
-
-          <View className="h-[33] " />
-
-          {/* 재생/정지 버튼 */}
-          <Pressable onPress={handlePlayButtonClick} className="w-[69] h-[69]">
-            {isPlaying ? <StopIcon /> : <PlayIcon />}
-          </Pressable>
-
-          {/* 하단 입력 영역 */}
-          <View
-            className="absolute bottom-0 w-full"
-            style={{borderTopLeftRadius: 10, borderTopRightRadius: 10}}>
-            {/* 감정 표현 옵션 */}
-            {isClickedEmotion && (
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}
-                className="pl-[25] w-full mb-[27]"
-                keyboardShouldPersistTaps="always">
-                {EMOTION_OPTIONS_YOUTH.map((emotion, index) => (
-                  <Pressable
-                    key={emotion.label}
-                    className={`bg-blue400 py-[9] pl-[14] pr-[19] ${
-                      index === EMOTION_OPTIONS_YOUTH.length - 1
-                        ? 'mr-[50]'
-                        : 'mr-[10]'
-                    } flex-row items-center justify-center active:bg-blue500 ${
-                      sentEmotions[emotion.type] ? 'bg-blue500' : ''
-                    }`}
-                    style={{borderRadius: 50}}
-                    onPress={() => handleMessageSend(emotion.type)}>
-                    {emotion.icon}
-                    <Txt
-                      type="body3"
-                      text={emotion.label}
-                      className="text-white ml-[10]"
-                    />
-                  </Pressable>
-                ))}
+            {/* 스크립트 */}
+            <View className="px-[30] h-[244]">
+              <ScrollView>
+                <Txt
+                  type="body3"
+                  text={voiceFile?.content ?? ''}
+                  className="text-white"
+                />
               </ScrollView>
-            )}
-            {/* 메시지 입력 영역 */}
-            <View className="h-[86] px-[25] bg-blue500 flex-row items-center relative">
-              <TextInput
-                value={message}
-                onChangeText={setMessage}
-                placeholder="감사의 말을 전해보세요"
-                placeholderTextColor={COLORS.gray300}
-                className={`h-[40] text-gray100 py-[8] pl-[27] pr-[45] font-r bg-blue400 border flex-[7.5] ${
-                  isKeyboardVisible ? 'border-gray200' : 'border-blue400'
-                }`}
-                style={{fontSize: 15, borderRadius: 100}}
-                onSubmitEditing={() => handleMessageSend()}
-                maxLength={160}
-              />
-              {!!message && (
-                <Pressable
-                  className={`absolute right-[21.5%]`}
-                  onPress={() => handleMessageSend()}>
-                  <SendIcon />
-                </Pressable>
+            </View>
+
+            <View className="h-[33] " />
+
+            {/* 재생/정지 버튼 */}
+            <Pressable
+              onPress={handlePlayButtonClick}
+              className="w-[69] h-[69]">
+              {isPlaying ? <StopIcon /> : <PlayIcon />}
+            </Pressable>
+
+            {/* 하단 입력 영역 */}
+            <View
+              className="absolute bottom-0 w-full"
+              style={{borderTopLeftRadius: 10, borderTopRightRadius: 10}}>
+              {/* 감정 표현 옵션 */}
+              {isClickedEmotion && (
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                  className="pl-[25] w-full mb-[27]"
+                  keyboardShouldPersistTaps="always">
+                  {EMOTION_OPTIONS_YOUTH.map((emotion, index) => (
+                    <Pressable
+                      key={emotion.label}
+                      className={`bg-blue400 py-[9] pl-[14] pr-[19] ${
+                        index === EMOTION_OPTIONS_YOUTH.length - 1
+                          ? 'mr-[50]'
+                          : 'mr-[10]'
+                      } flex-row items-center justify-center active:bg-blue500 ${
+                        sentEmotions[emotion.type] ? 'bg-blue500' : ''
+                      }`}
+                      style={{borderRadius: 50}}
+                      onPress={() => handleMessageSend(emotion.type)}>
+                      {emotion.icon}
+                      <Txt
+                        type="body3"
+                        text={emotion.label}
+                        className="text-white ml-[10]"
+                      />
+                    </Pressable>
+                  ))}
+                </ScrollView>
               )}
-              <View className="w-[15]" />
-              <Pressable
-                className="flex-[1]"
-                onPress={() => setIsClickedEmotion(prev => !prev)}>
-                {isClickedEmotion ? <SmileGrayIcon /> : <SmileIcon />}
-              </Pressable>
+              {/* 메시지 입력 영역 */}
+              <View className="h-[86] px-[25] bg-blue500 flex-row items-center relative">
+                <TextInput
+                  value={message}
+                  onChangeText={setMessage}
+                  placeholder="감사의 말을 전해보세요"
+                  placeholderTextColor={COLORS.gray300}
+                  className={`h-[40] text-gray100 py-[8] pl-[27] pr-[45] font-r bg-blue400 border flex-[7.5] ${
+                    isKeyboardVisible ? 'border-gray200' : 'border-blue400'
+                  }`}
+                  style={{fontSize: 15, borderRadius: 100}}
+                  onSubmitEditing={() => handleMessageSend()}
+                  maxLength={160}
+                />
+                {!!message && (
+                  <Pressable
+                    className={`absolute right-[21.5%]`}
+                    onPress={() => handleMessageSend()}>
+                    <SendIcon />
+                  </Pressable>
+                )}
+                <View className="w-[15]" />
+                <Pressable
+                  className="flex-[1]"
+                  onPress={() => setIsClickedEmotion(prev => !prev)}>
+                  {isClickedEmotion ? <SmileGrayIcon /> : <SmileIcon />}
+                </Pressable>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    </BG>
+      </BG>
+    </KeyboardAvoidingView>
   );
 };
 
