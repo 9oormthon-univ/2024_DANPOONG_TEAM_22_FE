@@ -71,6 +71,7 @@ const NotificationSettingYouth = () => {
   // API에서 정보를 가져와 notifications 상태를 세팅합니다.
   const fetchMemberInfo = async () => {
     const res = await getMemberInfoYouth();
+
     const fetchedNotifications = notificationsConfig.map((config) => {
       const parsedTime = parseTimeString(res[config.timeField]);
       const formattedHour = `${parsedTime.hour < 12 ? "오전" : "오후"} ${parsedTime.hour % 12 || 12}시`;
@@ -119,14 +120,13 @@ const NotificationSettingYouth = () => {
     if (!isStateChanged()) return;
     setIsLoading(true);
     try {
-      await Promise.all(
-        notifications.map((notif) =>
-          postAlarmSettingToggle({
-            alarmCategory: notif.alarmCategory,
-            enabled: notif.isOn,
-          })
-        )
-      );
+      // Promise.all 대신 순차적으로 처리
+      for (const notif of notifications) {
+        await postAlarmSettingToggle({
+          alarmCategory: notif.alarmCategory,
+          enabled: notif.isOn,
+        });
+      }
       
       // patchMemberInfoYouth 함수는 모든 키가 포함된 객체를 요구합니다.
       const patchData: PatchMemberInfoYouthRequest = {
