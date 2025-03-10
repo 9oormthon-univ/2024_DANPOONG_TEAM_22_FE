@@ -23,7 +23,7 @@ import {getYouthNum} from '@apis/RCDApis/getYouthNum';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {trackEvent} from '@utils/tracker';
 import {useEffect, useState} from 'react';
-
+import {Dimensions} from 'react-native';
 /**
  * 홈 화면 컴포넌트
  * 청년들의 수를 표시하고 녹음 유형을 선택할 수 있는 메인 화면
@@ -32,7 +32,8 @@ const HomeScreen = () => {
   // 상태 관리
   const [nickname, setNickname] = useState('');
   const [youthNum, setYouthNum] = useState<number>(999);
-
+  const {width} = Dimensions.get('window');
+  console.log(width);
   // 닉네임 불러오기
   useEffect(() => {
     (async () => {
@@ -163,14 +164,14 @@ const SelectBtn = ({type}: {type: RecordType}) => {
         navigation.navigate('RCDList', {type});
         trackEvent('recording_type_select', {type});
       }}
-      className="flex-1 h-[207] px-[25] py-[20] bg-blue700 border border-white/10"
-      style={{borderRadius: 10, maxWidth: 168}}>
+      className="px-[25] py-[20] bg-blue700 border border-white/10"
+      style={{borderRadius: 10, width: '47.5%', aspectRatio: 168 / 207}}>
       {/* 아이콘 */}
-      <View className="">
+      <View className="absolute top-[20] left-[25]">
         {type === RecordTypeConstant.DAILY ? <Main1 /> : <Main2 />}
       </View>
       {/* 텍스트와 화살표 */}
-      <View className="mt-[19] flex flex-row items-center">
+      <View className="flex flex-row items-center absolute top-[69] left-[25]">
         <Txt
           type="title3"
           text={`${type === RecordTypeConstant.DAILY ? '일상' : '위로'}`}
@@ -183,7 +184,7 @@ const SelectBtn = ({type}: {type: RecordType}) => {
         />
       </View>
       {/* 녹음하기 텍스트와 화살표 */}
-      <View className="mt-[45] flex flex-row items-center w-full">
+      <View className="flex flex-row items-center w-full absolute bottom-[20] left-[25]">
         <Txt type="title3" text="녹음하기" className="text-yellowPrimary" />
         <View className="absolute right-[-8]">
           <MainArrow2 />
