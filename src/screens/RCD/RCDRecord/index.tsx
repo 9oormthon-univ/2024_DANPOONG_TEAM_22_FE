@@ -1,6 +1,6 @@
 // React 관련 임포트
 import React, {useEffect, useRef, useState} from 'react';
-import {ActivityIndicator, Platform, ScrollView, View} from 'react-native';
+import {Platform, ScrollView, View} from 'react-native';
 
 // 네비게이션 관련 임포트
 import {
@@ -22,7 +22,7 @@ import RCDTimer from '@components/atom/RCDTimer';
 import RCDWave from '@components/atom/RCDWave';
 import Txt from '@components/atom/Txt';
 import RCDBtnBar from '@components/molecule/RCDBtnBar';
-
+import Indicator from '@components/atom/Indicator';
 // 녹음 관련 임포트
 import {trackEvent} from '@utils/tracker';
 import {
@@ -57,7 +57,7 @@ const RCDRecordScreen = ({
   const [isDone, setIsDone] = useState<boolean>(false);
   const [shouldRefresh, setShouldRefresh] = useState<boolean>(false);
   // 업로드 상태 관리
-  const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [isUploading, setIsUploading] = useState<boolean>(true);
   // 컴포넌트 언마운트 여부 및 재시도 타이머 관리 ref
   const isMountedRef = useRef(true);
   const analysisTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -415,7 +415,8 @@ const RCDRecordScreen = ({
               className="text-gray200 text-center"
             />
             <View className="mt-[54]" />
-            <ActivityIndicator size="large" color="#f9f96c" />
+            <Indicator />
+
           </View>
         </>
       )}
