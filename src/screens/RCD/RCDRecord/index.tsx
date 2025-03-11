@@ -3,12 +3,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Platform, ScrollView, View} from 'react-native';
 
 // 네비게이션 관련 임포트
-import {
-  NavigationProp,
-  RouteProp,
-  useFocusEffect,
-  useNavigation,
-} from '@react-navigation/native';
+import { NavigationProp, RouteProp, useFocusEffect, useNavigation } from '@react-navigation/native';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 
 // API 임포트
@@ -41,11 +36,7 @@ import {
 } from './RecordAndroid';
 
 // 녹음 화면 컴포넌트
-const RCDRecordScreen = ({
-  route,
-}: {
-  route: RouteProp<HomeStackParamList, 'RCDRecord'>;
-}) => {
+const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDRecord'>}) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
   // 라우트 파라미터 추출
   const {type, voiceFileId, content} = route.params;
@@ -57,7 +48,7 @@ const RCDRecordScreen = ({
   const [isDone, setIsDone] = useState<boolean>(false);
   const [shouldRefresh, setShouldRefresh] = useState<boolean>(false);
   // 업로드 상태 관리
-  const [isUploading, setIsUploading] = useState<boolean>(true);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
   // 컴포넌트 언마운트 여부 및 재시도 타이머 관리 ref
   const isMountedRef = useRef(true);
   const analysisTimeoutRef = useRef<NodeJS.Timeout | null>(null);
