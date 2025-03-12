@@ -167,8 +167,11 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
 
           try {
             postYouth(data);
-            AsyncStorage.setItem('lat', pos.coords.latitude.toString());
-            AsyncStorage.setItem('lng', pos.coords.longitude.toString());
+
+            if (pos.coords.latitude && pos.coords.longitude) {
+              await AsyncStorage.setItem('lat', String(pos.coords.latitude));
+              await AsyncStorage.setItem('lng', String(pos.coords.longitude));
+            }
 
             const endTime = new Date().getTime();
             const viewTime = endTime - startTime.current;
