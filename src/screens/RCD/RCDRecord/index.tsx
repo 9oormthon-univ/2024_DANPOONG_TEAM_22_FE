@@ -78,23 +78,6 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
       refreshRCDStates();
     }, []),
   );
-
-  // 녹음 중 볼륨 모니터링
-  // useEffect(() => {
-  //   const monitorVolume = async () => {
-  //     if (!isRecording) return;
-  //     const currentMetering = await (isAndroid
-  //       ? getCurrentMeteringAndroid()
-  //       : getCurrentMeteringIOS());
-  //     // console.log('currentMetering', currentMetering);
-  //     if (currentMetering !== undefined) {
-  //       setVolumeList(prev => [...prev, currentMetering]);
-  //     }
-  //   };
-
-  //   monitorVolume();
-  // }, [isRecording, volumeList]);
-
   useEffect(() => {
     const monitorVolume = async () => {
       if (!isRecording) return;
@@ -112,7 +95,6 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
 
     monitorVolume();
   }, [isRecording, volumeList]);
-
   // 녹음 관련 상태 초기화 함수
   const refreshRCDStates = async () => {
     try {
@@ -131,53 +113,10 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
       console.log('refresh error', e);
     }
   };
-
-  //  // 마이크 권한 체크 함수
-  //  const checkPermission = async () => {
-  //   if (Platform.OS === 'android') {
-  //     try {
-  //       const permission = await PermissionsAndroid.request(
-  //         PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-  //       );
-
-  //       if (permission === PermissionsAndroid.RESULTS.GRANTED) {
-  //         return true;
-  //       } else {
-  //         const hasNeverAskAgain = permission === 'never_ask_again';
-
-  //         if (hasNeverAskAgain) {
-  //           Alert.alert(
-  //             '권한 필요',
-  //             '녹음을 위해 마이크 권한이 필요합니다. 설정에서 권한을 활성화해주세요.',
-  //             [
-  //               {text: '취소', style: 'cancel'},
-  //               {
-  //                 text: '설정으로 이동',
-  //                 onPress: () => Linking.openSettings(),
-  //               },
-  //             ],
-  //           );
-  //         }
-  //         return false;
-  //       }
-  //     } catch (err) {
-  //       console.log('checkPermission error', err);
-  //       return false;
-  //     }
-  //   }
-  //   return true;
-  // };
   const startRecording = async () => {
-    // console.log('startRecording');
-    if (isRecording) {
-      // 이미 녹음 중인 경우 중지
-      await stopRecording();
-    }
-    // 권한 체크
-    // if(!(await checkPermission())) {
-    //   return;
-    // }
-
+    // 이미 녹음 중인 경우 중지
+    if (isRecording) await stopRecording();
+    
     let tmpPath: string | null = null;
     if (isAndroid) {
       tmpPath = await startRecordingAndroid();
@@ -192,7 +131,7 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
   };
 
   const stopRecording = async () => {
-    if (!isRecording) {
+    if (!isRecording && __DEV__) {
       console.log('녹음이 진행되지 않았습니다.');
       return;
     }
@@ -246,7 +185,6 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
       console.log('음성 파일 업로드 오류:', error);
     }
   };
-
   // 음성 분석 업로드 함수
   const uploadAnalysis = async () => {
     try {
