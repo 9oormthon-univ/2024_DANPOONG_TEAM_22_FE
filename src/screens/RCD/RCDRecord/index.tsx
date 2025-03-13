@@ -1,14 +1,9 @@
 // React 관련 임포트
 import React, {useEffect, useRef, useState} from 'react';
-import {ActivityIndicator, Platform, ScrollView, View} from 'react-native';
+import {Platform, ScrollView, View} from 'react-native';
 
 // 네비게이션 관련 임포트
-import {
-  NavigationProp,
-  RouteProp,
-  useFocusEffect,
-  useNavigation,
-} from '@react-navigation/native';
+import { NavigationProp, RouteProp, useFocusEffect, useNavigation } from '@react-navigation/native';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 
 // API 임포트
@@ -22,7 +17,7 @@ import RCDTimer from '@components/atom/RCDTimer';
 import RCDWave from '@components/atom/RCDWave';
 import Txt from '@components/atom/Txt';
 import RCDBtnBar from '@components/molecule/RCDBtnBar';
-
+import Indicator from '@components/atom/Indicator';
 // 녹음 관련 임포트
 import {trackEvent} from '@utils/tracker';
 import {
@@ -41,11 +36,7 @@ import {
 } from './RecordAndroid';
 
 // 녹음 화면 컴포넌트
-const RCDRecordScreen = ({
-  route,
-}: {
-  route: RouteProp<HomeStackParamList, 'RCDRecord'>;
-}) => {
+const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDRecord'>}) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
   // 라우트 파라미터 추출
   const {type, voiceFileId, content} = route.params;
@@ -415,7 +406,8 @@ const RCDRecordScreen = ({
               className="text-gray200 text-center"
             />
             <View className="mt-[54]" />
-            <ActivityIndicator size="large" color="#f9f96c" />
+            <Indicator />
+
           </View>
         </>
       )}
