@@ -152,7 +152,7 @@ export default HomeScreen;
 // 일상, 위로 알림만 있고 정보 알림이 없을때의 버튼
 const SelectBtn = ({type}: {type: RecordType}) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
-
+  
   return (
     <TouchableOpacity
       onPress={() => {
@@ -174,7 +174,7 @@ const SelectBtn = ({type}: {type: RecordType}) => {
 
       {/* 텍스트 */}
       <View className="flex flex-row">
-      <FlexableMargin flexGrow={28} />
+      <FlexableMargin flexGrow={78} />
         <View style={{flexDirection: 'row',flexGrow: 112}}>
         <Txt
           type="title3"
@@ -187,14 +187,14 @@ const SelectBtn = ({type}: {type: RecordType}) => {
           className="text-white "
         />
         </View>
-                <FlexableMargin flexGrow={28} />
+        <FlexableMargin flexGrow={78} />
 
       </View>
       <FlexableMargin flexGrow={43} />
 
       {/* 녹음하기 텍스트와 화살표 */}
       <View className="flex flex-row w-full">
-      <FlexableMargin flexGrow={22} />
+      <FlexableMargin flexGrow={78} />
 
         <Txt type="title3" text="녹음하기" className="text-yellowPrimary" />
         <FlexableMargin flexGrow={28} />
@@ -202,7 +202,7 @@ const SelectBtn = ({type}: {type: RecordType}) => {
         <View className="flex justify-center items-center">
           <MainArrow2 />
         </View>
-        <FlexableMargin flexGrow={28} />
+        <FlexableMargin flexGrow={78} />
 
       </View>
       <FlexableMargin flexGrow={20} />
