@@ -12,14 +12,16 @@ const Card = ({
   item,
   gap,
   type,
+  width,
 }: {
   item: RCD;
   gap: number;
   type: RecordType;
+  width: number;
 }) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
   return (
-    <View className={'w-[352] h-full'} style={{marginHorizontal: gap / 2}}>
+    <View className={'h-full'} style={{marginHorizontal: gap / 2, width: width}}>
       <ShadowView>
         {/* frame */}
         <View className="w-full h-full justify-evenly items-center px-px">
