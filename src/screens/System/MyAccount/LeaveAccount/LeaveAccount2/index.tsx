@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View ,Dimensions} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { SystemStackParamList } from "@type/nav/SystemStackParamList";
@@ -19,7 +19,9 @@ import Button from "@components/atom/Button";
 import DiaICon from "@assets/svgs/Dia.svg";
 import HeartIcon from "@assets/svgs/Heart.svg";
 import LetterIcon from "@assets/svgs/Letter.svg";
+
 const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'LeaveAccount2'>}) => {
+    const windowHeight = Dimensions.get('window').height;
     const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
     const [isConfirmed, setIsConfirmed] = useState(false);
     const [youthMemberNum, setYouthMemberNum] = useState<number>(0);
@@ -89,9 +91,8 @@ const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'L
     
     return (
         <BG type="solid">
-            <AppBar title="회원 탈퇴" goBackCallbackFn={() => {navigation.goBack();}} />
-            <View className="flex-1 justify-between">
-                
+            <AppBar title="회원 탈퇴" goBackCallbackFn={() => {navigation.goBack();}} className="absolute top-0"/>
+            <View className="mt-[64] justify-between" style={{height: windowHeight - 64}}>
                 {/* 상단 영역 */}
                 {role=='HELPER' ? (
                     <View>
