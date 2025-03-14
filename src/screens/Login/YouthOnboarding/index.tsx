@@ -178,7 +178,7 @@ const Page2 = ({
 
           <View className="px-[30]">
             <Pressable
-              className="border border-yellow200 bg-white10 h-[84] flex-row items-center px-[17]"
+              className="border border-yellow200 bg-white10 h-[84] flex-row items-center px-[15] justify-between"
               style={{
                 borderRadius: 10,
                 shadowColor: 'rgba(253, 253, 196, 0.30)',
@@ -189,12 +189,11 @@ const Page2 = ({
               }}
               onPress={handleNext}>
               <LogoRoundIcon />
-              <View className="w-[16.81]" />
               <View>
                 <Txt type="body4" text="내일모래" className="text-white" />
                 <View className="h-[3]" />
                 <Txt
-                  type="caption2"
+                  type="caption3"
                   text="외출할 일이 있나요? 나가기 전에, 잠깐 들어봐요."
                   className="text-gray200"
                 />
@@ -207,7 +206,7 @@ const Page2 = ({
           <View className="items-center">
             <View className="w-0 h-0 border-l-[5.5px] border-r-[5.5px] border-b-[11px] border-l-transparent border-r-transparent border-b-yellow200" />
             <View
-              className="w-[301] h-[43] bg-yellow200 justify-center items-center"
+              className="h-[43] bg-yellow200 justify-center items-center px-[20]"
               style={{borderRadius: 100}}>
               <Txt
                 type="caption2"
