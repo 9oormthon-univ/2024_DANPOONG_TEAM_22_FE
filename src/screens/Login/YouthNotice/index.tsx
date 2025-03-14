@@ -194,7 +194,7 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
         console.log('error', error);
       },
       {
-        enableHighAccuracy: true,
+        enableHighAccuracy: false,
         timeout: 3600,
       },
     );
