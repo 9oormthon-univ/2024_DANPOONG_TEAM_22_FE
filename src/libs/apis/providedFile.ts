@@ -1,5 +1,4 @@
 import client from '@apis/client';
-import {LETTERS_DATA} from '@constants/letter';
 import {ResultResponseData} from '@type/api/common';
 import {
   CommentRequestData,
@@ -46,36 +45,12 @@ const getLetters = async ({
   parentCategory,
   pageable,
 }: Readonly<LettersRequestData>) => {
-  // const res = await client.get<ResultResponseData<LettersResponseData>>(
-  //   parentCategory
-  //     ? `/api/v1/providedfile/list?parentCategory=${parentCategory}&page=${pageable.page}&size=${pageable.size}&sort=${pageable.sort}`
-  //     : `/api/v1/providedfile/list?page=${pageable.page}&size=${pageable.size}&sort=${pageable.sort}`,
-  // );
-  // return res.data;
-  const mockResData = (pageable: {
-    page: number;
-    size: number;
-  }): ResultResponseData<LettersResponseData> => {
-    const start = pageable.page * pageable.size;
-    const end = start + pageable.size;
-    const content = LETTERS_DATA.slice(start, end);
-    const totalPages = Math.ceil(LETTERS_DATA.length / pageable.size);
-
-    return {
-      result: {
-        content,
-        totalPages,
-        number: pageable.page,
-      },
-      code: {
-        httpStatus: 'OK',
-        code: 'OK',
-        message: 'OK',
-        success: true,
-      },
-    };
-  };
-  return mockResData(pageable);
+  const res = await client.get<ResultResponseData<LettersResponseData>>(
+    parentCategory
+      ? `/api/v1/providedfile/list?parentCategory=${parentCategory}&page=${pageable.page}&size=${pageable.size}&sort=${pageable.sort}`
+      : `/api/v1/providedfile/list?page=${pageable.page}&size=${pageable.size}&sort=${pageable.sort}`,
+  );
+  return res.data;
 };
 
 const postReport = async ({
