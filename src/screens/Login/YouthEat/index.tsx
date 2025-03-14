@@ -2,6 +2,7 @@ import ChevronBottomGrayIcon from '@assets/svgs/chevron/chevron_bottom_gray.svg'
 import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
+import FlexableMargin from '@components/atom/FlexableMargin';
 import TimeSelectBottomSheet from '@components/atom/TimeSelectBottomSheet';
 import Txt from '@components/atom/Txt';
 import {useFocusEffect} from '@react-navigation/native';
@@ -79,122 +80,108 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
         <View className="w-full h-[3] bg-white/5 absolute top-[60]" />
         <View className="w-[66%] h-[3] bg-yellowPrimary absolute top-[60]" />
 
-        <View className="h-[120]" />
+        <FlexableMargin flexGrow={120} />
 
-        <View className="items-center flex-1">
-          <Txt
-            type="title2"
-            text="식사 시간을 알려주세요"
-            className="text-white text-center"
-          />
-          <View className="h-[9]" />
-          <Txt
-            type="body3"
-            text="식사 알림을 받고 싶은 시간을 입력해주세요"
-            className="text-gray300 text-center"
-          />
+        <Txt
+          type="title2"
+          text="식사 시간을 알려주세요"
+          className="text-white text-center"
+        />
+        <FlexableMargin flexGrow={9} />
+        <Txt
+          type="body3"
+          text="식사 알림을 받고 싶은 시간을 입력해주세요"
+          className="text-gray300 text-center"
+        />
 
-          <View className="h-[60]" />
+        <FlexableMargin flexGrow={60} />
 
-          <View>
-            {/* 아침 */}
-            <View className="px-[50]">
-              <Txt type="button" text="아침" className="text-gray300" />
-              <View className="h-[11]" />
-              <View className="flex-row items-center justify-between">
-                <Pressable
-                  onPress={() => setShowBreakfastHourBottomSheet(true)}
-                  className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
-                  <Txt
-                    type="title2"
-                    text={
-                      breakfastHour.includes('자정')
-                        ? '오전 12시'
-                        : breakfastHour
-                    }
-                    className="text-white"
-                  />
-                  <ChevronBottomGrayIcon />
-                </Pressable>
-                <View className="w-[17]" />
-                <Pressable
-                  onPress={() => setShowBreakfastMinuteBottomSheet(true)}
-                  className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
-                  <Txt
-                    type="title2"
-                    text={breakfastMinute}
-                    className="text-white"
-                  />
-                  <ChevronBottomGrayIcon />
-                </Pressable>
-              </View>
-            </View>
-
-            <View className="h-[59]" />
-
-            {/* 점심 */}
-            <View className="px-[50]">
-              <Txt type="button" text="점심" className="text-gray300" />
-              <View className="h-[11]" />
-              <View className="flex-row items-center justify-between">
-                <Pressable
-                  onPress={() => setShowLunchHourBottomSheet(true)}
-                  className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
-                  <Txt
-                    type="title2"
-                    text={lunchHour.includes('자정') ? '오전 12시' : lunchHour}
-                    className="text-white"
-                  />
-                  <ChevronBottomGrayIcon />
-                </Pressable>
-                <View className="w-[17]" />
-                <Pressable
-                  onPress={() => setShowLunchMinuteBottomSheet(true)}
-                  className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
-                  <Txt
-                    type="title2"
-                    text={lunchMinute}
-                    className="text-white"
-                  />
-                  <ChevronBottomGrayIcon />
-                </Pressable>
-              </View>
-            </View>
-
-            <View className="h-[59]" />
-
-            {/* 저녁 */}
-            <View className="px-[50]">
-              <Txt type="button" text="저녁" className="text-gray300" />
-              <View className="h-[11]" />
-              <View className="flex-row items-center justify-between">
-                <Pressable
-                  onPress={() => setShowDinnerHourBottomSheet(true)}
-                  className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
-                  <Txt
-                    type="title2"
-                    text={
-                      dinnerHour.includes('자정') ? '오전 12시' : dinnerHour
-                    }
-                    className="text-white"
-                  />
-                  <ChevronBottomGrayIcon />
-                </Pressable>
-                <View className="w-[17]" />
-                <Pressable
-                  onPress={() => setShowDinnerMinuteBottomSheet(true)}
-                  className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
-                  <Txt
-                    type="title2"
-                    text={dinnerMinute}
-                    className="text-white"
-                  />
-                  <ChevronBottomGrayIcon />
-                </Pressable>
-              </View>
-            </View>
+        {/* 아침 */}
+        <View className="px-[50]">
+          <Txt type="button" text="아침" className="text-gray300" />
+          <FlexableMargin flexGrow={11} />
+          <View className="flex-row items-center justify-between">
+            <Pressable
+              onPress={() => setShowBreakfastHourBottomSheet(true)}
+              className="border-b border-b-gray300 flex-row items-center justify-between w-full shrink">
+              <Txt
+                type="title2"
+                text={
+                  breakfastHour.includes('자정') ? '오전 12시' : breakfastHour
+                }
+                className="text-white"
+              />
+              <ChevronBottomGrayIcon />
+            </Pressable>
+            <View className="w-[17]" />
+            <Pressable
+              onPress={() => setShowBreakfastMinuteBottomSheet(true)}
+              className="border-b border-b-gray300 flex-row items-center justify-between w-full shrink">
+              <Txt
+                type="title2"
+                text={breakfastMinute}
+                className="text-white"
+              />
+              <ChevronBottomGrayIcon />
+            </Pressable>
           </View>
         </View>
+
+        <FlexableMargin flexGrow={59} />
+
+        {/* 점심 */}
+        <View className="px-[50]">
+          <Txt type="button" text="점심" className="text-gray300" />
+          <FlexableMargin flexGrow={11} />
+          <View className="flex-row items-center justify-between">
+            <Pressable
+              onPress={() => setShowLunchHourBottomSheet(true)}
+              className="border-b border-b-gray300 flex-row items-center justify-between w-full shrink">
+              <Txt
+                type="title2"
+                text={lunchHour.includes('자정') ? '오전 12시' : lunchHour}
+                className="text-white"
+              />
+              <ChevronBottomGrayIcon />
+            </Pressable>
+            <View className="w-[17]" />
+            <Pressable
+              onPress={() => setShowLunchMinuteBottomSheet(true)}
+              className="border-b border-b-gray300 flex-row items-center justify-between w-full shrink">
+              <Txt type="title2" text={lunchMinute} className="text-white" />
+              <ChevronBottomGrayIcon />
+            </Pressable>
+          </View>
+        </View>
+
+        <FlexableMargin flexGrow={59} />
+
+        {/* 저녁 */}
+        <View className="px-[50]">
+          <Txt type="button" text="저녁" className="text-gray300" />
+          <FlexableMargin flexGrow={11} />
+          <View className="flex-row items-center justify-between">
+            <Pressable
+              onPress={() => setShowDinnerHourBottomSheet(true)}
+              className="border-b border-b-gray300 flex-row items-center justify-between w-full shrink">
+              <Txt
+                type="title2"
+                text={dinnerHour.includes('자정') ? '오전 12시' : dinnerHour}
+                className="text-white"
+              />
+              <ChevronBottomGrayIcon />
+            </Pressable>
+            <View className="w-[17]" />
+            <Pressable
+              onPress={() => setShowDinnerMinuteBottomSheet(true)}
+              className="border-b border-b-gray300 flex-row items-center justify-between w-full shrink">
+              <Txt type="title2" text={dinnerMinute} className="text-white" />
+              <ChevronBottomGrayIcon />
+            </Pressable>
+          </View>
+        </View>
+
+        <FlexableMargin flexGrow={140} />
 
         <View className="absolute left-0 bottom-[55] w-full px-[30]">
           <Button text="다음" onPress={handleNext} />
