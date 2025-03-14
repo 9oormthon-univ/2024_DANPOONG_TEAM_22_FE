@@ -178,7 +178,7 @@ const Page2 = ({
 
           <View className="px-[30]">
             <Pressable
-              className="border border-yellow200 bg-white10 h-[84] flex-row items-center px-[15] justify-between"
+              className="border border-yellow200 bg-white10 h-[84] flex-row items-center px-[15]"
               style={{
                 borderRadius: 10,
                 shadowColor: 'rgba(253, 253, 196, 0.30)',
@@ -189,7 +189,7 @@ const Page2 = ({
               }}
               onPress={handleNext}>
               <LogoRoundIcon />
-              <View>
+              <View className="pl-[10]">
                 <Txt type="body4" text="내일모래" className="text-white" />
                 <View className="h-[3]" />
                 <Txt
