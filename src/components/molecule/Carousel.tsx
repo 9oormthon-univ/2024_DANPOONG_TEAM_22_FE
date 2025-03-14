@@ -5,15 +5,16 @@ import {FlatList, GestureHandlerRootView} from 'react-native-gesture-handler';
 import {RCD} from '@apis/RCDApis/getRCDList';
 import {RecordType} from '@type/RecordType';
 const Carousel = ({entries, type}: {entries: RCD[]; type: RecordType}) => {
-  const pageWidth = Dimensions.get('window').width - 60;
-  //gap + offset = 30 이 되어야 함
-  const gap = 14;
-  const offset = 16;
+  const windowWidth = Dimensions.get('window').width;
+  const pageWidth = windowWidth - 60;
+  const gap = 14; // 카드 간격
+  const offset = 16; // 화면 맨 왼쪽,오른쪽 여백
+    //gap + offset = 30 이 되어야 함 , 화면너비 - 30*2 = 페이지(카드) 너비
+
   return (
     <GestureHandlerRootView
-      style={{width: Dimensions.get('window').width, height: 333}}>
+      style={{width: windowWidth, height: 333}}>
       <FlatList
-        style={{width: '100%', height: '100%'}}
         automaticallyAdjustContentInsets={false}
         contentContainerStyle={{
           justifyContent: 'center',
@@ -25,7 +26,7 @@ const Carousel = ({entries, type}: {entries: RCD[]; type: RecordType}) => {
         horizontal
         pagingEnabled
         renderItem={({item, index}) => {
-          return <Card key={index} item={item} gap={gap} type={type} />;
+          return <Card key={index} item={item} gap={gap} type={type} width={pageWidth}/>;
         }}
         snapToInterval={pageWidth + gap}
         snapToAlignment="start"
@@ -38,30 +39,3 @@ const Carousel = ({entries, type}: {entries: RCD[]; type: RecordType}) => {
 
 export default Carousel;
 
-// import React from 'react';
-// import { Dimensions } from 'react-native';
-// import {default as MyCarousel} from 'react-native-reanimated-carousel';
-// import Card from './Card';
-// const Carousel = ({ entries }: { entries: any[] }) => {
-//     const width = Dimensions.get('window').width;
-//     return (
-//         <MyCarousel
-//         loop={true}
-//         scrollAnimationDuration={1000}
-//         mode="parallax"
-//         modeConfig={{
-//             parallaxScrollingScale: 0.85,
-//             parallaxScrollingOffset: 68,
-//         }}
-//         width={width}
-//         height={302}
-//         data={entries}
-//         // onSnapToItem={(index) => console.log('current index:', index)}
-//         renderItem={({ item,index}) => (
-//             <Card key={index} head={item.head}/>
-//             )}
-//         />
-//     );
-// };
-
-// export default Carousel;

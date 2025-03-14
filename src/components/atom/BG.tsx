@@ -3,15 +3,15 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 import {BackType} from '@type/BackType';
 import {COLORS} from '@constants/Colors';
+
 const BG = ({type, children}: {type: BackType; children?: React.ReactNode}) => {
-  
-  const colors: [string, string] =
+    const colors: [string, string] =
     type === BackType.MAIN
       ? [COLORS.main100, COLORS.main200]
       : [COLORS.second100, COLORS.second200];
 
   return (
-    <SafeAreaView className="w-full h-full">
+    <SafeAreaView className={`flex-1`}>
       {/* 상태바 설정 */}
       <StatusBar
         barStyle="light-content"
@@ -20,7 +20,7 @@ const BG = ({type, children}: {type: BackType; children?: React.ReactNode}) => {
       />
       {/* 배경 설정 */}
       {type === BackType.SOLID ? (
-        <View className="w-full h-full bg-blue700">
+        <View className="flex-1 bg-blue700">
           {children}
         </View>
       ) : (
@@ -28,7 +28,7 @@ const BG = ({type, children}: {type: BackType; children?: React.ReactNode}) => {
           colors={colors}
           start={{x: 0, y: 0.15}}
           end={{x: 0, y: 1}}
-          className="w-full h-full">
+          className="flex-1">
           {children}
         </LinearGradient>
       )}
