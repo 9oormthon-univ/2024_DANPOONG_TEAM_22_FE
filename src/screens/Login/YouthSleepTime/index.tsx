@@ -82,7 +82,7 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
           <View className="px-[50] flex-row items-center justify-between">
             <Pressable
               onPress={() => setShowHourBottomSheet(true)}
-              className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
+              className="border-b border-b-gray300 flex-row items-center justify-between w-full shrink">
               <Txt
                 type="title2"
                 text={hour.includes('자정') ? '오전 12시' : hour}
@@ -93,7 +93,7 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
             <View className="w-[17]" />
             <Pressable
               onPress={() => setShowMinuteBottomSheet(true)}
-              className="border-b border-b-gray300 flex-row items-center justify-between w-[147]">
+              className="border-b border-b-gray300 flex-row items-center justify-between w-full shrink">
               <Txt type="title2" text={minute} className="text-white" />
               <ChevronBottomGrayIcon />
             </Pressable>

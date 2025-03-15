@@ -3,6 +3,7 @@ import AudioIcon from '@assets/svgs/audio.svg';
 import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
+import FlexableMargin from '@components/atom/FlexableMargin';
 import Toast from '@components/atom/Toast';
 import Txt from '@components/atom/Txt';
 import notifee, {AuthorizationStatus} from '@notifee/react-native';
@@ -13,7 +14,7 @@ import {RootStackParamList} from '@type/nav/RootStackParamList';
 import {trackEvent} from '@utils/tracker';
 import {navigationRef} from 'App';
 import {useCallback, useRef, useState} from 'react';
-import {Alert, Platform, ScrollView, View} from 'react-native';
+import {Alert, Platform, View} from 'react-native';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 
 type AuthProps = NativeStackScreenProps<
@@ -165,36 +166,32 @@ const VolunteerNoticeScreen = ({navigation}: Readonly<Props>) => {
         }}
         className="absolute top-[0] w-full"
       />
-      <ScrollView className="flex-1 px-px mt-[64]">
-        <View className="flex-1">
-          {/* header */}
-          <View className="mt-[70]" />
-          <Txt
-            type="title2"
-            text={
-              '내일모래에서\n목소리를 전달하기 위해\n오디오 녹음 동의가 필요해요'
-            }
-            className="text-white"
-          />
-          <View className="mt-[10]" />
-          {/* section */}
-          {NOTICE_CONTENTS.map((item, index) => (
-            <View key={index} className="w-full h-auto mt-[50]">
-              {item.icon}
-              <View className="mt-[24]" />
-              <Txt
-                type="title4"
-                text={item.title}
-                className="text-yellowPrimary"
-              />
-              <View className="mt-[10]" />
-              <Txt type="body4" text={item.content} className="text-gray200" />
-            </View>
-          ))}
-        </View>
-      </ScrollView>
 
-      <View className="absolute left-0 bottom-[30] w-full px-[30]">
+      <FlexableMargin flexGrow={80} />
+
+      {/* header */}
+      <Txt
+        type="title2"
+        text={
+          '내일모래에서\n목소리를 전달하기 위해\n오디오 녹음 동의가 필요해요'
+        }
+        className="text-white px-px"
+      />
+      {/* section */}
+      {NOTICE_CONTENTS.map((item, index) => (
+        <View key={index} className="px-px flex-grow-[55]">
+          <FlexableMargin flexGrow={40} />
+          {item.icon}
+          <FlexableMargin flexGrow={24} />
+          <Txt type="title4" text={item.title} className="text-yellowPrimary" />
+          <FlexableMargin flexGrow={10} />
+          <Txt type="body4" text={item.content} className="text-gray200" />
+        </View>
+      ))}
+
+      <FlexableMargin flexGrow={140} />
+
+      <View className="absolute left-0 bottom-[55] w-full px-[30]">
         <Button text="시작하기" onPress={handleNext} />
       </View>
 
