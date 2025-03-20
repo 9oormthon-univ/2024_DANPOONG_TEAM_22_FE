@@ -6,7 +6,7 @@ import {Button} from '@components/Button';
 import {FlexableMargin} from '@components/FlexableMargin';
 import {Toast} from '@components/Toast';
 import {Text} from '@components/Text';
-import usePostYouth from '@hooks/auth/usePostYouth';
+import {usePostYouth} from '@hooks/auth/usePostYouth';
 import notifee, {AuthorizationStatus} from '@notifee/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geolocation from '@react-native-community/geolocation';
@@ -245,4 +245,5 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
     </BG>
   );
 };
-export default YouthNoticeScreen;
+
+export {YouthNoticeScreen};

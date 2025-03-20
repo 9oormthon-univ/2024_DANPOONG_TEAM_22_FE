@@ -1,5 +1,5 @@
 //봉사자 알림 수정 api
-import client from '@apis/client';
+import {client} from '@apis/client';
 
 export type PostAlarmSettingToggleRequest ={
   alarmCategory: 'WELCOME_REMINDER' | 'THANK_YOU_MESSAGE';

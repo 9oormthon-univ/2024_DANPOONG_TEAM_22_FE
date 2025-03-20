@@ -1,5 +1,5 @@
 import {View, TouchableOpacity} from 'react-native';
-import RCDBtn from '@screens/RCD/RCDRecord/components/RCDBtn';
+import { RCDBtn } from '@screens/RCD/RCDRecord/components/RCDBtn';
 import {Text} from '@components/Text';
 import {RCDBtnBarProps} from '@type/component/RCDBtnBarType';
 
@@ -21,7 +21,7 @@ const TransparentButton = ({
   );
 };
 
-const RCDBtnBar = ({
+export const RCDBtnBar = ({
   record,
   // pause,
   play,
@@ -58,9 +58,8 @@ const RCDBtnBar = ({
         stop={stop}
       />
       {isDone && (
-        <TransparentButton content="완료" color="gray100" onPress={upload} />
+        <TransparentButton content="완료" color="gray-100" onPress={upload} />
       )}
     </View>
   );
 };
-export default RCDBtnBar;

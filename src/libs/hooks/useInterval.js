@@ -1,6 +1,6 @@
 import {useEffect, useRef} from 'react';
 
-export default function useInterval(callback, delay) {
+export function useInterval(callback, delay) {
   const savedCallback = useRef(); //클로저 역할을 해주는 useRef. 렌더를 해도 초기화 되지 않는다.
 
   // callback(setCount)가 변경될 때를 useEffect가 감지해서 최신상태를 저장한다.

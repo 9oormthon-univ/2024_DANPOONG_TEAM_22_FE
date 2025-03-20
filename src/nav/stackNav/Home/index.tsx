@@ -1,11 +1,11 @@
-import HomeScreen from '@screens/RCD/Home';
-import RCDFeedBackScreen from '@screens/RCD/RCDFeedBack';
-import RCDListScreen from '@screens/RCD/RCDList';
-import RCDNoticeScreen from '@screens/RCD/RCDNotice';
-import RCDRecordScreen from '@screens/RCD/RCDRecord';
-import RCDTextScreen from '@screens/RCD/RCDText';
-import RCDSelectTextScreen from '@screens/RCD/RCDSelectText';
-import RCDErrorScreen from '@screens/RCD/RCDError';
+import { HomeScreen } from '@screens/RCD/Home';
+import { RCDFeedBackScreen } from '@screens/RCD/RCDFeedBack';
+import { RCDListScreen } from '@screens/RCD/RCDList';
+import { RCDNoticeScreen } from '@screens/RCD/RCDNotice';
+import { RCDRecordScreen } from '@screens/RCD/RCDRecord';
+import { RCDTextScreen } from '@screens/RCD/RCDText';
+import { RCDSelectTextScreen } from '@screens/RCD/RCDSelectText';
+import { RCDErrorScreen } from '@screens/RCD/RCDError';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {
@@ -19,7 +19,7 @@ import {useLayoutEffect} from 'react';
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 
-const HomeStackNav = () => {
+export const HomeStackNav = () => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
   const route = useRoute();
 
@@ -58,5 +58,3 @@ const HomeStackNav = () => {
     </Stack.Navigator>
   );
 };
-
-export default HomeStackNav;

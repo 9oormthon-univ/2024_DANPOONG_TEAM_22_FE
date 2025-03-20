@@ -1,7 +1,7 @@
 import {View} from 'react-native';
 import {Text} from '@components/Text';
 import {useEffect, useState} from 'react';
-import useInterval from '@hooks/useInterval';
+import {useInterval} from '@hooks/useInterval';
 import {RecordType} from '@type/RecordType';
 
 type RCDTimerProps = {
@@ -13,7 +13,7 @@ type RCDTimerProps = {
   setShouldRefresh?: (shouldRefresh: boolean) => void; // 리프레시 상태를 설정하기 위한 콜백 추가
 };
 
-const RCDTimer = ({recording, stop, type, onTimeUpdate, shouldRefresh, setShouldRefresh}: RCDTimerProps) => {
+export const RCDTimer = ({recording, stop, type, onTimeUpdate, shouldRefresh, setShouldRefresh}: RCDTimerProps) => {
   const [targetTime, setTargetTime] = useState<Date | null>(null);
   const [remainingTime, setRemainingTime] = useState(
     type === 'COMFORT' ? 30000 : 15000,
@@ -84,5 +84,3 @@ const RCDTimer = ({recording, stop, type, onTimeUpdate, shouldRefresh, setShould
     </View>
   );
 };
-
-export default RCDTimer;

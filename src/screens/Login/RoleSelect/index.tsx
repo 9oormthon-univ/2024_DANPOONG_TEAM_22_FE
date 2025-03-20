@@ -12,7 +12,7 @@ import {Image, Pressable, View} from 'react-native';
 
 type AuthProps = NativeStackScreenProps<AuthStackParamList, 'RoleSelectScreen'>;
 
-const RoleSelectScreen = ({navigation}: Readonly<AuthProps>) => {
+export const RoleSelectScreen = ({navigation}: Readonly<AuthProps>) => {
   const [role, setRole] = useState<Role | null>(null);
 
   const handleNext = () => {
@@ -112,5 +112,3 @@ const RoleSelectScreen = ({navigation}: Readonly<AuthProps>) => {
     </BG>
   );
 };
-
-export default RoleSelectScreen;

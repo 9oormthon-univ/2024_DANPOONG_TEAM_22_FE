@@ -2,7 +2,7 @@ import {
   patchMemberInfo,
   PatchMemberInfoRequest,
 } from '@apis/SystemApis/patchMemberInfo';
-import uploadImageToS3 from '@apis/util';
+import { uploadImageToS3 } from '@apis/util';
 import ProfileCameraIcon from '@assets/svgs/ProfileCamera.svg';
 import {AnimatedView} from '@components/AnimatedView';
 import {AppBar} from '@components/AppBar';
@@ -11,8 +11,8 @@ import {Button} from '@components/Button';
 import {Modal} from '@components/Modal';
 import {TextInput} from '@components/TextInput';
 import {Text} from '@components/Text';
-import useModal from '@hooks/useModal';
-import useValidateInput from '@hooks/useValidateInput';
+import { useModal } from '@hooks/useModal';
+import { useValidateInput } from '@hooks/useValidateInput';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {SystemStackParamList} from '@type/nav/SystemStackParamList';
@@ -24,7 +24,7 @@ import {
   launchImageLibrary,
 } from 'react-native-image-picker';
 
-const ModifyInfoScreen = () => {
+export const ModifyInfoScreen = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
   const [role, setRole] = useState('');
   const [originalNickname, setOriginalNickname] = useState('');
@@ -287,5 +287,3 @@ const ModifyInfoScreen = () => {
     </BG>
   );
 };
-
-export default ModifyInfoScreen;

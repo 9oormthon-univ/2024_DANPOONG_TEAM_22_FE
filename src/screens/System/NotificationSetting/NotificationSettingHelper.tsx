@@ -16,7 +16,7 @@ import {SystemButton} from "@components/SystemButton";
 // API 관련 import
 import { getMemberInfoHelper } from "@apis/SystemApis/getMemberInfoHelper";
 import { postAlarmSettingToggle } from "@apis/SystemApis/postAlarm-settingToggleHelper";
-const NotificationSettingHelper = () => {
+export const NotificationSettingHelper = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
   
   // 알림 설정 켜짐 여부 배열
@@ -58,4 +58,3 @@ const NotificationSettingHelper = () => {
   );
 };
 
-export default NotificationSettingHelper;

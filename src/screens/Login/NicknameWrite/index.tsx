@@ -9,8 +9,8 @@ import {Modal} from '@components/Modal';
 import {TextInput} from '@components/TextInput';
 import {Text} from '@components/Text';
 import {KEYBOARD_DELAY_MS} from '@constants/common';
-import useModal from '@hooks/useModal';
-import useValidateInput from '@hooks/useValidateInput';
+import {useModal} from '@hooks/useModal';
+import {useValidateInput} from '@hooks/useValidateInput';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {trackEvent} from '@utils/tracker';
@@ -27,7 +27,7 @@ type AuthProps = NativeStackScreenProps<
   'NicknameWriteScreen'
 >;
 
-const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
+export const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const {role} = route.params;
   const defaultImageUri =
     role === 'YOUTH'
@@ -222,5 +222,3 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
     </BG>
   );
 };
-
-export default NicknameWriteScreen;

@@ -203,4 +203,5 @@ const VolunteerNoticeScreen = ({navigation}: Readonly<Props>) => {
     </BG>
   );
 };
-export default VolunteerNoticeScreen;
+
+export {VolunteerNoticeScreen};

@@ -19,8 +19,8 @@ import {ToggleSwitch} from "@components/ToggleSwitch";
 import { getMemberInfoYouth, GetMemberInfoYouthResponse} from "@apis/SystemApis/getMemberInfoYouth";
 import { postAlarmSettingToggle ,PostAlarmSettingToggleRequest} from "@apis/SystemApis/postAlarm-settingToggle";
 import { patchMemberInfoYouth , PatchMemberInfoYouthRequest} from "@apis/SystemApis/patchMemberInfoYouth";
-import convertTimeFormat from "@utils/convertTimeFormat";
-import parseTimeString from "@utils/parseTimeString";
+import { convertTimeFormat } from "@utils/convertTimeFormat";
+import { parseTimeString } from "@utils/parseTimeString";
 
 type MemberInfoYouthResponse = GetMemberInfoYouthResponse['result']
 type AlarmCategory = PostAlarmSettingToggleRequest['alarmCategory']
@@ -56,7 +56,7 @@ const notificationsConfig: NotificationConfig[] = [
 ];
 
 // 알림 설정 화면 컴포넌트
-const NotificationSettingYouth = () => {
+export const NotificationSettingYouth = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
   const [notifications, setNotifications] = useState<NotificationSetting[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -232,4 +232,3 @@ const NotiButton = ({
   );
 };
 
-export default NotificationSettingYouth;

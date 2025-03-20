@@ -8,7 +8,7 @@ import {View, Linking, Platform} from 'react-native';
 import {Text} from '@components/Text';
 import DeviceInfo from 'react-native-device-info';
 
-const ServiceScreen = () => {
+export const ServiceScreen = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
 
   const currentVersion = DeviceInfo.getVersion();
@@ -99,4 +99,3 @@ const ServiceScreen = () => {
   );
 };
 
-export default ServiceScreen;

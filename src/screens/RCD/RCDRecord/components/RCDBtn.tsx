@@ -6,7 +6,7 @@ import Halt from '@assets/svgs/Halt.svg';
 import {useEffect, useState} from 'react';
 import {RCDBtnProps} from '@type/component/RCDBtnType';
 
-const RCDBtn = ({
+export const RCDBtn = ({
   record,
   // pause,
   play,
@@ -58,5 +58,3 @@ const RCDBtn = ({
     </TouchableOpacity>
   );
 };
-
-export default RCDBtn;

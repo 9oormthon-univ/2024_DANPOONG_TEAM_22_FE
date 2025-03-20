@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import encryptUserId from '@utils/encryptUserId';
+import { encryptUserId } from '@utils/encryptUserId';
 import {Platform} from 'react-native';
 
-const getCommonParams = async () => {
+export const getCommonParams = async () => {
   try {
     const memberId = await AsyncStorage.getItem('memberId');
     const userId = memberId ?? 'guest'; // 실제 사용자 ID
@@ -26,5 +26,3 @@ const getCommonParams = async () => {
     };
   }
 };
-
-export default getCommonParams;

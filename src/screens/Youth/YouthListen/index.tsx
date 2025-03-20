@@ -3,7 +3,7 @@ import {getVoiceFiles} from '@apis/voiceFile';
 import {AppBar} from '@components/AppBar';
 import {Text} from '@components/Text';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import LoadingScreen from '@screens/Loading';
+import { LoadingScreen } from '@screens/Loading';
 import {YouthStackParamList} from '@stackNav/Youth';
 import {VoiceFileResponseData} from '@type/api/voiceFile';
 import LottieView from 'lottie-react-native';
@@ -31,7 +31,7 @@ import {COLORS} from '@constants/Colors';
 import {KEYBOARD_DELAY_MS} from '@constants/common';
 import {EMOTION_OPTIONS_YOUTH} from '@constants/letter';
 import {VOICE_DELAY_MS, VOICE_LOADING_MS} from '@constants/voice';
-import useDeleteComment from '@hooks/providedFile/useDeleteComment';
+import { useDeleteComment } from '@hooks/providedFile/useDeleteComment';
 import {EmotionType} from '@type/api/providedFile';
 import {AxiosError} from 'axios';
 import Toast from 'react-native-toast-message';
@@ -42,7 +42,7 @@ type YouthProps = NativeStackScreenProps<
   'YouthListenScreen'
 >;
 
-const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
+export const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
   const {alarmId} = route.params;
   // 상태 관리
   const [message, setMessage] = useState(''); // 메시지 입력값
@@ -179,7 +179,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
           });
           Toast.show({
             type: 'custom',
-            text1: `‘${emotion.label}’ 전송 취소`,
+            text1: `'${emotion.label}' 전송 취소`,
             props: {type: 'check', position: 'left'},
           });
         } catch (error) {
@@ -208,7 +208,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
 
         Toast.show({
           type: 'custom',
-          text1: `‘${emotion.label}’ 전송 완료`,
+          text1: `'${emotion.label}' 전송 완료`,
           props: {type: 'check', position: 'left'},
         });
 
@@ -408,5 +408,3 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
     </BG>
   );
 };
-
-export default YouthListenScreen;

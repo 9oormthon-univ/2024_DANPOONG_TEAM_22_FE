@@ -5,7 +5,7 @@ import {useEffect, useState} from 'react';
  * 상태 표시줄의 높이를 가져오는 커스텀 훅
  * @returns {number} 상태 표시줄의 높이 (픽셀)
  */
-const useStatusBarHeight = (): number => {
+export const useStatusBarHeight = (): number => {
   const [statusBarHeight, setStatusBarHeight] = useState<number>(0);
 
   useEffect(() => {
@@ -20,4 +20,3 @@ const useStatusBarHeight = (): number => {
   return statusBarHeight;
 };
 
-export default useStatusBarHeight;

@@ -16,8 +16,8 @@ import {Text} from '@components/Text';
 import { COLORS } from '@constants/Colors';
 
 // 훅
-import useGetAlarmComfort from '@hooks/alarm/useGetAlarmComfort';
-import useGetHelperNum from '@hooks/member/useGetHelperNum';
+import { useGetAlarmComfort } from '@hooks/alarm/useGetAlarmComfort';
+import { useGetHelperNum } from '@hooks/member/useGetHelperNum';
 
 // 라이브러리
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -50,7 +50,7 @@ const VOICE_MENU = [
   },
 ];
 
-const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
+export const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
   const [clicked, setClicked] = useState(false);
   const {data: helperNumData, isError: isHelperNumError} = useGetHelperNum();
   const [nickname, setNickname] = useState('');
@@ -245,5 +245,3 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
     </ImageBackground>
   );
 };
-
-export default YouthHomeScreen;

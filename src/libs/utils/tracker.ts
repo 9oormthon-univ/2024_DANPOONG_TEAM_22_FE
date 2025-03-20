@@ -1,6 +1,6 @@
-import trackAmplitudeEvent from '@utils/amplitudeTracker';
-import trackGtmEvent from '@utils/gtmTracker';
-import getCommonParams from '@utils/trackerUtils';
+import {trackAmplitudeEvent} from '@utils/amplitudeTracker';
+import {trackGtmEvent} from '@utils/gtmTracker';
+import {getCommonParams} from '@utils/trackerUtils';
 
 // 공통 이벤트 추적 함수
 const trackEvent = async (

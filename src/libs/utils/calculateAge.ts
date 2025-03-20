@@ -1,5 +1,5 @@
 // 만 나이 계산
-const calculateAge = (birthday: Date) => {
+export const calculateAge = (birthday: Date) => {
   const today = new Date();
   const age = today.getFullYear() - birthday.getFullYear();
   const monthDifference = today.getMonth() - birthday.getMonth();
@@ -12,4 +12,3 @@ const calculateAge = (birthday: Date) => {
   return age;
 };
 
-export default calculateAge;

@@ -8,7 +8,7 @@ import {
 // 커스텀 컴포넌트 import
 import {BG} from '@components/BG';
 import {Text} from '@components/Text';
-import Carousel from '@screens/RCD/RCDList/components/Carousel';
+import {Carousel} from '@screens/RCD/RCDList/components/Carousel';
 import {AppBar} from '@components/AppBar';
 // React Navigation 관련 import
 import {
@@ -31,7 +31,7 @@ import {useState, useEffect} from 'react';
  * RCD 목록을 보여주는 스크린 컴포넌트
  * @param route - 네비게이션 라우트 파라미터 (RCD 타입 정보 포함)
  */
-const RCDListScreen = ({
+export const RCDListScreen = ({
   route,
 }: {
   route: RouteProp<HomeStackParamList, 'RCDList'>;
@@ -122,5 +122,3 @@ const RCDListScreen = ({
     </BG>
   );
 };
-
-export default RCDListScreen;

@@ -2,7 +2,7 @@ import {BG} from '@components/BG';
 import {Text} from '@components/Text';
 import LottieView from 'lottie-react-native';
 import {View} from 'react-native';
-const LoadingScreen = () => {
+export const LoadingScreen = () => {
 
   return (
       <BG type="main">
@@ -31,5 +31,3 @@ const LoadingScreen = () => {
   </BG>
   );
 };
-
-export default LoadingScreen;

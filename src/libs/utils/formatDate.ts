@@ -1,5 +1,5 @@
 // YYYY. MM. DD
-const formatDate = (dateString: string) => {
+export const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
@@ -11,4 +11,3 @@ const formatDate = (dateString: string) => {
   return formattedDate;
 };
 
-export default formatDate;

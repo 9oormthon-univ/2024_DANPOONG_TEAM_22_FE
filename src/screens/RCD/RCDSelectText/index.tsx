@@ -127,7 +127,7 @@ const SelectButton = ({
  * RCD 텍스트 선택 화면 컴포넌트
  * 사용자가 녹음할 텍스트를 선택하는 화면
  */
-const RCDSelectText = ({
+export const RCDSelectTextScreen = ({
   route,
 }: {
   route: RouteProp<HomeStackParamList, 'RCDSelectText'>;
@@ -191,5 +191,3 @@ const RCDSelectText = ({
     </BG>
   );
 };
-
-export default RCDSelectText;

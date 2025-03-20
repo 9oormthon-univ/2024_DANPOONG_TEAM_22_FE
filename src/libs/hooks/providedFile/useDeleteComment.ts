@@ -2,7 +2,7 @@ import {deleteComment} from '@apis/providedFile';
 import {QueryClient, useMutation} from '@tanstack/react-query';
 import {CommentRequestData} from '@type/api/providedFile';
 
-const useDeleteComment = () => {
+export const useDeleteComment = () => {
   const queryClient = new QueryClient();
   return useMutation({
     mutationFn: (data: CommentRequestData) => deleteComment(data),
@@ -11,4 +11,3 @@ const useDeleteComment = () => {
   });
 };
 
-export default useDeleteComment;

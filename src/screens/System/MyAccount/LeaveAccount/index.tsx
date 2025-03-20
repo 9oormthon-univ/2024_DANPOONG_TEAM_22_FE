@@ -10,7 +10,7 @@ import { useState } from "react";
 import {Button} from "@components/Button";
 import {TextInput} from "@components/TextInput";
 
-const LeaveAccountScreen = () => {
+export const LeaveAccountScreen = () => {
     const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
     const [selectedReasons, setSelectedReasons] = useState<string[]>([]);
     const [detailReason, setDetailReason] = useState('');
@@ -108,7 +108,6 @@ const LeaveAccountScreen = () => {
     );
 };
 
-export default LeaveAccountScreen;
 
 const ReasonItem = ({
     reason,

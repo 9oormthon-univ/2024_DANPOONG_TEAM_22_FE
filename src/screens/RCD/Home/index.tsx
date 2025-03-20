@@ -25,7 +25,7 @@ import {trackEvent} from '@utils/tracker';
 import {useEffect, useState} from 'react';
 
 // * 홈 화면 컴포넌트 * 청년들의 수를 표시하고 녹음 유형을 선택할 수 있는 메인 화면
-const HomeScreen = () => {
+export const HomeScreen = () => {
   // 상태 관리
   const [nickname, setNickname] = useState('');
   const [youthNum, setYouthNum] = useState<number>(999);
@@ -86,7 +86,6 @@ const HomeScreen = () => {
     </BG>
   );
 };
-export default HomeScreen;
 
 /**
  * 녹음 유형 선택 버튼 컴포넌트

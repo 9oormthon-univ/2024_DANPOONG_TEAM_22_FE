@@ -1,14 +1,14 @@
-import AppBar from "@components/atom/AppBar";
+import {AppBar} from "@components/AppBar";
 import {BG} from "@components/BG";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 import { SystemStackParamList } from "@type/nav/SystemStackParamList";
 import KakaoLogo from "@assets/svgs/KakaoLogo.svg";
 import { View } from "react-native";
-import Text from "@components/atom/Text";
+import { Text } from "@components/Text";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const ConnectedAccountScreen = () => {
+export const ConnectedAccountScreen = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
   const [email, setEmail] = useState('');
   useEffect(() => {
@@ -35,4 +35,3 @@ const ConnectedAccountScreen = () => {
   </BG>;
 };
 
-export default ConnectedAccountScreen;

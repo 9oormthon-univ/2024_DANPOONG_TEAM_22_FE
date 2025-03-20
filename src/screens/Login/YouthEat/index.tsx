@@ -248,4 +248,4 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
   );
 };
 
-export default YouthEatScreen;
+export {YouthEatScreen};

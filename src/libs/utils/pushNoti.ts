@@ -1,5 +1,5 @@
 import notifee, {AndroidImportance, EventType} from '@notifee/react-native';
-import navigateToYouthListenScreen from '@utils/navigateToYouthListenScreen';
+import {navigateToYouthListenScreen} from '@utils/navigateToYouthListenScreen';
 import {trackEvent} from '@utils/tracker';
 
 export type RemoteMessageData = {alarmId: string};
@@ -59,6 +59,6 @@ notifee.onBackgroundEvent(async ({type, detail}) => {
   console.log('notifee onBackgroundEvent', {type, detail});
 });
 
-export default {
+export const pushNoti = {
   displayNotification,
 };

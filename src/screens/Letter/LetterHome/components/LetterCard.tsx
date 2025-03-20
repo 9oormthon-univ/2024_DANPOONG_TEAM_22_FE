@@ -2,7 +2,7 @@ import MoreDotIcon from '@assets/svgs/moreDot.svg';
 import {ShadowView} from '@components/ShadowView';
 import {Text} from '@components/Text';
 import {LetterResponseData} from '@type/api/providedFile';
-import formatDate from '@utils/formatDate';
+import {formatDate} from '@utils/formatDate';
 import {Image, Pressable, View} from 'react-native';
 
 type LetterCardProps = {
@@ -10,7 +10,7 @@ type LetterCardProps = {
   onPressMoreDot?: () => void;
 };
 
-const LetterCard = ({letter, onPressMoreDot}: Readonly<LetterCardProps>) => {
+export const LetterCard = ({letter, onPressMoreDot}: Readonly<LetterCardProps>) => {
   const renderCategoryText = () => {
     if (letter.alarmType === '위로' || letter.alarmType === '칭찬') {
       return (
@@ -98,5 +98,3 @@ const LetterCard = ({letter, onPressMoreDot}: Readonly<LetterCardProps>) => {
     </Pressable>
   );
 };
-
-export default LetterCard;

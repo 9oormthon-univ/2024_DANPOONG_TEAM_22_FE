@@ -11,17 +11,17 @@ import { getVoicefilesRetention, VoicefilesRetentionResponse } from "@apis/Syste
 // utils
 import { redirectToAuthScreen } from "@utils/redirectToAuthScreen";
 // components
-import Text from "@components/atom/Text";
+import {Text} from "@components/Text";
 import {BG} from "@components/BG";
-import AppBar from "@components/atom/AppBar";
-import Button from "@components/atom/Button";
-import FlexableMargin from "@components/atom/FlexableMargin";
+import {AppBar} from "@components/AppBar";
+import {Button} from "@components/Button";
+import {FlexableMargin} from "@components/FlexableMargin";
 // assets
 import DiaICon from "@assets/svgs/Dia.svg";
 import HeartIcon from "@assets/svgs/Heart.svg";
 import LetterIcon from "@assets/svgs/Letter.svg";
 
-const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'LeaveAccount2'>}) => {
+export const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'LeaveAccount2'>}) => {
     const windowHeight = Dimensions.get('window').height;
     const windowWidth = Dimensions.get('window').width;
     const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
@@ -173,4 +173,3 @@ const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'L
     );
 };
 
-export default LeaveAccount2Screen;

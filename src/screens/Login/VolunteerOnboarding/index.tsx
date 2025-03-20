@@ -81,7 +81,7 @@ const Page1 = ({nickname, onNext}: Readonly<PageProps>) => {
         <RNText 
           className="text-yellow200 font-[Voltaire-Regular]"
           style={{fontSize: 48}}>
-          “
+          "
         </RNText>
         <RNText
           className="text-yellow200 text-center font-[LeeSeoyun-Regular] mb-[26]"
@@ -91,7 +91,7 @@ const Page1 = ({nickname, onNext}: Readonly<PageProps>) => {
         <RNText
           className="text-yellow200 font-[Voltaire-Regular]"
           style={{fontSize: 48}}>
-          ”
+          "
         </RNText>
         <Text
           type="body2"
@@ -374,4 +374,4 @@ const VolunteerOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
   );
 };
 
-export default VolunteerOnboardingScreen;
+export {VolunteerOnboardingScreen};

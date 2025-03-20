@@ -1,5 +1,5 @@
 //청년 알림 설정 수정 API
-import client from '@apis/client';
+import {client} from '@apis/client';
 
 export type PostAlarmSettingToggleRequest= {
   alarmCategory: 'WAKE_UP' | 'GO_OUT' | 'MEAL_BREAKFAST' | 'MEAL_LUNCH' | 'MEAL_DINNER' | 'SLEEP';

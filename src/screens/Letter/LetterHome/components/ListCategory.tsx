@@ -1,7 +1,7 @@
 import {Text} from '@components/Text';
 import {Pressable, ScrollView, Text as RNText, View} from 'react-native';
 
-const ListCategory = ({
+export const ListCategory = ({
   nickname,
   selectedFilterIdx,
   setSelectedFilterIdx,
@@ -66,5 +66,3 @@ const ListCategory = ({
     </View>
   );
 };
-
-export default ListCategory;

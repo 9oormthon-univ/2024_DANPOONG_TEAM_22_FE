@@ -582,4 +582,4 @@ const YouthOnboardingScreen = ({navigation}: Readonly<AuthProps>) => {
   );
 };
 
-export default YouthOnboardingScreen;
+export {YouthOnboardingScreen};

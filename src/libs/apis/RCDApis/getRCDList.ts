@@ -1,4 +1,4 @@
-import client from '@apis/client';
+import {client} from '@apis/client';
 import { RecordType } from '@type/RecordType';
 type RCDResponse ={
   timestamp: string;

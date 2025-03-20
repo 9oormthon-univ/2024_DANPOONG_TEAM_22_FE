@@ -3,7 +3,7 @@ import TextIcon from '@assets/svgs/splash/splash_text.svg';
 import {BG} from '@components/BG';
 import {View} from 'react-native';
 
-const SplashScreen = () => {
+export const SplashScreen = () => {
   return (
     <BG type="main">
       <View className="flex-1 justify-center items-center">
@@ -15,5 +15,3 @@ const SplashScreen = () => {
     </BG>
   );
 };
-
-export default SplashScreen;

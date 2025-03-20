@@ -1,9 +1,7 @@
 import {navigationRef} from 'App';
 
-const navigateToYouthOnboardingScreen = () => {
+export const navigateToYouthOnboardingScreen = () => {
   navigationRef.navigate('AuthStackNav', {
     screen: 'YouthOnboardingScreen',
   });
 };
-
-export default navigateToYouthOnboardingScreen;

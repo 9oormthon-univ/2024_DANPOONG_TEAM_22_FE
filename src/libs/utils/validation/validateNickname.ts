@@ -13,7 +13,7 @@ const NICKNAME_REGEX = /^[ㄱ-ㅎ가-힣ㅏ-ㅣa-zA-Z0-9]{2,10}$/;
 const SPACES_REGEX = /\s/;
 const SPECIAL_CHARS_REGEX = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
 
-const validateNickname = (text: string): ValidationResult => {
+export const validateNickname = (text: string): ValidationResult => {
   if (text === '') {
     return {
       isValid: false,
@@ -65,4 +65,3 @@ const validateNickname = (text: string): ValidationResult => {
   };
 };
 
-export default validateNickname;

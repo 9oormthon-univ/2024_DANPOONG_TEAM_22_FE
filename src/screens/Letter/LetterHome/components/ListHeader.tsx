@@ -4,7 +4,7 @@ import {ResultResponseData} from '@type/api/common';
 import {SummaryResponseData} from '@type/api/providedFile';
 import {View} from 'react-native';
 
-const ListHeader = ({
+export const ListHeader = ({
   nickname,
   summaryData,
 }: Readonly<{
@@ -88,5 +88,3 @@ const ListHeader = ({
     </View>
   );
 };
-
-export default ListHeader;

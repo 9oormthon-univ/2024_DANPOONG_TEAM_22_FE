@@ -1,23 +1,28 @@
-// React Native 및 기본 컴포넌트 import
-import {View} from 'react-native';
-// 커스텀 컴포넌트 import
+// React Native 및 기본 컴포넌트 임포트
+import {View, TextInput as RNTextInput, TouchableOpacity} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
+// 네비게이션 관련 임포트
+import {  NavigationProp, RouteProp, useFocusEffect, useNavigation } from '@react-navigation/native';
+import {HomeStackParamList} from '@type/nav/HomeStackParamList';
+
+// API 관련 임포트
 import {postVoicefilesAlarmIdSelf} from '@apis/RCDApis/postVoicefilesAlarmIdSelf';
+
+// 커스텀 컴포넌트 임포트
 import {AppBar} from '@components/AppBar';
 import {BG} from '@components/BG';
 import {Button} from '@components/Button';
 import {StarIMG} from '@components/StarIMG';
 import {Toast} from '@components/Toast';
 import {Text} from '@components/Text';
-import {TextInput as RNTextInput, TouchableOpacity} from 'react-native';
 import {ShadowView} from '@components/ShadowView';
-import { NavigationProp, RouteProp, useFocusEffect, useNavigation } from '@react-navigation/native';
-import {HomeStackParamList} from '@type/nav/HomeStackParamList';
+
+// 유틸리티 임포트
 import {trackEvent} from '@utils/tracker';
 import {useCallback, useEffect, useRef, useState} from 'react';
-import {ScrollView} from 'react-native-gesture-handler';
 
 //   RCD 텍스트 입력 화면 컴포넌트
-const RCDTextScreen = ({
+export const RCDTextScreen = ({
   route,
 }: {
   route: RouteProp<HomeStackParamList, 'RCDText'>;
@@ -158,7 +163,6 @@ const RCDTextScreen = ({
   );
 };
 
-export default RCDTextScreen;
 
 
 

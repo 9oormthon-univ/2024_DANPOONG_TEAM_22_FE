@@ -2,7 +2,7 @@ import {deleteLetter} from '@apis/providedFile';
 import {QueryClient, useMutation} from '@tanstack/react-query';
 import {ReportRequestData} from '@type/api/providedFile';
 
-const useDeleteLetter = () => {
+export const useDeleteLetter = () => {
   const queryClient = new QueryClient();
   return useMutation({
     mutationFn: (data: ReportRequestData) => deleteLetter(data),
@@ -11,4 +11,3 @@ const useDeleteLetter = () => {
   });
 };
 
-export default useDeleteLetter;

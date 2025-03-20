@@ -1,6 +1,6 @@
-import client from '@apis/client';
+import {client} from '@apis/client';
 
-type DeleteMemberResponse ={
+export type DeleteMemberResponse ={
     timestamp: string; 
     code: string;
     message: string;

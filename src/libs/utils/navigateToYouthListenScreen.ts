@@ -1,6 +1,6 @@
 import {navigationRef} from 'App';
 
-const navigateToYouthListenScreen = ({
+export const navigateToYouthListenScreen = ({
   alarmId,
 }: Readonly<{alarmId: number}>) => {
   navigationRef.navigate('YouthStackNav', {
@@ -10,5 +10,3 @@ const navigateToYouthListenScreen = ({
     },
   });
 };
-
-export default navigateToYouthListenScreen;

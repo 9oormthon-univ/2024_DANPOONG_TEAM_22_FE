@@ -10,7 +10,7 @@ type RCDWaveProps = {
   elapsedTime: number;
 };
 
-const RCDWave = ({volumeList, isPlaying, recording, isDone, elapsedTime}: RCDWaveProps) => {
+export const RCDWave = ({volumeList, isPlaying, recording, isDone, elapsedTime}: RCDWaveProps) => {
   const circleSize = 8;
   const lineSize = 1;
   // 웨이브 애니메이션을 위한 translateX 값
@@ -120,4 +120,3 @@ const RCDWave = ({volumeList, isPlaying, recording, isDone, elapsedTime}: RCDWav
     </View>
   );
 };
-export default RCDWave;

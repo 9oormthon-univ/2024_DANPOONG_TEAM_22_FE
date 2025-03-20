@@ -18,9 +18,9 @@ import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {AppBar} from '@components/AppBar';
 import { RCDNoticeSectionConstant } from '@constants/RCDNoticeSectionConstant';
 import { useState } from 'react';
-import { getTopText } from '@apis/RCDApis/getTopText';
-import { postAskGPT } from '@apis/RCDApis/postAskGPT';
-import { postSaveScript } from '@apis/RCDApis/postVoicefilesAlarmIdSelf';
+// import { getTopText } from '@apis/RCDApis/getTopText';
+// import { postAskGPT } from '@apis/RCDApis/postAskGPT';
+// import { postVoicefilesAlarmIdSelf } from '@apis/RCDApis/postVoicefilesAlarmIdSelf';
 
 /**
  * 주의사항 섹션 컴포넌트
@@ -53,7 +53,7 @@ const Section = ({
  * 녹음 전 주의사항 화면 컴포넌트
  * 녹음 시 유의해야 할 사항들을 안내하는 화면
  */
-const RCDNoticeScreen = ({
+export const RCDNoticeScreen = ({
   route,
 }: {
   route: RouteProp<HomeStackParamList, 'RCDNotice'>;
@@ -65,21 +65,21 @@ const RCDNoticeScreen = ({
   const [isLoading, setIsLoading] = useState(false);
  
   const handleNavigate = async () => {
-    if(type === 'INFO'){
-      try{
-        setIsLoading(true);
-        const alarmId = (await getTopText(item.children[0])).alarmId;
-        const script = (await postAskGPT(alarmId)).result.content;
-        const voiceFileId = (await postSaveScript(alarmId, script)).result.voiceFileId;
-        navigation.navigate('RCDRecord', {type, voiceFileId, content: script});
-      } catch (e) {
-        console.log(e);
-      } finally {
-        setIsLoading(false);
-      }
-    }else{
+    // if(type === 'INFO'){
+    //   try{
+    //     setIsLoading(true);
+    //     const alarmId = (await getTopText(item.children[0])).alarmId;
+    //     const script = (await postAskGPT(alarmId)).result.content;
+    //     const voiceFileId = (await postVoicefilesAlarmIdSelf(alarmId, script)).result.voiceFileId;
+    //     navigation.navigate('RCDRecord', {type, voiceFileId, content: script});
+    //   } catch (e) {
+    //     console.log(e);
+    //   } finally {
+    //     setIsLoading(false);
+    //   }
+    // }else{
       navigation.navigate('RCDSelectText', {type, item});
-    }
+    // }
   }
 
   return (
@@ -127,5 +127,3 @@ const RCDNoticeScreen = ({
     </BG>
   );
 };
-
-export default RCDNoticeScreen;

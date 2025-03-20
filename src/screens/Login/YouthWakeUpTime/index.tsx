@@ -128,4 +128,4 @@ const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {
   );
 };
 
-export default YouthWakeUpTimeScreen;
+export {YouthWakeUpTimeScreen};

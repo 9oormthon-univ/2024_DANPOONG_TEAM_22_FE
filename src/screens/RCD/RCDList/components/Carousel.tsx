@@ -1,10 +1,9 @@
-import React from 'react';
 import {Dimensions} from 'react-native';
-import Card from '@screens/RCD/RCDList/components/Card';
+import {Card} from '@screens/RCD/RCDList/components/Card';
 import {FlatList, GestureHandlerRootView} from 'react-native-gesture-handler';
 import {RCD} from '@apis/RCDApis/getRCDList';
 import {RecordType} from '@type/RecordType';
-const Carousel = ({entries, type}: {entries: RCD[]; type: RecordType}) => {
+export const Carousel = ({entries, type}: {entries: RCD[]; type: RecordType}) => {
   const windowWidth = Dimensions.get('window').width;
   const pageWidth = windowWidth - 60;
   const gap = 14; // 카드 간격
@@ -36,6 +35,3 @@ const Carousel = ({entries, type}: {entries: RCD[]; type: RecordType}) => {
     </GestureHandlerRootView>
   );
 };
-
-export default Carousel;
-

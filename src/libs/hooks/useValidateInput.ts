@@ -1,4 +1,4 @@
-import validateNickname from '@utils/validation/validateNickname';
+import {validateNickname} from '@utils/validation/validateNickname';
 import {useState} from 'react';
 
 export type ValidationResult = {
@@ -17,10 +17,8 @@ const VALIDATION_MAP: Record<
   nickname: validateNickname,
 };
 
-const useValidateInput = ({type}: Readonly<{type: ValidateInputType}>) => {
+export const useValidateInput = ({type}: Readonly<{type: ValidateInputType}>) => {
   const [value, setValue] = useState('');
   const {isValid, isError, isSuccess, message} = VALIDATION_MAP[type](value);
   return {value, setValue, isValid, isError, isSuccess, message};
 };
-
-export default useValidateInput;

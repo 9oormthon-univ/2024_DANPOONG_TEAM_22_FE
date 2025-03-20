@@ -21,7 +21,7 @@ import Notice4 from '@assets/svgs/Notice4.svg';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {trackEvent} from '@utils/tracker';
 
-const RCDErrorScreen = ({
+export const RCDErrorScreen = ({
   route,
 }: {
   route: RouteProp<HomeStackParamList, 'RCDError'>;
@@ -99,5 +99,3 @@ const RCDErrorScreen = ({
     </BG>
   );
 };
-
-export default RCDErrorScreen;

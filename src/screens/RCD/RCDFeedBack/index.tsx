@@ -16,7 +16,7 @@ import {trackEvent} from '@utils/tracker';
 import {useEffect, useRef, useState} from 'react';
 
 //  RCD 피드백 화면 컴포넌트 녹음 완료 후 로딩 및 완료 상태를 보여주는 화면
-const RCDFeedBackScreen = () => {
+export const RCDFeedBackScreen = () => {
   const [nickname, setNickname] = useState('');
   // 애니메이션 값 관리
   const opValue = useRef(new Animated.Value(0)).current;
@@ -97,5 +97,4 @@ const RCDFeedBackScreen = () => {
   );
 };
 
-export default RCDFeedBackScreen;
 

@@ -6,9 +6,9 @@ import { SystemStackParamList } from '@type/nav/SystemStackParamList';
 import {SystemButton} from '@components/SystemButton';
 import {Modal} from '@components/Modal';
 import {Text} from '@components/Text';
-import useModal from '@hooks/useModal';
+import { useModal } from '@hooks/useModal';
 import { handleLogout } from '@utils/handleLogout';
-const MyAccountScreen = () => {
+export const MyAccountScreen = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
   const {visible, openModal, closeModal} = useModal();
   
@@ -32,4 +32,3 @@ const MyAccountScreen = () => {
   </>;
 };
 
-export default MyAccountScreen;

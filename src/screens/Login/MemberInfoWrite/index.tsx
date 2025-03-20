@@ -1,4 +1,4 @@
-import uploadImageToS3 from '@apis/util';
+import { uploadImageToS3 } from '@apis/util';
 import {AppBar} from '@components/AppBar';
 import {BG} from '@components/BG';
 import {Button} from '@components/Button';
@@ -6,15 +6,15 @@ import {DismissKeyboardView} from '@components/DismissKeyboardView';
 import {Modal} from '@components/Modal';
 import {Text} from '@components/Text';
 import {KEYBOARD_DELAY_MS} from '@constants/common';
-import usePostMember from '@hooks/auth/usePostMember';
-import useLoading from '@hooks/useLoading';
-import useModal from '@hooks/useModal';
+import { usePostMember } from '@hooks/auth/usePostMember';
+import { useLoading } from '@hooks/useLoading';
+import { useModal } from '@hooks/useModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {Gender, MemberRequestData, Role} from '@type/api/member';
-import calculateAge from '@utils/calculateAge';
-import formatDateDot from '@utils/formatDateDot';
+import { calculateAge } from '@utils/calculateAge';
+import { formatDateDot } from '@utils/formatDateDot';
 import {trackEvent} from '@utils/tracker';
 import {useEffect, useState} from 'react';
 import {Alert, Image, Keyboard, Pressable, View} from 'react-native';
@@ -25,7 +25,7 @@ type AuthProps = NativeStackScreenProps<
   'MemberInfoWriteScreen'
 >;
 
-const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
+export const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const {nickname, imageUri, role} = route.params;
   const [birthday, setBirthday] = useState<Date | null>(null);
@@ -251,5 +251,3 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
     </BG>
   );
 };
-
-export default MemberInfoWriteScreen;

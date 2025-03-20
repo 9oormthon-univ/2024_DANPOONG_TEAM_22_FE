@@ -13,8 +13,8 @@ import BackIcon from '@assets/svgs/Back.svg';
 import ProfileIcon from '@assets/svgs/Profile.svg';
 import ProfileIcon2 from '@assets/svgs/Profile2.svg';
 import KakaoLogo from '@assets/svgs/KakaoLogo.svg';
-// 시스템 화면 컴포넌트
-const SystemScreen = () => {
+
+export const SystemScreen = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
@@ -55,7 +55,6 @@ const SystemScreen = () => {
     </BG>
   );
 };
-export default SystemScreen;
 
 const AccountButton = ({nickname, email, role, profileImage}:{nickname: string, email: string, role: string, profileImage: string})=>{
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();

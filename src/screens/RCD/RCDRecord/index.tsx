@@ -13,10 +13,10 @@ import {postVoiceAnalysis} from '@apis/RCDApis/postVoiceAnalysis';
 // 컴포넌트 임포트
 import {AppBar} from '@components/AppBar';
 import {BG} from '@components/BG';
-import RCDTimer from '@screens/RCD/RCDRecord/components/RCDTimer';
-import RCDWave from '@screens/RCD/RCDRecord/components/RCDWave';
+import {RCDTimer} from '@screens/RCD/RCDRecord/components/RCDTimer';
+import {RCDWave} from '@screens/RCD/RCDRecord/components/RCDWave';
 import {Text} from '@components/Text';
-import RCDBtnBar from '@screens/RCD/RCDRecord/components/RCDBtnBar';
+import {RCDBtnBar} from '@screens/RCD/RCDRecord/components/RCDBtnBar';
 import {FlexableMargin} from '@components/FlexableMargin';
 import {Spinner} from '@components/Spinner';
 // 녹음 관련 임포트
@@ -37,7 +37,7 @@ import {
 } from './RecordAndroid';
 
 // 녹음 화면 컴포넌트
-const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDRecord'>}) => {
+export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDRecord'>}) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
   const windowHeight = Dimensions.get("window").height;
 
@@ -357,5 +357,3 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
     </BG>
   );
 };
-
-export default RCDRecordScreen;

@@ -2,7 +2,7 @@ import EmptyLetterIcon from '@assets/svgs/emptyLetter.svg';
 import {Text} from '@components/Text';
 import {View} from 'react-native';
 
-const ListEmpty = () => {
+export const ListEmpty = () => {
   return (
     <View className="items-center justify-center pt-[40]">
       <EmptyLetterIcon />
@@ -15,5 +15,3 @@ const ListEmpty = () => {
     </View>
   );
 };
-
-export default ListEmpty;

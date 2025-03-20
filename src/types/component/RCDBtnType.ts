@@ -1,7 +1,7 @@
 
 export type RCDBtnProps = {
     record: () => void
-    play: (uri: string) => void
+    play: () => void
     isPlaying: boolean
     isDone: boolean
     recording: boolean

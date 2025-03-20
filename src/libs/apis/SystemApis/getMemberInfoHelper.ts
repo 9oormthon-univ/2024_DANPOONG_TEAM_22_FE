@@ -1,6 +1,6 @@
-import client from '@apis/client';
+import {client} from '@apis/client';
 
-type GetMemberInfoHelperResponse ={
+export type GetMemberInfoHelperResponse ={
     timestamp: string;
     code: string;
     message: string;

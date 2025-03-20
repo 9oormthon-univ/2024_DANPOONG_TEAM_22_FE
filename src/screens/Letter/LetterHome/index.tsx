@@ -6,18 +6,18 @@ import {Toast} from '@components/Toast';
 import {Text} from '@components/Text';
 import {COLORS} from '@constants/Colors';
 import {Portal} from '@gorhom/portal';
-import useGetAlarmCategory from '@hooks/alarm/useGetAlarmCategory';
-import useDeleteLetter from '@hooks/providedFile/useDeleteLetter';
-import useGetLetters from '@hooks/providedFile/useGetLetters';
-import useGetSummary from '@hooks/providedFile/useGetSummary';
-import usePostReport from '@hooks/providedFile/usePostReport';
-import useModal from '@hooks/useModal';
+import {useGetAlarmCategory} from '@hooks/alarm/useGetAlarmCategory';
+import {useDeleteLetter} from '@hooks/providedFile/useDeleteLetter';
+import {useGetLetters} from '@hooks/providedFile/useGetLetters';
+import {useGetSummary} from '@hooks/providedFile/useGetSummary';
+import {usePostReport} from '@hooks/providedFile/usePostReport';
+import {useModal} from '@hooks/useModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import LetterCard from '@screens/Letter/LetterHome/components/LetterCard';
-import ListCategory from '@screens/Letter/LetterHome/components/ListCategory';
-import ListEmpty from '@screens/Letter/LetterHome/components/ListEmpty';
-import ListHeader from '@screens/Letter/LetterHome/components/ListHeader';
+import { LetterCard } from '@screens/Letter/LetterHome/components/LetterCard';
+import { ListCategory } from '@screens/Letter/LetterHome/components/ListCategory';
+import { ListEmpty } from '@screens/Letter/LetterHome/components/ListEmpty';
+import { ListHeader } from '@screens/Letter/LetterHome/components/ListHeader';
 import {LetterResponseData} from '@type/api/providedFile';
 import {LetterStackParamList} from '@type/nav/LetterStackParamList';
 import {useEffect, useState} from 'react';
@@ -37,7 +37,7 @@ type LetterProps = NativeStackScreenProps<
 
 type Category = {category: string; label: string};
 
-const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
+export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   const [nickname, setNickname] = useState('');
   const [selectedFilterIdx, setSelectedFilterIdx] = useState(0);
   const [parentCategories, setParentCategories] = useState<
@@ -81,7 +81,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   } = useGetLetters({pageable: {page: 0, size: 10, sort: 'createdAt,desc'}});
 
   const lettersFlatData =
-    lettersData?.pages.flatMap(page => page.result.content) || [];
+    lettersData?.pages.flatMap((page: any) => page.result.content) || [];
 
   useEffect(() => {
     (async () => {
@@ -116,7 +116,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
     console.log({alarmCategoryData});
     const categories: Category[] = [
       {category: 'ALL', label: '전체'},
-      ...alarmCategoryData.result.map(item => ({
+      ...alarmCategoryData.result.map((item: any) => ({
         category: item.alarmCategory,
         label: item.alarmCategoryKoreanName,
       })),
@@ -174,7 +174,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
     ...(selectedFilterIdx === 0
       ? lettersFlatData
       : lettersFlatData.filter(
-          letter =>
+          (letter: LetterResponseData) =>
             letter.alarmType === parentCategories[selectedFilterIdx]?.label,
         )),
   ];
@@ -192,7 +192,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
           <ListHeader nickname={nickname} summaryData={summaryData} />
         }
         stickyHeaderIndices={[1]}
-        renderItem={({item}) => (
+        renderItem={({item}: {item: LetterResponseData}) => (
           <>
             {item.providedFileId === -1 && (
               <>
@@ -249,14 +249,8 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
                       marginRight: 30,
                       marginBottom: 43,
                     },
-                  ]}>
-                  <ListCategory
-                    nickname={nickname}
-                    selectedFilterIdx={selectedFilterIdx}
-                    setSelectedFilterIdx={setSelectedFilterIdx}
-                    parentCategories={parentCategories}
-                  />
-                </Skeleton>
+                  ]}
+                />
                 <Skeleton
                   isLoading={isLettersLoading}
                   boneColor={COLORS.blue500}
@@ -290,16 +284,13 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
               </>
             )}
             {item.providedFileId !== -1 && (
-              <View className="px-[30]">
-                <LetterCard
-                  letter={item}
-                  onPressMoreDot={() => {
-                    setClickedMoreDot(true);
-                    setSelectedFileId(item.providedFileId);
-                  }}
-                />
-                <View className="mb-[30]" />
-              </View>
+              <LetterCard
+                letter={item}
+                onPressMoreDot={() => {
+                  setSelectedFileId(item.providedFileId);
+                  setClickedMoreDot(true);
+                }}
+              />
             )}
           </>
         )}
@@ -391,5 +382,3 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
     </View>
   );
 };
-
-export default LetterHomeScreen;

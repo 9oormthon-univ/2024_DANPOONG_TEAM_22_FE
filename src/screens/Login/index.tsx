@@ -2,7 +2,7 @@ import {postLogin} from '@apis/auth';
 import KakaoIcon from '@assets/svgs/kakao.svg';
 import {BG} from '@components/BG';
 import {Text} from '@components/Text';
-import useGetMember from '@hooks/auth/useGetMember';
+import { useGetMember } from '@hooks/auth/useGetMember';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   getProfile,
@@ -23,7 +23,7 @@ type AuthProps = NativeStackScreenProps<AuthStackParamList, 'LoginScreen'>;
 type RootProps = NativeStackScreenProps<RootStackParamList>;
 type Props = CompositeScreenProps<AuthProps, RootProps>;
 
-const LoginScreen = ({navigation}: Readonly<Props>) => {
+export const LoginScreen = ({navigation}: Readonly<Props>) => {
   const [token, setToken] = useState<string | null>(null); // 액세스 토큰
   const {refetch: refetchMember} = useGetMember(token);
 
@@ -155,5 +155,3 @@ const LoginScreen = ({navigation}: Readonly<Props>) => {
     </BG>
   );
 };
-
-export default LoginScreen;

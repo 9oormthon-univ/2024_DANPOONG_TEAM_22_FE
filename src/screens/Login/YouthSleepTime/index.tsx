@@ -127,4 +127,4 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
   );
 };
 
-export default YouthSleepTimeScreen;
+export {YouthSleepTimeScreen};

@@ -1,6 +1,6 @@
-import client from '@apis/client';
+import {client} from '@apis/client';
 
-export type PatchMemberInfoYouthRequest= {
+export type PatchMemberInfoYouthRequest = {
   wakeUpTime: string;
   sleepTime: string;
   breakfast: string;

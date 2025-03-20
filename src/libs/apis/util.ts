@@ -3,7 +3,7 @@ import {Buffer} from 'buffer';
 import AWS from 'aws-sdk';
 import RNFS from 'react-native-fs';
 
-const uploadImageToS3 = async (imageUri: string) => {
+export const uploadImageToS3 = async (imageUri: string) => {
   if (!imageUri) {
     return;
   }
@@ -25,7 +25,7 @@ const uploadImageToS3 = async (imageUri: string) => {
     });
 
     // Uploading files to the bucket
-    s3.upload(params, function (err, data) {
+    s3.upload(params, function (err: any, data: any) {
       if (err) {
         console.log(err);
         reject(err);
@@ -37,4 +37,3 @@ const uploadImageToS3 = async (imageUri: string) => {
   });
 };
 
-export default uploadImageToS3;

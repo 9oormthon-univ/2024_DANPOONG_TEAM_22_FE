@@ -8,7 +8,7 @@ import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {RecordType} from '@type/RecordType';
 import {trackEvent} from '@utils/tracker';
 import {View} from 'react-native';
-const Card = ({
+export const Card = ({
   item,
   gap,
   type,
@@ -58,4 +58,3 @@ const Card = ({
     </View>
   );
 };
-export default Card;
