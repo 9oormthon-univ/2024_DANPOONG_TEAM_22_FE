@@ -2,7 +2,7 @@ import {postReport} from '@apis/providedFile';
 import {QueryClient, useMutation} from '@tanstack/react-query';
 import {ReportRequestData} from '@type/api/providedFile';
 
-const usePostReport = () => {
+export const usePostReport = () => {
   const queryClient = new QueryClient();
   return useMutation({
     mutationFn: (data: ReportRequestData) => postReport(data),
@@ -10,5 +10,3 @@ const usePostReport = () => {
     onError: error => console.log(error),
   });
 };
-
-export default usePostReport;

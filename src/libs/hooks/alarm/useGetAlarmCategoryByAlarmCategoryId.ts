@@ -2,7 +2,7 @@ import {getAlarmCategoryByAlarmCategoryId} from '@apis/alarm';
 import {useQuery} from '@tanstack/react-query';
 import {AlarmCategoryRequestData} from '@type/api/alarm';
 
-const useGetAlarmCategoryByAlarmCategoryId = ({
+export const useGetAlarmCategoryByAlarmCategoryId = ({
   alarmCategoryId,
 }: Readonly<AlarmCategoryRequestData>) => {
   return useQuery({
@@ -11,5 +11,3 @@ const useGetAlarmCategoryByAlarmCategoryId = ({
     enabled: !!alarmCategoryId,
   });
 };
-
-export default useGetAlarmCategoryByAlarmCategoryId;

@@ -2,9 +2,9 @@ import {
   BottomTabNavigationOptions,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
-import HomeStackNav from '@stackNav/Home';
-import LetterStackNav from '@stackNav/Letter';
-import SystemStackNav from '@stackNav/System';
+import {HomeStackNav} from '@stackNav/Home';
+import {LetterStackNav} from '@stackNav/Letter';
+import {SystemStackNav} from '@stackNav/System';
 import HomeIcon from '@assets/svgs/Home.svg';
 import LetterIcon from '@assets/svgs/Letter.svg';
 import SystemIcon from '@assets/svgs/System.svg';
@@ -12,7 +12,7 @@ import {TabNavOptions} from '@constants/TabNavOptions';
 
 const Tab = createBottomTabNavigator();
 
-const AppTabNav = () => {
+export const AppTabNav = () => {
   return (
     <Tab.Navigator screenOptions={TabNavOptions as BottomTabNavigationOptions}>
       <Tab.Screen
@@ -57,5 +57,3 @@ const AppTabNav = () => {
     </Tab.Navigator>
   );
 };
-
-export default AppTabNav;

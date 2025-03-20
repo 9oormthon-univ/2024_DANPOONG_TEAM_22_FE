@@ -2,7 +2,7 @@ import {getLetters} from '@apis/providedFile';
 import {useInfiniteQuery} from '@tanstack/react-query';
 import {LettersRequestData} from '@type/api/providedFile';
 
-const useGetLetters = ({
+export const useGetLetters = ({
   parentCategory,
   pageable,
 }: Readonly<LettersRequestData>) => {
@@ -20,4 +20,3 @@ const useGetLetters = ({
   });
 };
 
-export default useGetLetters;

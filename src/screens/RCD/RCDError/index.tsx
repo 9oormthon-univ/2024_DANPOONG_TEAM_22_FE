@@ -7,10 +7,10 @@ import {
 import {View} from 'react-native';
 
 // 커스텀 컴포넌트 임포트
-import AppBar from '@components/atom/AppBar';
-import BG from '@components/atom/BG';
-import Button from '@components/atom/Button';
-import Txt from '@components/atom/Txt';
+import {AppBar} from '@components/AppBar';
+import {BG} from '@components/BG';
+import {Button} from '@components/Button';
+import {Text} from '@components/Text';
 
 // SVG 아이콘 임포트
 import Notice2 from '@assets/svgs/Notice2.svg';
@@ -21,7 +21,7 @@ import Notice4 from '@assets/svgs/Notice4.svg';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {trackEvent} from '@utils/tracker';
 
-const RCDErrorScreen = ({
+export const RCDErrorScreen = ({
   route,
 }: {
   route: RouteProp<HomeStackParamList, 'RCDError'>;
@@ -57,7 +57,7 @@ const RCDErrorScreen = ({
           )}
           <View className="mt-[43]" />
           {/* 오류 메시지 제목 */}
-          <Txt
+          <Text
             type="title2"
             text={
               errorType === 'noisy'
@@ -72,7 +72,7 @@ const RCDErrorScreen = ({
           />
           <View className="mt-[25]" />
           {/* 오류 메시지 부제목 */}
-          <Txt
+          <Text
             type="body4"
             text={
               errorType === 'noisy'
@@ -99,5 +99,3 @@ const RCDErrorScreen = ({
     </BG>
   );
 };
-
-export default RCDErrorScreen;

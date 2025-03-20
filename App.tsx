@@ -16,14 +16,14 @@ import {
 } from '@react-navigation/native';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
-import pushNoti, {RemoteMessageData} from '@utils/pushNoti';
-import AppInner from 'AppInner';
+import {pushNoti,RemoteMessageData} from '@utils/pushNoti';
+import {AppInner} from 'AppInner';
 import {useEffect, useRef, useState} from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
-import CustomToast from '@components/atom/CustomToast';
+import {CustomToast} from '@components/CustomToast';
 import {PortalProvider} from '@gorhom/portal';
-import navigateToYouthListenScreen from '@utils/navigateToYouthListenScreen';
+import {navigateToYouthListenScreen} from '@utils/navigateToYouthListenScreen';
 import {trackAppStart, trackEvent, trackScreenView} from '@utils/tracker';
 import Toast from 'react-native-toast-message';
 
@@ -39,7 +39,7 @@ const queryClient = new QueryClient({
 // 네비게이션 참조 생성
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
-function App(): React.JSX.Element {
+export function App(): React.JSX.Element {
   const routeNameRef = useRef<string | undefined>();
   const [isNavigationReady, setIsNavigationReady] = useState(false);
 
@@ -189,5 +189,3 @@ function App(): React.JSX.Element {
     </QueryClientProvider>
   );
 }
-
-export default App;
