@@ -1,14 +1,14 @@
-import AppBar from "@components/atom/AppBar";
-import BG from "@components/atom/BG";
-import Txt from "@components/atom/Txt";
+import {AppBar} from "@components/AppBar";
+import {BG} from "@components/BG";
+import {Text} from "@components/Text";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 import { SystemStackParamList } from "@type/nav/SystemStackParamList";
 import { View, Pressable, KeyboardAvoidingView, ScrollView, Platform } from "react-native";
 import { LeaveReasons } from "@constants/LeaveReasons";
 import { useState } from "react";
-import Button from "@components/atom/Button";
-import TextInput from "@components/atom/TextInput";
+import {Button} from "@components/Button";
+import {TextInput} from "@components/TextInput";
 
 const LeaveAccountScreen = () => {
     const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
@@ -38,8 +38,8 @@ const LeaveAccountScreen = () => {
                     <View className="flex-1 items-center">
                         {/* 안내 문구 */}
                         <View className="py-[41] px-px gap-[3] w-full">
-                            <Txt type="title4" text="탈퇴하는 이유가 무엇인가요?" className="text-white" />
-                            <Txt type="body4" text="더 나은 내일모래가 될 수 있도록 의견을 들려주세요" className="text-gray300" />
+                            <Text type="title4" text="탈퇴하는 이유가 무엇인가요?" className="text-white" />
+                            <Text type="body4" text="더 나은 내일모래가 될 수 있도록 의견을 들려주세요" className="text-gray300" />
                         </View>
                         {/* 구분선 */}
                         <View className="w-full h-[5px] bg-blue600"/>
@@ -129,7 +129,7 @@ const ReasonItem = ({
                 <View className="w-[6px] h-[10px] border-r-2 border-b-2 border-blue700 rotate-45" />
               )}
             </View>
-            <Txt type="body3" text={reason} className="text-white" />
+            <Text type="body3" text={reason} className="text-white" />
         </Pressable>
     );
 };

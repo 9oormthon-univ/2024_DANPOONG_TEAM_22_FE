@@ -1,9 +1,9 @@
-import AnimatedView from '@components/atom/AnimatedView';
-import BottomMenu from '@components/atom/BottomMenu';
-import Button from '@components/atom/Button';
-import Modal from '@components/atom/Modal';
-import Toast from '@components/atom/Toast';
-import Txt from '@components/atom/Txt';
+import {AnimatedView} from '@components/AnimatedView';
+import {BottomMenu} from '@components/BottomMenu';
+import {Button} from '@components/Button';
+import {Modal} from '@components/Modal';
+import {Toast} from '@components/Toast';
+import {Text} from '@components/Text';
 import {COLORS} from '@constants/Colors';
 import {Portal} from '@gorhom/portal';
 import useGetAlarmCategory from '@hooks/alarm/useGetAlarmCategory';
@@ -342,7 +342,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
         onConfirm={handleReportClick}
         buttonRatio="1:1"
         confirmText="신고">
-        <Txt
+        <Text
           type="title4"
           text={`[${
             lettersFlatData.find(
@@ -351,7 +351,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
           }]의 글을 신고하시겠어요?`}
           className="text-white mt-[26] mb-[13] text-center"
         />
-        <Txt
+        <Text
           type="caption1"
           text={`신고한 글은 삭제되며,\n작성자는 이용이 제한될 수 있어요`}
           className="text-gray300 mb-[29] text-center"
@@ -365,7 +365,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
         onConfirm={handleDeleteClick}
         buttonRatio="1:1"
         confirmText="삭제">
-        <Txt
+        <Text
           type="title4"
           text={`[${
             lettersFlatData.find(
@@ -374,7 +374,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
           }]의 글을 삭제하시겠어요?`}
           className="text-white mt-[26] mb-[13] text-center"
         />
-        <Txt
+        <Text
           type="caption1"
           text="삭제한 글은 되돌릴 수 없어요"
           className="text-gray300 mb-[29] text-center"

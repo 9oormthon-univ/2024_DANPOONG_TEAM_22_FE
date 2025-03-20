@@ -4,13 +4,13 @@ import {
 } from '@apis/SystemApis/patchMemberInfo';
 import uploadImageToS3 from '@apis/util';
 import ProfileCameraIcon from '@assets/svgs/ProfileCamera.svg';
-import AnimatedView from '@components/atom/AnimatedView';
-import AppBar from '@components/atom/AppBar';
-import BG from '@components/atom/BG';
-import Button from '@components/atom/Button';
-import Modal from '@components/atom/Modal';
-import TextInput from '@components/atom/TextInput';
-import Txt from '@components/atom/Txt';
+import {AnimatedView} from '@components/AnimatedView';
+import {AppBar} from '@components/AppBar';
+import {BG} from '@components/BG';
+import {Button} from '@components/Button';
+import {Modal} from '@components/Modal';
+import {TextInput} from '@components/TextInput';
+import {Text} from '@components/Text';
 import useModal from '@hooks/useModal';
 import useValidateInput from '@hooks/useValidateInput';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -200,7 +200,7 @@ const ModifyInfoScreen = () => {
         <View className="h-[39]" />
         {/* 닉네임 수정 Section */}
         <View className="w-full px-px gap-y-[10]">
-          <Txt
+          <Text
             type="caption1"
             text="닉네임"
             className="ml-[9] mb-[8px] text-gray200"
@@ -229,7 +229,7 @@ const ModifyInfoScreen = () => {
                 style={{borderRadius: 10}}
                 className="bg-blue500 mb-[24]">
                 <View className="h-[43] justify-center items-center">
-                  <Txt
+                  <Text
                     type="caption1"
                     text="프로필 사진 설정"
                     className="text-gray300"
@@ -239,7 +239,7 @@ const ModifyInfoScreen = () => {
                 <Pressable
                   className="h-[61] justify-center items-center"
                   onPress={() => !isLoading && selectImage()}>
-                  <Txt
+                  <Text
                     type="body3"
                     text="앨범에서 사진 선택"
                     className="text-white"
@@ -249,7 +249,7 @@ const ModifyInfoScreen = () => {
                 <Pressable
                   className="h-[61] justify-center items-center"
                   onPress={() => !isLoading && handleDefaultImageClick()}>
-                  <Txt
+                  <Text
                     type="body3"
                     text="기본 이미지 적용"
                     className="text-white"
@@ -273,12 +273,12 @@ const ModifyInfoScreen = () => {
           navigation.goBack();
         }}
         buttonRatio="1:1">
-        <Txt
+        <Text
           type="title4"
           text="수정을 취소하고 나가시겠어요?"
           className="text-white mt-[32] mb-[5]"
         />
-        <Txt
+        <Text
           type="caption1"
           text="화면을 나가면 변경사항이 저장되지 않아요"
           className="text-gray300 mb-[32]"

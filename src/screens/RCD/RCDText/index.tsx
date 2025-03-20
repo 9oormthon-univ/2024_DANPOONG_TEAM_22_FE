@@ -2,19 +2,15 @@
 import {View} from 'react-native';
 // 커스텀 컴포넌트 import
 import {postVoicefilesAlarmIdSelf} from '@apis/RCDApis/postVoicefilesAlarmIdSelf';
-import AppBar from '@components/atom/AppBar';
-import BG from '@components/atom/BG';
-import Button from '@components/atom/Button';
-import StarIMG from '@components/atom/StarIMG';
-import Toast from '@components/atom/Toast';
-import Txt from '@components/atom/Txt';
-import ShadowTextInput from '@components/molecule/ShadowTextInput';
-import {
-  NavigationProp,
-  RouteProp,
-  useFocusEffect,
-  useNavigation,
-} from '@react-navigation/native';
+import {AppBar} from '@components/AppBar';
+import {BG} from '@components/BG';
+import {Button} from '@components/Button';
+import {StarIMG} from '@components/StarIMG';
+import {Toast} from '@components/Toast';
+import {Text} from '@components/Text';
+import {TextInput as RNTextInput, TouchableOpacity} from 'react-native';
+import {ShadowView} from '@components/ShadowView';
+import { NavigationProp, RouteProp, useFocusEffect, useNavigation } from '@react-navigation/native';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {trackEvent} from '@utils/tracker';
 import {useCallback, useEffect, useRef, useState} from 'react';
@@ -130,7 +126,7 @@ const RCDTextScreen = ({
         <View className="mb-[29]" />
         {/* 헤더 섹션 */}
         <View className="h-auto items-center mb-[50]">
-          <Txt
+          <Text
             type="title2"
             text={item.title}
             className="text-white text-center"
@@ -163,3 +159,66 @@ const RCDTextScreen = ({
 };
 
 export default RCDTextScreen;
+
+
+
+interface ShadowTextInputProps {
+  value: string;
+  onChangeText: (text: string) => void;
+  placeholder?: string;
+  isError?: boolean;
+  height?: number;
+  maxLength?: number;
+}
+
+const ShadowTextInput = ({
+  value,
+  onChangeText,
+  placeholder = '텍스트를 입력해주세요',
+  isError = false,
+  maxLength = 150,
+}: ShadowTextInputProps) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const textInputRef = useRef<RNTextInput>(null);
+
+  return (
+    <View
+      className={`flex-1 w-full h-[340px] rounded-card border-[1px] border-transparent ${
+        isFocused && 'border-gray300'
+      } ${isError && 'border-red  bg-red/5'}`}>
+      <ShadowView>
+        <RNTextInput
+          ref={textInputRef}
+          onChangeText={onChangeText}
+          value={value}
+          style={{
+            fontFamily: 'WantedSans-Regular',
+            fontSize: 20,
+            lineHeight: 30,
+            letterSpacing: 20 * -0.025,
+            color: '#fafafa',
+            textAlignVertical: 'top',
+          }}
+          className={'w-full h-auto px-[33] py-[30] bg-transparent'}
+          placeholder={placeholder}
+          placeholderTextColor="#a0a0a0"
+          autoCapitalize="none"
+          cursorColor="#fafafa"
+          multiline
+          textAlign="left"
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          maxLength={maxLength}
+        />
+        <TouchableOpacity
+          onPress={() => {
+            if (textInputRef.current) {
+              textInputRef.current.focus();
+            }
+          }}
+          className="flex-1 bg-transparent"
+        />
+      </ShadowView>
+    </View>
+  );
+};

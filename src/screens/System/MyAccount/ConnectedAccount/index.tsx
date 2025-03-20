@@ -1,11 +1,11 @@
 import AppBar from "@components/atom/AppBar";
-import BG from "@components/atom/BG";
+import {BG} from "@components/BG";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 import { SystemStackParamList } from "@type/nav/SystemStackParamList";
 import KakaoLogo from "@assets/svgs/KakaoLogo.svg";
 import { View } from "react-native";
-import Txt from "@components/atom/Txt";
+import Text from "@components/atom/Text";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const ConnectedAccountScreen = () => {
@@ -26,9 +26,9 @@ const ConnectedAccountScreen = () => {
             <View className="w-full h-[89] bg-blue600 rounded-[10px] px-[27] py-[17]">
                 <View className="flex-row items-center gap-[10]">
                     <KakaoLogo />
-                    <Txt type="caption1" text="카카오 계정" className="text-gray200" />
+                    <Text type="caption1" text="카카오 계정" className="text-gray200" />
                 </View>
-                <View className="w-full h-[27] overflow-hidden"><Txt type="body3" text={email} className="text-white" /></View>
+                <View className="w-full h-[27] overflow-hidden"><Text type="body3" text={email} className="text-white" /></View>
 
             </View>
         </View>

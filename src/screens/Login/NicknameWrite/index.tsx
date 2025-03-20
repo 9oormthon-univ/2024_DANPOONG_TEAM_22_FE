@@ -1,13 +1,13 @@
 import CameraIcon from '@assets/svgs/camera.svg';
-import AnimatedView from '@components/atom/AnimatedView';
-import AppBar from '@components/atom/AppBar';
-import BG from '@components/atom/BG';
-import BottomMenu from '@components/atom/BottomMenu';
-import Button from '@components/atom/Button';
-import DismissKeyboardView from '@components/atom/DismissKeyboardView';
-import Modal from '@components/atom/Modal';
-import TextInput from '@components/atom/TextInput';
-import Txt from '@components/atom/Txt';
+import {AnimatedView} from '@components/AnimatedView';
+import {AppBar} from '@components/AppBar';
+import {BG} from '@components/BG';
+import {BottomMenu} from '@components/BottomMenu';
+import {Button} from '@components/Button';
+import {DismissKeyboardView} from '@components/DismissKeyboardView';
+import {Modal} from '@components/Modal';
+import {TextInput} from '@components/TextInput';
+import {Text} from '@components/Text';
 import {KEYBOARD_DELAY_MS} from '@constants/common';
 import useModal from '@hooks/useModal';
 import useValidateInput from '@hooks/useValidateInput';
@@ -125,7 +125,7 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
         <View className="h-[120]" />
 
         <View className="items-center px-[30]">
-          <Txt
+          <Text
             type="title2"
             text={'내일모래가 당신을\n어떻게 부를까요?'}
             className="text-white text-center"
@@ -208,12 +208,12 @@ const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
         visible={visible}
         onCancel={closeModal}
         onConfirm={() => navigation.goBack()}>
-        <Txt
+        <Text
           type="title4"
           text="나가시겠어요?"
           className="text-white mt-[26.92] mb-[5]"
         />
-        <Txt
+        <Text
           type="caption1"
           text="화면을 나가면 변경사항이 저장되지 않아요"
           className="text-gray300 mb-[32]"

@@ -1,5 +1,5 @@
-import Txt from '@components/atom/Txt';
-import {Pressable, ScrollView, Text, View} from 'react-native';
+import {Text} from '@components/Text';
+import {Pressable, ScrollView, Text as RNText, View} from 'react-native';
 
 const ListCategory = ({
   nickname,
@@ -33,7 +33,7 @@ const ListCategory = ({
               } mr-[8]`}
               style={{borderRadius: 20}}
               onPress={() => setSelectedFilterIdx(index)}>
-              <Txt
+              <Text
                 type="body4"
                 text={menu.label}
                 className={`${
@@ -47,7 +47,7 @@ const ListCategory = ({
         </View>
       </ScrollView>
       <View className="flex-row items-center px-[30] ml-[4]">
-        <Text
+        <RNText
           className="text-white"
           style={{
             fontSize: 22,
@@ -55,8 +55,8 @@ const ListCategory = ({
             lineHeight: 22 * 1.5,
           }}>
           TO.
-        </Text>
-        <Txt
+        </RNText>
+        <Text
           type="title4"
           text={nickname ?? ''}
           className="text-yellowPrimary ml-[7]"

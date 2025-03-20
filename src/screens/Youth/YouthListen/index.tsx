@@ -1,7 +1,7 @@
 // 필요한 API 및 컴포넌트 import
 import {getVoiceFiles} from '@apis/voiceFile';
-import AppBar from '@components/atom/AppBar';
-import Txt from '@components/atom/Txt';
+import {AppBar} from '@components/AppBar';
+import {Text} from '@components/Text';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import LoadingScreen from '@screens/Loading';
 import {YouthStackParamList} from '@stackNav/Youth';
@@ -26,7 +26,7 @@ import SendIcon from '@assets/svgs/send.svg';
 import SmileIcon from '@assets/svgs/smile.svg';
 import SmileGrayIcon from '@assets/svgs/smile_gray.svg';
 import StopIcon from '@assets/svgs/stop.svg';
-import BG from '@components/atom/BG';
+import {BG} from '@components/BG';
 import {COLORS} from '@constants/Colors';
 import {KEYBOARD_DELAY_MS} from '@constants/common';
 import {EMOTION_OPTIONS_YOUTH} from '@constants/letter';
@@ -308,7 +308,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
               />
             </View>
             <View className="w-[10]" />
-            <Txt
+            <Text
               type="title4"
               text={voiceFile?.member?.name}
               className="text-yellowPrimary"
@@ -320,7 +320,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
           {/* 스크립트 */}
           <View className="px-[30] h-[244]">
             <ScrollView>
-              <Txt
+              <Text
                 type="body3"
                 text={voiceFile?.content ?? ''}
                 className="text-white"
@@ -363,7 +363,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
                     style={{borderRadius: 50}}
                     onPress={() => handleMessageSend(emotion.type)}>
                     {emotion.icon}
-                    <Txt
+                    <Text
                       type="body3"
                       text={emotion.label}
                       className="text-white ml-[10]"

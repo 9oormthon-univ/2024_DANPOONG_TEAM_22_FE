@@ -1,9 +1,9 @@
 import ChevronBottomGrayIcon from '@assets/svgs/chevron/chevron_bottom_gray.svg';
-import AppBar from '@components/atom/AppBar';
-import BG from '@components/atom/BG';
-import Button from '@components/atom/Button';
-import TimeSelectBottomSheet from '@components/atom/TimeSelectBottomSheet';
-import Txt from '@components/atom/Txt';
+import {AppBar} from '@components/AppBar';
+import {BG} from '@components/BG';
+import {Button} from '@components/Button';
+import {TimeSelectBottomSheet} from '@components/TimeSelectBottomSheet';
+import {Text} from '@components/Text';
 import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
@@ -66,13 +66,13 @@ const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {
         <View className="h-[180]" />
 
         <View className="items-center flex-1">
-          <Txt
+          <Text
             type="title2"
             text="기상 시간을 알려주세요"
             className="text-white text-center"
           />
           <View className="h-[9]" />
-          <Txt
+          <Text
             type="body3"
             text="기상 알림을 받고 싶은 시간을 입력해주세요"
             className="text-gray300 text-center"
@@ -84,7 +84,7 @@ const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {
             <Pressable
               onPress={() => setShowHourBottomSheet(true)}
               className="border-b border-b-gray300 flex-row items-center justify-between w-full shrink">
-              <Txt
+              <Text
                 type="title2"
                 text={hour.includes('자정') ? '오전 12시' : hour}
                 className="text-white"
@@ -95,7 +95,7 @@ const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {
             <Pressable
               onPress={() => setShowMinuteBottomSheet(true)}
               className="border-b border-b-gray300 flex-row items-center justify-between w-full shrink">
-              <Txt type="title2" text={minute} className="text-white" />
+              <Text type="title2" text={minute} className="text-white" />
               <ChevronBottomGrayIcon />
             </Pressable>
           </View>

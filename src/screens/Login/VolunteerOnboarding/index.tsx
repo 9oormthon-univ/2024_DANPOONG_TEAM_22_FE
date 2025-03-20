@@ -1,7 +1,7 @@
-import BG from '@components/atom/BG';
-import Button from '@components/atom/Button';
-import SkipBar from '@components/atom/SkipBar';
-import Txt from '@components/atom/Txt';
+import {BG} from '@components/BG';
+import {Button} from '@components/Button';
+import {SkipBar} from '@components/SkipBar';
+import {Text} from '@components/Text';
 import {COLORS} from '@constants/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect} from '@react-navigation/native';
@@ -14,7 +14,7 @@ import {
   Dimensions,
   Image,
   ImageBackground,
-  Text,
+  Text as RNText,
   View,
 } from 'react-native';
 import {SlidingDot} from 'react-native-animated-pagination-dots';
@@ -73,27 +73,27 @@ const Page1 = ({nickname, onNext}: Readonly<PageProps>) => {
     <>
       <View className="h-[200]" />
       <View className="flex-1 items-center">
-        <Txt
+        <Text
           type="body2"
           text={`${nickname} 님,\n이런 말 들어본 적 있나요?`}
           className="text-white text-center mb-[26]"
         />
-        <Text
+        <RNText 
           className="text-yellow200 font-[Voltaire-Regular]"
           style={{fontSize: 48}}>
           “
-        </Text>
-        <Text
+        </RNText>
+        <RNText
           className="text-yellow200 text-center font-[LeeSeoyun-Regular] mb-[26]"
           style={{fontSize: 25, lineHeight: 25 * 1.5}}>
           {'아이 하나를 키우는데\n온 동네가 필요하다'}
-        </Text>
-        <Text
+        </RNText>
+        <RNText
           className="text-yellow200 font-[Voltaire-Regular]"
           style={{fontSize: 48}}>
           ”
-        </Text>
-        <Txt
+        </RNText>
+        <Text
           type="body2"
           text="라는 말이요"
           className="text-white text-center"
@@ -133,7 +133,7 @@ const Page2 = ({onNext}: Readonly<PageProps>) => {
       className="flex-1 items-center">
       <View className="flex-1 w-full">
         <View className="h-[200]" />
-        <Txt
+        <Text
           type="body2"
           text={
             '내일모래는\n자립준비청년의 일상에\n따스한 목소리를 전하기 위해 만들어졌어요'
@@ -175,7 +175,7 @@ const Page3 = ({nickname, onNext}: Readonly<PageProps>) => {
       className="flex-1 items-center">
       <View className="flex-1 w-full">
         <View className="h-[200]" />
-        <Txt
+        <Text
           type="body2"
           text={`${nickname} 님의 말 한마디에는\n자립준비청년의 일상을\n밝게 비출 힘이 있어요`}
           className="text-white text-center"
@@ -215,7 +215,7 @@ const Page4 = ({onNext}: Readonly<PageProps>) => {
       className="flex-1 items-center">
       <View className="flex-1 w-full">
         <View className="h-[200]" />
-        <Txt
+        <Text
           type="body2"
           text={
             '내일모래와 함께 내일도, 모레도,\n청년의 일상을 비추러 가볼래요?'

@@ -1,6 +1,6 @@
 import LogoIcon from '@assets/svgs/splash/splash_logo.svg';
 import TextIcon from '@assets/svgs/splash/splash_text.svg';
-import BG from '@components/atom/BG';
+import {BG} from '@components/BG';
 import {View} from 'react-native';
 
 const SplashScreen = () => {

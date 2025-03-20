@@ -21,7 +21,7 @@ import AppInner from 'AppInner';
 import {useEffect, useRef, useState} from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
-import CustomToast from '@components/atom/CustomToast';
+import {CustomToast} from '@components/CustomToast';
 import {PortalProvider} from '@gorhom/portal';
 import navigateToYouthListenScreen from '@utils/navigateToYouthListenScreen';
 import {trackAppStart, trackEvent, trackScreenView} from '@utils/tracker';

@@ -1,11 +1,11 @@
 import AlarmIcon from '@assets/svgs/alarm.svg';
 import AudioIcon from '@assets/svgs/audio.svg';
-import AppBar from '@components/atom/AppBar';
-import BG from '@components/atom/BG';
-import Button from '@components/atom/Button';
-import FlexableMargin from '@components/atom/FlexableMargin';
-import Toast from '@components/atom/Toast';
-import Txt from '@components/atom/Txt';
+import {AppBar} from '@components/AppBar';
+import {BG} from '@components/BG';
+import {Button} from '@components/Button';
+import {FlexableMargin} from '@components/FlexableMargin';
+import {Toast} from '@components/Toast';
+import {Text} from '@components/Text';
 import notifee, {AuthorizationStatus} from '@notifee/react-native';
 import {CompositeScreenProps, useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -170,7 +170,7 @@ const VolunteerNoticeScreen = ({navigation}: Readonly<Props>) => {
       <FlexableMargin flexGrow={80} />
 
       {/* header */}
-      <Txt
+      <Text
         type="title2"
         text={
           '내일모래에서\n목소리를 전달하기 위해\n오디오 녹음 동의가 필요해요'
@@ -183,9 +183,9 @@ const VolunteerNoticeScreen = ({navigation}: Readonly<Props>) => {
           <FlexableMargin flexGrow={40} />
           {item.icon}
           <FlexableMargin flexGrow={24} />
-          <Txt type="title4" text={item.title} className="text-yellowPrimary" />
+          <Text type="title4" text={item.title} className="text-yellowPrimary" />
           <FlexableMargin flexGrow={10} />
-          <Txt type="body4" text={item.content} className="text-gray200" />
+          <Text type="body4" text={item.content} className="text-gray200" />
         </View>
       ))}
 

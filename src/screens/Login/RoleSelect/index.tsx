@@ -1,8 +1,8 @@
 import VolunteerIcon from '@assets/svgs/volunteer.svg';
 import YouthIcon from '@assets/svgs/youth.svg';
-import BG from '@components/atom/BG';
-import Button from '@components/atom/Button';
-import Txt from '@components/atom/Txt';
+import {BG} from '@components/BG';
+import {Button} from '@components/Button';
+import {Text} from '@components/Text';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {Role} from '@type/api/member';
@@ -24,7 +24,7 @@ const RoleSelectScreen = ({navigation}: Readonly<AuthProps>) => {
   return (
     <BG type="main">
       <View className="items-center pt-[170]">
-        <Txt type="title2" text="당신은 누구인가요?" className="text-white" />
+        <Text type="title2" text="당신은 누구인가요?" className="text-white" />
         <View className="mt-[50] px-[46] flex-row">
           <Pressable
             className={`relative w-1/2 pt-[41] h-[180] items-center mr-[22] border ${
@@ -34,7 +34,7 @@ const RoleSelectScreen = ({navigation}: Readonly<AuthProps>) => {
             }`}
             style={{borderRadius: 10}}
             onPress={() => setRole('HELPER')}>
-            <Txt
+            <Text
               type="title4"
               text="조력자"
               className="text-white mb-[30] text-center"
@@ -51,7 +51,7 @@ const RoleSelectScreen = ({navigation}: Readonly<AuthProps>) => {
             }`}
             style={{borderRadius: 10}}
             onPress={() => setRole('YOUTH')}>
-            <Txt
+            <Text
               type="title4"
               text="청년"
               className="text-white mb-[30] text-center"
@@ -65,19 +65,19 @@ const RoleSelectScreen = ({navigation}: Readonly<AuthProps>) => {
       <View className="justify-center mt-[50]">
         <View className="flex-row justify-center">
           <View className="flex-row items-center justify-center">
-            <Txt
+            <Text
               type="caption1"
               text={`내일모래에는 `}
               className="text-gray300 text-center"
             />
-            <Txt
+            <Text
               type="caption1"
               text={`선한 마음을 담아 목소리를 녹음하는 분`}
               className={`${
                 role === 'HELPER' ? 'text-yellowPrimary' : 'text-gray300'
               } text-center`}
             />
-            <Txt
+            <Text
               type="caption1"
               text={`들과,`}
               className="text-gray300 text-center"
@@ -86,14 +86,14 @@ const RoleSelectScreen = ({navigation}: Readonly<AuthProps>) => {
         </View>
         <View className="flex-row justify-center">
           <View className="flex-row justify-center">
-            <Txt
+            <Text
               type="caption1"
               text={`이 목소리를 들으며 용기를 얻는 분들`}
               className={`${
                 role === 'YOUTH' ? 'text-yellowPrimary' : 'text-gray300'
               } text-center`}
             />
-            <Txt
+            <Text
               type="caption1"
               text={`이 있어요`}
               className="text-gray300 text-center"

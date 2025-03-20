@@ -5,11 +5,11 @@ import {postAskGPT} from '@apis/RCDApis/postAskGPT';
 
 // 아이콘 및 컴포넌트 import
 import BackIcon from '@assets/svgs/Back.svg';
-import AppBar from '@components/atom/AppBar';
-import BG from '@components/atom/BG';
-import ShadowView from '@components/atom/ShadowView';
-import StarIMG from '@components/atom/StarIMG';
-import Txt from '@components/atom/Txt';
+import {AppBar} from '@components/AppBar';
+import {BG} from '@components/BG';
+import {ShadowView} from '@components/ShadowView';
+import {StarIMG} from '@components/StarIMG';
+import {Text} from '@components/Text';
 import {RCDSelectButtonConstant} from '@constants/RCDSelectButtonConstant';
 // React Navigation 관련 import
 import {
@@ -108,9 +108,9 @@ const SelectButton = ({
       <ShadowView>
         <View className="pl-[33] pr-[20] py-[37] flex-row justify-between items-center">
           <View>
-            <Txt type="title4" text={head} className="text-yellowPrimary" />
+            <Text type="title4" text={head} className="text-yellowPrimary" />
             <View className="mt-[5]" />
-            <Txt type="body4" text={sub} className="text-gray200" />
+            <Text type="body4" text={sub} className="text-gray200" />
           </View>
           {isLoading && gpt ? (
             <ActivityIndicator size="small" color="#fafafa" />
@@ -162,13 +162,13 @@ const RCDSelectText = ({
         <StarIMG />
         {/* 제목 섹션 */}
         <View className="mt-[29]  mb-[52]  items-center">
-          <Txt
+          <Text
             type="title2"
             text={item.title}
             className="text-white text-center"
           />
           <View className="mt-[19]">
-            <Txt
+            <Text
               type="body3"
               text={subTitle}
               className="text-gray300 text-center"

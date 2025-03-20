@@ -1,4 +1,4 @@
-import Txt from '@components/atom/Txt';
+import {Text} from '@components/Text';
 import {EMOTION_OPTIONS} from '@constants/letter';
 import {ResultResponseData} from '@type/api/common';
 import {SummaryResponseData} from '@type/api/providedFile';
@@ -18,20 +18,20 @@ const ListHeader = ({
   return (
     <View className="bg-blue700">
       <View className="h-[61]" />
-      <Txt
+      <Text
         type="title2"
         text={`${nickname}님의 목소리를`}
         className="text-white px-[30]"
       />
       <View className="flex-row px-[30]">
         <View className="flex-row justify-start items-center">
-          <Txt type="title2" text="청년들이 " className="text-white" />
-          <Txt
+          <Text type="title2" text="청년들이 " className="text-white" />
+            <Text
             type="title2"
             text={`${String(summaryData?.result.totalListeners ?? '')}번`}
             className="text-yellowPrimary"
           />
-          <Txt type="title2" text=" 청취했어요" className="text-white" />
+          <Text type="title2" text=" 청취했어요" className="text-white" />
         </View>
       </View>
 
@@ -43,9 +43,9 @@ const ListHeader = ({
             <View className="flex-row items-center flex-1">
               {emotion.icon}
               <View className="w-[5]" />
-              <Txt type="body3" text={emotion.label} className="text-white" />
+              <Text type="body3" text={emotion.label} className="text-white" />
               <View className="w-[8]" />
-              <Txt
+              <Text
                 type="body3"
                 text={displayNum(
                   summaryData?.result.reactionsNum[
@@ -68,9 +68,9 @@ const ListHeader = ({
             <View className="flex-row items-center flex-1">
               {emotion.icon}
               <View className="w-[5]" />
-              <Txt type="body3" text={emotion.label} className="text-white" />
+              <Text type="body3" text={emotion.label} className="text-white" />
               <View className="w-[8]" />
-              <Txt
+              <Text
                 type="body3"
                 text={String(
                   summaryData?.result.reactionsNum[

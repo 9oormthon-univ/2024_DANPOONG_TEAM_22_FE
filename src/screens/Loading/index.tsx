@@ -1,5 +1,5 @@
-import BG from '@components/atom/BG';
-import Txt from '@components/atom/Txt';
+import {BG} from '@components/BG';
+import {Text} from '@components/Text';
 import LottieView from 'lottie-react-native';
 import {View} from 'react-native';
 const LoadingScreen = () => {
@@ -17,15 +17,15 @@ const LoadingScreen = () => {
               loop
             />
           </View>
-          <Txt
+          <Text
             type="body3"
             text="잠시만 기다려주세요"
             className="text-gray300 mt-[65] mb-[28]"
           />
-          <Txt
+          <Text
             type="title2"
             text={'따스한 마음을 담은\n목소리를 준비 중이에요.'}
-        className="text-white text-center"
+            className="text-white text-center"
       />
     </View>
   </BG>

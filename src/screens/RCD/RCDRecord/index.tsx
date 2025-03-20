@@ -11,14 +11,14 @@ import {postSaveVoice} from '@apis/RCDApis/postSaveVoice';
 import {postVoiceAnalysis} from '@apis/RCDApis/postVoiceAnalysis';
 
 // 컴포넌트 임포트
-import AppBar from '@components/atom/AppBar';
-import BG from '@components/atom/BG';
-import RCDTimer from '@components/atom/RCDTimer';
-import RCDWave from '@components/atom/RCDWave';
-import Txt from '@components/atom/Txt';
-import RCDBtnBar from '@components/molecule/RCDBtnBar';
-import Indicator from '@components/atom/Indicator';
-import FlexableMargin from '@components/atom/FlexableMargin';
+import {AppBar} from '@components/AppBar';
+import {BG} from '@components/BG';
+import RCDTimer from '@screens/RCD/RCDRecord/components/RCDTimer';
+import RCDWave from '@screens/RCD/RCDRecord/components/RCDWave';
+import {Text} from '@components/Text';
+import RCDBtnBar from '@screens/RCD/RCDRecord/components/RCDBtnBar';
+import {FlexableMargin} from '@components/FlexableMargin';
+import {Spinner} from '@components/Spinner';
 // 녹음 관련 임포트
 import {trackEvent} from '@utils/tracker';
 import {
@@ -281,7 +281,7 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
           <View className="px-px h-2/5">
               <ScrollView className="h-full">
                 <View className="mt-[53]" />
-                <Txt
+                <Text
                   type="body4"
                   text={
                     type === 'INFO'
@@ -291,7 +291,7 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
                   className="text-gray200"
                 />
                 <View className="mt-[28] pb-[20]">
-                  <Txt
+                  <Text
                     type={type === 'DAILY' ? 'title2' : 'body3'}
                     text={content}
                     className="text-white"
@@ -341,15 +341,15 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
       ) : (
         <>
           <View className="flex-1 justify-center items-center">
-            <Txt type="title1" text="듣고 있어요..." className="text-white" />
+            <Text type="title1" text="듣고 있어요..." className="text-white" />
             <View className="mt-[23]" />
-            <Txt
+            <Text
               type="body3"
               text={`세심한 확인이 필요할 때는\n시간이 조금 더 소요될 수 있어요`}
               className="text-gray200 text-center"
             />
             <View className="mt-[54]" />
-            <Indicator />
+            <Spinner />
 
           </View>
         </>

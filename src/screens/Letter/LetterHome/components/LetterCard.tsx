@@ -1,6 +1,6 @@
 import MoreDotIcon from '@assets/svgs/moreDot.svg';
-import ShadowView from '@components/atom/ShadowView';
-import Txt from '@components/atom/Txt';
+import {ShadowView} from '@components/ShadowView';
+import {Text} from '@components/Text';
 import {LetterResponseData} from '@type/api/providedFile';
 import formatDate from '@utils/formatDate';
 import {Image, Pressable, View} from 'react-native';
@@ -14,7 +14,7 @@ const LetterCard = ({letter, onPressMoreDot}: Readonly<LetterCardProps>) => {
   const renderCategoryText = () => {
     if (letter.alarmType === '위로' || letter.alarmType === '칭찬') {
       return (
-        <Txt
+        <Text
           type="body4"
           text=" 받은"
           className="text-white mr-[5] font-[LeeSeoyun-Regular]"
@@ -22,7 +22,7 @@ const LetterCard = ({letter, onPressMoreDot}: Readonly<LetterCardProps>) => {
       );
     } else if (letter.alarmType === '우울') {
       return (
-        <Txt
+        <Text
           type="body4"
           text="이 해소된 "
           className="text-white font-[LeeSeoyun-Regular]"
@@ -30,7 +30,7 @@ const LetterCard = ({letter, onPressMoreDot}: Readonly<LetterCardProps>) => {
       );
     }
     return (
-      <Txt
+      <Text
         type="body4"
         text=" 알림 받은"
         className="text-white mr-[5] font-[LeeSeoyun-Regular]"
@@ -43,7 +43,7 @@ const LetterCard = ({letter, onPressMoreDot}: Readonly<LetterCardProps>) => {
       <ShadowView>
         <View className="px-[20] py-[18] justify-between flex-1">
           <View className="flex-row items-center justify-between">
-            <Txt
+            <Text
               type="body4"
               text={formatDate(letter.createdAt)}
               className="text-gray200 font-[LeeSeoyun-Regular]"
@@ -55,7 +55,7 @@ const LetterCard = ({letter, onPressMoreDot}: Readonly<LetterCardProps>) => {
 
           <View className="h-[10]" />
 
-          <Txt
+          <Text
             type="body4"
             text={letter.thanksMessage}
             className="text-white"
@@ -64,20 +64,20 @@ const LetterCard = ({letter, onPressMoreDot}: Readonly<LetterCardProps>) => {
           <View className="h-[10]" />
 
           <View className="flex-row items-center self-end">
-            <Txt
+            <Text
               type="body4"
               text="from."
               className="text-white mr-[8] font-[LeeSeoyun-Regular]"
               style={{fontSize: 16}}
             />
-            <Txt
+            <Text
               type="body4"
               text={letter.alarmType}
               className="text-yellowPrimary font-[LeeSeoyun-Regular]"
               style={{fontSize: 16}}
             />
             {renderCategoryText()}
-            <Txt
+            <Text
               type="body4"
               text={letter?.member?.name ?? ''}
               className="text-white mr-[10] max-w-[140]"

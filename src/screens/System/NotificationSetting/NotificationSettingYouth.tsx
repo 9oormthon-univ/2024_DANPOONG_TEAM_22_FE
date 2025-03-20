@@ -10,11 +10,11 @@ import { SystemStackParamList } from "@type/nav/SystemStackParamList";
 import { COLORS } from "@constants/Colors";
 
 // Components 관련 import
-import AppBar from "@components/atom/AppBar";
-import BG from "@components/atom/BG";
-import Txt from "@components/atom/Txt";
-import TimeSelectBottomSheet from "@components/atom/TimeSelectBottomSheet";
-import ToggleSwitch from "@components/atom/ToggleSwitch";
+import {AppBar} from "@components/AppBar";
+import {BG} from "@components/BG";
+import {Text} from "@components/Text";
+import {TimeSelectBottomSheet} from "@components/TimeSelectBottomSheet";
+import {ToggleSwitch} from "@components/ToggleSwitch";
 // API 관련 import
 import { getMemberInfoYouth, GetMemberInfoYouthResponse} from "@apis/SystemApis/getMemberInfoYouth";
 import { postAlarmSettingToggle ,PostAlarmSettingToggleRequest} from "@apis/SystemApis/postAlarm-settingToggle";
@@ -224,8 +224,8 @@ const NotiButton = ({
       android_ripple={{ color: COLORS.blue600 }}
     >
       <View className="flex-row justify-start items-end gap-x-[13]">
-        <Txt type="title3" text={title} className="text-white" />
-        <Txt type="button" text={sub} className="text-gray300" />
+        <Text type="title3" text={title} className="text-white" />
+        <Text type="button" text={sub} className="text-gray300" />
       </View>
       <ToggleSwitch isOn={isOn} onToggle={setIsOn} />
     </Pressable>

@@ -10,9 +10,9 @@ import { NavigationProp } from "@react-navigation/native";
 import { SystemStackParamList } from "@type/nav/SystemStackParamList";
 
 // Components 관련 import
-import AppBar from "@components/atom/AppBar";
-import BG from "@components/atom/BG";
-import SystemButton from "@components/atom/SystemButton";
+import {AppBar} from "@components/AppBar";
+import {BG} from "@components/BG";
+import {SystemButton} from "@components/SystemButton";
 // API 관련 import
 import { getMemberInfoHelper } from "@apis/SystemApis/getMemberInfoHelper";
 import { postAlarmSettingToggle } from "@apis/SystemApis/postAlarm-settingToggleHelper";
