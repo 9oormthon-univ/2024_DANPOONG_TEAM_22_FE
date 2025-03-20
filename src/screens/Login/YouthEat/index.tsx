@@ -9,10 +9,10 @@ import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {DEFAULT_TIME} from '@screens/Login/YouthWakeUpTime';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {joinTime} from '@utils/joinTime';
 import {trackEvent} from '@utils/tracker';
 import {useCallback, useRef, useState} from 'react';
 import {Pressable, View} from 'react-native';
+import {convertTimeFormat} from '@utils/convertFuncs';
 
 type AuthProps = NativeStackScreenProps<AuthStackParamList, 'YouthEatScreen'>;
 
@@ -49,9 +49,9 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
   );
 
   const handleNext = async () => {
-    const breakfast = joinTime(breakfastHour, breakfastMinute);
-    const lunch = joinTime(lunchHour, lunchMinute);
-    const dinner = joinTime(dinnerHour, dinnerMinute);
+    const breakfast = convertTimeFormat(breakfastHour, breakfastMinute);
+    const lunch = convertTimeFormat(lunchHour, lunchMinute);
+    const dinner = convertTimeFormat(dinnerHour, dinnerMinute);
 
     const endTime = new Date().getTime();
     const viewTime = endTime - startTime.current;

@@ -7,11 +7,10 @@ import {Text} from '@components/Text';
 import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {joinTime} from '@utils/joinTime';
 import {trackEvent} from '@utils/tracker';
-import {useCallback, useEffect, useRef, useState} from 'react';
+import {useCallback, useRef, useState} from 'react';
 import {Pressable, View} from 'react-native';
-
+import {convertTimeFormat} from '@utils/convertFuncs';
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'YouthWakeUpTimeScreen'
@@ -47,7 +46,7 @@ const YouthWakeUpTimeScreen = ({navigation}: Readonly<AuthProps>) => {
     });
 
     navigation.navigate('YouthEatScreen', {
-      wakeUpTime: joinTime(hour, minute),
+      wakeUpTime: convertTimeFormat(hour, minute),
     });
   };
 

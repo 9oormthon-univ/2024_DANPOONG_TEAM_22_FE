@@ -14,7 +14,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
 import {Gender, MemberRequestData, Role} from '@type/api/member';
 import { calculateAge } from '@utils/calculateAge';
-import { formatDateDot } from '@utils/formatDateDot';
+import { formatDateDot } from '@utils/convertFuncs';
 import {trackEvent} from '@utils/tracker';
 import {useEffect, useState} from 'react';
 import {Alert, Image, Keyboard, Pressable, View} from 'react-native';

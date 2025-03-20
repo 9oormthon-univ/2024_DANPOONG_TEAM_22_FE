@@ -8,11 +8,10 @@ import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {DEFAULT_TIME} from '@screens/Login/YouthWakeUpTime';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {joinTime} from '@utils/joinTime';
 import {trackEvent} from '@utils/tracker';
 import {useCallback, useRef, useState} from 'react';
 import {Pressable, View} from 'react-native';
-
+import {convertTimeFormat} from '@utils/convertFuncs';
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'YouthSleepTimeScreen'
@@ -33,7 +32,7 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
   );
 
   const handleNext = async () => {
-    const sleepTime = joinTime(hour, minute);
+    const sleepTime = convertTimeFormat(hour, minute);
 
     const endTime = new Date().getTime();
     const viewTime = endTime - startTime.current;

@@ -10,7 +10,7 @@ import {BG} from '@components/BG';
 import {ShadowView} from '@components/ShadowView';
 import {StarIMG} from '@components/StarIMG';
 import {Text} from '@components/Text';
-import {RCDSelectButtonConstant} from '@constants/RCDSelectButtonConstant';
+import {RCDSelectButtonConstant} from '@screens/RCD/RCDSelectText/constants/RCDSelectButtonConstant';
 // React Navigation 관련 import
 import {
   NavigationProp,

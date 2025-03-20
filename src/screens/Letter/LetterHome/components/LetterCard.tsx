@@ -2,7 +2,7 @@ import MoreDotIcon from '@assets/svgs/moreDot.svg';
 import {ShadowView} from '@components/ShadowView';
 import {Text} from '@components/Text';
 import {LetterResponseData} from '@type/api/providedFile';
-import {formatDate} from '@utils/formatDate';
+import {formatDate} from '@utils/convertFuncs';
 import {Image, Pressable, View} from 'react-native';
 
 type LetterCardProps = {

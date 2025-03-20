@@ -16,7 +16,7 @@ import Notice2 from '@assets/svgs/Notice2.svg';
 // 타입 임포트
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {AppBar} from '@components/AppBar';
-import { RCDNoticeSectionConstant } from '@constants/RCDNoticeSectionConstant';
+import { RCDNoticeSectionConstant } from '@screens/RCD/RCDNotice/constants/RCDNoticeSectionConstant';
 import { useState } from 'react';
 // import { getTopText } from '@apis/RCDApis/getTopText';
 // import { postAskGPT } from '@apis/RCDApis/postAskGPT';

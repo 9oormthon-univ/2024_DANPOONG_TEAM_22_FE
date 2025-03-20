@@ -19,7 +19,7 @@ import {ToggleSwitch} from "@components/ToggleSwitch";
 import { getMemberInfoYouth, GetMemberInfoYouthResponse} from "@apis/SystemApis/getMemberInfoYouth";
 import { postAlarmSettingToggle ,PostAlarmSettingToggleRequest} from "@apis/SystemApis/postAlarm-settingToggle";
 import { patchMemberInfoYouth , PatchMemberInfoYouthRequest} from "@apis/SystemApis/patchMemberInfoYouth";
-import { convertTimeFormat } from "@utils/convertTimeFormat";
+import { convertTimeFormat } from "@utils/convertFuncs";
 import { parseTimeString } from "@utils/parseTimeString";
 
 type MemberInfoYouthResponse = GetMemberInfoYouthResponse['result']
