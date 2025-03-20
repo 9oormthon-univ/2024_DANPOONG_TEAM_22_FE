@@ -21,6 +21,9 @@ import DiaICon from "@assets/svgs/Dia.svg";
 import HeartIcon from "@assets/svgs/Heart.svg";
 import LetterIcon from "@assets/svgs/Letter.svg";
 
+
+
+
 export const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'LeaveAccount2'>}) => {
     const windowHeight = Dimensions.get('window').height;
     const windowWidth = Dimensions.get('window').width;

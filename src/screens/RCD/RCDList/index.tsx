@@ -21,8 +21,8 @@ import {
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {getRCDList, RCD} from '@apis/RCDApis/getRCDList';
 import {RecordType} from '@type/RecordType';
-import {RCDListHeader} from '@constants/RCDListHeader';
-import {RCDListAppBar} from '@constants/RCDListAppBar';
+import {RCDListHeader} from '@screens/RCD/RCDList/constants/RCDListHeader';
+import {RCDListAppBar} from '@screens/RCD/RCDList/constants/RCDListAppBar';
 import {COLORS} from '@constants/Colors';
 import {RecordTypeConstant} from '@constants/RecordType';
 // React Hooks import
