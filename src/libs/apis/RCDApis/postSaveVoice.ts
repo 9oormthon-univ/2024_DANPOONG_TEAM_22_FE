@@ -1,6 +1,6 @@
 import client from '@apis/client';
 
-interface PostSaveVoiceResponse {
+type PostSaveVoiceResponse ={
   timestamp: string;
   code: string;
   message: string;

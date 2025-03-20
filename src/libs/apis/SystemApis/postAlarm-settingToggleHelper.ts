@@ -1,12 +1,12 @@
 //봉사자 알림 수정 api
 import client from '@apis/client';
 
-export interface PostAlarmSettingToggleRequest {
+export type PostAlarmSettingToggleRequest ={
   alarmCategory: 'WELCOME_REMINDER' | 'THANK_YOU_MESSAGE';
   enabled: boolean;
 }
 
-interface PostAlarmSettingToggleResponse {
+type PostAlarmSettingToggleResponse ={
   code: '200';
   message: 'OK';
 }

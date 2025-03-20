@@ -1,6 +1,6 @@
 import client from '@apis/client';
 
-interface TopTextResponse {
+type TopTextResponse= {
   timestamp: string;
   code: string;
   message: string;
@@ -11,7 +11,7 @@ interface TopTextResponse {
   };
 }
 
-export interface TopText {
+export type TopText= {
   alarmId: number;
   alarmCategory: string;
   title: string;

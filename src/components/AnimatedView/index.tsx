@@ -1,7 +1,7 @@
 import React, {useRef, useEffect} from 'react';
 import {Animated, ViewStyle} from 'react-native';
 
-interface AnimatedViewProps {
+type AnimatedViewProps = {
   visible: boolean;
   children: React.ReactNode;
   className?: string;

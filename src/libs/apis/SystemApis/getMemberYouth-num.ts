@@ -1,6 +1,6 @@
 import client from '@apis/client';
 
-interface GetMemberYouthNumResponse {
+type GetMemberYouthNumResponse= {
     timestamp: string;
     code: string;
     message: string;

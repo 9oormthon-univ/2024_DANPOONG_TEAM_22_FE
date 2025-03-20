@@ -1,6 +1,6 @@
 import client from '@apis/client';
 
-export interface PostAskGPTResponse {
+export type PostAskGPTResponse ={
   timestamp: string;
   code: string;
   message: string;

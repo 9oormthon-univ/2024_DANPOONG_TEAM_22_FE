@@ -1,6 +1,6 @@
 import client from '@apis/client';
 
-export interface PatchMemberInfoRequest {
+export type PatchMemberInfoRequest= {
   name: string;
   gender: 'MALE' | 'FEMALE';
   profileImage: string;
@@ -9,7 +9,7 @@ export interface PatchMemberInfoRequest {
   fcmToken: string;
 }
 
-interface PatchMemberInfoResponse {
+type PatchMemberInfoResponse ={
   timestamp: string;
   code: string; 
   message: string;

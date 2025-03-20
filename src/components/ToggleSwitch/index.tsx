@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { View, TouchableWithoutFeedback, Animated } from 'react-native';
 import { COLORS } from '@constants/Colors';
 
-interface ToggleSwitchProps {
+type ToggleSwitchProps ={
   isOn: boolean;
   onToggle: () => void;
 }

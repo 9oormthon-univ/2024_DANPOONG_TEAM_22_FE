@@ -1,6 +1,6 @@
 import client from '@apis/client';
 
-export interface PatchMemberInfoYouthRequest {
+export type PatchMemberInfoYouthRequest= {
   wakeUpTime: string;
   sleepTime: string;
   breakfast: string;
@@ -9,7 +9,7 @@ export interface PatchMemberInfoYouthRequest {
   outgoingTime: string;
 }
 
-interface PatchMemberInfoYouthResponse {
+type PatchMemberInfoYouthResponse ={
   timestamp: string;
   code: string;
   message: string;

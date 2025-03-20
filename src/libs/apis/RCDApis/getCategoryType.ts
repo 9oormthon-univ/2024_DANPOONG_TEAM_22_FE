@@ -1,6 +1,6 @@
 import client from '@apis/client';
 import { RecordType } from '@type/RecordType';
-interface CategoryTypeResponse {
+type CategoryTypeResponse= {
   timestamp: string;
   code: string;
   message: string;
@@ -10,7 +10,7 @@ interface CategoryTypeResponse {
   }[];
 }
 
-export interface CategoryType {
+export type CategoryType ={
   categoryType: RecordType;
   koreanName: string;
 }

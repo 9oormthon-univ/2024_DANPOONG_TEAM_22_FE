@@ -1,6 +1,6 @@
 import client from '@apis/client';
 
-export interface VoicefilesRetentionResponse {
+export type VoicefilesRetentionResponse= {
   timestamp: string;
   code: string;
   message: string;

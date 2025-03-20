@@ -1,6 +1,6 @@
 import client from '@apis/client';
 import { RecordType } from '@type/RecordType';
-interface RCDResponse {
+type RCDResponse ={
   timestamp: string;
   code: string;
   message: string;
@@ -12,7 +12,7 @@ interface RCDResponse {
     used: boolean;
   }[];
 }
-export interface RCD {
+export type RCD ={
   alarmCategory: string;
   koreanName: string;
   title: string;

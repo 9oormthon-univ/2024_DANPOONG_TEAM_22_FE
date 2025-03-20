@@ -1,6 +1,6 @@
 import client from '@apis/client';
 
-interface DeleteMemberResponse {
+type DeleteMemberResponse ={
     timestamp: string; 
     code: string;
     message: string;
@@ -9,7 +9,7 @@ interface DeleteMemberResponse {
     };
 }
 
-export interface DeleteMemberRequest {
+export type DeleteMemberRequest= {
   reasonList: string[];
 }
 

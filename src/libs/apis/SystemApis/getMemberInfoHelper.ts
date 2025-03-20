@@ -1,6 +1,6 @@
 import client from '@apis/client';
 
-interface GetMemberInfoHelperResponse {
+type GetMemberInfoHelperResponse ={
     timestamp: string;
     code: string;
     message: string;

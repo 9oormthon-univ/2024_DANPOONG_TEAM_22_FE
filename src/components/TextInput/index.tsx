@@ -4,7 +4,7 @@ import {COLORS} from '@constants/Colors';
 import {useRef, useState} from 'react';
 import {TextInput as RNTextInput, View} from 'react-native';
 
-interface TextInputProps {
+type TextInputProps ={
   value: string;
   onChangeText: (text: string) => void;
   placeholder?: string;

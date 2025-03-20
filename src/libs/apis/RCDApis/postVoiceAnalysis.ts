@@ -1,6 +1,6 @@
 import client from '@apis/client';
 
-interface PostVoiceAnalysisResponse {
+type PostVoiceAnalysisResponse ={
     timestamp: string;
     code: string;
     message: string;

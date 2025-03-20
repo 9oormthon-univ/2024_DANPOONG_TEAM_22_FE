@@ -7,7 +7,7 @@ type AlarmData = {
   alarmCategoryKoreanName: string;
 };
 
-interface AlarmComfortResponseData extends AlarmData {
+type AlarmComfortResponseData = AlarmData &{
   children: AlarmData[];
 }
 

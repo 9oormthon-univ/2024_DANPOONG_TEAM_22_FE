@@ -162,7 +162,7 @@ export default RCDTextScreen;
 
 
 
-interface ShadowTextInputProps {
+type ShadowTextInputProps= {
   value: string;
   onChangeText: (text: string) => void;
   placeholder?: string;

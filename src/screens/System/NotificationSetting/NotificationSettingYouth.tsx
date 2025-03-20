@@ -26,7 +26,7 @@ type MemberInfoYouthResponse = GetMemberInfoYouthResponse['result']
 type AlarmCategory = PostAlarmSettingToggleRequest['alarmCategory']
 
 // 알림 설정에 대한 기본 인터페이스 정의
-interface NotificationSetting {
+type NotificationSetting ={
   sub: string;                // 알림 제목 (예: 기상, 취침 등)
   alarmCategory: AlarmCategory; // 알림 카테고리 (API 요청용)  'WAKE_UP' | 'GO_OUT' | 'MEAL_BREAKFAST' | 'MEAL_LUNCH' | 'MEAL_DINNER' | 'SLEEP'
   isOn: boolean;             // 현재 알림 활성화 상태
@@ -38,7 +38,7 @@ interface NotificationSetting {
 }
 
 // 알림 설정 구성을 위한 인터페이스
-interface NotificationConfig {
+type NotificationConfig ={
   sub: string;               // 알림 제목
   alarmCategory: AlarmCategory; // API 요청시 사용할 알림 카테고리
   timeField: keyof Omit<MemberInfoYouthResponse, "wakeUpAlarm" | "sleepAlarm" | "breakfastAlarm" | "lunchAlarm" | "dinnerAlarm" | "outgoingAlarm">; // API 응답에서 시간 정보를 가져올 키

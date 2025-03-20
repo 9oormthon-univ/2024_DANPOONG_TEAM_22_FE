@@ -1,6 +1,6 @@
 import client from '@apis/client';
 
-export interface GetMemberInfoYouthResponse {
+export type GetMemberInfoYouthResponse= {
     timestamp: string;
     code: string;
     message: string;

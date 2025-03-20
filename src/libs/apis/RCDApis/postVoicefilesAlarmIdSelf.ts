@@ -1,10 +1,10 @@
 import client from '@apis/client';
 
-interface PostSaveScriptRequest {
+type PostSaveScriptRequest ={
   content: string;
 }
 
-interface PostSaveScriptResponse {
+type PostSaveScriptResponse ={
   timestamp: string;
   code: string;
   message: string;
