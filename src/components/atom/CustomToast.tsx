@@ -1,10 +1,16 @@
+import { Animated, View } from 'react-native';
+
+import Txt from '@components/atom/Txt';
+
 import Bang from '@assets/svgs/Bang.svg';
 import CheckYellowIcon from '@assets/svgs/checkYellow.svg';
-import Txt from '@components/atom/Txt';
-import {Animated, View} from 'react-native';
 
-const CustomToast = ({text1, props}: any) => {
-  const {type, position} = props;
+/**
+ * react-native-toast-message 에서 사용하는 커스텀 토스트 컴포넌트
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const CustomToast = ({ text1, props }: any) => {
+  const { type, position } = props;
 
   return (
     <View
