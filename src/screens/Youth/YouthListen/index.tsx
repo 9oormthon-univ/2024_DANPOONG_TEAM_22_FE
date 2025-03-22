@@ -115,7 +115,11 @@ const YouthListenScreen = ({ route, navigation }: Readonly<YouthProps>) => {
         setVoiceFile(res.result);
       } catch (error) {
         console.log(error);
-        Alert.alert('알림', '제공할 수 있는 응원 음성이 없어요');
+        showToast({
+          text: '모든 음성을 다 들었어요!\n조금만 기다리면 새로운 위로가 찾아올 거예요.',
+          type: 'notice',
+          position: 'top',
+        });
         navigation.goBack();
       }
     })();
@@ -243,6 +247,7 @@ const YouthListenScreen = ({ route, navigation }: Readonly<YouthProps>) => {
     } catch (error) {
       console.log(error);
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if (((error as AxiosError).response?.data as any).code === 'PF003') {
         showToast({
           text: '전송 가능 횟수를 초과했어요',
