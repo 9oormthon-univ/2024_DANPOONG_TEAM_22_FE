@@ -25,7 +25,7 @@ const CustomToast = ({ text1, props }: ToastConfigParams<Props>) => {
 
   return (
     <View
-      className={`w-full items-center justify-center absolute ${
+      className={`w-full items-center justify-center absolute px-[30] ${
         position === 'top'
           ? 'top-[100]'
           : position === 'left'
