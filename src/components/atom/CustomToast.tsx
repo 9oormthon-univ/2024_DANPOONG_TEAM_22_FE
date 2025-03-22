@@ -1,15 +1,26 @@
-import { Animated, View } from 'react-native';
+import { Animated, Dimensions, View } from 'react-native';
+import { type ToastConfigParams } from 'react-native-toast-message';
 
 import Txt from '@components/atom/Txt';
 
 import Bang from '@assets/svgs/Bang.svg';
 import CheckYellowIcon from '@assets/svgs/checkYellow.svg';
 
+export type CustomToastType = 'check' | 'notice';
+
+export type CustomToastPosition = 'top' | 'left' | 'bottom';
+
+type Props = {
+  type: CustomToastType;
+  position: CustomToastPosition;
+};
+
+const SCREEN_HEIGHT = Dimensions.get('window').height;
+
 /**
  * react-native-toast-message 에서 사용하는 커스텀 토스트 컴포넌트
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const CustomToast = ({ text1, props }: any) => {
+const CustomToast = ({ text1, props }: ToastConfigParams<Props>) => {
   const { type, position } = props;
 
   return (
@@ -19,8 +30,9 @@ const CustomToast = ({ text1, props }: any) => {
           ? 'top-[100]'
           : position === 'left'
           ? 'top-[88] left-[25] items-start'
-          : 'bottom-[89] '
-      }`}>
+          : ''
+      }`}
+      style={{ bottom: position === 'bottom' ? -SCREEN_HEIGHT + 89 : null }}>
       <Animated.View
         className="w-auto h-auto flex-row bg-blue400 px-[25] py-[16] z-50"
         style={{
@@ -28,7 +40,11 @@ const CustomToast = ({ text1, props }: any) => {
         }}>
         {type === 'check' ? <CheckYellowIcon /> : <Bang />}
         <View className="ml-[14]" />
-        <Txt type="body4" text={text1} className="text-white text-center" />
+        <Txt
+          type="body4"
+          text={text1 ?? ''}
+          className="text-white text-center"
+        />
       </Animated.View>
     </View>
   );
