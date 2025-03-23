@@ -1,6 +1,6 @@
 import {AppBar} from "@components/AppBar";
 import {BG} from "@components/BG";
-import {Text} from "@components/CostumText";
+import {CustomText} from "@components/CustomText";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 import { SystemStackParamList } from "@type/nav/SystemStackParamList";
@@ -65,7 +65,7 @@ export const LeaveAccountScreen = () => {
                             />
                             {selectedReasons.includes("기타") && (
                                 <View className="w-full px-px" onTouchStart={() => {setIsDetailTyping(true)}}>
-                                <CustomTextInput  
+                                <TextInput  
                                     autoFocus
                                     value={detailReason}
                                     onChangeText={setDetailReason}
@@ -94,7 +94,7 @@ export const LeaveAccountScreen = () => {
                                 onPress={() => {toggleReason("기타"); setIsDetailTyping(false)}}
                             />
                                 <View className="w-full px-px">
-                                    <CustomTextInput  
+                                    <TextInput  
                                         autoFocus
                                         value={detailReason}
                                         onChangeText={setDetailReason}

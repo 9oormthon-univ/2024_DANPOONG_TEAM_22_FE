@@ -372,7 +372,7 @@ export const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => 
             {/* 메시지 입력 영역 */}
             <View className="h-[86] px-[25] bg-blue500 flex-row items-center">
               <View className="flex-[7.5] relative">
-                <CustomTextInput
+                <TextInput
                   value={message}
                   onChangeText={setMessage}
                   placeholder="감사의 말을 전해보세요"

@@ -5,7 +5,7 @@ import { NavigationProp } from "@react-navigation/native";
 import { SystemStackParamList } from "@type/nav/SystemStackParamList";
 import KakaoLogo from "@assets/svgs/KakaoLogo.svg";
 import { View } from "react-native";
-import { Text } from "@components/CostumText";
+import { CustomText } from "@components/CustomText";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 export const ConnectedAccountScreen = () => {

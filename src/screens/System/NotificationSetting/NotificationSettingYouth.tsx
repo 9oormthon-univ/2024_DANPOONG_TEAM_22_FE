@@ -12,7 +12,7 @@ import { COLORS } from "@constants/Colors";
 // Components 관련 import
 import {AppBar} from "@components/AppBar";
 import {BG} from "@components/BG";
-import {Text} from "@components/CostumText";
+import {CustomText} from "@components/CustomText";
 import {TimeSelectBottomSheet} from "@components/TimeSelectBottomSheet";
 import {ToggleSwitch} from "@components/ToggleSwitch";
 // API 관련 import

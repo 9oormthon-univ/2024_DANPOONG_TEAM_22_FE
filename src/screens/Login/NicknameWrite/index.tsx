@@ -154,7 +154,7 @@ export const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) =>
 
           <View className="h-[31]" />
 
-          <CustomTextInput
+          <TextInput
             value={nickname}
             onChangeText={handleNicknameChange}
             isError={isErrorNickname}

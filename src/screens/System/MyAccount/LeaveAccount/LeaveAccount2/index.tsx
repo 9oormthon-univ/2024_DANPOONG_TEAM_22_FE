@@ -11,7 +11,7 @@ import { getVoicefilesRetention, VoicefilesRetentionResponse } from "@apis/Syste
 // utils
 import { redirectToAuthScreen } from "@utils/redirectToAuthScreen";
 // components
-import {Text} from "@components/CostumText";
+import {CustomText} from "@components/CustomText";
 import {BG} from "@components/BG";
 import {AppBar} from "@components/AppBar";
 import {Button} from "@components/Button";

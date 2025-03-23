@@ -204,7 +204,7 @@ export const ModifyInfoScreen = () => {
             text="닉네임"
             className="ml-[9] mb-[8px] text-gray200"
           />
-          <CustomTextInput
+          <TextInput
             value={nickname}
             onChangeText={handleNicknameChange}
             isError={isErrorNickname}
