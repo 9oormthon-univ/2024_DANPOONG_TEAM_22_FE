@@ -114,7 +114,7 @@ export const useAxiosInterceptor = () => {
           await AsyncStorage.removeItem('role');
 
           showToast({
-            text: '안전한 이용을 위해 로그아웃되었어요.\n다시 로그인해 주세요.',
+            text: '안전한 이용을 위해 로그아웃되었어요.',
             type: 'notice',
             position: 'top',
           });
