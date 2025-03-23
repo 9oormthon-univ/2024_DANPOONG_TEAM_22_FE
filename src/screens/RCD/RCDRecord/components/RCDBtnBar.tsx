@@ -58,7 +58,7 @@ export const RCDBtnBar = ({
         stop={stop}
       />
       {isDone && (
-        <TransparentButton content="완료" color="gray-100" onPress={upload} />
+        <TransparentButton content="완료" color="gray100" onPress={upload} />
       )}
     </View>
   );
