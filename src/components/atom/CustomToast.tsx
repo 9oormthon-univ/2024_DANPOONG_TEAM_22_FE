@@ -6,7 +6,7 @@ import Txt from '@components/atom/Txt';
 import Bang from '@assets/svgs/Bang.svg';
 import CheckYellowIcon from '@assets/svgs/checkYellow.svg';
 
-export type CustomToastType = 'check' | 'notice';
+export type CustomToastType = 'check' | 'notice' | 'text';
 
 export type CustomToastPosition = 'top' | 'left' | 'bottom';
 
@@ -38,8 +38,12 @@ const CustomToast = ({ text1, props }: ToastConfigParams<Props>) => {
         style={{
           borderRadius: 50,
         }}>
-        {type === 'check' ? <CheckYellowIcon /> : <Bang />}
-        <View className="ml-[14]" />
+        {type === 'check' ? (
+          <CheckYellowIcon />
+        ) : type === 'notice' ? (
+          <Bang />
+        ) : null}
+        {type !== 'text' && <View className="w-[14]" />}
         <Txt
           type="body4"
           text={text1 ?? ''}
