@@ -25,7 +25,7 @@ export const uploadImageToS3 = async (imageUri: string) => {
     });
 
     // Uploading files to the bucket
-    s3.upload(params, function (err: any, data: any) {
+    s3.upload(params, function (err, data) {
       if (err) {
         console.log(err);
         reject(err);

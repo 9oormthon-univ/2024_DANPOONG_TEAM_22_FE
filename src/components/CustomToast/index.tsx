@@ -3,7 +3,7 @@ import CheckYellowIcon from '@assets/svgs/checkYellow.svg';
 import {CustomText} from '@components/CustomText';
 import {Animated, View} from 'react-native';
 
-export const CustomToast = ({text1, props}: any) => {
+export const CustomToast = ({text1, props}) => {
   const {type, position} = props;
 
   return (

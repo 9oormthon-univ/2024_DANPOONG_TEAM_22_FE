@@ -81,7 +81,7 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   } = useGetLetters({pageable: {page: 0, size: 10, sort: 'createdAt,desc'}});
 
   const lettersFlatData =
-    lettersData?.pages.flatMap((page: any) => page.result.content) || [];
+    lettersData?.pages.flatMap((page) => page.result.content) || [];
 
   useEffect(() => {
     (async () => {
@@ -116,7 +116,7 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
     console.log({alarmCategoryData});
     const categories: Category[] = [
       {category: 'ALL', label: '전체'},
-      ...alarmCategoryData.result.map((item: any) => ({
+      ...alarmCategoryData.result.map((item) => ({
         category: item.alarmCategory,
         label: item.alarmCategoryKoreanName,
       })),

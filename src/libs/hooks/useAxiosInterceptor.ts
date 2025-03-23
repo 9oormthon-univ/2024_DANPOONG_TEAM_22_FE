@@ -59,7 +59,7 @@ export const useAxiosInterceptor = () => {
      * @param error - Axios 에러 객체
      * @returns 재시도된 요청 또는 에러
      */
-    const errorHandler = async (error: any) => {
+    const errorHandler = async (error) => {
       const originalRequest = error.config;
       logResponseError(error);
       if (error.response?.status === 401 && !originalRequest._retry) {
@@ -117,7 +117,7 @@ export const useAxiosInterceptor = () => {
         await AsyncStorage.setItem('accessToken', accessToken);
         await AsyncStorage.setItem('refreshToken', refreshToken);
         return accessToken;
-      } catch (error: any) {
+      } catch (error) {
         if (error.response?.status === 401) {
           await AsyncStorage.removeItem('accessToken');
           await AsyncStorage.removeItem('refreshToken');

@@ -10,7 +10,7 @@
  * 출력:
  * @returns {void} - 반환값 없음, 콘솔에 로그 출력
  */
-export const logRequest = (config: any) => {
+export const logRequest = (config) => {
   console.log(
     'Request:',
     JSON.stringify(
@@ -38,7 +38,7 @@ export const logRequest = (config: any) => {
  * 출력:
  * @returns {void} - 반환값 없음, 콘솔에 로그 출력
  */
-export const logResponse = (response: any) => {
+export const logResponse = (response) => {
   console.log(
     'Response:',
     JSON.stringify(
@@ -65,7 +65,7 @@ export const logResponse = (response: any) => {
  * 출력:
  * @returns {void} - 반환값 없음, 콘솔에 로그 출력
  */
-export const logResponseError = (error: any) => {
+export const logResponseError = (error) => {
   console.log(
     'Response Error:',
     JSON.stringify(

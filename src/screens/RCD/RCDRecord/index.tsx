@@ -184,7 +184,7 @@ export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, '
 
       await postSaveVoice(voiceFileId, formData);
       await uploadAnalysis();
-    } catch (error: any) {
+    } catch (error) {
       console.log('음성 파일 업로드 오류:', error);
     }
   };
@@ -227,7 +227,7 @@ export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, '
           navigation.navigate('RCDError', {type: type, errorType: 'noisy'});
           break;
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('분석 에러:', error);
       if (!isMountedRef.current) {
         console.log('에러 처리 중 컴포넌트가 언마운트되어 처리를 중단합니다.');
