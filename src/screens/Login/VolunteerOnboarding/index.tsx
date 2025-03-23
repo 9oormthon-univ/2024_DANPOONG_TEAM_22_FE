@@ -73,7 +73,7 @@ const Page1 = ({nickname, onNext}: Readonly<PageProps>) => {
           <Text 
           className="text-yellow200 font-[Voltaire-Regular]"
           style={{fontSize: 48}}>
-          "
+        ”
         </Text>
         <Text
           className="text-yellow200 text-center font-[LeeSeoyun-Regular] mb-[26]"
@@ -83,7 +83,7 @@ const Page1 = ({nickname, onNext}: Readonly<PageProps>) => {
         <Text
           className="text-yellow200 font-[Voltaire-Regular]"
           style={{fontSize: 48}}>
-          "
+          ”
         </Text>
         <CustomText          type="body2"
           text="라는 말이요"
