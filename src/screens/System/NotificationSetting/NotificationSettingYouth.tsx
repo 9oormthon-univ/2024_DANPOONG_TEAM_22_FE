@@ -25,7 +25,7 @@ import { parseTimeString } from "@utils/parseTimeString";
 type MemberInfoYouthResponse = GetMemberInfoYouthResponse['result']
 type AlarmCategory = PostAlarmSettingToggleRequest['alarmCategory']
 
-// 알림 설정에 대한 기본 인터페이스 정의
+// 알림 설정에 대한 기본 타입입 정의
 type NotificationSetting ={
   sub: string;                // 알림 제목 (예: 기상, 취침 등)
   alarmCategory: AlarmCategory; // 알림 카테고리 (API 요청용)  'WAKE_UP' | 'GO_OUT' | 'MEAL_BREAKFAST' | 'MEAL_LUNCH' | 'MEAL_DINNER' | 'SLEEP'
@@ -37,7 +37,7 @@ type NotificationSetting ={
   initialMinute: string;     // 초기 설정 분 (변경 감지용)
 }
 
-// 알림 설정 구성을 위한 인터페이스
+// 알림 설정 구성을 위한 타입
 type NotificationConfig ={
   sub: string;               // 알림 제목
   alarmCategory: AlarmCategory; // API 요청시 사용할 알림 카테고리
