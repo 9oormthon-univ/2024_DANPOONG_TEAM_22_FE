@@ -1,6 +1,6 @@
 import {View, TouchableOpacity} from 'react-native';
 import { RCDBtn } from '@screens/RCD/RCDRecord/components/RCDBtn';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import {RCDBtnBarProps} from '@type/component/RCDBtnBarType';
 
 const TransparentButton = ({
@@ -16,7 +16,7 @@ const TransparentButton = ({
     <TouchableOpacity
       className="w-auto h-auto justify-center items-center px-btn"
       onPress={onPress}>
-      <Text type="body1" text={content} className={`text-${color}`} />
+      <CustomText type="body1" text={content} className={`text-${color}`} />
     </TouchableOpacity>
   );
 };

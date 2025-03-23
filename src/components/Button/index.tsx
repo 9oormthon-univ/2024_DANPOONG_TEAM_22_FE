@@ -1,4 +1,4 @@
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import LottieView from 'lottie-react-native';
 import {Pressable, TextStyle, ViewStyle} from 'react-native';
 
@@ -38,7 +38,7 @@ export const Button = ({
           loop
         />
       ) : (
-        <Text
+        <CustomText
           type="button"
           text={text}
           className={`${disabled ? 'text-white bg-gray300' : 'text-black'}`}

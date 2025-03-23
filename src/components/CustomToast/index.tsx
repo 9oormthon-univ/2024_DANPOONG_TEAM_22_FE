@@ -1,6 +1,6 @@
 import Bang from '@assets/svgs/Bang.svg';
 import CheckYellowIcon from '@assets/svgs/checkYellow.svg';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import {Animated, View} from 'react-native';
 
 export const CustomToast = ({text1, props}: any) => {
@@ -22,7 +22,7 @@ export const CustomToast = ({text1, props}: any) => {
         }}>
         {type === 'check' ? <CheckYellowIcon /> : <Bang />}
         <View className="ml-[14]" />
-        <Text type="body4" text={text1} className="text-white text-center" />
+        <CustomText type="body4" text={text1} className="text-white text-center" />
       </Animated.View>
     </View>
   );

@@ -5,7 +5,7 @@ import {BG} from '@components/BG';
 import {Button} from '@components/Button';
 import {FlexableMargin} from '@components/FlexableMargin';
 import {Toast} from '@components/Toast';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import notifee, {AuthorizationStatus} from '@notifee/react-native';
 import {CompositeScreenProps, useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -170,8 +170,7 @@ const VolunteerNoticeScreen = ({navigation}: Readonly<Props>) => {
       <FlexableMargin flexGrow={80} />
 
       {/* header */}
-      <Text
-        type="title2"
+      <CustomText        type="title2"
         text={
           '내일모래에서\n목소리를 전달하기 위해\n오디오 녹음 동의가 필요해요'
         }
@@ -183,9 +182,9 @@ const VolunteerNoticeScreen = ({navigation}: Readonly<Props>) => {
           <FlexableMargin flexGrow={40} />
           {item.icon}
           <FlexableMargin flexGrow={24} />
-          <Text type="title4" text={item.title} className="text-yellowPrimary" />
+          <CustomText type="title4" text={item.title} className="text-yellowPrimary" />
           <FlexableMargin flexGrow={10} />
-          <Text type="body4" text={item.content} className="text-gray200" />
+          <CustomText type="body4" text={item.content} className="text-gray200" />
         </View>
       ))}
 

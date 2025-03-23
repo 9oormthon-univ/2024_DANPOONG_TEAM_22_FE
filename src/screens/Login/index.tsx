@@ -1,7 +1,7 @@
 import {postLogin} from '@apis/auth';
 import KakaoIcon from '@assets/svgs/kakao.svg';
 import {BG} from '@components/BG';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import { useGetMember } from '@hooks/auth/useGetMember';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
@@ -83,9 +83,8 @@ export const LoginScreen = ({navigation}: Readonly<Props>) => {
         <View className="h-[132]" />
         {/* 상단 텍스트 및 로고 섹션 */}
         <View className="items-center">
-          <Text type="body4" text="내일도 모레도," className="text-gray300" />
-          <Text
-            type="body4"
+          <CustomText type="body4" text="내일도 모레도," className="text-gray300" />
+          <CustomText            type="body4"
             text="일상을 비추는 목소리"
             className="text-gray300"
           />
@@ -111,8 +110,7 @@ export const LoginScreen = ({navigation}: Readonly<Props>) => {
               trackEvent('signup_start');
             }}>
             <KakaoIcon />
-            <Text
-              type="body3"
+            <CustomText              type="body3"
               text="카카오 로그인"
               className="ml-[9.39] font-[AppleSDGothicNeoR]"
               style={{fontSize: 17.6}}
@@ -121,8 +119,7 @@ export const LoginScreen = ({navigation}: Readonly<Props>) => {
           {/* 서비스이용약관, 개인정보처리방침 */}
           <View className="mt-[18.2] flex-row justify-center">
             <View className="flex-row justify-center">
-              <Text
-                type="caption2"
+              <CustomText                type="caption2"
                 text="계속 진행함에 따라 "
                 className="text-gray300"
               />
@@ -130,21 +127,19 @@ export const LoginScreen = ({navigation}: Readonly<Props>) => {
                 onPress={() =>
                   Linking.openURL('https://www.naeilmorae.co.kr/terms')
                 }>
-                <Text type="caption2" text="이용약관" className="text-white" />
+                <CustomText type="caption2" text="이용약관" className="text-white" />
               </Pressable>
-              <Text type="caption2" text="과 " className="text-gray300" />
+              <CustomText type="caption2" text="과 " className="text-gray300" />
               <Pressable
                 onPress={() =>
                   Linking.openURL('https://www.naeilmorae.co.kr/privacy')
                 }>
-                <Text
-                  type="caption2"
+                <CustomText                  type="caption2"
                   text="개인정보 처리방침"
                   className="text-white"
                 />
               </Pressable>
-              <Text
-                type="caption2"
+              <CustomText                type="caption2"
                 text="에 동의합니다."
                 className="text-gray300"
               />

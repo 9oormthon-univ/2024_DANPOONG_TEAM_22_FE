@@ -1,5 +1,5 @@
 import {View} from 'react-native';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import {useEffect, useState} from 'react';
 import {useInterval} from '@hooks/useInterval';
 import {RecordType} from '@type/RecordType';
@@ -74,8 +74,7 @@ export const RCDTimer = ({recording, stop, type, onTimeUpdate, shouldRefresh, se
 
   return (
     <View className="w-full h-20 justify-center items-center">
-      <Text
-        type="recording"
+      <CustomText        type="recording"
         text={formatTime(remainingTime)}
         className={`${
           remainingTime < 5000 && remainingTime > 0 ? 'text-red' : 'text-white'

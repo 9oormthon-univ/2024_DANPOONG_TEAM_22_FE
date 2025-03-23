@@ -7,7 +7,7 @@ import {
 } from '@react-navigation/native';
 // 커스텀 컴포넌트 임포트
 import {BG} from '@components/BG';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import {Button} from '@components/Button';
 
 // SVG 아이콘 임포트
@@ -42,9 +42,9 @@ const Section = ({
     <View className="w-full h-auto mt-[37]">
       {seq === 0 ? <Notice1 /> : <Notice2 />}
       <View className="mt-[20]" />
-      <Text type="title4" text={title} className="text-yellowPrimary" />
+      <CustomText type="title4" text={title} className="text-yellowPrimary" />
       <View className="mt-[10]" />
-      <Text type="body4" text={content} className="text-gray200" />
+      <CustomText type="body4" text={content} className="text-gray200" />
     </View>
   );
 };
@@ -99,8 +99,7 @@ export const RCDNoticeScreen = ({
         <View className="flex-1 mb-[121]">
           {/* 헤더 섹션 */}
           <View className="mt-[63]" />
-          <Text
-            type="title2"
+          <CustomText            type="title2"
             text={'녹음 전에,\n꼭 확인해주세요!'}
             className="text-white"
           />

@@ -1,5 +1,5 @@
 import {TextProps} from '@type/component/TextType';
-import {Text as RNText, TextStyle} from 'react-native';
+import {Text, TextStyle} from 'react-native';
 
 const getStyle = (type: string): TextStyle => {
   const fontStyles = {
@@ -86,15 +86,14 @@ const getStyle = (type: string): TextStyle => {
   return fontStyles[type as keyof typeof fontStyles];
 };
 
-export const Text = ({text, type, ...props}: TextProps) => {
+export const CustomText = ({text, type, ...props}: TextProps) => {
   const style = getStyle(type);
   return (
-    <RNText
-      {...props}
+    <CustomText      {...props}
       className={props.className}
       style={[style, props.style]}
       numberOfLines={props.numberOfLines}>
       {text}
-    </RNText>
+    </Text>
   );
 };

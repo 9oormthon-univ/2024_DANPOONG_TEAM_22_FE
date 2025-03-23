@@ -5,7 +5,7 @@ import { NavigationProp } from "@react-navigation/native";
 import { SystemStackParamList } from "@type/nav/SystemStackParamList";
 import KakaoLogo from "@assets/svgs/KakaoLogo.svg";
 import { View } from "react-native";
-import { Text } from "@components/Text";
+import { Text } from "@components/CostumText";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 export const ConnectedAccountScreen = () => {
@@ -26,9 +26,9 @@ export const ConnectedAccountScreen = () => {
             <View className="w-full h-[89] bg-blue600 rounded-[10px] px-[27] py-[17]">
                 <View className="flex-row items-center gap-[10]">
                     <KakaoLogo />
-                    <Text type="caption1" text="카카오 계정" className="text-gray200" />
+                    <CustomText type="caption1" text="카카오 계정" className="text-gray200" />
                 </View>
-                <View className="w-full h-[27] overflow-hidden"><Text type="body3" text={email} className="text-white" /></View>
+                <View className="w-full h-[27] overflow-hidden"><CustomText type="body3" text={email} className="text-white" /></View>
 
             </View>
         </View>

@@ -9,7 +9,7 @@ export const SplashScreen = () => {
       <View className="flex-1 justify-center items-center">
         <LogoIcon />
         <View className="absolute bottom-[95]">
-          <TextIcon />
+          <CustomTextIcon />
         </View>
       </View>
     </BG>

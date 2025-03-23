@@ -1,6 +1,6 @@
 // 필요한 컴포넌트
 import {BG} from '@components/BG';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import { Pressable, View, Image } from 'react-native';
 import { useNavigation, NavigationProp, useIsFocused } from '@react-navigation/native';
 import { SystemStackParamList } from '@type/nav/SystemStackParamList';
@@ -70,13 +70,13 @@ const AccountButton = ({nickname, email, role, profileImage}:{nickname: string, 
       {/* 텍스트 영역 */}
       <View className="flex-1">
         {/* 닉네임 */}
-        <Text type="title4" text={nickname} className="text-yellowPrimary" />
+        <CustomText type="title4" text={nickname} className="text-yellowPrimary" />
         {/* 간격 조정 */}
         <View className="mt-[4.9]" />
         {/* 카카오 계정 */}
         <View className="flex-row items-center gap-[7.64] overflow-hidden">
           <KakaoLogo />
-          <Text type="caption1" text={email} className="text-gray400" />
+          <CustomText type="caption1" text={email} className="text-gray400" />
         </View>
       </View>
       {/* 화살표 아이콘 */}

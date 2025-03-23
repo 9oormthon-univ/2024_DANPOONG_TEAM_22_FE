@@ -1,4 +1,4 @@
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import {Pressable, View} from 'react-native';
 
 export const SkipBar = ({onSkip}: Readonly<{onSkip: () => void}>) => {
@@ -7,7 +7,7 @@ export const SkipBar = ({onSkip}: Readonly<{onSkip: () => void}>) => {
       <Pressable
         className="flex-1 py-[18] flex-row justify-end"
         onPress={onSkip}>
-        <Text type="button" text="건너뛰기" className="text-white " />
+        <CustomText type="button" text="건너뛰기" className="text-white " />
       </Pressable>
     </View>
   );

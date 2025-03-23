@@ -7,7 +7,7 @@ import {Button} from '@components/Button';
 import {DismissKeyboardView} from '@components/DismissKeyboardView';
 import {Modal} from '@components/Modal';
 import {TextInput} from '@components/TextInput';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import {KEYBOARD_DELAY_MS} from '@constants/common';
 import {useModal} from '@hooks/useModal';
 import {useValidateInput} from '@hooks/useValidateInput';
@@ -125,8 +125,7 @@ export const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) =>
         <View className="h-[120]" />
 
         <View className="items-center px-[30]">
-          <Text
-            type="title2"
+          <CustomText            type="title2"
             text={'내일모래가 당신을\n어떻게 부를까요?'}
             className="text-white text-center"
           />
@@ -155,7 +154,7 @@ export const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) =>
 
           <View className="h-[31]" />
 
-          <TextInput
+          <CustomTextInput
             value={nickname}
             onChangeText={handleNicknameChange}
             isError={isErrorNickname}
@@ -208,13 +207,11 @@ export const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) =>
         visible={visible}
         onCancel={closeModal}
         onConfirm={() => navigation.goBack()}>
-        <Text
-          type="title4"
+        <CustomText          type="title4"
           text="나가시겠어요?"
           className="text-white mt-[26.92] mb-[5]"
         />
-        <Text
-          type="caption1"
+        <CustomText          type="caption1"
           text="화면을 나가면 변경사항이 저장되지 않아요"
           className="text-gray300 mb-[32]"
         />

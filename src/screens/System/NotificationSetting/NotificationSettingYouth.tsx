@@ -12,7 +12,7 @@ import { COLORS } from "@constants/Colors";
 // Components 관련 import
 import {AppBar} from "@components/AppBar";
 import {BG} from "@components/BG";
-import {Text} from "@components/Text";
+import {Text} from "@components/CostumText";
 import {TimeSelectBottomSheet} from "@components/TimeSelectBottomSheet";
 import {ToggleSwitch} from "@components/ToggleSwitch";
 // API 관련 import
@@ -224,8 +224,8 @@ const NotiButton = ({
       android_ripple={{ color: COLORS.blue600 }}
     >
       <View className="flex-row justify-start items-end gap-x-[13]">
-        <Text type="title3" text={title} className="text-white" />
-        <Text type="button" text={sub} className="text-gray300" />
+        <CustomText type="title3" text={title} className="text-white" />
+        <CustomText type="button" text={sub} className="text-gray300" />
       </View>
       <ToggleSwitch isOn={isOn} onToggle={setIsOn} />
     </Pressable>

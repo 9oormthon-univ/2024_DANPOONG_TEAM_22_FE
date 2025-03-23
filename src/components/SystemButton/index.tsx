@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import { Pressable } from "react-native";
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import {ToggleSwitch} from "@components/ToggleSwitch";
 //
 import BackIcon from "@assets/svgs/Back.svg";
@@ -36,11 +36,11 @@ export const SystemButton = ({
         {/* 텍스트 영역 */}
         <View className="flex-1">
           {/* 메뉴 제목 */}
-          <View className="flex-row justify-start items-center gap-x-[11]"><Text type="body3" text={title} className="text-white"/>{kakaoLogo && <KakaoLogo/>}</View>
+          <View className="flex-row justify-start items-center gap-x-[11]"><CustomText type="body3" text={title} className="text-white"/>{kakaoLogo && <KakaoLogo/>}</View>
           {/* 간격 조정 */}
           <View className="h-[4.9]" />
           {/* 메뉴 설명 */}
-          {sub && <Text type="caption1" text={sub} className="text-gray400" />}
+          {sub && <CustomText type="caption1" text={sub} className="text-gray400" />}
         </View>
         {/* 화살표 아이콘 */}
         {type === 'button' && <BackIcon />}

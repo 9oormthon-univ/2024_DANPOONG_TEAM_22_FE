@@ -7,7 +7,7 @@ import {
 
 // 커스텀 컴포넌트 import
 import {BG} from '@components/BG';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import {Carousel} from '@screens/RCD/RCDList/components/Carousel';
 import {AppBar} from '@components/AppBar';
 // React Navigation 관련 import
@@ -104,8 +104,7 @@ export const RCDListScreen = ({
       
       {/* 헤더 섹션 */}
       <View className="w-full mt-[132] px-px mb-[33]">
-        <Text
-          type="title2"
+        <CustomText          type="title2"
           text={RCDListHeader[type]}
           className="text-white"
         />

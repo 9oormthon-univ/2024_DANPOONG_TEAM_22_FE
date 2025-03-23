@@ -1,5 +1,5 @@
 import {BG} from '@components/BG';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import LottieView from 'lottie-react-native';
 import {View} from 'react-native';
 export const LoadingScreen = () => {
@@ -17,13 +17,11 @@ export const LoadingScreen = () => {
               loop
             />
           </View>
-          <Text
-            type="body3"
+          <CustomText            type="body3"
             text="잠시만 기다려주세요"
             className="text-gray300 mt-[65] mb-[28]"
           />
-          <Text
-            type="title2"
+          <CustomText            type="title2"
             text={'따스한 마음을 담은\n목소리를 준비 중이에요.'}
             className="text-white text-center"
       />

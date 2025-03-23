@@ -3,7 +3,7 @@ import {AppBar} from '@components/AppBar';
 import {BG} from '@components/BG';
 import {Button} from '@components/Button';
 import {TimeSelectBottomSheet} from '@components/TimeSelectBottomSheet';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {DEFAULT_TIME} from '@screens/Login/YouthWakeUpTime';
@@ -64,14 +64,12 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
         <View className="h-[180]" />
 
         <View className="items-center flex-1">
-          <Text
-            type="title2"
+          <CustomText            type="title2"
             text="취침 시간을 알려주세요"
             className="text-white text-center"
           />
           <View className="h-[9]" />
-          <Text
-            type="body3"
+          <CustomText            type="body3"
             text="취침 알림을 받고 싶은 시간을 입력해주세요"
             className="text-gray300 text-center"
           />
@@ -82,8 +80,7 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
             <Pressable
               onPress={() => setShowHourBottomSheet(true)}
               className="border-b border-b-gray300 flex-row items-center justify-between w-full shrink">
-              <Text
-                type="title2"
+              <CustomText                type="title2"
                 text={hour.includes('자정') ? '오전 12시' : hour}
                 className="text-white"
               />
@@ -93,7 +90,7 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
             <Pressable
               onPress={() => setShowMinuteBottomSheet(true)}
               className="border-b border-b-gray300 flex-row items-center justify-between w-full shrink">
-              <Text type="title2" text={minute} className="text-white" />
+              <CustomText type="title2" text={minute} className="text-white" />
               <ChevronBottomGrayIcon />
             </Pressable>
           </View>

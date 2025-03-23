@@ -1,5 +1,5 @@
 import ErrorIcon from '@assets/svgs/TextInputError.svg';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import {COLORS} from '@constants/Colors';
 import {useRef, useState} from 'react';
 import {TextInput as RNTextInput, View} from 'react-native';
@@ -68,7 +68,7 @@ export const TextInput = ({
       {message && (
         <>
           <View className="h-[15]" />
-          <Text
+          <CustomText
             type="caption1"
             text={message}
             className={`text-gray400 self-start pl-[9] ${

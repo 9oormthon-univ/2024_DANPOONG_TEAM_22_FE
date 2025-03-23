@@ -5,7 +5,7 @@ import { NavigationProp } from '@react-navigation/native';
 import { SystemStackParamList } from '@type/nav/SystemStackParamList';
 import {SystemButton} from '@components/SystemButton';
 import {Modal} from '@components/Modal';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import { useModal } from '@hooks/useModal';
 import { handleLogout } from '@utils/handleLogout';
 export const MyAccountScreen = () => {
@@ -27,7 +27,7 @@ export const MyAccountScreen = () => {
   cancelText="취소"
   buttonRatio="1:1"
   >
-    <Text type="title4" text="로그아웃 하시겠어요?" className="text-white my-[42]"/>
+    <CustomText type="title4" text="로그아웃 하시겠어요?" className="text-white my-[42]"/>
   </Modal>
   </>;
 };

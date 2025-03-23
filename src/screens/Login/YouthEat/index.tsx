@@ -4,7 +4,7 @@ import {BG} from '@components/BG';
 import {Button} from '@components/Button';
 import {FlexableMargin} from '@components/FlexableMargin';
 import {TimeSelectBottomSheet} from '@components/TimeSelectBottomSheet';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {DEFAULT_TIME} from '@screens/Login/YouthWakeUpTime';
@@ -82,14 +82,12 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
 
         <FlexableMargin flexGrow={120} />
 
-        <Text
-          type="title2"
+        <CustomText          type="title2"
           text="식사 시간을 알려주세요"
           className="text-white text-center"
         />
         <FlexableMargin flexGrow={9} />
-        <Text
-          type="body3"
+        <CustomText          type="body3"
           text="식사 알림을 받고 싶은 시간을 입력해주세요"
           className="text-gray300 text-center"
         />
@@ -98,14 +96,13 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
 
         {/* 아침 */}
         <View className="px-[50]">
-          <Text type="button" text="아침" className="text-gray300" />
+          <CustomText type="button" text="아침" className="text-gray300" />
           <FlexableMargin flexGrow={11} />
           <View className="flex-row items-center justify-between">
             <Pressable
               onPress={() => setShowBreakfastHourBottomSheet(true)}
               className="border-b border-b-gray300 flex-row items-center justify-between w-full shrink">
-              <Text
-                type="title2"
+              <CustomText                type="title2"
                 text={
                   breakfastHour.includes('자정') ? '오전 12시' : breakfastHour
                 }
@@ -117,8 +114,7 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
             <Pressable
               onPress={() => setShowBreakfastMinuteBottomSheet(true)}
               className="border-b border-b-gray300 flex-row items-center justify-between w-full shrink">
-              <Text
-                type="title2"
+              <CustomText                type="title2"
                 text={breakfastMinute}
                 className="text-white"
               />
@@ -131,14 +127,13 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
 
         {/* 점심 */}
         <View className="px-[50]">
-          <Text type="button" text="점심" className="text-gray300" />
+          <CustomText type="button" text="점심" className="text-gray300" />
           <FlexableMargin flexGrow={11} />
           <View className="flex-row items-center justify-between">
             <Pressable
               onPress={() => setShowLunchHourBottomSheet(true)}
               className="border-b border-b-gray300 flex-row items-center justify-between w-full shrink">
-              <Text
-                type="title2"
+              <CustomText                type="title2"
                 text={lunchHour.includes('자정') ? '오전 12시' : lunchHour}
                 className="text-white"
               />
@@ -148,7 +143,7 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
             <Pressable
               onPress={() => setShowLunchMinuteBottomSheet(true)}
               className="border-b border-b-gray300 flex-row items-center justify-between w-full shrink">
-              <Text type="title2" text={lunchMinute} className="text-white" />
+              <CustomText type="title2" text={lunchMinute} className="text-white" />
               <ChevronBottomGrayIcon />
             </Pressable>
           </View>
@@ -158,14 +153,13 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
 
         {/* 저녁 */}
         <View className="px-[50]">
-          <Text type="button" text="저녁" className="text-gray300" />
+          <CustomText type="button" text="저녁" className="text-gray300" />
           <FlexableMargin flexGrow={11} />
           <View className="flex-row items-center justify-between">
             <Pressable
               onPress={() => setShowDinnerHourBottomSheet(true)}
               className="border-b border-b-gray300 flex-row items-center justify-between w-full shrink">
-              <Text
-                type="title2"
+              <CustomText                type="title2"
                 text={dinnerHour.includes('자정') ? '오전 12시' : dinnerHour}
                 className="text-white"
               />
@@ -175,7 +169,7 @@ const YouthEatScreen = ({route, navigation}: Readonly<AuthProps>) => {
             <Pressable
               onPress={() => setShowDinnerMinuteBottomSheet(true)}
               className="border-b border-b-gray300 flex-row items-center justify-between w-full shrink">
-              <Text type="title2" text={dinnerMinute} className="text-white" />
+              <CustomText type="title2" text={dinnerMinute} className="text-white" />
               <ChevronBottomGrayIcon />
             </Pressable>
           </View>

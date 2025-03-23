@@ -5,7 +5,7 @@ import {BG} from '@components/BG';
 import {Button} from '@components/Button';
 import {FlexableMargin} from '@components/FlexableMargin';
 import {Toast} from '@components/Toast';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import {usePostYouth} from '@hooks/auth/usePostYouth';
 import notifee, {AuthorizationStatus} from '@notifee/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -214,8 +214,7 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
       <FlexableMargin flexGrow={80} />
 
       {/* header */}
-      <Text
-        type="title2"
+      <CustomText        type="title2"
         text={'거의 다 왔어요!\n원활한 서비스를 위해\n권한 동의가 필요해요'}
         className="text-white px-px"
       />
@@ -225,9 +224,9 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
           <FlexableMargin flexGrow={40} />
           {item.icon}
           <FlexableMargin flexGrow={24} />
-          <Text type="title4" text={item.title} className="text-yellowPrimary" />
+          <CustomText type="title4" text={item.title} className="text-yellowPrimary" />
           <FlexableMargin flexGrow={10} />
-          <Text type="body4" text={item.content} className="text-gray200" />
+          <CustomText type="body4" text={item.content} className="text-gray200" />
         </View>
       ))}
 

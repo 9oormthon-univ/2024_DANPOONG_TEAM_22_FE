@@ -10,7 +10,7 @@ import LogoIcon from '@assets/svgs/Main2.svg';
 import SettingSmallIcon from '@assets/svgs/settingSmall.svg';
 
 // 컴포넌트
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 
 // 상수
 import { COLORS } from '@constants/Colors';
@@ -156,26 +156,23 @@ export const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
         onPress={() => navigation.navigate('SystemStackNav')}>
         <SettingSmallIcon />
         <View className="w-[6.5]" />
-        <Text type="caption1" text="설정" className="text-blue200" />
+        <CustomText type="caption1" text="설정" className="text-blue200" />
       </Pressable>
 
-      <Text
-        type="body2"
+      <CustomText        type="body2"
         text={`${nickname}님, 반가워요!`}
         className="text-gray300 pt-[60.5] px-[30]"
       />
       <View className="h-[12]" />
       <View className="px-[30]">
         <View className="flex-row items-center">
-          <Text
-            type="title2"
+          <CustomText            type="title2"
             text={`${helperNumData?.result.youthMemberNum ?? '0'}명의 목소리`}
             className="text-yellowPrimary"
           />
-          <Text type="title2" text="가" className="text-white" />
+          <CustomText type="title2" text="가" className="text-white" />
         </View>
-        <Text
-          type="title2"
+        <CustomText          type="title2"
           text="당신의 일상을 비추고 있어요"
           className="text-white"
         />
@@ -204,8 +201,7 @@ export const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
               ],
             }}
             className="flex-row items-center mb-[14]">
-            <Text
-              type="button"
+            <CustomText              type="button"
               text={alarmCategoryKoreanName}
               className="text-white"
             />
@@ -225,10 +221,10 @@ export const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
         <View className="flex-row items-center">
           <Animated.View style={{opacity: textOpacity}}>
             {!clicked && (
-              <Text type="button" text="위로 받기" className="text-white" />
+              <CustomText type="button" text="위로 받기" className="text-white" />
             )}
             {clicked && (
-              <Text type="button" text="위로 받기" className="text-white" />
+              <CustomText type="button" text="위로 받기" className="text-white" />
             )}
           </Animated.View>
           <View className="w-[16]" />

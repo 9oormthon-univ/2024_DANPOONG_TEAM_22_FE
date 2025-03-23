@@ -2,7 +2,7 @@ import {RCD} from '@apis/RCDApis/getRCDList';
 import {Button} from '@components/Button';
 import {ShadowView} from '@components/ShadowView';
 import {StarIMG} from '@components/StarIMG';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {RecordType} from '@type/RecordType';
@@ -31,8 +31,7 @@ export const Card = ({
           </View>
           {/* 제목 head*/}
           <View className="w-full">
-            <Text
-              type="title3"
+            <CustomText              type="title3"
               text={item.title}
               className="text-white text-center"
             />

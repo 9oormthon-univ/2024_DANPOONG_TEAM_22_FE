@@ -10,7 +10,7 @@ import {View} from 'react-native';
 import {AppBar} from '@components/AppBar';
 import {BG} from '@components/BG';
 import {Button} from '@components/Button';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 
 // SVG 아이콘 임포트
 import Notice2 from '@assets/svgs/Notice2.svg';
@@ -57,8 +57,7 @@ export const RCDErrorScreen = ({
           )}
           <View className="mt-[43]" />
           {/* 오류 메시지 제목 */}
-          <Text
-            type="title2"
+          <CustomText            type="title2"
             text={
               errorType === 'noisy'
                 ? '주변 소음이 크게 들려서\n녹음을 전송할 수 없어요'
@@ -72,8 +71,7 @@ export const RCDErrorScreen = ({
           />
           <View className="mt-[25]" />
           {/* 오류 메시지 부제목 */}
-          <Text
-            type="body4"
+          <CustomText            type="body4"
             text={
               errorType === 'noisy'
                 ? '조용한 장소에서 다시 녹음해주세요'

@@ -5,7 +5,7 @@ import {NavigationProp} from '@react-navigation/native';
 import {SystemStackParamList} from '@type/nav/SystemStackParamList';
 import {SystemButton} from '@components/SystemButton';
 import {View, Linking, Platform} from 'react-native';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import DeviceInfo from 'react-native-device-info';
 
 export const ServiceScreen = () => {
@@ -76,8 +76,7 @@ export const ServiceScreen = () => {
         <View className="flex-1">
           {/* 메뉴 제목 */}
           <View className="flex-row justify-start items-center gap-x-[11]">
-            <Text
-              type="body3"
+            <CustomText              type="body3"
               text={`현재 버전 ${currentVersion}`}
               className={isUpdateAvailable ? 'text-white' : 'text-gray300'}
             />
@@ -88,8 +87,7 @@ export const ServiceScreen = () => {
             isUpdateAvailable ? 'bg-yellowPrimary' : 'bg-gray300'
           }`}
           onTouchEnd={handleUpdate}>
-          <Text
-            type="caption1"
+          <CustomText            type="caption1"
             text="업데이트"
             className={isUpdateAvailable ? 'text-black' : 'text-white'}
           />

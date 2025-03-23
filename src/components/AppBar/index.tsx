@@ -1,7 +1,7 @@
 // 필요한 컴포넌트 및 아이콘 import
 import ChevronLeftWhiteIcon from '@assets/svgs/chevron/chevron_left_white.svg';
 import ExitWhiteIcon from '@assets/svgs/exit_white.svg';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import {ActivityIndicator, Pressable, View, ViewStyle} from 'react-native';
 // AppBar 컴포넌트의 props 타입 정의
 type AppBarProps = {
@@ -44,12 +44,12 @@ export const AppBar = ({
           {isLoading ? (
             <ActivityIndicator size="small" color="#fafafa" />
           ) : (
-            <Text type="title4" text="완료" className="text-white" />
+            <CustomText type="title4" text="완료" className="text-white" />
           )}
         </Pressable>
       );
     return <View className="flex-1 py-[18] flex-row justify-end" >
-            <Text type="title4" text="" className="text-white" />
+            <CustomText type="title4" text="" className="text-white" />
             </View>;
   };
 
@@ -69,7 +69,7 @@ export const AppBar = ({
       )}
       {/* 중앙 영역: 제목 또는 빈 공간 */}
       {title ? (
-        <Text
+        <CustomText
           type="button"
           text={title}
           className="text-white text-center flex-1 py-[18]"

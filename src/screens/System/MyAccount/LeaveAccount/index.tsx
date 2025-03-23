@@ -1,6 +1,6 @@
 import {AppBar} from "@components/AppBar";
 import {BG} from "@components/BG";
-import {Text} from "@components/Text";
+import {Text} from "@components/CostumText";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 import { SystemStackParamList } from "@type/nav/SystemStackParamList";
@@ -43,8 +43,8 @@ export const LeaveAccountScreen = () => {
                     <View className="flex-1 items-center">
                         {/* 안내 문구 */}
                         <View className="py-[41] px-px gap-[3] w-full">
-                            <Text type="title4" text="탈퇴하는 이유가 무엇인가요?" className="text-white" />
-                            <Text type="body4" text="더 나은 내일모래가 될 수 있도록 의견을 들려주세요" className="text-gray300" />
+                            <CustomText type="title4" text="탈퇴하는 이유가 무엇인가요?" className="text-white" />
+                            <CustomText type="body4" text="더 나은 내일모래가 될 수 있도록 의견을 들려주세요" className="text-gray300" />
                         </View>
                         {/* 구분선 */}
                         <View className="w-full h-[5px] bg-blue600"/>
@@ -65,7 +65,7 @@ export const LeaveAccountScreen = () => {
                             />
                             {selectedReasons.includes("기타") && (
                                 <View className="w-full px-px" onTouchStart={() => {setIsDetailTyping(true)}}>
-                                <TextInput  
+                                <CustomTextInput  
                                     autoFocus
                                     value={detailReason}
                                     onChangeText={setDetailReason}
@@ -94,7 +94,7 @@ export const LeaveAccountScreen = () => {
                                 onPress={() => {toggleReason("기타"); setIsDetailTyping(false)}}
                             />
                                 <View className="w-full px-px">
-                                    <TextInput  
+                                    <CustomTextInput  
                                         autoFocus
                                         value={detailReason}
                                         onChangeText={setDetailReason}
@@ -133,7 +133,7 @@ const ReasonItem = ({
                 <View className="w-[6px] h-[10px] border-r-2 border-b-2 border-blue700 rotate-45" />
               )}
             </View>
-            <Text type="body3" text={reason} className="text-white" />
+            <CustomText type="body3" text={reason} className="text-white" />
         </Pressable>
     );
 };

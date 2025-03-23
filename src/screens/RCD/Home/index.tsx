@@ -4,7 +4,7 @@ import {ImageBackground, TouchableOpacity, View} from 'react-native';
 
 // 커스텀 컴포넌트 임포트
 import {BG} from '@components/BG';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import {FlexableMargin} from '@components/FlexableMargin';
 // 타입 및 상수 임포트
 import {RecordTypeConstant} from '@constants/RecordType';
@@ -55,21 +55,18 @@ export const HomeScreen = () => {
       <View className="flex-1 px-[30] pt-[117]">
         {/* header */}
         <View className="w-full mb-[46]">
-          <Text
-            type="title3"
+          <CustomText            type="title3"
             text={`${nickname ?? ''}님, 반가워요!`}
             className="text-gray300"
           />
           <View className="flex flex-row mt-[9]">
-            <Text
-              type="title2"
+            <CustomText              type="title2"
               text={`${youthNum}명의 청년들`}
               className="text-yellowPrimary"
             />
-            <Text type="title2" text="이" className="text-white" />
+            <CustomText type="title2" text="이" className="text-white" />
           </View>
-          <Text
-            type="title2"
+          <CustomText            type="title2"
             text={'당신의 목소리를 기다리고 있어요'}
             className="text-white"
           />
@@ -125,8 +122,7 @@ export const HomeScreen = () => {
 //       {/* 텍스트와 화살표 */}
 //       <View className="absolute bottom-[18] left-[27] flex flex-row items-center justify-between w-[120]">
 //         <View className="flex flex-row items-center">
-//           <Text
-//             type="title3"
+//           <CustomText//             type="title3"
 //             text={`${
 //               type === RecordTypeConstant.DAILY
 //                 ? '일상'
@@ -136,8 +132,7 @@ export const HomeScreen = () => {
 //             }`}
 //             className="text-yellowPrimary"
 //           />
-//           <Text
-//             type="title3"
+//           <CustomText//             type="title3"
 //             text={`${type === RecordTypeConstant.COMFORT ? '의 말' : ' 알림'}`}
 //             className="text-white "
 //           />
@@ -175,13 +170,11 @@ const SelectBtn = ({type}: {type: RecordType}) => {
       <View className="flex flex-row">
       <FlexableMargin flexGrow={78} />
         <View style={{flexDirection: 'row',flexGrow: 112}}>
-        <Text
-          type="title3"
+        <CustomText          type="title3"
           text={`${type === RecordTypeConstant.DAILY ? '일상' : '위로'}`}
           className="text-white"
         />
-        <Text
-          type="title3"
+        <CustomText          type="title3"
           text={`${type === RecordTypeConstant.COMFORT ? '의 말' : ' 알림'}`}
           className="text-white "
         />
@@ -195,7 +188,7 @@ const SelectBtn = ({type}: {type: RecordType}) => {
       <View className="flex flex-row w-full">
       <FlexableMargin flexGrow={78} />
 
-        <Text type="title3" text="녹음하기" className="text-yellowPrimary" />
+        <CustomText type="title3" text="녹음하기" className="text-yellowPrimary" />
         <FlexableMargin flexGrow={28} />
 
         <View className="flex justify-center items-center">

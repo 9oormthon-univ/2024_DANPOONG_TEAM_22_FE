@@ -1,4 +1,4 @@
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import {EMOTION_OPTIONS} from '@constants/letter';
 import {ResultResponseData} from '@type/api/common';
 import {SummaryResponseData} from '@type/api/providedFile';
@@ -18,20 +18,18 @@ export const ListHeader = ({
   return (
     <View className="bg-blue700">
       <View className="h-[61]" />
-      <Text
-        type="title2"
+      <CustomText        type="title2"
         text={`${nickname}님의 목소리를`}
         className="text-white px-[30]"
       />
       <View className="flex-row px-[30]">
         <View className="flex-row justify-start items-center">
-          <Text type="title2" text="청년들이 " className="text-white" />
-            <Text
-            type="title2"
+          <CustomText type="title2" text="청년들이 " className="text-white" />
+            <CustomText            type="title2"
             text={`${String(summaryData?.result.totalListeners ?? '')}번`}
             className="text-yellowPrimary"
           />
-          <Text type="title2" text=" 청취했어요" className="text-white" />
+          <CustomText type="title2" text=" 청취했어요" className="text-white" />
         </View>
       </View>
 
@@ -43,10 +41,9 @@ export const ListHeader = ({
             <View className="flex-row items-center flex-1">
               {emotion.icon}
               <View className="w-[5]" />
-              <Text type="body3" text={emotion.label} className="text-white" />
+              <CustomText type="body3" text={emotion.label} className="text-white" />
               <View className="w-[8]" />
-              <Text
-                type="body3"
+              <CustomText                type="body3"
                 text={displayNum(
                   summaryData?.result.reactionsNum[
                     emotion.type as keyof typeof summaryData.result.reactionsNum
@@ -68,10 +65,9 @@ export const ListHeader = ({
             <View className="flex-row items-center flex-1">
               {emotion.icon}
               <View className="w-[5]" />
-              <Text type="body3" text={emotion.label} className="text-white" />
+              <CustomText type="body3" text={emotion.label} className="text-white" />
               <View className="w-[8]" />
-              <Text
-                type="body3"
+              <CustomText                type="body3"
                 text={String(
                   summaryData?.result.reactionsNum[
                     emotion.type as keyof typeof summaryData.result.reactionsNum

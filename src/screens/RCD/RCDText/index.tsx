@@ -14,7 +14,7 @@ import {BG} from '@components/BG';
 import {Button} from '@components/Button';
 import {StarIMG} from '@components/StarIMG';
 import {Toast} from '@components/Toast';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import {ShadowView} from '@components/ShadowView';
 
 // 유틸리티 임포트
@@ -131,7 +131,7 @@ export const RCDTextScreen = ({
         <View className="mb-[29]" />
         {/* 헤더 섹션 */}
         <View className="h-auto items-center mb-[50]">
-          <Text
+          <CustomText
             type="title2"
             text={item.title}
             className="text-white text-center"

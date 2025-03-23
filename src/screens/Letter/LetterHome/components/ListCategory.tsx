@@ -1,5 +1,5 @@
-import {Text} from '@components/Text';
-import {Pressable, ScrollView, Text as RNText, View} from 'react-native';
+import {CustomText} from '@components/CustomText';
+import {Pressable, ScrollView, Text , View} from 'react-native';
 
 export const ListCategory = ({
   nickname,
@@ -33,8 +33,7 @@ export const ListCategory = ({
               } mr-[8]`}
               style={{borderRadius: 20}}
               onPress={() => setSelectedFilterIdx(index)}>
-              <Text
-                type="body4"
+              <CustomText                type="body4"
                 text={menu.label}
                 className={`${
                   index === selectedFilterIdx
@@ -47,7 +46,7 @@ export const ListCategory = ({
         </View>
       </ScrollView>
       <View className="flex-row items-center px-[30] ml-[4]">
-        <RNText
+        <Text
           className="text-white"
           style={{
             fontSize: 22,
@@ -55,9 +54,8 @@ export const ListCategory = ({
             lineHeight: 22 * 1.5,
           }}>
           TO.
-        </RNText>
-        <Text
-          type="title4"
+        </Text>
+        <CustomText          type="title4"
           text={nickname ?? ''}
           className="text-yellowPrimary ml-[7]"
         />

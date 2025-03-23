@@ -1,5 +1,5 @@
 import SelectCheckIcon from '@assets/svgs/selectCheck.svg';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import {useEffect, useRef} from 'react';
 import {Animated, Pressable, ScrollView, View} from 'react-native';
 
@@ -76,7 +76,7 @@ export const TimeSelectBottomSheet = ({
         <View className="h-[25]" />
 
         <View className="flex-1 px-[30]">
-          <Text type="title3" text={titleText} className="text-white" />
+          <CustomText type="title3" text={titleText} className="text-white" />
           <View className="h-[21]" />
 
           <ScrollView className="pb-[30]" showsVerticalScrollIndicator={false}>
@@ -85,8 +85,7 @@ export const TimeSelectBottomSheet = ({
                 key={option}
                 className="h-[56] flex-row items-center justify-between"
                 onPress={() => handleOptionClick(option)}>
-                <Text
-                  type="body3"
+                <CustomText                  type="body3"
                   text={option}
                   className={`${
                     value === option ? 'text-yellowPrimary' : 'text-white'

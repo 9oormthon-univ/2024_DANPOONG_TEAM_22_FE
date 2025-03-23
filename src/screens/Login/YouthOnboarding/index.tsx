@@ -2,7 +2,7 @@ import LogoRoundIcon from '@assets/svgs/logoRound.svg';
 import {BG} from '@components/BG';
 import {Button} from '@components/Button';
 import {SkipBar} from '@components/SkipBar';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import {COLORS} from '@constants/Colors';
 import {VOICE_DELAY_MS} from '@constants/voice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -74,8 +74,7 @@ const Page1 = ({nickname, onNext}: Readonly<PageProps>) => {
       className="flex-1 items-center">
       <View className="flex-1 w-full">
         <View className="h-[200]" />
-        <Text
-          type="body2"
+        <CustomText          type="body2"
           text={`${nickname} 님,\n지금도 내일모래에는\n당신을 위해 목소리를 내는\n사람들이 있어요`}
           className="text-white text-center"
         />
@@ -160,16 +159,14 @@ const Page2 = ({
           style={{
             color: textColor,
           }}>
-          <Text
-            type="body2"
+          <CustomText            type="body2"
             text={`이제부터 이들의 목소리가\n${nickname} 님의 일상 곳곳에 도착할 거예요`}
             className="text-center"
           />
         </Animated.Text>
 
         <Animated.View style={{opacity: contentOpacity}}>
-          <Text
-            type="body2"
+          <CustomText            type="body2"
             text="이렇게요"
             className="text-white text-center mt-[55]"
           />
@@ -190,10 +187,9 @@ const Page2 = ({
               onPress={handleNext}>
               <LogoRoundIcon />
               <View className="pl-[10]">
-                <Text type="body4" text="내일모래" className="text-white" />
+                <CustomText type="body4" text="내일모래" className="text-white" />
                 <View className="h-[3]" />
-                <Text
-                  type="caption3"
+                <CustomText                  type="caption3"
                   text="외출할 일이 있나요? 나가기 전에, 잠깐 들어봐요."
                   className="text-gray200"
                 />
@@ -208,8 +204,7 @@ const Page2 = ({
             <View
               className="h-[43] bg-yellow200 justify-center items-center px-[20]"
               style={{borderRadius: 100}}>
-              <Text
-                type="caption2"
+              <CustomText                type="caption2"
                 text="누르면, 실제 봉사자의 목소리 알림을 들을 수 있어요"
                 className="text-black"
               />
@@ -301,14 +296,13 @@ const Page3 = ({onNext}: Readonly<PageProps>) => {
           />
         </View>
         <View className="w-[10]" />
-        <Text type="title4" text="네잎클로바" className="text-yellowPrimary" />
+        <CustomText type="title4" text="네잎클로바" className="text-yellowPrimary" />
       </View>
 
       <View className="h-[33] " />
 
       <View className="px-[30]">
-        <Text
-          type="title3"
+        <CustomText          type="title3"
           text={`아침 거르고 빈속으로 있으면 힘들어.\n아침에 뭐라도 먹어야 에너지가 생기지.\n꼭 가볍게라도 챙겨 먹어!`}
           className="text-gray200"
         />
@@ -374,8 +368,7 @@ const Page4 = ({onNext}: Readonly<PageProps>) => {
         style={{...StyleSheet.absoluteFillObject, opacity: opacityAnim}}>
         <View className="flex-1 w-full">
           <View className="h-[200]" />
-          <Text
-            type="body2"
+          <CustomText            type="body2"
             text={`이제부터 내일모래가 내일도, 모레도,\n당신의 일상에 따스한 목소리를 전달해줄게요`}
             className="text-white text-center"
           />
@@ -389,8 +382,7 @@ const Page4 = ({onNext}: Readonly<PageProps>) => {
         style={{...StyleSheet.absoluteFillObject, opacity: nextOpacityAnim}}>
         <View className="flex-1 w-full">
           <View className="h-[200]" />
-          <Text
-            type="body2"
+          <CustomText            type="body2"
             text={`이제부터 내일모래가 내일도, 모레도,\n당신의 일상에 따스한 목소리를 전달해줄게요`}
             className="text-white text-center"
           />

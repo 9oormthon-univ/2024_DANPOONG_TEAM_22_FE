@@ -1,7 +1,7 @@
 // 필요한 API 및 컴포넌트 import
 import {getVoiceFiles} from '@apis/voiceFile';
 import {AppBar} from '@components/AppBar';
-import {Text} from '@components/Text';
+import {CustomText} from '@components/CustomText';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import { LoadingScreen } from '@screens/Loading';
 import {YouthStackParamList} from '@stackNav/Youth';
@@ -308,8 +308,7 @@ export const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => 
               />
             </View>
             <View className="w-[10]" />
-            <Text
-              type="title4"
+            <CustomText              type="title4"
               text={voiceFile?.member?.name}
               className="text-yellowPrimary"
             />
@@ -320,8 +319,7 @@ export const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => 
           {/* 스크립트 */}
           <View className="px-[30] h-[244]">
             <ScrollView>
-              <Text
-                type="body3"
+              <CustomText                type="body3"
                 text={voiceFile?.content ?? ''}
                 className="text-white"
               />
@@ -363,8 +361,7 @@ export const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => 
                     style={{borderRadius: 50}}
                     onPress={() => handleMessageSend(emotion.type)}>
                     {emotion.icon}
-                    <Text
-                      type="body3"
+                    <CustomText                      type="body3"
                       text={emotion.label}
                       className="text-white ml-[10]"
                     />
@@ -375,7 +372,7 @@ export const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => 
             {/* 메시지 입력 영역 */}
             <View className="h-[86] px-[25] bg-blue500 flex-row items-center">
               <View className="flex-[7.5] relative">
-                <TextInput
+                <CustomTextInput
                   value={message}
                   onChangeText={setMessage}
                   placeholder="감사의 말을 전해보세요"
