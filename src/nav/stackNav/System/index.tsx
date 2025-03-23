@@ -5,17 +5,18 @@ import { TabNavOptions } from '@constants/TabNavOptions';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { useLayoutEffect } from 'react';
 // Screens
-import SystemScreen from '@screens/System';
-import ModifyInfoScreen from '@screens/System/ModifyInfo';
-import MyAccountScreen from '@screens/System/MyAccount';
-import NotificationSettingScreen from '@screens/System/NotificationSetting';
-import ServiceScreen from '@screens/System/Service';
-import ConnectedAccountScreen from '@screens/System/MyAccount/ConnectedAccount';
-import LeaveAccountScreen from '@screens/System/MyAccount/LeaveAccount';
-import LeaveAccount2Screen from '@screens/System/MyAccount/LeaveAccount/LeaveAccount2';
+import { SystemScreen } from '@screens/System';
+import { ModifyInfoScreen } from '@screens/System/ModifyInfo';
+import { MyAccountScreen } from '@screens/System/MyAccount';
+import { NotificationSettingScreen } from '@screens/System/NotificationSetting';
+import { ServiceScreen } from '@screens/System/Service';
+import { ConnectedAccountScreen } from '@screens/System/MyAccount/ConnectedAccount';
+import { LeaveAccountScreen } from '@screens/System/MyAccount/LeaveAccount';
+import { LeaveAccount2Screen } from '@screens/System/MyAccount/LeaveAccount/LeaveAccount2';
+
 const Stack = createNativeStackNavigator<SystemStackParamList>();
 
-const SystemStackNav = () => {
+export const SystemStackNav = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
   const route = useRoute();
   useLayoutEffect(() => {
@@ -45,9 +46,6 @@ const SystemStackNav = () => {
       <Stack.Screen name="LeaveAccount2" component={LeaveAccount2Screen} />
       <Stack.Screen name="NotificationSetting" component={NotificationSettingScreen} />
       <Stack.Screen name="Service" component={ServiceScreen} />
-
     </Stack.Navigator>
   );
 };
-
-export default SystemStackNav;

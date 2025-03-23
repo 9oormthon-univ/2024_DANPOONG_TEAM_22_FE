@@ -1,4 +1,4 @@
-import client from '@apis/client';
+import {client} from '@apis/client';
 import {ResultResponseData} from '@type/api/common';
 import {
   HelperNumResponseData,

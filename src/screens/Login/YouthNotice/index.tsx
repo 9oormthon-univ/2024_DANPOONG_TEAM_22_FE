@@ -1,12 +1,12 @@
 import AlarmIcon from '@assets/svgs/alarm.svg';
 import LocationIcon from '@assets/svgs/location.svg';
-import AppBar from '@components/atom/AppBar';
-import BG from '@components/atom/BG';
-import Button from '@components/atom/Button';
-import FlexableMargin from '@components/atom/FlexableMargin';
-import Toast from '@components/atom/Toast';
-import Txt from '@components/atom/Txt';
-import usePostYouth from '@hooks/auth/usePostYouth';
+import {AppBar} from '@components/AppBar';
+import {BG} from '@components/BG';
+import {Button} from '@components/Button';
+import {FlexableMargin} from '@components/FlexableMargin';
+import {Toast} from '@components/Toast';
+import {CustomText} from '@components/CustomText';
+import {usePostYouth} from '@hooks/auth/usePostYouth';
 import notifee, {AuthorizationStatus} from '@notifee/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geolocation from '@react-native-community/geolocation';
@@ -214,8 +214,7 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
       <FlexableMargin flexGrow={80} />
 
       {/* header */}
-      <Txt
-        type="title2"
+      <CustomText        type="title2"
         text={'거의 다 왔어요!\n원활한 서비스를 위해\n권한 동의가 필요해요'}
         className="text-white px-px"
       />
@@ -225,9 +224,9 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
           <FlexableMargin flexGrow={40} />
           {item.icon}
           <FlexableMargin flexGrow={24} />
-          <Txt type="title4" text={item.title} className="text-yellowPrimary" />
+          <CustomText type="title4" text={item.title} className="text-yellowPrimary" />
           <FlexableMargin flexGrow={10} />
-          <Txt type="body4" text={item.content} className="text-gray200" />
+          <CustomText type="body4" text={item.content} className="text-gray200" />
         </View>
       ))}
 
@@ -245,4 +244,5 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
     </BG>
   );
 };
-export default YouthNoticeScreen;
+
+export {YouthNoticeScreen};

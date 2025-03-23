@@ -1,14 +1,14 @@
-import AppBar from '@components/atom/AppBar';
-import BG from '@components/atom/BG';
+import {AppBar} from '@components/AppBar';
+import {BG} from '@components/BG';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationProp} from '@react-navigation/native';
 import {SystemStackParamList} from '@type/nav/SystemStackParamList';
-import SystemButton from '@components/atom/SystemButton';
+import {SystemButton} from '@components/SystemButton';
 import {View, Linking, Platform} from 'react-native';
-import Txt from '@components/atom/Txt';
+import {CustomText} from '@components/CustomText';
 import DeviceInfo from 'react-native-device-info';
 
-const ServiceScreen = () => {
+export const ServiceScreen = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
 
   const currentVersion = DeviceInfo.getVersion();
@@ -76,8 +76,7 @@ const ServiceScreen = () => {
         <View className="flex-1">
           {/* 메뉴 제목 */}
           <View className="flex-row justify-start items-center gap-x-[11]">
-            <Txt
-              type="body3"
+            <CustomText              type="body3"
               text={`현재 버전 ${currentVersion}`}
               className={isUpdateAvailable ? 'text-white' : 'text-gray300'}
             />
@@ -88,8 +87,7 @@ const ServiceScreen = () => {
             isUpdateAvailable ? 'bg-yellowPrimary' : 'bg-gray300'
           }`}
           onTouchEnd={handleUpdate}>
-          <Txt
-            type="caption1"
+          <CustomText            type="caption1"
             text="업데이트"
             className={isUpdateAvailable ? 'text-black' : 'text-white'}
           />
@@ -99,4 +97,3 @@ const ServiceScreen = () => {
   );
 };
 
-export default ServiceScreen;

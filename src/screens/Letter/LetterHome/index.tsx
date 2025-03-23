@@ -1,23 +1,23 @@
-import AnimatedView from '@components/atom/AnimatedView';
-import BottomMenu from '@components/atom/BottomMenu';
-import Button from '@components/atom/Button';
-import Modal from '@components/atom/Modal';
-import Toast from '@components/atom/Toast';
-import Txt from '@components/atom/Txt';
+import {AnimatedView} from '@components/AnimatedView';
+import {BottomMenu} from '@components/BottomMenu';
+import {Button} from '@components/Button';
+import {Modal} from '@components/Modal';
+import {Toast} from '@components/Toast';
+import {CustomText} from '@components/CustomText';
 import {COLORS} from '@constants/Colors';
 import {Portal} from '@gorhom/portal';
-import useGetAlarmCategory from '@hooks/alarm/useGetAlarmCategory';
-import useDeleteLetter from '@hooks/providedFile/useDeleteLetter';
-import useGetLetters from '@hooks/providedFile/useGetLetters';
-import useGetSummary from '@hooks/providedFile/useGetSummary';
-import usePostReport from '@hooks/providedFile/usePostReport';
-import useModal from '@hooks/useModal';
+import { useGetAlarmCategory } from '@hooks/alarm/useGetAlarmCategory';
+import { useDeleteLetter } from '@hooks/providedFile/useDeleteLetter';
+import { useGetLetters } from '@hooks/providedFile/useGetLetters';
+import { useGetSummary } from '@hooks/providedFile/useGetSummary';
+import { usePostReport } from '@hooks/providedFile/usePostReport';
+import { useModal } from '@hooks/useModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import LetterCard from '@screens/Letter/LetterHome/components/LetterCard';
-import ListCategory from '@screens/Letter/LetterHome/components/ListCategory';
-import ListEmpty from '@screens/Letter/LetterHome/components/ListEmpty';
-import ListHeader from '@screens/Letter/LetterHome/components/ListHeader';
+import { LetterCard } from '@screens/Letter/LetterHome/components/LetterCard';
+import { ListCategory } from '@screens/Letter/LetterHome/components/ListCategory';
+import { ListEmpty } from '@screens/Letter/LetterHome/components/ListEmpty';
+import { ListHeader } from '@screens/Letter/LetterHome/components/ListHeader';
 import {LetterResponseData} from '@type/api/providedFile';
 import {LetterStackParamList} from '@type/nav/LetterStackParamList';
 import {useEffect, useState} from 'react';
@@ -37,7 +37,7 @@ type LetterProps = NativeStackScreenProps<
 
 type Category = {category: string; label: string};
 
-const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
+export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   const [nickname, setNickname] = useState('');
   const [selectedFilterIdx, setSelectedFilterIdx] = useState(0);
   const [parentCategories, setParentCategories] = useState<
@@ -342,7 +342,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
         onConfirm={handleReportClick}
         buttonRatio="1:1"
         confirmText="신고">
-        <Txt
+        <CustomText
           type="title4"
           text={`[${
             lettersFlatData.find(
@@ -351,7 +351,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
           }]의 글을 신고하시겠어요?`}
           className="text-white mt-[26] mb-[13] text-center"
         />
-        <Txt
+        <CustomText
           type="caption1"
           text={`신고한 글은 삭제되며,\n작성자는 이용이 제한될 수 있어요`}
           className="text-gray300 mb-[29] text-center"
@@ -365,7 +365,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
         onConfirm={handleDeleteClick}
         buttonRatio="1:1"
         confirmText="삭제">
-        <Txt
+        <CustomText
           type="title4"
           text={`[${
             lettersFlatData.find(
@@ -374,7 +374,7 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
           }]의 글을 삭제하시겠어요?`}
           className="text-white mt-[26] mb-[13] text-center"
         />
-        <Txt
+        <CustomText
           type="caption1"
           text="삭제한 글은 되돌릴 수 없어요"
           className="text-gray300 mb-[29] text-center"
@@ -391,5 +391,3 @@ const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
     </View>
   );
 };
-
-export default LetterHomeScreen;

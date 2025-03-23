@@ -3,9 +3,9 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ImageBackground, TouchableOpacity, View} from 'react-native';
 
 // 커스텀 컴포넌트 임포트
-import BG from '@components/atom/BG';
-import Txt from '@components/atom/Txt';
-import FlexableMargin from '@components/atom/FlexableMargin';
+import {BG} from '@components/BG';
+import {CustomText} from '@components/CustomText';
+import {FlexableMargin} from '@components/FlexableMargin';
 // 타입 및 상수 임포트
 import {RecordTypeConstant} from '@constants/RecordType';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
@@ -25,7 +25,7 @@ import {trackEvent} from '@utils/tracker';
 import {useEffect, useState} from 'react';
 
 // * 홈 화면 컴포넌트 * 청년들의 수를 표시하고 녹음 유형을 선택할 수 있는 메인 화면
-const HomeScreen = () => {
+export const HomeScreen = () => {
   // 상태 관리
   const [nickname, setNickname] = useState('');
   const [youthNum, setYouthNum] = useState<number>(999);
@@ -55,21 +55,18 @@ const HomeScreen = () => {
       <View className="flex-1 px-[30] pt-[117]">
         {/* header */}
         <View className="w-full mb-[46]">
-          <Txt
-            type="title3"
+          <CustomText            type="title3"
             text={`${nickname ?? ''}님, 반가워요!`}
             className="text-gray300"
           />
           <View className="flex flex-row mt-[9]">
-            <Txt
-              type="title2"
+            <CustomText              type="title2"
               text={`${youthNum}명의 청년들`}
               className="text-yellowPrimary"
             />
-            <Txt type="title2" text="이" className="text-white" />
+            <CustomText type="title2" text="이" className="text-white" />
           </View>
-          <Txt
-            type="title2"
+          <CustomText            type="title2"
             text={'당신의 목소리를 기다리고 있어요'}
             className="text-white"
           />
@@ -86,7 +83,6 @@ const HomeScreen = () => {
     </BG>
   );
 };
-export default HomeScreen;
 
 /**
  * 녹음 유형 선택 버튼 컴포넌트
@@ -126,8 +122,7 @@ export default HomeScreen;
 //       {/* 텍스트와 화살표 */}
 //       <View className="absolute bottom-[18] left-[27] flex flex-row items-center justify-between w-[120]">
 //         <View className="flex flex-row items-center">
-//           <Txt
-//             type="title3"
+//           <CustomText//             type="title3"
 //             text={`${
 //               type === RecordTypeConstant.DAILY
 //                 ? '일상'
@@ -137,8 +132,7 @@ export default HomeScreen;
 //             }`}
 //             className="text-yellowPrimary"
 //           />
-//           <Txt
-//             type="title3"
+//           <CustomText//             type="title3"
 //             text={`${type === RecordTypeConstant.COMFORT ? '의 말' : ' 알림'}`}
 //             className="text-white "
 //           />
@@ -176,13 +170,11 @@ const SelectBtn = ({type}: {type: RecordType}) => {
       <View className="flex flex-row">
       <FlexableMargin flexGrow={78} />
         <View style={{flexDirection: 'row',flexGrow: 112}}>
-        <Txt
-          type="title3"
+        <CustomText          type="title3"
           text={`${type === RecordTypeConstant.DAILY ? '일상' : '위로'}`}
           className="text-white"
         />
-        <Txt
-          type="title3"
+        <CustomText          type="title3"
           text={`${type === RecordTypeConstant.COMFORT ? '의 말' : ' 알림'}`}
           className="text-white "
         />
@@ -196,7 +188,7 @@ const SelectBtn = ({type}: {type: RecordType}) => {
       <View className="flex flex-row w-full">
       <FlexableMargin flexGrow={78} />
 
-        <Txt type="title3" text="녹음하기" className="text-yellowPrimary" />
+        <CustomText type="title3" text="녹음하기" className="text-yellowPrimary" />
         <FlexableMargin flexGrow={28} />
 
         <View className="flex justify-center items-center">

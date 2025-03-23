@@ -1,14 +1,14 @@
-import BG from '@components/atom/BG';
-import AppBar from '@components/atom/AppBar';
+import {BG} from '@components/BG';
+import {AppBar} from '@components/AppBar';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/native';
 import { SystemStackParamList } from '@type/nav/SystemStackParamList';
-import SystemButton  from '@components/atom/SystemButton';
-import Modal from '@components/atom/Modal';
-import Txt from '@components/atom/Txt';
-import useModal from '@hooks/useModal';
+import {SystemButton} from '@components/SystemButton';
+import {Modal} from '@components/Modal';
+import {CustomText} from '@components/CustomText';
+import { useModal } from '@hooks/useModal';
 import { handleLogout } from '@utils/handleLogout';
-const MyAccountScreen = () => {
+export const MyAccountScreen = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
   const {visible, openModal, closeModal} = useModal();
   
@@ -27,9 +27,8 @@ const MyAccountScreen = () => {
   cancelText="취소"
   buttonRatio="1:1"
   >
-    <Txt type="title4" text="로그아웃 하시겠어요?" className="text-white my-[42]"/>
+    <CustomText type="title4" text="로그아웃 하시겠어요?" className="text-white my-[42]"/>
   </Modal>
   </>;
 };
 
-export default MyAccountScreen;

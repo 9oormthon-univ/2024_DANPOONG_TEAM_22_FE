@@ -10,23 +10,23 @@ import { SystemStackParamList } from "@type/nav/SystemStackParamList";
 import { COLORS } from "@constants/Colors";
 
 // Components 관련 import
-import AppBar from "@components/atom/AppBar";
-import BG from "@components/atom/BG";
-import Txt from "@components/atom/Txt";
-import TimeSelectBottomSheet from "@components/atom/TimeSelectBottomSheet";
-import ToggleSwitch from "@components/atom/ToggleSwitch";
+import {AppBar} from "@components/AppBar";
+import {BG} from "@components/BG";
+import {CustomText} from "@components/CustomText";
+import {TimeSelectBottomSheet} from "@components/TimeSelectBottomSheet";
+import {ToggleSwitch} from "@components/ToggleSwitch";
 // API 관련 import
 import { getMemberInfoYouth, GetMemberInfoYouthResponse} from "@apis/SystemApis/getMemberInfoYouth";
 import { postAlarmSettingToggle ,PostAlarmSettingToggleRequest} from "@apis/SystemApis/postAlarm-settingToggle";
 import { patchMemberInfoYouth , PatchMemberInfoYouthRequest} from "@apis/SystemApis/patchMemberInfoYouth";
-import convertTimeFormat from "@utils/convertTimeFormat";
-import parseTimeString from "@utils/parseTimeString";
+import { convertTimeFormat } from "@utils/convertFuncs";
+import { parseTimeString } from "@utils/parseTimeString";
 
 type MemberInfoYouthResponse = GetMemberInfoYouthResponse['result']
 type AlarmCategory = PostAlarmSettingToggleRequest['alarmCategory']
 
-// 알림 설정에 대한 기본 인터페이스 정의
-interface NotificationSetting {
+// 알림 설정에 대한 기본 타입입 정의
+type NotificationSetting ={
   sub: string;                // 알림 제목 (예: 기상, 취침 등)
   alarmCategory: AlarmCategory; // 알림 카테고리 (API 요청용)  'WAKE_UP' | 'GO_OUT' | 'MEAL_BREAKFAST' | 'MEAL_LUNCH' | 'MEAL_DINNER' | 'SLEEP'
   isOn: boolean;             // 현재 알림 활성화 상태
@@ -37,8 +37,8 @@ interface NotificationSetting {
   initialMinute: string;     // 초기 설정 분 (변경 감지용)
 }
 
-// 알림 설정 구성을 위한 인터페이스
-interface NotificationConfig {
+// 알림 설정 구성을 위한 타입
+type NotificationConfig ={
   sub: string;               // 알림 제목
   alarmCategory: AlarmCategory; // API 요청시 사용할 알림 카테고리
   timeField: keyof Omit<MemberInfoYouthResponse, "wakeUpAlarm" | "sleepAlarm" | "breakfastAlarm" | "lunchAlarm" | "dinnerAlarm" | "outgoingAlarm">; // API 응답에서 시간 정보를 가져올 키
@@ -56,7 +56,7 @@ const notificationsConfig: NotificationConfig[] = [
 ];
 
 // 알림 설정 화면 컴포넌트
-const NotificationSettingYouth = () => {
+export const NotificationSettingYouth = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
   const [notifications, setNotifications] = useState<NotificationSetting[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -224,12 +224,11 @@ const NotiButton = ({
       android_ripple={{ color: COLORS.blue600 }}
     >
       <View className="flex-row justify-start items-end gap-x-[13]">
-        <Txt type="title3" text={title} className="text-white" />
-        <Txt type="button" text={sub} className="text-gray300" />
+        <CustomText type="title3" text={title} className="text-white" />
+        <CustomText type="button" text={sub} className="text-gray300" />
       </View>
       <ToggleSwitch isOn={isOn} onToggle={setIsOn} />
     </Pressable>
   );
 };
 
-export default NotificationSettingYouth;

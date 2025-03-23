@@ -5,12 +5,12 @@ import {postAskGPT} from '@apis/RCDApis/postAskGPT';
 
 // 아이콘 및 컴포넌트 import
 import BackIcon from '@assets/svgs/Back.svg';
-import AppBar from '@components/atom/AppBar';
-import BG from '@components/atom/BG';
-import ShadowView from '@components/atom/ShadowView';
-import StarIMG from '@components/atom/StarIMG';
-import Txt from '@components/atom/Txt';
-import {RCDSelectButtonConstant} from '@constants/RCDSelectButtonConstant';
+import {AppBar} from '@components/AppBar';
+import {BG} from '@components/BG';
+import {ShadowView} from '@components/ShadowView';
+import {StarIMG} from '@components/StarIMG';
+import {CustomText} from '@components/CustomText';
+import {RCDSelectButtonConstant} from '@screens/RCD/RCDSelectText/constants/RCDSelectButtonConstant';
 // React Navigation 관련 import
 import {
   NavigationProp,
@@ -108,9 +108,9 @@ const SelectButton = ({
       <ShadowView>
         <View className="pl-[33] pr-[20] py-[37] flex-row justify-between items-center">
           <View>
-            <Txt type="title4" text={head} className="text-yellowPrimary" />
+            <CustomText type="title4" text={head} className="text-yellowPrimary" />
             <View className="mt-[5]" />
-            <Txt type="body4" text={sub} className="text-gray200" />
+            <CustomText type="body4" text={sub} className="text-gray200" />
           </View>
           {isLoading && gpt ? (
             <ActivityIndicator size="small" color="#fafafa" />
@@ -127,7 +127,7 @@ const SelectButton = ({
  * RCD 텍스트 선택 화면 컴포넌트
  * 사용자가 녹음할 텍스트를 선택하는 화면
  */
-const RCDSelectText = ({
+export const RCDSelectTextScreen = ({
   route,
 }: {
   route: RouteProp<HomeStackParamList, 'RCDSelectText'>;
@@ -162,14 +162,12 @@ const RCDSelectText = ({
         <StarIMG />
         {/* 제목 섹션 */}
         <View className="mt-[29]  mb-[52]  items-center">
-          <Txt
-            type="title2"
+          <CustomText            type="title2"
             text={item.title}
             className="text-white text-center"
           />
           <View className="mt-[19]">
-            <Txt
-              type="body3"
+            <CustomText              type="body3"
               text={subTitle}
               className="text-gray300 text-center"
             />
@@ -191,5 +189,3 @@ const RCDSelectText = ({
     </BG>
   );
 };
-
-export default RCDSelectText;

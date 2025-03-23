@@ -3,7 +3,7 @@ import analytics from '@react-native-firebase/analytics';
 import messaging from '@react-native-firebase/messaging';
 import {AppRegistry} from 'react-native';
 import Config from 'react-native-config';
-import App from './App';
+import {App} from './App';
 import {name as appName} from './app.config.js';
 
 analytics().setAnalyticsCollectionEnabled(true);

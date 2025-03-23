@@ -1,9 +1,9 @@
 // 필요한 API 및 컴포넌트 import
 import {getVoiceFiles} from '@apis/voiceFile';
-import AppBar from '@components/atom/AppBar';
-import Txt from '@components/atom/Txt';
+import {AppBar} from '@components/AppBar';
+import {CustomText} from '@components/CustomText';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import LoadingScreen from '@screens/Loading';
+import { LoadingScreen } from '@screens/Loading';
 import {YouthStackParamList} from '@stackNav/Youth';
 import {VoiceFileResponseData} from '@type/api/voiceFile';
 import LottieView from 'lottie-react-native';
@@ -26,12 +26,12 @@ import SendIcon from '@assets/svgs/send.svg';
 import SmileIcon from '@assets/svgs/smile.svg';
 import SmileGrayIcon from '@assets/svgs/smile_gray.svg';
 import StopIcon from '@assets/svgs/stop.svg';
-import BG from '@components/atom/BG';
+import {BG} from '@components/BG';
 import {COLORS} from '@constants/Colors';
 import {KEYBOARD_DELAY_MS} from '@constants/common';
 import {EMOTION_OPTIONS_YOUTH} from '@constants/letter';
 import {VOICE_DELAY_MS, VOICE_LOADING_MS} from '@constants/voice';
-import useDeleteComment from '@hooks/providedFile/useDeleteComment';
+import { useDeleteComment } from '@hooks/providedFile/useDeleteComment';
 import {EmotionType} from '@type/api/providedFile';
 import {AxiosError} from 'axios';
 import Toast from 'react-native-toast-message';
@@ -42,7 +42,7 @@ type YouthProps = NativeStackScreenProps<
   'YouthListenScreen'
 >;
 
-const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
+export const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
   const {alarmId} = route.params;
   // 상태 관리
   const [message, setMessage] = useState(''); // 메시지 입력값
@@ -179,7 +179,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
           });
           Toast.show({
             type: 'custom',
-            text1: `‘${emotion.label}’ 전송 취소`,
+            text1: `'${emotion.label}' 전송 취소`,
             props: {type: 'check', position: 'left'},
           });
         } catch (error) {
@@ -208,7 +208,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
 
         Toast.show({
           type: 'custom',
-          text1: `‘${emotion.label}’ 전송 완료`,
+          text1: `'${emotion.label}' 전송 완료`,
           props: {type: 'check', position: 'left'},
         });
 
@@ -308,8 +308,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
               />
             </View>
             <View className="w-[10]" />
-            <Txt
-              type="title4"
+            <CustomText              type="title4"
               text={voiceFile?.member?.name}
               className="text-yellowPrimary"
             />
@@ -320,8 +319,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
           {/* 스크립트 */}
           <View className="px-[30] h-[244]">
             <ScrollView>
-              <Txt
-                type="body3"
+              <CustomText                type="body3"
                 text={voiceFile?.content ?? ''}
                 className="text-white"
               />
@@ -363,8 +361,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
                     style={{borderRadius: 50}}
                     onPress={() => handleMessageSend(emotion.type)}>
                     {emotion.icon}
-                    <Txt
-                      type="body3"
+                    <CustomText                      type="body3"
                       text={emotion.label}
                       className="text-white ml-[10]"
                     />
@@ -408,5 +405,3 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
     </BG>
   );
 };
-
-export default YouthListenScreen;
