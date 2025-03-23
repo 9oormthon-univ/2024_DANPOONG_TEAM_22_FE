@@ -1,13 +1,5 @@
 // 필요한 API 및 컴포넌트 import
-import {getVoiceFiles} from '@apis/voiceFile';
-import AppBar from '@components/atom/AppBar';
-import Txt from '@components/atom/Txt';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import LoadingScreen from '@screens/Loading';
-import {YouthStackParamList} from '@stackNav/Youth';
-import {VoiceFileResponseData} from '@type/api/voiceFile';
-import LottieView from 'lottie-react-native';
-import {useEffect, useRef, useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Alert,
   Image,
@@ -20,21 +12,30 @@ import {
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 
 // 아이콘 import
-import {postComment} from '@apis/providedFile';
+import { postComment } from '@apis/providedFile';
+import { getVoiceFiles } from '@apis/voiceFile';
+import AppBar from '@components/atom/AppBar';
+import BG from '@components/atom/BG';
+import Txt from '@components/atom/Txt';
+import { COLORS } from '@constants/Colors';
+import { KEYBOARD_DELAY_MS } from '@constants/common';
+import { EMOTION_OPTIONS_YOUTH } from '@constants/letter';
+import { VOICE_DELAY_MS, VOICE_LOADING_MS } from '@constants/voice';
+import useDeleteComment from '@hooks/providedFile/useDeleteComment';
+import { type NativeStackScreenProps } from '@react-navigation/native-stack';
+import LoadingScreen from '@screens/Loading';
+import { type YouthStackParamList } from '@stackNav/Youth';
+import { type EmotionType } from '@type/api/providedFile';
+import { type VoiceFileResponseData } from '@type/api/voiceFile';
+import { showToast } from '@utils/showToast';
+import { type AxiosError } from 'axios';
+import LottieView from 'lottie-react-native';
+
 import PlayIcon from '@assets/svgs/play_youth.svg';
 import SendIcon from '@assets/svgs/send.svg';
 import SmileIcon from '@assets/svgs/smile.svg';
 import SmileGrayIcon from '@assets/svgs/smile_gray.svg';
 import StopIcon from '@assets/svgs/stop.svg';
-import BG from '@components/atom/BG';
-import {COLORS} from '@constants/Colors';
-import {KEYBOARD_DELAY_MS} from '@constants/common';
-import {EMOTION_OPTIONS_YOUTH} from '@constants/letter';
-import {VOICE_DELAY_MS, VOICE_LOADING_MS} from '@constants/voice';
-import useDeleteComment from '@hooks/providedFile/useDeleteComment';
-import {EmotionType} from '@type/api/providedFile';
-import {AxiosError} from 'axios';
-import Toast from 'react-native-toast-message';
 
 // 네비게이션 Props 타입 정의
 type YouthProps = NativeStackScreenProps<
@@ -42,8 +43,8 @@ type YouthProps = NativeStackScreenProps<
   'YouthListenScreen'
 >;
 
-const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
-  const {alarmId} = route.params;
+const YouthListenScreen = ({ route, navigation }: Readonly<YouthProps>) => {
+  const { alarmId } = route.params;
   // 상태 관리
   const [message, setMessage] = useState(''); // 메시지 입력값
   const [isClickedEmotion, setIsClickedEmotion] = useState(false); // 감정 표현 클릭 여부
@@ -58,11 +59,12 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
   const [sentEmotions, setSentEmotions] = useState<{
     [key in EmotionType]?: boolean;
   }>({}); // 전송된 감정 표현
-  const {mutate: deleteComment} = useDeleteComment();
+  const { mutate: deleteComment } = useDeleteComment();
 
   // 초기 로딩 처리
   useEffect(() => {
     setIsLoading(true);
+
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, VOICE_LOADING_MS);
@@ -107,12 +109,17 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
 
     (async () => {
       try {
-        const res = await getVoiceFiles({alarmId});
+        const res = await getVoiceFiles({ alarmId });
+
         console.log(res);
         setVoiceFile(res.result);
       } catch (error) {
         console.log(error);
-        Alert.alert('알림', '제공할 수 있는 응원 음성이 없어요');
+        showToast({
+          text: '모든 음성을 다 들었어요!\n조금만 기다리면 새로운 위로가 찾아올 거예요.',
+          type: 'notice',
+          position: 'top',
+        });
         navigation.goBack();
       }
     })();
@@ -126,11 +133,13 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         const playResult = await audioPlayer.current.startPlayer(
           voiceFile.fileUrl,
         );
+
         console.log('재생 시작:', playResult);
         setIsPlaying(true);
 
         audioPlayer.current.addPlayBackListener(e => {
           console.log('재생 위치:', e.currentPosition, '총 길이:', e.duration);
+
           if (e.currentPosition >= e.duration) {
             console.log('재생 끝');
             setIsPlaying(false);
@@ -162,6 +171,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
       const emotion = EMOTION_OPTIONS_YOUTH.find(
         option => option.type === emotionType,
       );
+
       if (!emotion) {
         return;
       }
@@ -173,19 +183,22 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
             message: emotionType,
           });
           setSentEmotions(prev => {
-            const updated = {...prev};
+            const updated = { ...prev };
+
             delete updated[emotionType];
+
             return updated;
           });
-          Toast.show({
-            type: 'custom',
-            text1: `‘${emotion.label}’ 전송 취소`,
-            props: {type: 'check', position: 'left'},
+          showToast({
+            text: `‘${emotion.label}’ 전송 취소`,
+            type: 'check',
+            position: 'left',
           });
         } catch (error) {
           console.log(error);
           Alert.alert('오류', '감정 표현을 취소하는 중 오류가 발생했어요');
         }
+
         return;
       }
     }
@@ -200,25 +213,26 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         const emotion = EMOTION_OPTIONS_YOUTH.find(
           option => option.type === emotionType,
         );
+
         if (!emotion) {
           return;
         }
 
-        setSentEmotions(prev => ({...prev, [emotionType]: true}));
+        setSentEmotions(prev => ({ ...prev, [emotionType]: true }));
 
-        Toast.show({
-          type: 'custom',
-          text1: `‘${emotion.label}’ 전송 완료`,
-          props: {type: 'check', position: 'left'},
+        showToast({
+          text: `‘${emotion.label}’ 전송 완료`,
+          type: 'check',
+          position: 'left',
         });
 
         return;
       }
 
-      Toast.show({
-        type: 'custom',
-        text1: '메시지 전송 완료',
-        props: {type: 'notice', position: 'left'},
+      showToast({
+        text: '메시지 전송 완료',
+        type: 'check',
+        position: 'left',
       });
 
       if (Keyboard.isVisible()) {
@@ -232,8 +246,14 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
       setMessage('');
     } catch (error) {
       console.log(error);
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if (((error as AxiosError).response?.data as any).code === 'PF003') {
-        Alert.alert('오류', '전송 가능 횟수를 초과했어요');
+        showToast({
+          text: '전송 가능 횟수를 초과했어요',
+          type: 'notice',
+          position: 'left',
+        });
       } else {
         Alert.alert('오류', '메시지를 보내는 중 오류가 발생했어요');
       }
@@ -242,7 +262,8 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
 
   // 재생/정지 버튼 클릭 처리
   const handlePlayButtonClick = async () => {
-    console.log({isPlaying, fileUrl: voiceFile.fileUrl});
+    console.log({ isPlaying, fileUrl: voiceFile.fileUrl });
+
     try {
       if (isPlaying) {
         await audioPlayer.current.pausePlayer();
@@ -269,12 +290,13 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
         className={`absolute left-0 bottom-[40] w-full h-full ${
           isKeyboardVisible ? 'hidden' : ''
         }`}
-        style={{transform: [{scale: 1.1}]}}>
+        style={{ transform: [{ scale: 1.1 }] }}>
         <LottieView
           ref={animation}
           style={{
             flex: 1,
           }}
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
           source={require('@assets/lottie/voice.json')}
           autoPlay
           loop
@@ -296,15 +318,16 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
               <Image
                 source={
                   voiceFile?.member?.profileImage
-                    ? {uri: voiceFile?.member?.profileImage}
-                    : require('@assets/pngs/logo/app/app_logo_yellow.png')
+                    ? { uri: voiceFile?.member?.profileImage }
+                    : // eslint-disable-next-line @typescript-eslint/no-require-imports
+                      require('@assets/pngs/logo/app/app_logo_yellow.png')
                 }
                 className="w-[25] h-[25]"
-                style={{borderRadius: 25}}
+                style={{ borderRadius: 25 }}
               />
               <View
                 className="absolute left-0 bottom-0 w-[31] h-[31] border border-yellowPrimary"
-                style={{borderRadius: 31}}
+                style={{ borderRadius: 31 }}
               />
             </View>
             <View className="w-[10]" />
@@ -338,7 +361,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
           {/* 하단 입력 영역 */}
           <View
             className="absolute bottom-0 w-full"
-            style={{borderTopLeftRadius: 10, borderTopRightRadius: 10}}>
+            style={{ borderTopLeftRadius: 10, borderTopRightRadius: 10 }}>
             {/* 감정 표현 옵션 */}
             {isClickedEmotion && (
               <ScrollView
@@ -360,7 +383,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
                     } flex-row items-center justify-center active:bg-blue500 ${
                       sentEmotions[emotion.type] ? 'bg-blue500' : ''
                     }`}
-                    style={{borderRadius: 50}}
+                    style={{ borderRadius: 50 }}
                     onPress={() => handleMessageSend(emotion.type)}>
                     {emotion.icon}
                     <Txt
@@ -383,7 +406,7 @@ const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
                   className={`h-[40] text-gray100 py-[8] pl-[27] pr-[45] font-r bg-blue400 border ${
                     isKeyboardVisible ? 'border-gray200' : 'border-blue400'
                   }`}
-                  style={{fontSize: 15, borderRadius: 100}}
+                  style={{ fontSize: 15, borderRadius: 100 }}
                   onSubmitEditing={() => handleMessageSend()}
                   maxLength={160}
                 />
