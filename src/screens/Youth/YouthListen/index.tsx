@@ -116,8 +116,8 @@ const YouthListenScreen = ({ route, navigation }: Readonly<YouthProps>) => {
       } catch (error) {
         console.log(error);
         showToast({
-          text: '모든 음성을 다 들었어요!\n조금만 기다리면 새로운 위로가 찾아올 거예요.',
-          type: 'notice',
+          text: '음성을 모두 들었어요. 다음에 찾아와주세요!',
+          type: 'text',
           position: 'top',
         });
         navigation.goBack();
