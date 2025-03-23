@@ -6,12 +6,12 @@ import {Toast} from '@components/Toast';
 import {CustomText} from '@components/CustomText';
 import {COLORS} from '@constants/Colors';
 import {Portal} from '@gorhom/portal';
-import {useGetAlarmCategory} from '@hooks/alarm/useGetAlarmCategory';
-import {useDeleteLetter} from '@hooks/providedFile/useDeleteLetter';
-import {useGetLetters} from '@hooks/providedFile/useGetLetters';
-import {useGetSummary} from '@hooks/providedFile/useGetSummary';
-import {usePostReport} from '@hooks/providedFile/usePostReport';
-import {useModal} from '@hooks/useModal';
+import { useGetAlarmCategory } from '@hooks/alarm/useGetAlarmCategory';
+import { useDeleteLetter } from '@hooks/providedFile/useDeleteLetter';
+import { useGetLetters } from '@hooks/providedFile/useGetLetters';
+import { useGetSummary } from '@hooks/providedFile/useGetSummary';
+import { usePostReport } from '@hooks/providedFile/usePostReport';
+import { useModal } from '@hooks/useModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import { LetterCard } from '@screens/Letter/LetterHome/components/LetterCard';
@@ -81,7 +81,7 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   } = useGetLetters({pageable: {page: 0, size: 10, sort: 'createdAt,desc'}});
 
   const lettersFlatData =
-    lettersData?.pages.flatMap((page) => page.result.content) || [];
+    lettersData?.pages.flatMap(page => page.result.content) || [];
 
   useEffect(() => {
     (async () => {
@@ -116,7 +116,7 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
     console.log({alarmCategoryData});
     const categories: Category[] = [
       {category: 'ALL', label: '전체'},
-      ...alarmCategoryData.result.map((item) => ({
+      ...alarmCategoryData.result.map(item => ({
         category: item.alarmCategory,
         label: item.alarmCategoryKoreanName,
       })),
@@ -174,7 +174,7 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
     ...(selectedFilterIdx === 0
       ? lettersFlatData
       : lettersFlatData.filter(
-          (letter: LetterResponseData) =>
+          letter =>
             letter.alarmType === parentCategories[selectedFilterIdx]?.label,
         )),
   ];
@@ -192,7 +192,7 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
           <ListHeader nickname={nickname} summaryData={summaryData} />
         }
         stickyHeaderIndices={[1]}
-        renderItem={({item}: {item: LetterResponseData}) => (
+        renderItem={({item}) => (
           <>
             {item.providedFileId === -1 && (
               <>
@@ -249,8 +249,14 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
                       marginRight: 30,
                       marginBottom: 43,
                     },
-                  ]}
-                />
+                  ]}>
+                  <ListCategory
+                    nickname={nickname}
+                    selectedFilterIdx={selectedFilterIdx}
+                    setSelectedFilterIdx={setSelectedFilterIdx}
+                    parentCategories={parentCategories}
+                  />
+                </Skeleton>
                 <Skeleton
                   isLoading={isLettersLoading}
                   boneColor={COLORS.blue500}
@@ -284,13 +290,16 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
               </>
             )}
             {item.providedFileId !== -1 && (
-              <LetterCard
-                letter={item}
-                onPressMoreDot={() => {
-                  setSelectedFileId(item.providedFileId);
-                  setClickedMoreDot(true);
-                }}
-              />
+              <View className="px-[30]">
+                <LetterCard
+                  letter={item}
+                  onPressMoreDot={() => {
+                    setClickedMoreDot(true);
+                    setSelectedFileId(item.providedFileId);
+                  }}
+                />
+                <View className="mb-[30]" />
+              </View>
             )}
           </>
         )}
@@ -333,7 +342,8 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
         onConfirm={handleReportClick}
         buttonRatio="1:1"
         confirmText="신고">
-        <CustomText          type="title4"
+        <CustomText
+          type="title4"
           text={`[${
             lettersFlatData.find(
               letter => letter.providedFileId === selectedFileId,
@@ -341,7 +351,8 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
           }]의 글을 신고하시겠어요?`}
           className="text-white mt-[26] mb-[13] text-center"
         />
-        <CustomText          type="caption1"
+        <CustomText
+          type="caption1"
           text={`신고한 글은 삭제되며,\n작성자는 이용이 제한될 수 있어요`}
           className="text-gray300 mb-[29] text-center"
         />
@@ -354,7 +365,8 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
         onConfirm={handleDeleteClick}
         buttonRatio="1:1"
         confirmText="삭제">
-        <CustomText          type="title4"
+        <CustomText
+          type="title4"
           text={`[${
             lettersFlatData.find(
               letter => letter.providedFileId === selectedFileId,
@@ -362,7 +374,8 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
           }]의 글을 삭제하시겠어요?`}
           className="text-white mt-[26] mb-[13] text-center"
         />
-        <CustomText          type="caption1"
+        <CustomText
+          type="caption1"
           text="삭제한 글은 되돌릴 수 없어요"
           className="text-gray300 mb-[29] text-center"
         />
