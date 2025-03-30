@@ -51,6 +51,7 @@ export const useAxiosInterceptor = () => {
 
         if (!refreshToken) {
           await AsyncStorage.removeItem('accessToken');
+          // TODO: 세션 만료 에러메시지 라이팅 통일
           Alert.alert('로그인이 필요한 페이지입니다.');
           navigation.reset({
             index: 0,
