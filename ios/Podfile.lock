@@ -1959,7 +1959,7 @@ PODS:
     - RNNotifee/NotifeeCore (= 9.1.8)
   - RNNotifee/NotifeeCore (9.1.8):
     - React-Core
-  - RNPermissions (5.2.5):
+  - RNPermissions (5.3.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2518,7 +2518,7 @@ SPEC CHECKSUMS:
   lottie-react-native: f6bc5e59ad94cb15984cfe5010e803532259c056
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
-  RCT-Folly: bf5c0376ffe4dd2cf438dcf86db385df9fdce648
+  RCT-Folly: 84578c8756030547307e4572ab1947de1685c599
   RCTDeprecation: 2c5e1000b04ab70b53956aa498bf7442c3c6e497
   RCTRequired: 5f785a001cf68a551c5f5040fb4c415672dbb481
   RCTTypeSafety: 6b98db8965005d32449605c0d005ecb4fee8a0f7
@@ -2593,13 +2593,13 @@ SPEC CHECKSUMS:
   RNFS: 89de7d7f4c0f6bafa05343c578f61118c8282ed8
   RNGestureHandler: 16ef3dc2d7ecb09f240f25df5255953c4098819b
   RNNotifee: 5e3b271e8ea7456a36eec994085543c9adca9168
-  RNPermissions: 49934a11e2a642d256fc8cc8d2cb790bed23d3b7
+  RNPermissions: 14a74c68e746b37dd6e23be1eb921990b9e87721
   RNReanimated: a9ec0c4f97056a56c63d59d423f3bd18d539673c
   RNScreens: 2629b92a0f38e7432677bee3bc08a352ac5b4279
   RNSVG: 030717ff82ea8f2117347c2fcf52a2d1eafba9ba
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 3deb2471faa9916c8a82dda2a22d3fba2620ad37
 
-PODFILE CHECKSUM: cf4df2f60651a91b52bcc2f7f69cc11fe44dcc4b
+PODFILE CHECKSUM: 10485c01d08149b440c0a9bca1ca84ac89088c2d
 
 COCOAPODS: 1.16.2
