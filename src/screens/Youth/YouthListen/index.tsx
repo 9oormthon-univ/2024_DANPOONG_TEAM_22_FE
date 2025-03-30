@@ -4,6 +4,7 @@ import {
   Alert,
   Image,
   Keyboard,
+  KeyboardAvoidingView,
   Pressable,
   ScrollView,
   TextInput,
