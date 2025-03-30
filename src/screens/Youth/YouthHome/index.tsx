@@ -1,5 +1,27 @@
 // API
-import {getAlarmCategoryDetail} from '@apis/alarm';
+import { useEffect, useRef, useState } from 'react';
+import {
+  Alert,
+  Animated,
+  ImageBackground,
+  Platform,
+  Pressable,
+  View,
+} from 'react-native';
+import { StatusBar } from 'react-native';
+
+import { getAlarmCategoryDetail } from '@apis/alarm';
+// 컴포넌트
+import Txt from '@components/atom/Txt';
+// 상수
+import { COLORS } from '@constants/Colors';
+// 훅
+import useGetAlarmComfort from '@hooks/alarm/useGetAlarmComfort';
+import useGetHelperNum from '@hooks/member/useGetHelperNum';
+// 라이브러리
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { type NativeStackScreenProps } from '@react-navigation/native-stack';
+import { type YouthStackParamList } from '@stackNav/Youth';
 
 // 아이콘
 import CloseBlackIcon from '@assets/svgs/closeBlack.svg';
@@ -8,24 +30,6 @@ import ThumbIcon from '@assets/svgs/emotion/emotion_thumb_gray.svg';
 import WaterIcon from '@assets/svgs/emotion/emotion_water_gray.svg';
 import LogoIcon from '@assets/svgs/Main2.svg';
 import SettingSmallIcon from '@assets/svgs/settingSmall.svg';
-
-// 컴포넌트
-import Txt from '@components/atom/Txt';
-
-// 상수
-import { COLORS } from '@constants/Colors';
-
-// 훅
-import useGetAlarmComfort from '@hooks/alarm/useGetAlarmComfort';
-import useGetHelperNum from '@hooks/member/useGetHelperNum';
-
-// 라이브러리
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {YouthStackParamList} from '@stackNav/Youth';
-import {useEffect, useRef, useState} from 'react';
-import {Alert, Animated, ImageBackground, Pressable, View} from 'react-native';
-import {StatusBar} from 'react-native';
 
 type YouthProps = NativeStackScreenProps<
   YouthStackParamList,
@@ -50,9 +54,9 @@ const VOICE_MENU = [
   },
 ];
 
-const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
+const YouthHomeScreen = ({ navigation }: Readonly<YouthProps>) => {
   const [clicked, setClicked] = useState(false);
-  const {data: helperNumData, isError: isHelperNumError} = useGetHelperNum();
+  const { data: helperNumData, isError: isHelperNumError } = useGetHelperNum();
   const [nickname, setNickname] = useState('');
   const {
     data: alarmComfortData,
@@ -68,6 +72,7 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
   useEffect(() => {
     (async () => {
       const nickname = await AsyncStorage.getItem('nickname');
+
       setNickname(nickname ?? '');
     })();
   }, []);
@@ -80,7 +85,9 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
     const alarms = alarmComfortData.result.find(
       alarm => alarm.alarmCategory === alarmCategory,
     );
+
     console.log('children', alarms?.children);
+
     const childrenAlarmCategory = alarms?.children[0].alarmCategory;
 
     (async () => {
@@ -89,10 +96,11 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
       }
 
       try {
-        const {result} = await getAlarmCategoryDetail({
+        const { result } = await getAlarmCategoryDetail({
           childrenAlarmCategory,
         });
-        const {alarmId} = result;
+        const { alarmId } = result;
+
         console.log('getAlarmCategory', result);
         navigation.navigate('YouthListenScreen', {
           alarmId,
@@ -126,6 +134,7 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
         delay: index * 100,
       }),
     );
+
     Animated.stagger(
       100,
       toValue === 1 ? [...animationsArray].reverse() : animationsArray,
@@ -150,9 +159,11 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
         barStyle="light-content"
         backgroundColor={COLORS.main200}
         translucent={false}
-      />      
+      />
       <Pressable
-        className="flex-row self-start items-center px-[30] pt-[32.5]"
+        className={`flex-row self-start items-center px-[30] ${
+          Platform.OS === 'ios' ? 'pt-[72.5]' : 'pt-[32.5]'
+        }`}
         onPress={() => navigation.navigate('SystemStackNav')}>
         <SettingSmallIcon />
         <View className="w-[6.5]" />
@@ -189,7 +200,7 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
       />
 
       <View className="absolute bottom-[90] right-[41] items-end">
-        {VOICE_MENU.map(({alarmCategory, alarmCategoryKoreanName}, index) => (
+        {VOICE_MENU.map(({ alarmCategory, alarmCategoryKoreanName }, index) => (
           <Animated.View
             key={alarmCategory}
             style={{
@@ -212,7 +223,7 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
             <View className="w-[16]" />
             <Pressable
               className="bg-blue400 h-[61] w-[61] justify-center items-center active:bg-blue600"
-              style={{borderRadius: 100}}
+              style={{ borderRadius: 100 }}
               onPress={() => handleButtonClick(alarmCategory)}
               disabled={!clicked}>
               {
@@ -223,7 +234,7 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
           </Animated.View>
         ))}
         <View className="flex-row items-center">
-          <Animated.View style={{opacity: textOpacity}}>
+          <Animated.View style={{ opacity: textOpacity }}>
             {!clicked && (
               <Txt type="button" text="위로 받기" className="text-white" />
             )}
@@ -236,7 +247,7 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
             className={`${
               clicked ? 'bg-yellowPrimary' : 'bg-blue500'
             } flex-row justify-center items-center h-[61] w-[61]`}
-            style={{borderRadius: 100}}
+            style={{ borderRadius: 100 }}
             onPress={handleMenuToggle}>
             {clicked ? <CloseBlackIcon /> : <LogoIcon />}
           </Pressable>
