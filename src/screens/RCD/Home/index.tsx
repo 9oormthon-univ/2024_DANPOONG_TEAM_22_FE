@@ -5,7 +5,7 @@ import {ImageBackground, TouchableOpacity, View} from 'react-native';
 // 커스텀 컴포넌트 임포트
 import BG from '@components/atom/BG';
 import Txt from '@components/atom/Txt';
-
+import FlexableMargin from '@components/atom/FlexableMargin';
 // 타입 및 상수 임포트
 import {RecordTypeConstant} from '@constants/RecordType';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
@@ -24,15 +24,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {trackEvent} from '@utils/tracker';
 import {useEffect, useState} from 'react';
 
-/**
- * 홈 화면 컴포넌트
- * 청년들의 수를 표시하고 녹음 유형을 선택할 수 있는 메인 화면
- */
+// * 홈 화면 컴포넌트 * 청년들의 수를 표시하고 녹음 유형을 선택할 수 있는 메인 화면
 const HomeScreen = () => {
   // 상태 관리
   const [nickname, setNickname] = useState('');
   const [youthNum, setYouthNum] = useState<number>(999);
-
   // 닉네임 불러오기
   useEffect(() => {
     (async () => {
@@ -156,21 +152,30 @@ export default HomeScreen;
 // 일상, 위로 알림만 있고 정보 알림이 없을때의 버튼
 const SelectBtn = ({type}: {type: RecordType}) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
-
+  
   return (
     <TouchableOpacity
       onPress={() => {
         navigation.navigate('RCDList', {type});
         trackEvent('recording_type_select', {type});
       }}
-      className="flex-1 h-[207] px-[25] py-[20] bg-blue700 border border-white/10"
-      style={{borderRadius: 10, maxWidth: 168}}>
+      className=" bg-blue700 border border-white/10"
+      style={{borderRadius: 10, width: '47.5%', aspectRatio: 168 / 207}}>
+      <FlexableMargin flexGrow={20} />
       {/* 아이콘 */}
-      <View className="">
+      <View className="flex flex-row">
+        <FlexableMargin flexGrow={28} />
+        <View style={{flexGrow: 112}}>
         {type === RecordTypeConstant.DAILY ? <Main1 /> : <Main2 />}
+        </View>
+        <FlexableMargin flexGrow={28} />
       </View>
-      {/* 텍스트와 화살표 */}
-      <View className="mt-[19] flex flex-row items-center">
+      <FlexableMargin flexGrow={20} />
+
+      {/* 텍스트 */}
+      <View className="flex flex-row">
+      <FlexableMargin flexGrow={78} />
+        <View style={{flexDirection: 'row',flexGrow: 112}}>
         <Txt
           type="title3"
           text={`${type === RecordTypeConstant.DAILY ? '일상' : '위로'}`}
@@ -181,14 +186,26 @@ const SelectBtn = ({type}: {type: RecordType}) => {
           text={`${type === RecordTypeConstant.COMFORT ? '의 말' : ' 알림'}`}
           className="text-white "
         />
+        </View>
+        <FlexableMargin flexGrow={78} />
+
       </View>
+      <FlexableMargin flexGrow={43} />
+
       {/* 녹음하기 텍스트와 화살표 */}
-      <View className="mt-[45] flex flex-row items-center w-full">
+      <View className="flex flex-row w-full">
+      <FlexableMargin flexGrow={78} />
+
         <Txt type="title3" text="녹음하기" className="text-yellowPrimary" />
-        <View className="absolute right-[-8]">
+        <FlexableMargin flexGrow={28} />
+
+        <View className="flex justify-center items-center">
           <MainArrow2 />
         </View>
+        <FlexableMargin flexGrow={78} />
+
       </View>
+      <FlexableMargin flexGrow={20} />
     </TouchableOpacity>
   );
 };

@@ -6,23 +6,33 @@ import android.media.MediaRecorder;
 import android.media.MediaPlayer;
 import android.os.Environment;
 import android.os.Build;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.app.Activity;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.facebook.react.modules.core.PermissionAwareActivity;
+import com.facebook.react.modules.core.PermissionListener;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-public class WavRecorderModule extends ReactContextBaseJavaModule {
+public class WavRecorderModule extends ReactContextBaseJavaModule implements PermissionListener {
     private AudioRecord audioRecord;
     private Thread recordingThread;
     private boolean isRecording = false;
     private boolean isPaused = false; // 일시중지 상태 여부 변수
     private String filePath;
+    
+    // 권한 요청 관련 상수
+    private static final int PERMISSION_REQUEST_CODE = 1000;
+    private Promise permissionPromise;
+    private String pendingFileName;
 
     // 녹음 설정 (필요에 따라 수정 가능)
     private final int audioSource = MediaRecorder.AudioSource.MIC; // 오디오 소스 설정
@@ -44,12 +54,101 @@ public class WavRecorderModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * 녹음 시작 메서드
+     * 마이크 권한 확인 메서드
+     * @return 권한이 있으면 true, 없으면 false
+     */
+    private boolean checkRecordAudioPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true; // Android 6.0 미만은 설치 시 권한 부여됨
+        }
+        
+        return getReactApplicationContext().checkSelfPermission(Manifest.permission.RECORD_AUDIO) 
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
+     * 마이크 권한 요청 메서드
+     * @param promise React Native에서 결과 전달용 Promise 객체
+     */
+    @ReactMethod
+    public void requestRecordAudioPermission(Promise promise) {
+        if (checkRecordAudioPermission()) {
+            // 이미 권한이 있는 경우
+            promise.resolve(true);
+            return;
+        }
+
+        Activity currentActivity = getCurrentActivity();
+        if (currentActivity == null) {
+            promise.reject("ACTIVITY_NULL", "현재 액티비티가 없습니다.");
+            return;
+        }
+
+        if (!(currentActivity instanceof PermissionAwareActivity)) {
+            promise.reject("ACTIVITY_ERROR", "현재 액티비티가 PermissionAwareActivity를 구현하지 않았습니다.");
+            return;
+        }
+
+        permissionPromise = promise;
+        
+        try {
+            PermissionAwareActivity permissionAwareActivity = (PermissionAwareActivity) currentActivity;
+            permissionAwareActivity.requestPermissions(
+                    new String[]{Manifest.permission.RECORD_AUDIO},
+                    PERMISSION_REQUEST_CODE,
+                    this
+            );
+        } catch (Exception e) {
+            permissionPromise.reject("PERMISSION_ERROR", e);
+            permissionPromise = null;
+        }
+    }
+
+    @Override
+    public boolean onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE && permissionPromise != null) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                permissionPromise.resolve(true);
+                
+                // 권한 획득 후 대기 중인 녹음 시작
+                if (pendingFileName != null) {
+                    String fileName = pendingFileName;
+                    pendingFileName = null;
+                    startRecordingInternal(fileName, permissionPromise);
+                }
+            } else {
+                permissionPromise.resolve(false);
+            }
+            permissionPromise = null;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 녹음 시작 메서드 - 권한 체크 후 실행
      * @param fileName 저장할 파일명 (예: "recording.wav")
      * @param promise React Native에서 비동기 결과 전달용 Promise 객체
      */
     @ReactMethod
     public void startRecording(String fileName, Promise promise) {
+        if (!checkRecordAudioPermission()) {
+            // 권한이 없는 경우 권한 요청
+            pendingFileName = fileName;
+            requestRecordAudioPermission(promise);
+            return;
+        }
+        
+        // 권한이 있는 경우 녹음 시작
+        startRecordingInternal(fileName, promise);
+    }
+
+    /**
+     * 실제 녹음 시작 내부 메서드 (권한 확인 후 호출됨)
+     * @param fileName 저장할 파일명
+     * @param promise React Native에서 비동기 결과 전달용 Promise 객체
+     */
+    private void startRecordingInternal(String fileName, Promise promise) {
         try {
             // 외부 파일 디렉토리의 Music 폴더에 파일 경로를 구성
             filePath = getReactApplicationContext().getExternalFilesDir(Environment.DIRECTORY_MUSIC) + "/" + fileName;
@@ -296,5 +395,16 @@ public class WavRecorderModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getCurrentMetering(Promise promise) {
         promise.resolve(currentMetering);
+    }
+
+    /**
+     * 마이크 권한 상태를 확인하는 메서드
+     * JS 쪽에서 WavRecorder.checkPermissionStatus() 로 호출할 수 있습니다.
+     * @param promise React Native에서 결과 전달용 Promise 객체
+     */
+    @ReactMethod
+    public void checkPermissionStatus(Promise promise) {
+        boolean hasPermission = checkRecordAudioPermission();
+        promise.resolve(hasPermission);
     }
 }

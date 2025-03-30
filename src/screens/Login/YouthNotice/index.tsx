@@ -3,6 +3,7 @@ import LocationIcon from '@assets/svgs/location.svg';
 import AppBar from '@components/atom/AppBar';
 import BG from '@components/atom/BG';
 import Button from '@components/atom/Button';
+import FlexableMargin from '@components/atom/FlexableMargin';
 import Toast from '@components/atom/Toast';
 import Txt from '@components/atom/Txt';
 import usePostYouth from '@hooks/auth/usePostYouth';
@@ -16,7 +17,7 @@ import {YouthRequestData} from '@type/api/member';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
 import {trackEvent} from '@utils/tracker';
 import {useCallback, useRef, useState} from 'react';
-import {Alert, Platform, ScrollView, View} from 'react-native';
+import {Alert, Platform, View} from 'react-native';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 
 type AuthProps = NativeStackScreenProps<
@@ -167,8 +168,11 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
 
           try {
             postYouth(data);
-            AsyncStorage.setItem('lat', pos.coords.latitude.toString());
-            AsyncStorage.setItem('lng', pos.coords.longitude.toString());
+
+            if (pos.coords.latitude && pos.coords.longitude) {
+              await AsyncStorage.setItem('lat', String(pos.coords.latitude));
+              await AsyncStorage.setItem('lng', String(pos.coords.longitude));
+            }
 
             const endTime = new Date().getTime();
             const viewTime = endTime - startTime.current;
@@ -191,7 +195,7 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
         console.log('error', error);
       },
       {
-        enableHighAccuracy: true,
+        enableHighAccuracy: false,
         timeout: 3600,
       },
     );
@@ -206,33 +210,28 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
         }}
         className="absolute top-[0] w-full"
       />
-      <View className="h-[64]" />
 
-      <ScrollView className="flex-1 px-px">
-        <View className="flex-1">
-          {/* header */}
-          <View className="mt-[40]" />
-          <Txt
-            type="title2"
-            text={'거의 다 왔어요!\n원활한 서비스를 위해\n권한 동의가 필요해요'}
-            className="text-white"
-          />
-          {/* section */}
-          {NOTICE_CONTENTS.map((item, index) => (
-            <View key={index} className="w-full h-auto mt-[40]">
-              {item.icon}
-              <View className="mt-[24]" />
-              <Txt
-                type="title4"
-                text={item.title}
-                className="text-yellowPrimary"
-              />
-              <View className="mt-[10]" />
-              <Txt type="body4" text={item.content} className="text-gray200" />
-            </View>
-          ))}
+      <FlexableMargin flexGrow={80} />
+
+      {/* header */}
+      <Txt
+        type="title2"
+        text={'거의 다 왔어요!\n원활한 서비스를 위해\n권한 동의가 필요해요'}
+        className="text-white px-px"
+      />
+      {/* section */}
+      {NOTICE_CONTENTS.map((item, index) => (
+        <View key={index} className="px-px flex-grow-[55]">
+          <FlexableMargin flexGrow={40} />
+          {item.icon}
+          <FlexableMargin flexGrow={24} />
+          <Txt type="title4" text={item.title} className="text-yellowPrimary" />
+          <FlexableMargin flexGrow={10} />
+          <Txt type="body4" text={item.content} className="text-gray200" />
         </View>
-      </ScrollView>
+      ))}
+
+      <FlexableMargin flexGrow={140} />
 
       <View className="absolute left-0 bottom-[55] w-full px-[30]">
         <Button text="시작하기" onPress={handleNext} />

@@ -39,29 +39,27 @@ const LetterCard = ({letter, onPressMoreDot}: Readonly<LetterCardProps>) => {
   };
 
   return (
-    <Pressable className="h-[153]">
+    <Pressable className="flex-1 min-h-[153]">
       <ShadowView>
         <View className="px-[20] py-[18] justify-between flex-1">
-          <View>
-            <View className="flex-row items-center justify-between">
-              <Txt
-                type="body4"
-                text={formatDate(letter.createdAt)}
-                className="text-gray200 font-[LeeSeoyun-Regular]"
-              />
-              <Pressable
-                className="relative right-[-3]"
-                onPress={onPressMoreDot}>
-                <MoreDotIcon />
-              </Pressable>
-            </View>
-            <View className="h-[10]" />
+          <View className="flex-row items-center justify-between">
             <Txt
               type="body4"
-              text={letter.thanksMessage}
-              className="text-white"
+              text={formatDate(letter.createdAt)}
+              className="text-gray200 font-[LeeSeoyun-Regular]"
             />
+            <Pressable className="relative right-[-3]" onPress={onPressMoreDot}>
+              <MoreDotIcon />
+            </Pressable>
           </View>
+
+          <View className="h-[10]" />
+
+          <Txt
+            type="body4"
+            text={letter.thanksMessage}
+            className="text-white"
+          />
 
           <View className="h-[10]" />
 

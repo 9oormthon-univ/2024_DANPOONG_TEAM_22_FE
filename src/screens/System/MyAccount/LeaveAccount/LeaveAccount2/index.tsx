@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View ,Dimensions} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { SystemStackParamList } from "@type/nav/SystemStackParamList";
@@ -15,11 +15,15 @@ import Txt from "@components/atom/Txt";
 import BG from "@components/atom/BG";
 import AppBar from "@components/atom/AppBar";
 import Button from "@components/atom/Button";
+import FlexableMargin from "@components/atom/FlexableMargin";
 // assets
 import DiaICon from "@assets/svgs/Dia.svg";
 import HeartIcon from "@assets/svgs/Heart.svg";
 import LetterIcon from "@assets/svgs/Letter.svg";
+
 const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'LeaveAccount2'>}) => {
+    const windowHeight = Dimensions.get('window').height;
+    const windowWidth = Dimensions.get('window').width;
     const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
     const [isConfirmed, setIsConfirmed] = useState(false);
     const [youthMemberNum, setYouthMemberNum] = useState<number>(0);
@@ -32,7 +36,7 @@ const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'L
         messageCount: 0
     });
     
-    // 회원 역할, 닉네임 조회
+    // 회원 역할, 닉네임 조회, 음성 파일 보유 현황 조회
     useEffect(() => {
         (async () => {
             const storedRole = await AsyncStorage.getItem('role');
@@ -40,6 +44,15 @@ const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'L
             if (storedRole) setRole(storedRole);
             if (storedNickname) setNickname(storedNickname);
         })();
+        const fetchVoicefilesRetention = async () => {
+            try {
+                const retention = await getVoicefilesRetention();
+                setVoicefilesRetention(retention);
+            } catch (error) {
+                if (__DEV__) console.error('청년 회원 수 조회 실패:', error);
+            }
+        };
+        fetchVoicefilesRetention();
     }, []);
     // 청년 회원 수 조회
     useEffect(() => {
@@ -57,21 +70,7 @@ const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'L
             fetchYouthMemberNum();
         }
     }, [role]);
-    // 음성 파일 보유 현황 조회
-    useEffect(() => {
-        const fetchVoicefilesRetention = async () => {
-            try {
-                const retention = await getVoicefilesRetention();
-                setVoicefilesRetention(retention);
-            } catch (error) {
-                if (__DEV__) {
-                    console.error('청년 회원 수 조회 실패:', error);
-                }
-            }
-        };
-        fetchVoicefilesRetention();
-    }, []);
-
+  
     const handleDeleteMember = async () => {
         try {
 
@@ -89,31 +88,30 @@ const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'L
     
     return (
         <BG type="solid">
-            <AppBar title="회원 탈퇴" goBackCallbackFn={() => {navigation.goBack();}} />
-            <View className="flex-1 justify-between">
-                
+            <AppBar title="회원 탈퇴" goBackCallbackFn={() => {navigation.goBack();}}/>
+            <View className="px-px" style={{height: windowHeight - 64}}>
                 {/* 상단 영역 */}
                 {role=='HELPER' ? (
-                    <View>
+                    <>
                     {/* 안내 문구 */}
-                    <View className="w-full px-px py-[42]">
+                        <FlexableMargin flexGrow={42}/>
                         <Txt type="title4" text={`${youthMemberNum}명의 청년들이\n${nickname}님의 목소리를 들을 수 없게 돼요`} className="text-white" />
-                        <View className="w-full flex-row mt-[21]">
-                        <Txt type="title4" text={`정말 `} className="text-white" />
+                        <FlexableMargin flexGrow={21}/>
+                        <View className="w-full flex-row">
+                        <Txt type="title4" text="정말" className="text-white" />
                         <Txt type="title4" text="내일모래" className="text-yellowPrimary" />
                         <Txt type="title4" text="를 떠나시겠어요?" className="text-white" />
                         </View>
-                    </View>
+                        <FlexableMargin flexGrow={42}/>
                     {/* 구분선 */}
-                    <View className="w-full h-[5px] bg-blue600"/>
+                    <View className="h-[5] bg-blue600" style={{width: windowWidth, transform: [{translateX: -30}]}}/>
                     {/* dataView 영역*/}
-                    <View className="w-full px-px pt-[42]">
+                    <FlexableMargin flexGrow={42}/>
                     <View className="rounded-tl-[10px] rounded-tr-[10px] w-full bg-blue500 pt-[28] pb-[23] px-px">
                         <Txt type="body3" text={`닉네임님의 정보, 활동 내역 등\n소중한 기록이 모두 사라져요`} className="text-white" />
                         <View className="h-[11px]"/>
                         <Txt type="caption2" text={`탈퇴하면 다시 가입하더라도 이전 정보를 되돌릴 수 없어요`} className="text-gray300" />
                     </View>
-    
                     <View className="rounded-bl-[10px] rounded-br-[10px] w-full bg-blue600 pt-[30] pb-[5] px-px">
                         {[
                             { icon: <DiaICon />, text: "청년의 일상을 비추는 목소리", count: voicefilesRetention.voiceCount },
@@ -129,26 +127,27 @@ const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'L
                             </View>
                         ))}
                     </View>
-                    
-                    </View>
-                    </View>
+                    <FlexableMargin flexGrow={42}/>
+                    </>
                     
                 ) : (
-                    <View className="w-full px-px mt-[41]">
-                        <View className="w-full flex-row mb-[20] gap-[0]">
-                        <Txt type="title4" text="정말 " className="text-white" />
-                        <Txt type="title4" text="내일모래" className="text-yellowPrimary" />
-                        <Txt type="title4" text="를 떠나시겠어요?" className="text-white" />
-                        </View>
-                        <Txt type="body4" text={`계정 정보, 활동 내역 등 소중한 기록이 모두 사라져요\n탈퇴하면 다시 가입하더라도 이전 정보를 되돌릴 수 없어요`} className="text-gray300" />
+                    <> 
+                    <FlexableMargin flexGrow={42}/>
+                    <View className="w-full flex-row mb-[20] gap-[0]">
+                    <Txt type="title4" text="정말 " className="text-white" />
+                    <Txt type="title4" text="내일모래" className="text-yellowPrimary" />
+                    <Txt type="title4" text="를 떠나시겠어요?" className="text-white" />
                     </View>
+                    <Txt type="body4" text={`계정 정보, 활동 내역 등 소중한 기록이 모두 사라져요\n탈퇴하면 다시 가입하더라도 이전 정보를 되돌릴 수 없어요`} className="text-gray300" />
+                    <FlexableMargin flexGrow={479}/>
+                    </>
                 )}
                 
                 {/* 버튼 영역 */}
-                <View className="w-full mb-[55]">
+                <View className="w-full ">
                 {/* 회원 탈퇴 확인완료 버튼 */}
                 <View 
-                    className="w-full px-px pt-[42] flex-row items-center justify-center gap-[10px] py-[18]"
+                    className="flex-row items-center justify-center py-[18] space-x-[10px]"
                     onTouchEnd={() => setIsConfirmed(!isConfirmed)}
                 >
                     {/* 체크박스 원 */}
@@ -161,14 +160,13 @@ const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamList, 'L
                     <Txt type="body4" text="회원 탈퇴 유의사항을 확인했습니다" className="text-gray200" />
                 </View>
                 {/* 회원 탈퇴 버튼 */}
-                <View className="w-full px-px">
-                    <Button 
+                <Button 
                         text="회원 탈퇴하고 계정 삭제하기" 
                         onPress={handleDeleteMember} 
                         disabled={!isConfirmed}
-                    />
+                />
                 </View>
-                </View>
+                <FlexableMargin flexGrow={55}/>
 
             </View>
         </BG>
