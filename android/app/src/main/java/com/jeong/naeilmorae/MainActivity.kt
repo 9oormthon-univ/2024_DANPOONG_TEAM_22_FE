@@ -1,5 +1,5 @@
-package com.nm
-import android.os.Bundle; // 스플래시추가
+package com.jeong.naeilmorae
+  import android.os.Bundle; // 스플래시추가
 import org.devio.rn.splashscreen.SplashScreen; // 스플래시추가
 
 import com.facebook.react.ReactActivity
@@ -18,7 +18,7 @@ class MainActivity : ReactActivity() {
    * Returns the name of the main component registered from JavaScript. This is used to schedule
    * rendering of the component.
    */
-  override fun getMainComponentName(): String = "nm"
+  override fun getMainComponentName(): String = "naeilmorae"
 
   /**
    * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]

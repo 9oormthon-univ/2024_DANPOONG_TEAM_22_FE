@@ -1,4 +1,4 @@
-package com.nm
+package com.jeong.naeilmorae
 
 import android.app.Application
 import com.facebook.react.PackageList
@@ -14,6 +14,7 @@ import com.facebook.soloader.SoLoader
 
 import com.dooboolab.audiorecorderplayer.RNAudioRecorderPlayerPackage;
 import com.wavrecorder.WavRecorderPackage
+import com.jeong.naeilmorae.BuildConfig
 
 class MainApplication : Application(), ReactApplication {
 
