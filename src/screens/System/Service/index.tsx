@@ -13,8 +13,7 @@ export const ServiceScreen = () => {
 
   const currentVersion = DeviceInfo.getVersion();
   const latestVersion = '1.0.0';
-
-  const isUpdateAvailable = currentVersion < latestVersion;
+  const isUpdateAvailable = currentVersion !== latestVersion;
 
   const openWebsite = async (url: string) => {
     try {
