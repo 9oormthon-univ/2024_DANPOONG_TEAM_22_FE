@@ -1,4 +1,4 @@
-package com.nm
+package com.jeong.naeilmorae
 
 import android.app.Application
 import com.facebook.react.PackageList

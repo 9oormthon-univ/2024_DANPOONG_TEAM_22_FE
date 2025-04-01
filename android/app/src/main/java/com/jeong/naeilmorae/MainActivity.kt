@@ -1,4 +1,4 @@
-package com.nm
+package com.jeong.naeilmorae
 import android.os.Bundle; // 스플래시추가
 import org.devio.rn.splashscreen.SplashScreen; // 스플래시추가
 

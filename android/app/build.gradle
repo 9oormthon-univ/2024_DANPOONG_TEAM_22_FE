@@ -107,14 +107,14 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.nm"
+    namespace "com.jeong.naeilmorae"
     defaultConfig {
-        applicationId "com.nail.morae"
+        applicationId "com.jeong.naeilmorae"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 3
         versionName "1.0.0"
-        resValue "string", "build_config_package", "com.nm"
+        resValue "string", "build_config_package", "com.jeong.naeilmorae"
     }
     signingConfigs {
         debug {
