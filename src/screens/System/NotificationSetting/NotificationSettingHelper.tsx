@@ -1,21 +1,19 @@
 // React 관련 import
 import { useEffect, useState } from "react";
-import { View } from "react-native";
 
-// Navigation 관련 import
-import { useNavigation } from "@react-navigation/native";
-import { NavigationProp } from "@react-navigation/native";
-
-// Type 관련 import
-import { SystemStackParamList } from "@type/nav/SystemStackParamList";
-
-// Components 관련 import
-import {AppBar} from "@components/AppBar";
-import {BG} from "@components/BG";
-import {SystemButton} from "@components/SystemButton";
 // API 관련 import
-import { getMemberInfoHelper } from "@apis/RetrieveMemberInformation/get/MemberInfoHelper/fetch";
 import { postAlarmSettingToggleHelperByNotificationTypeAndBool } from "@apis/EditInformation/post/AlarmSettingToggleHelperByNotificationTypeAndBool/fetch";
+import { getMemberInfoHelper } from "@apis/RetrieveMemberInformation/get/MemberInfoHelper/fetch";
+// Components 관련 import
+import { AppBar } from "@components/AppBar";
+import { BG } from "@components/BG";
+import { SystemButton } from "@components/SystemButton";
+// Navigation 관련 import
+import type { NavigationProp } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+// Type 관련 import
+import type { SystemStackParamList } from "@type/nav/SystemStackParamList";
+
 export const NotificationSettingHelper = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
   
@@ -26,14 +24,17 @@ export const NotificationSettingHelper = () => {
   useEffect(() => {
     const fetchMemberInfo = async () => {
       const res = await getMemberInfoHelper();
+      
       setIsNotificationsOn([res.welcomeReminder, res.thankYouMessage]);
-    }
+    };
+    
     fetchMemberInfo();
   }, []);
 
   return (
     <BG type="solid">
       <AppBar title="알림 설정" goBackCallbackFn={() => { navigation.goBack(); }} />
+      
       <SystemButton
         title="청년들이 당신의 목소리를 기다려요!"
         sub="지금 눌러서 목소리 녹음하기"
