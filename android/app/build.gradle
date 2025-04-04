@@ -158,6 +158,9 @@ dependencies {
         implementation jscFlavor
     }
     implementation project(':react-native-audio-recorder-player')
+    implementation project(':amplitude_analytics-react-native')
+    implementation project(':notifee_react-native')
+    implementation project(':react-native-reanimated')
     implementation platform('com.google.firebase:firebase-bom:29.0.4')
     implementation 'com.google.firebase:firebase-analytics'
     implementation "com.kakao.sdk:v2-user:2.20.1"

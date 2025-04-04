@@ -6,3 +6,9 @@ include ':app'
 includeBuild('../node_modules/@react-native/gradle-plugin')
 include ':react-native-audio-recorder-player'
 project(':react-native-audio-recorder-player').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-audio-recorder-player/android')
+include ':amplitude_analytics-react-native'
+project(':amplitude_analytics-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/@amplitude/analytics-react-native/android')
+include ':notifee_react-native'
+project(':notifee_react-native').projectDir = new File(rootProject.projectDir, '../node_modules/@notifee/react-native/android')
+include ':react-native-reanimated'
+project(':react-native-reanimated').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-reanimated/android')
