@@ -1,5 +1,5 @@
 // API
-import {getAlarmCategoryDetail} from '@apis/alarm';
+import {getAlarmAlarmCategoryDetailByChildrenAlarmCategory} from '@apis/VolunteerRecord/get/AlarmAlarmCategoryDetailByChildrenAlarmCategory/fetch';
 
 // 아이콘
 import CloseBlackIcon from '@assets/svgs/closeBlack.svg';
@@ -89,11 +89,8 @@ export const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
       }
 
       try {
-        const {result} = await getAlarmCategoryDetail({
-          childrenAlarmCategory,
-        });
-        const {alarmId} = result;
-        console.log('getAlarmCategory', result);
+        const {alarmId} = await getAlarmAlarmCategoryDetailByChildrenAlarmCategory(childrenAlarmCategory);
+        console.log('getAlarmCategory', alarmId);
         navigation.navigate('YouthListenScreen', {
           alarmId,
         });

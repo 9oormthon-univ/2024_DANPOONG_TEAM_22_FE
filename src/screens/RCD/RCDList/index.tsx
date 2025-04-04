@@ -19,7 +19,8 @@ import {
 
 // 타입 및 상수 import
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
-import {getRCDList, RCD} from '@apis/RCDApis/getRCDList';
+import {getAlarmListByCategoryType} from '@apis/VolunteerRecord/get/AlarmListByCategoryType/fetch';
+import {AlarmListByCategoryTypeType} from '@apis/VolunteerRecord/get/AlarmListByCategoryType/type';
 import {RecordType} from '@type/RecordType';
 import {RCDListHeader} from '@screens/RCD/RCDList/constants/RCDListHeader';
 import {RCDListAppBar} from '@screens/RCD/RCDList/constants/RCDListAppBar';
@@ -40,7 +41,7 @@ export const RCDListScreen = ({
   const {type} = route.params;
 
   // 상태 관리
-  const [rcdList, setRcdList] = useState<RCD[]>([]); // RCD 목록 상태
+  const [rcdList, setRcdList] = useState<AlarmListByCategoryTypeType[]>([]); // RCD 목록 상태
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
   
   // 네비게이션 객체
@@ -52,7 +53,7 @@ export const RCDListScreen = ({
       const categoryType: RecordType = type;
       try {
         setIsLoading(true);
-        const data = await getRCDList(categoryType);
+        const data = await getAlarmListByCategoryType(categoryType);
         setRcdList(data);
         setIsLoading(false);
       } catch (error) {

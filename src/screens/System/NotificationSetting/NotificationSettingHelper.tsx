@@ -14,8 +14,8 @@ import {AppBar} from "@components/AppBar";
 import {BG} from "@components/BG";
 import {SystemButton} from "@components/SystemButton";
 // API 관련 import
-import { getMemberInfoHelper } from "@apis/SystemApis/getMemberInfoHelper";
-import { postAlarmSettingToggle } from "@apis/SystemApis/postAlarm-settingToggleHelper";
+import { getMemberInfoHelper } from "@apis/RetrieveMemberInformation/get/MemberInfoHelper/fetch";
+import { postAlarmSettingToggleHelperByNotificationTypeAndBool } from "@apis/EditInformation/post/AlarmSettingToggleHelperByNotificationTypeAndBool/fetch";
 export const NotificationSettingHelper = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
   
@@ -40,7 +40,7 @@ export const NotificationSettingHelper = () => {
         type="toggle"
         isOn={isNotificationsOn[0]}
         onPress={() => {
-          postAlarmSettingToggle({ alarmCategory: 'WELCOME_REMINDER', enabled: !isNotificationsOn[0] });
+          postAlarmSettingToggleHelperByNotificationTypeAndBool({ alarmCategory: 'WELCOME_REMINDER', enabled: !isNotificationsOn[0] });
           setIsNotificationsOn(prev => prev.map((_, index) => index === 0 ? !prev[0] : prev[index]));
         }}
       />
@@ -50,7 +50,7 @@ export const NotificationSettingHelper = () => {
         type="toggle"
         isOn={isNotificationsOn[1]}
         onPress={() => {
-          postAlarmSettingToggle({ alarmCategory: 'THANK_YOU_MESSAGE', enabled: !isNotificationsOn[1] });
+          postAlarmSettingToggleHelperByNotificationTypeAndBool({ alarmCategory: 'THANK_YOU_MESSAGE', enabled: !isNotificationsOn[1] });
           setIsNotificationsOn(prev => prev.map((_, index) => index === 1 ? !prev[1] : prev[index]));
         }}
       />

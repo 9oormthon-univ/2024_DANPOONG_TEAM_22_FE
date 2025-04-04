@@ -15,7 +15,7 @@ import {useEffect, useState} from 'react';
 import {useGetMember} from '@hooks/auth/useGetMember';
 import {useAxiosInterceptor} from '@hooks/useAxiosInterceptor';
 import { SplashScreen } from '@screens/Splash';
-import {Role} from '@type/api/member';
+import {Role} from '@type/api/common';
 import {navigateToYouthListenScreen} from '@utils/navigateToYouthListenScreen';
 import {navigateToYouthOnboardingScreen} from '@utils/navigateToYouthOnboardingScreen';
 import {trackEvent} from '@utils/tracker';

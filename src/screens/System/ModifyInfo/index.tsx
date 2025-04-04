@@ -1,7 +1,7 @@
 import {
-  patchMemberInfo,
-  PatchMemberInfoRequest,
-} from '@apis/SystemApis/patchMemberInfo';
+  MemberInfo,
+  MemberInfoRequest,
+} from '@apis/EditInformation/patch/MemberInfo/fetch';
 import { uploadImageToS3 } from '@apis/util';
 import ProfileCameraIcon from '@assets/svgs/ProfileCamera.svg';
 import {AnimatedView} from '@components/AnimatedView';
@@ -98,7 +98,7 @@ export const ModifyInfoScreen = () => {
         await AsyncStorage.setItem('nickname', nickname);
       }
 
-      const request: PatchMemberInfoRequest = {
+      const request: MemberInfoRequest = {
         name: nickname,
         gender: 'MALE',
         profileImage: imageUri ?? '',
@@ -106,7 +106,7 @@ export const ModifyInfoScreen = () => {
         birth: birth,
         fcmToken: fcmToken,
       };
-      const memberId = await patchMemberInfo(request);
+      const memberId = await MemberInfo(request);
       console.log('회원 정보 수정 완료:', memberId);
     } finally {
       setIsLoading(false);

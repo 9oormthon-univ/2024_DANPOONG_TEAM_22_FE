@@ -16,14 +16,14 @@ import {CustomText} from "@components/CustomText";
 import {TimeSelectBottomSheet} from "@components/TimeSelectBottomSheet";
 import {ToggleSwitch} from "@components/ToggleSwitch";
 // API 관련 import
-import { getMemberInfoYouth, GetMemberInfoYouthResponse} from "@apis/SystemApis/getMemberInfoYouth";
-import { postAlarmSettingToggle ,PostAlarmSettingToggleRequest} from "@apis/SystemApis/postAlarm-settingToggle";
-import { patchMemberInfoYouth , PatchMemberInfoYouthRequest} from "@apis/SystemApis/patchMemberInfoYouth";
+import { MemberInfoYouth, MemberInfoYouthResponse} from "@apis/RetrieveMemberInformation/get/MemberInfoYouth/fetch";
+import { postAlarmSettingToggleByAlarmCategoryAndBool ,PostAlarmSettingToggleByAlarmCategoryAndBoolRequest} from "@apis/EditInformation/post/AlarmSettingToggleByAlarmCategoryAndBool/fetch";
+import { patchMemberInfoYouth , patchMemberInfoYouthRequest} from "@apis/EditInformation/patch/MemberInfoYouth/fetch";
 import { convertTimeFormat } from "@utils/convertFuncs";
 import { parseTimeString } from "@utils/parseTimeString";
 
-type MemberInfoYouthResponse = GetMemberInfoYouthResponse['result']
-type AlarmCategory = PostAlarmSettingToggleRequest['alarmCategory']
+type MemberInfoYouthResponseType = MemberInfoYouthResponse['result']
+type AlarmCategory = PostAlarmSettingToggleByAlarmCategoryAndBoolRequest['alarmCategory']
 
 // 알림 설정에 대한 기본 타입입 정의
 type NotificationSetting ={
@@ -41,8 +41,8 @@ type NotificationSetting ={
 type NotificationConfig ={
   sub: string;               // 알림 제목
   alarmCategory: AlarmCategory; // API 요청시 사용할 알림 카테고리
-  timeField: keyof Omit<MemberInfoYouthResponse, "wakeUpAlarm" | "sleepAlarm" | "breakfastAlarm" | "lunchAlarm" | "dinnerAlarm" | "outgoingAlarm">; // API 응답에서 시간 정보를 가져올 키
-  alarmField: keyof Omit<MemberInfoYouthResponse, "wakeUpTime" | "sleepTime" | "breakfast" | "lunch" | "dinner" | "outgoingTime">; // API 응답에서 알림 활성화 상태를 가져올 키
+  timeField: keyof Omit<MemberInfoYouthResponseType, "wakeUpAlarm" | "sleepAlarm" | "breakfastAlarm" | "lunchAlarm" | "dinnerAlarm" | "outgoingAlarm">; // API 응답에서 시간 정보를 가져올 키
+  alarmField: keyof Omit<MemberInfoYouthResponseType, "wakeUpTime" | "sleepTime" | "breakfast" | "lunch" | "dinner" | "outgoingTime">; // API 응답에서 알림 활성화 상태를 가져올 키
 }
 
 // 알림 설정 목록 정의
@@ -70,7 +70,7 @@ export const NotificationSettingYouth = () => {
 
   // API에서 정보를 가져와 notifications 상태를 세팅합니다.
   const fetchMemberInfo = async () => {
-    const res = await getMemberInfoYouth();
+    const res = await MemberInfoYouth();
 
     const fetchedNotifications = notificationsConfig.map((config) => {
       const parsedTime = parseTimeString(res[config.timeField]);
@@ -122,14 +122,14 @@ export const NotificationSettingYouth = () => {
     try {
       // Promise.all 대신 순차적으로 처리
       for (const notif of notifications) {
-        await postAlarmSettingToggle({
+        await postAlarmSettingToggleByAlarmCategoryAndBool({
           alarmCategory: notif.alarmCategory,
           enabled: notif.isOn,
         });
       }
       
       // patchMemberInfoYouth 함수는 모든 키가 포함된 객체를 요구합니다.
-      const patchData: PatchMemberInfoYouthRequest = {
+      const patchData: patchMemberInfoYouthRequest = {
         wakeUpTime: "",
         sleepTime: "",
         breakfast: "",

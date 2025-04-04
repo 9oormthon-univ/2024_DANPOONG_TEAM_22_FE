@@ -7,8 +7,8 @@ import { NavigationProp, RouteProp, useFocusEffect, useNavigation } from '@react
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 
 // API 임포트
-import {postSaveVoice} from '@apis/RCDApis/postSaveVoice';
-import {postVoiceAnalysis} from '@apis/RCDApis/postVoiceAnalysis';
+import {postVoicefilesByVoiceFileId} from '@apis/VolunteerRecord/post/VoicefilesByVoiceFileId/fetch';
+import {postVoicefilesAnalysisByVoiceFileId} from '@apis/VolunteerRecord/post/VoicefilesAnalysisByVoiceFileId/fetch';
 
 // 컴포넌트 임포트
 import {AppBar} from '@components/AppBar';
@@ -182,7 +182,7 @@ export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, '
         type: 'audio/wav',
       } as any);
 
-      await postSaveVoice(voiceFileId, formData);
+      await postVoicefilesByVoiceFileId(voiceFileId, formData);
       await uploadAnalysis();
     } catch (error) {
       console.log('음성 파일 업로드 오류:', error);
@@ -191,7 +191,7 @@ export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, '
   // 음성 분석 업로드 함수
   const uploadAnalysis = async () => {
     try {
-      const res = await postVoiceAnalysis(voiceFileId);
+      const res = await postVoicefilesAnalysisByVoiceFileId(voiceFileId);
       const {code} = res;
 
       if (code !== 'ANALYSIS001') {

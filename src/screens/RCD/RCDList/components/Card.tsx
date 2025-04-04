@@ -1,4 +1,4 @@
-import {RCD} from '@apis/RCDApis/getRCDList';
+import {AlarmListByCategoryTypeType} from '@apis/VolunteerRecord/get/AlarmListByCategoryType/fetch';
 import {Button} from '@components/Button';
 import {ShadowView} from '@components/ShadowView';
 import {StarIMG} from '@components/StarIMG';
@@ -14,7 +14,7 @@ export const Card = ({
   type,
   width,
 }: {
-  item: RCD;
+  item: AlarmListByCategoryTypeType;
   gap: number;
   type: RecordType;
   width: number;

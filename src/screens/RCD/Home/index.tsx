@@ -19,7 +19,7 @@ import Main2 from '@assets/svgs/Main2.svg';
 import MainArrow2 from '@assets/svgs/MainArrow2.svg';
 
 // API 및 스토리지 관련 임포트
-import {getYouthNum} from '@apis/RCDApis/getYouthNum';
+import {getMemberYouthNum} from '@apis/RetrieveMemberInformation/get/MemberYouthNum/fetch';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {trackEvent} from '@utils/tracker';
 import {useEffect, useState} from 'react';
@@ -39,7 +39,7 @@ export const HomeScreen = () => {
 
   // 청년 수 불러오기
   useEffect(() => {
-    getYouthNum().then(num => {
+    getMemberYouthNum().then(num => {
       setYouthNum(num);
     });
   }, []);

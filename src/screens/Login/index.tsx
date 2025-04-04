@@ -1,4 +1,4 @@
-import {postLogin} from '@apis/auth';
+import {postAuthLoginWithAccessTokenAndLoginType} from '@apis/AuthenticationAPI/post/AuthLoginWithAccessTokenAndLoginType/fetch';
 import KakaoIcon from '@assets/svgs/kakao.svg';
 import {BG} from '@components/BG';
 import {CustomText} from '@components/CustomText';
@@ -32,7 +32,7 @@ export const LoginScreen = ({navigation}: Readonly<Props>) => {
       const token: KakaoOAuthToken = await login();
 
       // iOS에서는 macAddress를 가져오는 것이 정책상 허용되지 않음
-      const {result} = await postLogin({
+      const {result} = await postAuthLoginWithAccessTokenAndLoginType({
         accessToken:
           loginType === 'ANOYMOUS'
             ? DeviceInfo.getDeviceId() + (await DeviceInfo.getMacAddress())

@@ -13,9 +13,8 @@ import {
 } from 'react-native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 
-// 아이콘 import
-import { postComment } from '@apis/providedFile';
-import { getVoiceFiles } from '@apis/voiceFile';
+import { postProvidedfileCommentByProvidedFileId } from '@apis/YouthListenToVoice/post/ProvidedfileCommentByProvidedFileId/fetch';
+import { getVoiceFilesWithAlarmId } from '@apis/YouthListenToVoice/get/VoiceFilesWithAlarmId/fetch';
 import { CustomText } from '@components/CustomText';
 
 import { type NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -111,7 +110,7 @@ export const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => 
 
     (async () => {
       try {
-        const res = await getVoiceFiles({ alarmId });
+        const res = await getVoiceFilesWithAlarmId({ alarmId });
 
         console.log(res);
         setVoiceFile(res.result);
@@ -206,7 +205,7 @@ export const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => 
     }
 
     try {
-      await postComment({
+      await postProvidedfileCommentByProvidedFileId({
         providedFileId: voiceFile.providedFileId,
         message: emotionType ?? message,
       });

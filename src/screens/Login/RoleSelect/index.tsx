@@ -5,7 +5,7 @@ import {Button} from '@components/Button';
 import {CustomText} from '@components/CustomText';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {Role} from '@type/api/member';
+import {Role} from '@type/api/common';
 import {trackEvent} from '@utils/tracker';
 import {useState} from 'react';
 import {Image, Pressable, View} from 'react-native';

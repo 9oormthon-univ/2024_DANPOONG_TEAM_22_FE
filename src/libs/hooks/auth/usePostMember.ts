@@ -1,4 +1,4 @@
-import {postMember} from '@apis/member';
+import {postMember} from '@apis/SignUp/post/Member/fetch';
 import {QueryClient, useMutation} from '@tanstack/react-query';
 import {MemberRequestData} from '@type/api/member';
 

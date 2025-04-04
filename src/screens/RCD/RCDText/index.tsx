@@ -6,7 +6,7 @@ import {  NavigationProp, RouteProp, useFocusEffect, useNavigation } from '@reac
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 
 // API 관련 임포트
-import {postVoicefilesAlarmIdSelf} from '@apis/RCDApis/postVoicefilesAlarmIdSelf';
+import {postVoicefilesSelfByAlarmId} from '@apis/VolunteerRecord/post/VoicefilesSelfByAlarmId/fetch';
 
 // 커스텀 컴포넌트 임포트
 import {AppBar} from '@components/AppBar';
@@ -63,7 +63,7 @@ export const RCDTextScreen = ({
       setIsLoading(true);
       const content: string = text;
       console.log('content', content);
-      const res = await postVoicefilesAlarmIdSelf(alarmId, content);
+      const res = await postVoicefilesSelfByAlarmId(alarmId, content);
 
       if (res.code && res.code === 'ANALYSIS200') {
         setErrorMessage('주제와 다른 내용이 있어요');

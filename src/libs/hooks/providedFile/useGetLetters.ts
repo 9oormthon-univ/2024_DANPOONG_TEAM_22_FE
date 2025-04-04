@@ -1,4 +1,4 @@
-import {getLetters} from '@apis/providedFile';
+import {getProvidedfileList} from '@apis/VolunteerMainPage/get/ProvidedfileList/fetch';
 import {useInfiniteQuery} from '@tanstack/react-query';
 import {LettersRequestData} from '@type/api/providedFile';
 
@@ -9,7 +9,7 @@ export const useGetLetters = ({
   return useInfiniteQuery({
     queryKey: ['getLetters', parentCategory],
     queryFn: ({pageParam}) =>
-      getLetters({parentCategory, pageable: {...pageable, page: pageParam}}),
+      getProvidedfileList({parentCategory, pageable: {...pageable, page: pageParam}}),
     initialPageParam: 0,
     getNextPageParam: lastPage => {
       const currentPage = lastPage?.result.number;

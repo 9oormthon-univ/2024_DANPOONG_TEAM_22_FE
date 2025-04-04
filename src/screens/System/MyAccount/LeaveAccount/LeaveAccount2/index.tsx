@@ -5,9 +5,11 @@ import { SystemStackParamList } from "@type/nav/SystemStackParamList";
 import { useState, useEffect } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // apis
-import { getMemberYouthNum } from "@apis/SystemApis/getMemberYouth-num";
-import { deleteMember, DeleteMemberRequest } from "@apis/SystemApis/deleteMember";
-import { getVoicefilesRetention, VoicefilesRetentionResponse } from "@apis/SystemApis/getVoicefilesRetention";
+import { getMemberYouthNum } from "@apis/RetrieveMemberInformation/get/MemberYouthNum/fetch";
+import { deleteMember } from "@apis/DeleteAccount/delete/Member/fetch";
+import { deleteMemberRequest } from "@apis/DeleteAccount/delete/Member/type";
+import { getVoicefilesRetention } from "@apis/DeleteAccount/get/VoicefilesRetention/fetch";
+import { getVoicefilesRetentionResponse } from "@apis/DeleteAccount/get/VoicefilesRetention/type";
 // utils
 import { redirectToAuthScreen } from "@utils/redirectToAuthScreen";
 // components
@@ -33,7 +35,7 @@ export const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamL
     const {reasons, otherReason} = route.params;
     const [role, setRole] = useState('');
     const [nickname, setNickname] = useState('');
-    const [voicefilesRetention, setVoicefilesRetention] = useState<VoicefilesRetentionResponse['result']>({
+    const [voicefilesRetention, setVoicefilesRetention] = useState<getVoicefilesRetentionResponse['result']>({
         voiceCount: 0,
         thanksCount: 0,
         messageCount: 0
@@ -77,7 +79,7 @@ export const LeaveAccount2Screen = ({route}: {route: RouteProp<SystemStackParamL
     const handleDeleteMember = async () => {
         try {
 
-            const data: DeleteMemberRequest = {
+            const data: deleteMemberRequest = {
                 reasonList: [...reasons, otherReason]
             };
             await deleteMember(data);

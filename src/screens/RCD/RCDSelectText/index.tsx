@@ -1,7 +1,8 @@
 // 필요한 API 관련 import
-import {RCD} from '@apis/RCDApis/getRCDList';
-import {getTopText} from '@apis/RCDApis/getTopText';
-import {postAskGPT} from '@apis/RCDApis/postAskGPT';
+import {AlarmListByCategoryTypeType} from '@apis/VolunteerRecord/get/AlarmListByCategoryType/type';
+
+import {getAlarmAlarmCategoryDetailByChildrenAlarmCategory} from '@apis/VolunteerRecord/get/AlarmAlarmCategoryDetailByChildrenAlarmCategory/fetch';
+import {postVoicefilesGptByAlarmId} from '@apis/VolunteerRecord/post/VoicefilesGptByAlarmId/fetch';
 
 // 아이콘 및 컴포넌트 import
 import BackIcon from '@assets/svgs/Back.svg';
@@ -34,7 +35,7 @@ type SelectButtonProps = {
   sub: string;
   gpt: boolean;
   alarmId: number;
-  item: RCD;
+  item: AlarmListByCategoryTypeType;
   type: RecordType;
 };
 
@@ -78,7 +79,7 @@ const SelectButton = ({
 
       if (gpt) {
         // console.log('alarmId:', alarmId);
-        const res = await postAskGPT(alarmId);
+        const res = await postVoicefilesGptByAlarmId(alarmId);
         // console.log(res);
         navigation.navigate('RCDText', {
           item: item,
@@ -140,7 +141,7 @@ export const RCDSelectTextScreen = ({
   // 초기 데이터 로드
   useEffect(() => {
     const getTopTextHandler = async () => {
-      const res = await getTopText(item.children[0]);
+      const res = await getAlarmAlarmCategoryDetailByChildrenAlarmCategory(item.children[0]);
       setSubTitle(res.title);
       setAlarmId(res.alarmId);
     };

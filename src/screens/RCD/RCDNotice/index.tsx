@@ -18,9 +18,10 @@ import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {AppBar} from '@components/AppBar';
 import { RCDNoticeSectionConstant } from '@screens/RCD/RCDNotice/constants/RCDNoticeSectionConstant';
 import { useState } from 'react';
-// import { getTopText } from '@apis/RCDApis/getTopText';
-// import { postAskGPT } from '@apis/RCDApis/postAskGPT';
-// import { postVoicefilesAlarmIdSelf } from '@apis/RCDApis/postVoicefilesAlarmIdSelf';
+// import { getAlarmAlarmCategoryDetailByChildrenAlarmCategory } from '@apis/VolunteerRecord/get/AlarmAlarmCategoryDetailByChildrenAlarmCategory/fetch';
+// import { postVoicefilesGptByAlarmId } from '@apis/VolunteerRecord/post/VoicefilesGptByAlarmId/fetch';
+// import { postVoicefilesSelfByAlarmId } from '@apis/VolunteerRecord/post/VoicefilesSelfByAlarmId/fetch';
+
 
 /**
  * 주의사항 섹션 컴포넌트
@@ -68,9 +69,9 @@ export const RCDNoticeScreen = ({
     // if(type === 'INFO'){
     //   try{
     //     setIsLoading(true);
-    //     const alarmId = (await getTopText(item.children[0])).alarmId;
-    //     const script = (await postAskGPT(alarmId)).result.content;
-    //     const voiceFileId = (await postVoicefilesAlarmIdSelf(alarmId, script)).result.voiceFileId;
+    //     const alarmId = (await AlarmAlarmCategoryDetailByChildrenAlarmCategory(item.children[0])).alarmId;
+    //     const script = (await VoicefilesGptByAlarmId(alarmId)).result.content;
+    //     const voiceFileId = (await VoicefilesSelfByAlarmId(alarmId, script)).result.voiceFileId;
     //     navigation.navigate('RCDRecord', {type, voiceFileId, content: script});
     //   } catch (e) {
     //     console.log(e);

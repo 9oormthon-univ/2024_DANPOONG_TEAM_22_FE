@@ -1,4 +1,4 @@
-import { deleteLogout } from "@apis/SystemApis/deleteLogout";
+import { deleteAuthLogout } from "@apis/AuthenticationAPI/delete/AuthLogout/fetch";
 import { redirectToAuthScreen } from "./redirectToAuthScreen";
 import { AxiosError } from "axios";
 
@@ -18,7 +18,7 @@ import { AxiosError } from "axios";
 export const handleLogout = async () => {
    // API 로그아웃 호출
    try {
-    await deleteLogout();     
+    await deleteAuthLogout();     
     // 네비게이션 리셋과 토큰 제거 로직 호출
     redirectToAuthScreen();
    } catch (error) {
