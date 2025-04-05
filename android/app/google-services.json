@@ -1,29 +1,29 @@
 {
-    "project_info": {
-      "project_number": "19510428703",
-      "project_id": "naeilmorae",
-      "storage_bucket": "naeilmorae.firebasestorage.app"
-    },
-    "client": [
-      {
-        "client_info": {
-          "mobilesdk_app_id": "1:19510428703:android:a91a2bd034fcc3b218812a",
-          "android_client_info": {
-            "package_name": "com.jeong.naeilmorae"
-          }
-        },
-        "oauth_client": [],
-        "api_key": [
-          {
-            "current_key": "AIzaSyCTxIiVu-cAelkDpmauwIvmEg63ZD3VAUU"
-          }
-        ],
-        "services": {
-          "appinvite_service": {
-            "other_platform_oauth_client": []
-          }
+  "project_info": {
+    "project_number": "427805097209",
+    "project_id": "naeilmorae-b5af2",
+    "storage_bucket": "naeilmorae-b5af2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427805097209:android:d647d861b914a6a102b628",
+        "android_client_info": {
+          "package_name": "com.jeong.naeilmorae"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCS9FMo2slP9lFcI3iuRVHpAcJE53VecIY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
         }
       }
-    ],
-    "configuration_version": "1"
-  }
+    }
+  ],
+  "configuration_version": "1"
+}
