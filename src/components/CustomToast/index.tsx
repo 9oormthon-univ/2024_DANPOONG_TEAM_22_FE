@@ -25,12 +25,12 @@ export const CustomToast = ({ text1, props }: ToastConfigParams<Props>) => {
 
   return (
     <View
-      className={`w-full items-center justify-center absolute px-[30] ${
+      className={`w-full items-center justify-center absolute ${
         position === 'top'
-          ? 'top-[100]'
+          ? 'top-[100] px-[30]'
           : position === 'left'
           ? 'top-[88] left-[25] items-start'
-          : ''
+          : 'px-[30]'
       }`}
       style={{ bottom: position === 'bottom' ? -SCREEN_HEIGHT + 89 : null }}>
       <Animated.View
