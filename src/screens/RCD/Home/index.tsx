@@ -1,15 +1,20 @@
 // React 및 React Native 관련 임포트
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {useCallback,useEffect, useState} from 'react';
 import {ImageBackground, TouchableOpacity, View} from 'react-native';
 
+// API 및 스토리지 관련 임포트
+import {getMemberYouthNum} from '@apis/RetrieveMemberInformation/get/MemberYouthNum/fetch';
 // 커스텀 컴포넌트 임포트
 import {BG} from '@components/BG';
 import {CustomText} from '@components/CustomText';
 import {FlexableMargin} from '@components/FlexableMargin';
 // 타입 및 상수 임포트
 import {RecordTypeConstant} from '@constants/RecordType';
-import {HomeStackParamList} from '@type/nav/HomeStackParamList';
-import {RecordType} from '@type/RecordType';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {type NavigationProp, useFocusEffect,useNavigation} from '@react-navigation/native';
+import {type HomeStackParamList} from '@type/nav/HomeStackParamList';
+import {type RecordType} from '@type/RecordType';
+import {trackEvent} from '@utils/tracker';
 
 // SVG 아이콘 임포트
 import Main1 from '@assets/svgs/Main1.svg';
@@ -18,24 +23,22 @@ import Main2 from '@assets/svgs/Main2.svg';
 // import MainArrow from '@assets/svgs/MainArrow.svg';
 import MainArrow2 from '@assets/svgs/MainArrow2.svg';
 
-// API 및 스토리지 관련 임포트
-import {getMemberYouthNum} from '@apis/RetrieveMemberInformation/get/MemberYouthNum/fetch';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {trackEvent} from '@utils/tracker';
-import {useEffect, useState} from 'react';
-
 // * 홈 화면 컴포넌트 * 청년들의 수를 표시하고 녹음 유형을 선택할 수 있는 메인 화면
 export const HomeScreen = () => {
   // 상태 관리
   const [nickname, setNickname] = useState('');
   const [youthNum, setYouthNum] = useState<number>(999);
-  // 닉네임 불러오기
-  useEffect(() => {
-    (async () => {
-      const nickname = await AsyncStorage.getItem('nickname');
-      setNickname(nickname ?? '');
-    })();
-  }, []);
+
+  // 닉네임 불러오기 - 화면이 포커싱될 때마다 실행
+  useFocusEffect(
+    useCallback(() => {
+      (async () => {
+        const nickname = await AsyncStorage.getItem('nickname');
+
+        setNickname(nickname ?? '');
+      })();
+    }, []),
+  );
 
   // 청년 수 불러오기
   useEffect(() => {
