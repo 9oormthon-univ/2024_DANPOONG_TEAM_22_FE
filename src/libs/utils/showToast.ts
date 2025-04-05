@@ -3,7 +3,7 @@ import Toast from 'react-native-toast-message';
 import {
   type CustomToastPosition,
   type CustomToastType,
-} from '@components/atom/CustomToast';
+} from '@components/CustomToast';
 
 type Props = {
   text: string;
