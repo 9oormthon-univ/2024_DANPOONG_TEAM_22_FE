@@ -1,6 +1,4 @@
 // 필요한 API 및 컴포넌트 import
-import {AppBar} from '@components/AppBar';
-import LottieView from 'lottie-react-native';
 import { useEffect, useRef, useState } from 'react';
 import {
   Alert,
@@ -12,11 +10,18 @@ import {
   View,
 } from 'react-native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+import Toast from 'react-native-toast-message';
 
-import { postProvidedfileCommentByProvidedFileId } from '@apis/YouthListenToVoice/post/ProvidedfileCommentByProvidedFileId/fetch';
 import { getVoiceFilesWithAlarmId } from '@apis/YouthListenToVoice/get/VoiceFilesWithAlarmId/fetch';
+import { postProvidedfileCommentByProvidedFileId } from '@apis/YouthListenToVoice/post/ProvidedfileCommentByProvidedFileId/fetch';
+import { AppBar } from '@components/AppBar';
+import { BG } from '@components/BG';
 import { CustomText } from '@components/CustomText';
-
+import { COLORS } from '@constants/Colors';
+import { KEYBOARD_DELAY_MS } from '@constants/common';
+import { EMOTION_OPTIONS_YOUTH } from '@constants/letter';
+import { VOICE_DELAY_MS, VOICE_LOADING_MS } from '@constants/voice';
+import { useDeleteComment } from '@hooks/providedFile/useDeleteComment';
 import { type NativeStackScreenProps } from '@react-navigation/native-stack';
 import { LoadingScreen } from '@screens/Loading';
 import { type YouthStackParamList } from '@stackNav/Youth';
@@ -24,19 +29,13 @@ import { type EmotionType } from '@type/api/providedFile';
 import { type VoiceFileResponseData } from '@type/api/voiceFile';
 import { showToast } from '@utils/showToast';
 import { type AxiosError } from 'axios';
+import LottieView from 'lottie-react-native';
 
 import PlayIcon from '@assets/svgs/play_youth.svg';
 import SendIcon from '@assets/svgs/send.svg';
 import SmileIcon from '@assets/svgs/smile.svg';
 import SmileGrayIcon from '@assets/svgs/smile_gray.svg';
 import StopIcon from '@assets/svgs/stop.svg';
-import {BG} from '@components/BG';
-import {COLORS} from '@constants/Colors';
-import {KEYBOARD_DELAY_MS} from '@constants/common';
-import {EMOTION_OPTIONS_YOUTH} from '@constants/letter';
-import {VOICE_DELAY_MS, VOICE_LOADING_MS} from '@constants/voice';
-import { useDeleteComment } from '@hooks/providedFile/useDeleteComment';
-import Toast from 'react-native-toast-message';
 
 // 네비게이션 Props 타입 정의
 type YouthProps = NativeStackScreenProps<
@@ -44,8 +43,11 @@ type YouthProps = NativeStackScreenProps<
   'YouthListenScreen'
 >;
 
-export const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => {
-  const {alarmId} = route.params;
+export const YouthListenScreen = ({
+  route,
+  navigation,
+}: Readonly<YouthProps>) => {
+  const { alarmId } = route.params;
   // 상태 관리
   const [message, setMessage] = useState(''); // 메시지 입력값
   const [isClickedEmotion, setIsClickedEmotion] = useState(false); // 감정 표현 클릭 여부
@@ -332,7 +334,8 @@ export const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => 
               />
             </View>
             <View className="w-[10]" />
-            <CustomText              type="title4"
+            <CustomText
+              type="title4"
               text={voiceFile?.member?.name}
               className="text-yellowPrimary"
             />
@@ -343,7 +346,8 @@ export const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => 
           {/* 스크립트 */}
           <View className="px-[30] h-[244]">
             <ScrollView>
-              <CustomText                type="body3"
+              <CustomText
+                type="body3"
                 text={voiceFile?.content ?? ''}
                 className="text-white"
               />
@@ -385,7 +389,8 @@ export const YouthListenScreen = ({route, navigation}: Readonly<YouthProps>) => 
                     style={{ borderRadius: 50 }}
                     onPress={() => handleMessageSend(emotion.type)}>
                     {emotion.icon}
-                    <CustomText                      type="body3"
+                    <CustomText
+                      type="body3"
                       text={emotion.label}
                       className="text-white ml-[10]"
                     />
