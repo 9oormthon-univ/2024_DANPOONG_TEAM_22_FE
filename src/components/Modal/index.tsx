@@ -27,7 +27,7 @@ export const Modal = ({
   onCancel: () => void;
   onConfirm?: () => void;
   children: React.ReactNode;
-  buttonRatio?: '1:1';
+  buttonRatio?: '1:1' | '1:2';
 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -73,13 +73,13 @@ export const Modal = ({
           )}
           {children}
           <View className="flex-row w-full">
-            {buttonRatio === '1:1' && onCancel && (
+            {(buttonRatio === '1:1' || buttonRatio === '1:2') && onCancel && (
               <Button
                 text={cancelText}
                 onPress={onCancel}
                 containerStyle={{
                   backgroundColor: COLORS.gray300,
-                  flex: 1,
+                  flex: buttonRatio === '1:2' ? 1 : 1,
                 }}
                 textStyle={{color: COLORS.white}}
               />
@@ -90,7 +90,7 @@ export const Modal = ({
                 text={confirmText}
                 onPress={onConfirm}
                 containerStyle={{
-                  flex: 1,
+                  flex: buttonRatio === '1:2' ? 2 : 1,
                 }}
               />
             )}

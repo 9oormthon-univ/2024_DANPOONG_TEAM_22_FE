@@ -1,38 +1,48 @@
-// React 및 React Native 관련 임포트
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {useEffect, useState} from 'react';
 import {ImageBackground, TouchableOpacity, View} from 'react-native';
 
-// 커스텀 컴포넌트 임포트
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Portal} from '@gorhom/portal';
+import type {NavigationProp} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+
+import {getMemberYouthNum} from '@apis/RetrieveMemberInformation/get/MemberYouthNum/fetch';
 import {BG} from '@components/BG';
 import {CustomText} from '@components/CustomText';
 import {FlexableMargin} from '@components/FlexableMargin';
-// 타입 및 상수 임포트
+import {Modal} from '@components/Modal';
 import {RecordTypeConstant} from '@constants/RecordType';
-import {HomeStackParamList} from '@type/nav/HomeStackParamList';
-import {RecordType} from '@type/RecordType';
+import {useAppVersion} from '@hooks/useAppVersion';
+import {useModal} from '@hooks/useModal';
+import type {HomeStackParamList} from '@type/nav/HomeStackParamList';
+import type {RecordType} from '@type/RecordType';
+import {trackEvent} from '@utils/tracker';
 
-// SVG 아이콘 임포트
 import Main1 from '@assets/svgs/Main1.svg';
 import Main2 from '@assets/svgs/Main2.svg';
+import MainArrow2 from '@assets/svgs/MainArrow2.svg';
 // import Main3 from '@assets/svgs/Main3.svg';
 // import MainArrow from '@assets/svgs/MainArrow.svg';
-import MainArrow2 from '@assets/svgs/MainArrow2.svg';
-
-// API 및 스토리지 관련 임포트
-import {getMemberYouthNum} from '@apis/RetrieveMemberInformation/get/MemberYouthNum/fetch';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {trackEvent} from '@utils/tracker';
-import {useEffect, useState} from 'react';
 
 // * 홈 화면 컴포넌트 * 청년들의 수를 표시하고 녹음 유형을 선택할 수 있는 메인 화면
 export const HomeScreen = () => {
   // 상태 관리
   const [nickname, setNickname] = useState('');
   const [youthNum, setYouthNum] = useState<number>(999);
+  const {visible, openModal, closeModal} = useModal();
+  const {isUpdateAvailable, goToStore} = useAppVersion();
+  
+  useEffect(() => {
+    if (!isUpdateAvailable) {
+      openModal();
+    }
+  }, [isUpdateAvailable]);
+  
   // 닉네임 불러오기
   useEffect(() => {
     (async () => {
       const nickname = await AsyncStorage.getItem('nickname');
+      
       setNickname(nickname ?? '');
     })();
   }, []);
@@ -66,7 +76,8 @@ export const HomeScreen = () => {
             />
             <CustomText type="title2" text="이" className="text-white" />
           </View>
-          <CustomText            type="title2"
+          <CustomText            
+            type="title2"
             text={'당신의 목소리를 기다리고 있어요'}
             className="text-white"
           />
@@ -80,6 +91,24 @@ export const HomeScreen = () => {
           ))} */}
         </View>
       </View>
+      <Portal>
+        <Modal
+          type="info"
+          visible={visible}
+          buttonRatio="1:2"
+          cancelText="나중에"
+          confirmText="업데이트"
+          onCancel={closeModal}
+          onConfirm={goToStore}>
+            <View className='mt-[26]'/>
+          <CustomText type="title4" text="최신 버전으로 업데이트 해주세요" className="text-white" />
+          <View className='mt-[13]'/>
+
+          <CustomText type="caption1" text={`더 나은 내일모래가 준비됐어요\n스토어에서 최신 버전으로 업데이트 해주세요`} className="text-gray300 text-center" />
+          <View className='mt-[29]'/>
+
+        </Modal>
+      </Portal>
     </BG>
   );
 };
