@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {ImageBackground, TouchableOpacity, View} from 'react-native';
 
 import {getMemberYouthNum} from '@apis/RetrieveMemberInformation/get/MemberYouthNum/fetch';
@@ -12,7 +12,7 @@ import {useAppVersion} from '@hooks/useAppVersion';
 import {useModal} from '@hooks/useModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type {NavigationProp} from '@react-navigation/native';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import type {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import type {RecordType} from '@type/RecordType';
 import {trackEvent} from '@utils/tracker';
@@ -37,14 +37,17 @@ export const HomeScreen = () => {
     }
   }, [isUpdateAvailable]);
   
-  // 닉네임 불러오기
-  useEffect(() => {
-    (async () => {
-      const nickname = await AsyncStorage.getItem('nickname');
-      
-      setNickname(nickname ?? '');
-    })();
-  }, []);
+
+  // 닉네임 불러오기 - 화면이 포커싱될 때마다 실행
+  useFocusEffect(
+    useCallback(() => {
+      (async () => {
+        const nickname = await AsyncStorage.getItem('nickname');
+
+        setNickname(nickname ?? '');
+      })();
+    }, []),
+  );
 
   // 청년 수 불러오기
   useEffect(() => {

@@ -1,9 +1,19 @@
+import {useCallback, useEffect, useState} from 'react';
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  Pressable,
+  View,
+} from 'react-native';
+import Skeleton from 'react-native-reanimated-skeleton';
+
 import {AnimatedView} from '@components/AnimatedView';
 import {BottomMenu} from '@components/BottomMenu';
 import {Button} from '@components/Button';
+import {CustomText} from '@components/CustomText';
 import {Modal} from '@components/Modal';
 import {Toast} from '@components/Toast';
-import {CustomText} from '@components/CustomText';
 import {COLORS} from '@constants/Colors';
 import {Portal} from '@gorhom/portal';
 import { useGetAlarmCategory } from '@hooks/alarm/useGetAlarmCategory';
@@ -13,22 +23,14 @@ import { useGetSummary } from '@hooks/providedFile/useGetSummary';
 import { usePostReport } from '@hooks/providedFile/usePostReport';
 import { useModal } from '@hooks/useModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import { useFocusEffect } from '@react-navigation/native';
+import {type NativeStackScreenProps} from '@react-navigation/native-stack';
 import { LetterCard } from '@screens/Letter/LetterHome/components/LetterCard';
 import { ListCategory } from '@screens/Letter/LetterHome/components/ListCategory';
 import { ListEmpty } from '@screens/Letter/LetterHome/components/ListEmpty';
 import { ListHeader } from '@screens/Letter/LetterHome/components/ListHeader';
-import {LetterResponseData} from '@type/api/providedFile';
-import {LetterStackParamList} from '@type/nav/LetterStackParamList';
-import {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  Alert,
-  FlatList,
-  Pressable,
-  View,
-} from 'react-native';
-import Skeleton from 'react-native-reanimated-skeleton';
+import {type LetterResponseData} from '@type/api/providedFile';
+import {type LetterStackParamList} from '@type/nav/LetterStackParamList';
 
 type LetterProps = NativeStackScreenProps<
   LetterStackParamList,
@@ -83,12 +85,15 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   const lettersFlatData =
     lettersData?.pages.flatMap(page => page.result.content) || [];
 
-  useEffect(() => {
-    (async () => {
-      const nickname = await AsyncStorage.getItem('nickname');
+  useFocusEffect(
+    useCallback(() => {
+      (async () => {
+        const nickname = await AsyncStorage.getItem('nickname');
+
       setNickname(nickname ?? '');
-    })();
-  }, []);
+      })();
+    }, []),
+  );
 
   useEffect(() => {
     if (isSummaryError) {
@@ -113,7 +118,9 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
 
   useEffect(() => {
     if (!alarmCategoryData) return;
+
     console.log({alarmCategoryData});
+
     const categories: Category[] = [
       {category: 'ALL', label: '전체'},
       ...alarmCategoryData.result.map(item => ({
@@ -121,11 +128,13 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
         label: item.alarmCategoryKoreanName,
       })),
     ];
+
     setParentCategories(categories);
   }, [alarmCategoryData]);
 
   const handleReportClick = () => {
     if (!selectedFileId) return;
+
     postReport({providedFileId: selectedFileId, reason: ''});
     setIsToast(true);
     setToastMessage('신고한 편지가 삭제되었어요');
@@ -134,6 +143,7 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
 
   const handleDeleteClick = () => {
     if (!selectedFileId) return;
+
     deleteLetter({providedFileId: selectedFileId, reason: ''});
     setIsToast(true);
     setToastMessage('편지가 삭제되었어요');

@@ -1,8 +1,9 @@
+import {View} from 'react-native';
+
 import {CustomText} from '@components/CustomText';
 import {EMOTION_OPTIONS} from '@constants/letter';
-import {ResultResponseData} from '@type/api/common';
-import {SummaryResponseData} from '@type/api/providedFile';
-import {View} from 'react-native';
+import {type ResultResponseData} from '@type/api/common';
+import {type SummaryResponseData} from '@type/api/providedFile';
 
 export const ListHeader = ({
   nickname,

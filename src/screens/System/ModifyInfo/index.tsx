@@ -1,28 +1,28 @@
+import {useEffect, useState} from 'react';
+import {Alert, Image, Pressable, View} from 'react-native';
 import {
-  MemberInfo,
-  MemberInfoRequest,
-} from '@apis/EditInformation/patch/MemberInfo/fetch';
+  type ImageLibraryOptions,
+  type ImagePickerResponse,
+  launchImageLibrary,
+} from 'react-native-image-picker';
+
+import { patchMemberInfo } from '@apis/EditInformation/patch/MemberInfo/fetch';
+import  type {patchMemberInfoRequest } from '@apis/EditInformation/patch/MemberInfo/type';
 import { uploadImageToS3 } from '@apis/util';
-import ProfileCameraIcon from '@assets/svgs/ProfileCamera.svg';
 import {AnimatedView} from '@components/AnimatedView';
 import {AppBar} from '@components/AppBar';
 import {BG} from '@components/BG';
 import {Button} from '@components/Button';
+import {CustomText} from '@components/CustomText';
 import {Modal} from '@components/Modal';
 import {TextInput} from '@components/TextInput';
-import {CustomText} from '@components/CustomText';
 import { useModal } from '@hooks/useModal';
 import { useValidateInput } from '@hooks/useValidateInput';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {SystemStackParamList} from '@type/nav/SystemStackParamList';
-import {useEffect, useState} from 'react';
-import {Alert, Image, Pressable, View} from 'react-native';
-import {
-  ImageLibraryOptions,
-  ImagePickerResponse,
-  launchImageLibrary,
-} from 'react-native-image-picker';
+import {type NavigationProp, useNavigation} from '@react-navigation/native';
+import {type SystemStackParamList} from '@type/nav/SystemStackParamList';
+
+import ProfileCameraIcon from '@assets/svgs/ProfileCamera.svg';
 
 export const ModifyInfoScreen = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
@@ -60,13 +60,18 @@ export const ModifyInfoScreen = () => {
       const storedProfileImage = await AsyncStorage.getItem('profileImage');
       const storedBirth = await AsyncStorage.getItem('birth');
       const storedFcmToken = await AsyncStorage.getItem('fcmToken');
+
       if (storedRole) setRole(storedRole);
+
       if (storedNickname) {
         setOriginalNickname(storedNickname);
         setNickname(storedNickname);
       }
+
       if (storedProfileImage) setImageUri(storedProfileImage);
+
       if (storedBirth) setBirth(storedBirth);
+
       if (storedFcmToken) setFcmToken(storedFcmToken);
     })();
   }, []);
@@ -75,14 +80,19 @@ export const ModifyInfoScreen = () => {
   const confirmCallbackFn = async () => {
     if (!isValidNickname) {
       Alert.alert('닉네임을 확인해주세요');
+
       return;
     }
+
     if (isLoading) return;
+
     setIsLoading(true);
+
     try {
       //사진,닉네임 변경되었을때만 실행
       if (isImageChanged) {
         let imageLocation = '';
+
         if (imageUri) {
           try {
             imageLocation = (await uploadImageToS3(imageUri)) as string;
@@ -93,12 +103,14 @@ export const ModifyInfoScreen = () => {
           }
         }
       }
+
       const isNicknameChanged = originalNickname !== nickname;
+
       if (isNicknameChanged) {
         await AsyncStorage.setItem('nickname', nickname);
       }
 
-      const request: MemberInfoRequest = {
+      const request: patchMemberInfoRequest = {
         name: nickname,
         gender: 'MALE',
         profileImage: imageUri ?? '',
@@ -106,7 +118,8 @@ export const ModifyInfoScreen = () => {
         birth: birth,
         fcmToken: fcmToken,
       };
-      const memberId = await MemberInfo(request);
+      const memberId = await patchMemberInfo(request);
+
       console.log('회원 정보 수정 완료:', memberId);
     } finally {
       setIsLoading(false);
@@ -123,6 +136,7 @@ export const ModifyInfoScreen = () => {
     launchImageLibrary(options, (response: ImagePickerResponse) => {
       if (response.didCancel) {
         console.log('사용자가 사진 선택을 취소했습니다.');
+
         return;
       }
 
@@ -132,12 +146,14 @@ export const ModifyInfoScreen = () => {
           response.errorCode,
           response.errorMessage,
         );
+
         return;
       }
 
       if (!response?.assets?.[0]) {
         return;
       }
+
       setImageUri(response.assets[0].uri ?? null);
       setIsImageChanged(true);
       setClickedUpload(false);
@@ -154,7 +170,9 @@ export const ModifyInfoScreen = () => {
   // 나가기 버튼 클릭 함수
   const goBackCallbackFn = () => {
     if (isLoading) return;
+
     const isNicknameChanged = originalNickname !== nickname;
+
     if (isNicknameChanged || isImageChanged) {
       openModal();
     } else {
