@@ -1,4 +1,4 @@
-import {Role} from '@type/api/member';
+import {Role} from '@type/api/common';
 
 type LoginRequestData = {
   accessToken: string;

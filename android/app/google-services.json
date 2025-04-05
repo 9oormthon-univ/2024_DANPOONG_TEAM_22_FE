@@ -1,15 +1,15 @@
 {
     "project_info": {
       "project_number": "19510428703",
-      "project_id": "nailmorae",
-      "storage_bucket": "nailmorae.firebasestorage.app"
+      "project_id": "naeilmorae",
+      "storage_bucket": "naeilmorae.firebasestorage.app"
     },
     "client": [
       {
         "client_info": {
           "mobilesdk_app_id": "1:19510428703:android:a91a2bd034fcc3b218812a",
           "android_client_info": {
-            "package_name": "com.nail.morae"
+            "package_name": "com.jeong.naeilmorae"
           }
         },
         "oauth_client": [],

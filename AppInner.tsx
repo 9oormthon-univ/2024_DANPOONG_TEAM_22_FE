@@ -4,20 +4,20 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {RootStackParamList} from '@type/nav/RootStackParamList';
 
 // 네비게이션 스택 컴포넌트 임포트
-import AuthStackNav from '@stackNav/Auth';
-import YouthStackNav from '@stackNav/Youth';
-import AppTabNav from './src/nav/tabNav/App';
+import {AuthStackNav} from '@stackNav/Auth';
+import {YouthStackNav} from '@stackNav/Youth';
+import {AppTabNav} from '@tabNav/App';
 
 // React 관련 임포트
 import {useEffect, useState} from 'react';
 
 // API 및 타입 임포트
-import useGetMember from '@hooks/auth/useGetMember';
+import {useGetMember} from '@hooks/auth/useGetMember';
 import {useAxiosInterceptor} from '@hooks/useAxiosInterceptor';
-import SplashScreen from '@screens/Splash';
-import {Role} from '@type/api/member';
-import navigateToYouthListenScreen from '@utils/navigateToYouthListenScreen';
-import navigateToYouthOnboardingScreen from '@utils/navigateToYouthOnboardingScreen';
+import { SplashScreen } from '@screens/Splash';
+import {Role} from '@type/api/common';
+import {navigateToYouthListenScreen} from '@utils/navigateToYouthListenScreen';
+import {navigateToYouthOnboardingScreen} from '@utils/navigateToYouthOnboardingScreen';
 import {trackEvent} from '@utils/tracker';
 import {navigationRef} from 'App';
 import {default as RNSplashScreen} from 'react-native-splash-screen';
@@ -25,7 +25,7 @@ import {default as RNSplashScreen} from 'react-native-splash-screen';
 // 네비게이션 스택 생성
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const AppInner = () => {
+export const AppInner = () => {
   // 상태 관리
   const [isInitializing, setIsInitializing] = useState(true); // 초기 로딩 상태 추가
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태
@@ -196,5 +196,3 @@ const AppInner = () => {
     </Stack.Navigator>
   );
 };
-
-export default AppInner;

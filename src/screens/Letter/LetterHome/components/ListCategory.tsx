@@ -1,7 +1,7 @@
-import Txt from '@components/atom/Txt';
-import {Pressable, ScrollView, Text, View} from 'react-native';
+import {CustomText} from '@components/CustomText';
+import {Pressable, ScrollView, Text , View} from 'react-native';
 
-const ListCategory = ({
+export const ListCategory = ({
   nickname,
   selectedFilterIdx,
   setSelectedFilterIdx,
@@ -33,8 +33,7 @@ const ListCategory = ({
               } mr-[8]`}
               style={{borderRadius: 20}}
               onPress={() => setSelectedFilterIdx(index)}>
-              <Txt
-                type="body4"
+              <CustomText                type="body4"
                 text={menu.label}
                 className={`${
                   index === selectedFilterIdx
@@ -56,8 +55,7 @@ const ListCategory = ({
           }}>
           TO.
         </Text>
-        <Txt
-          type="title4"
+        <CustomText          type="title4"
           text={nickname ?? ''}
           className="text-yellowPrimary ml-[7]"
         />
@@ -66,5 +64,3 @@ const ListCategory = ({
     </View>
   );
 };
-
-export default ListCategory;

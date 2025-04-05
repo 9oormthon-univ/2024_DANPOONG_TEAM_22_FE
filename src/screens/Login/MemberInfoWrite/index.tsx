@@ -1,20 +1,21 @@
-import uploadImageToS3 from '@apis/util';
-import AppBar from '@components/atom/AppBar';
-import BG from '@components/atom/BG';
-import Button from '@components/atom/Button';
-import DismissKeyboardView from '@components/atom/DismissKeyboardView';
-import Modal from '@components/atom/Modal';
-import Txt from '@components/atom/Txt';
+import { uploadImageToS3 } from '@apis/util';
+import {AppBar} from '@components/AppBar';
+import {BG} from '@components/BG';
+import {Button} from '@components/Button';
+import {DismissKeyboardView} from '@components/DismissKeyboardView';
+import {Modal} from '@components/Modal';
+import {CustomText} from '@components/CustomText';
 import {KEYBOARD_DELAY_MS} from '@constants/common';
-import usePostMember from '@hooks/auth/usePostMember';
-import useLoading from '@hooks/useLoading';
-import useModal from '@hooks/useModal';
+import { usePostMember } from '@hooks/auth/usePostMember';
+import { useLoading } from '@hooks/useLoading';
+import { useModal } from '@hooks/useModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '@stackNav/Auth';
-import {Gender, MemberRequestData, Role} from '@type/api/member';
-import calculateAge from '@utils/calculateAge';
-import formatDateDot from '@utils/formatDateDot';
+import {MemberRequestData} from '@type/api/member';
+import {Gender, Role} from '@type/api/common';
+import { calculateAge } from '@utils/calculateAge';
+import { formatDateDot } from '@utils/convertFuncs';
 import {trackEvent} from '@utils/tracker';
 import {useEffect, useState} from 'react';
 import {Alert, Image, Keyboard, Pressable, View} from 'react-native';
@@ -25,7 +26,7 @@ type AuthProps = NativeStackScreenProps<
   'MemberInfoWriteScreen'
 >;
 
-const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
+export const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const {nickname, imageUri, role} = route.params;
   const [birthday, setBirthday] = useState<Date | null>(null);
@@ -122,13 +123,11 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
         <View className="h-[136]" />
 
         <View className="items-center">
-          <Txt
-            type="title2"
+          <CustomText            type="title2"
             text={`${nickname ?? ''} 님,`}
             className="text-white"
           />
-          <Txt
-            type="title2"
+          <CustomText            type="title2"
             text="당신에 대해 알려주세요"
             className="text-white"
           />
@@ -144,8 +143,7 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
                   : 'border-gray300 bg-white/10'
               }`}
               style={{borderRadius: 10}}>
-              <Txt
-                type="body4"
+              <CustomText                type="body4"
                 text={
                   birthday ? formatDateDot(birthday) : '생년월일(YYYY.MM.DD)'
                 }
@@ -162,8 +160,7 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
                 }`}
                 style={{borderRadius: 10}}
                 onPress={() => setGender('MALE')}>
-                <Txt
-                  type="title3"
+                <CustomText                  type="title3"
                   text="남성"
                   className="text-white text-center"
                 />
@@ -176,8 +173,7 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
                 }`}
                 style={{borderRadius: 10}}
                 onPress={() => setGender('FEMALE')}>
-                <Txt
-                  type="title3"
+                <CustomText                  type="title3"
                   text="여성"
                   className="text-white text-center"
                 />
@@ -225,8 +221,7 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
         visible={visible2}
         onCancel={() => setVisible2(false)}
         onConfirm={() => navigation.navigate('LoginScreen')}>
-        <Txt
-          type="body3"
+        <CustomText          type="body3"
           text={`내일모래의 목소리 봉사는\n만 19세 이상부터 참여할 수 있어요.\n나중에 다시 찾아주세요!`}
           className="text-white my-[28.92] text-center"
         />
@@ -237,13 +232,11 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
         visible={visible}
         onCancel={closeModal}
         onConfirm={() => navigation.goBack()}>
-        <Txt
-          type="title4"
+        <CustomText          type="title4"
           text="나가시겠어요?"
           className="text-white mt-[26.92] mb-[5]"
         />
-        <Txt
-          type="caption1"
+        <CustomText          type="caption1"
           text="화면을 나가면 변경사항이 저장되지 않아요"
           className="text-gray300 mb-[32]"
         />
@@ -251,5 +244,3 @@ const MemberInfoWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
     </BG>
   );
 };
-
-export default MemberInfoWriteScreen;

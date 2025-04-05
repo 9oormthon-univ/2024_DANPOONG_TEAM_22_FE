@@ -1,30 +1,30 @@
-import {
-  patchMemberInfo,
-  PatchMemberInfoRequest,
-} from '@apis/SystemApis/patchMemberInfo';
-import uploadImageToS3 from '@apis/util';
-import ProfileCameraIcon from '@assets/svgs/ProfileCamera.svg';
-import AnimatedView from '@components/atom/AnimatedView';
-import AppBar from '@components/atom/AppBar';
-import BG from '@components/atom/BG';
-import Button from '@components/atom/Button';
-import Modal from '@components/atom/Modal';
-import TextInput from '@components/atom/TextInput';
-import Txt from '@components/atom/Txt';
-import useModal from '@hooks/useModal';
-import useValidateInput from '@hooks/useValidateInput';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {SystemStackParamList} from '@type/nav/SystemStackParamList';
 import {useEffect, useState} from 'react';
 import {Alert, Image, Pressable, View} from 'react-native';
 import {
-  ImageLibraryOptions,
-  ImagePickerResponse,
+  type ImageLibraryOptions,
+  type ImagePickerResponse,
   launchImageLibrary,
 } from 'react-native-image-picker';
 
-const ModifyInfoScreen = () => {
+import { patchMemberInfo } from '@apis/EditInformation/patch/MemberInfo/fetch';
+import  type {patchMemberInfoRequest } from '@apis/EditInformation/patch/MemberInfo/type';
+import { uploadImageToS3 } from '@apis/util';
+import {AnimatedView} from '@components/AnimatedView';
+import {AppBar} from '@components/AppBar';
+import {BG} from '@components/BG';
+import {Button} from '@components/Button';
+import {CustomText} from '@components/CustomText';
+import {Modal} from '@components/Modal';
+import {TextInput} from '@components/TextInput';
+import { useModal } from '@hooks/useModal';
+import { useValidateInput } from '@hooks/useValidateInput';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {type NavigationProp, useNavigation} from '@react-navigation/native';
+import {type SystemStackParamList} from '@type/nav/SystemStackParamList';
+
+import ProfileCameraIcon from '@assets/svgs/ProfileCamera.svg';
+
+export const ModifyInfoScreen = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
   const [role, setRole] = useState('');
   const [originalNickname, setOriginalNickname] = useState('');
@@ -60,13 +60,18 @@ const ModifyInfoScreen = () => {
       const storedProfileImage = await AsyncStorage.getItem('profileImage');
       const storedBirth = await AsyncStorage.getItem('birth');
       const storedFcmToken = await AsyncStorage.getItem('fcmToken');
+
       if (storedRole) setRole(storedRole);
+
       if (storedNickname) {
         setOriginalNickname(storedNickname);
         setNickname(storedNickname);
       }
+
       if (storedProfileImage) setImageUri(storedProfileImage);
+
       if (storedBirth) setBirth(storedBirth);
+
       if (storedFcmToken) setFcmToken(storedFcmToken);
     })();
   }, []);
@@ -75,14 +80,19 @@ const ModifyInfoScreen = () => {
   const confirmCallbackFn = async () => {
     if (!isValidNickname) {
       Alert.alert('닉네임을 확인해주세요');
+
       return;
     }
+
     if (isLoading) return;
+
     setIsLoading(true);
+
     try {
       //사진,닉네임 변경되었을때만 실행
       if (isImageChanged) {
         let imageLocation = '';
+
         if (imageUri) {
           try {
             imageLocation = (await uploadImageToS3(imageUri)) as string;
@@ -93,12 +103,14 @@ const ModifyInfoScreen = () => {
           }
         }
       }
+
       const isNicknameChanged = originalNickname !== nickname;
+
       if (isNicknameChanged) {
         await AsyncStorage.setItem('nickname', nickname);
       }
 
-      const request: PatchMemberInfoRequest = {
+      const request: patchMemberInfoRequest = {
         name: nickname,
         gender: 'MALE',
         profileImage: imageUri ?? '',
@@ -107,6 +119,7 @@ const ModifyInfoScreen = () => {
         fcmToken: fcmToken,
       };
       const memberId = await patchMemberInfo(request);
+
       console.log('회원 정보 수정 완료:', memberId);
     } finally {
       setIsLoading(false);
@@ -123,6 +136,7 @@ const ModifyInfoScreen = () => {
     launchImageLibrary(options, (response: ImagePickerResponse) => {
       if (response.didCancel) {
         console.log('사용자가 사진 선택을 취소했습니다.');
+
         return;
       }
 
@@ -132,12 +146,14 @@ const ModifyInfoScreen = () => {
           response.errorCode,
           response.errorMessage,
         );
+
         return;
       }
 
       if (!response?.assets?.[0]) {
         return;
       }
+
       setImageUri(response.assets[0].uri ?? null);
       setIsImageChanged(true);
       setClickedUpload(false);
@@ -154,7 +170,9 @@ const ModifyInfoScreen = () => {
   // 나가기 버튼 클릭 함수
   const goBackCallbackFn = () => {
     if (isLoading) return;
+
     const isNicknameChanged = originalNickname !== nickname;
+
     if (isNicknameChanged || isImageChanged) {
       openModal();
     } else {
@@ -200,8 +218,7 @@ const ModifyInfoScreen = () => {
         <View className="h-[39]" />
         {/* 닉네임 수정 Section */}
         <View className="w-full px-px gap-y-[10]">
-          <Txt
-            type="caption1"
+          <CustomText            type="caption1"
             text="닉네임"
             className="ml-[9] mb-[8px] text-gray200"
           />
@@ -229,8 +246,7 @@ const ModifyInfoScreen = () => {
                 style={{borderRadius: 10}}
                 className="bg-blue500 mb-[24]">
                 <View className="h-[43] justify-center items-center">
-                  <Txt
-                    type="caption1"
+                  <CustomText                    type="caption1"
                     text="프로필 사진 설정"
                     className="text-gray300"
                   />
@@ -239,8 +255,7 @@ const ModifyInfoScreen = () => {
                 <Pressable
                   className="h-[61] justify-center items-center"
                   onPress={() => !isLoading && selectImage()}>
-                  <Txt
-                    type="body3"
+                  <CustomText                    type="body3"
                     text="앨범에서 사진 선택"
                     className="text-white"
                   />
@@ -249,8 +264,7 @@ const ModifyInfoScreen = () => {
                 <Pressable
                   className="h-[61] justify-center items-center"
                   onPress={() => !isLoading && handleDefaultImageClick()}>
-                  <Txt
-                    type="body3"
+                  <CustomText                    type="body3"
                     text="기본 이미지 적용"
                     className="text-white"
                   />
@@ -273,13 +287,11 @@ const ModifyInfoScreen = () => {
           navigation.goBack();
         }}
         buttonRatio="1:1">
-        <Txt
-          type="title4"
+        <CustomText          type="title4"
           text="수정을 취소하고 나가시겠어요?"
           className="text-white mt-[32] mb-[5]"
         />
-        <Txt
-          type="caption1"
+        <CustomText          type="caption1"
           text="화면을 나가면 변경사항이 저장되지 않아요"
           className="text-gray300 mb-[32]"
         />
@@ -287,5 +299,3 @@ const ModifyInfoScreen = () => {
     </BG>
   );
 };
-
-export default ModifyInfoScreen;

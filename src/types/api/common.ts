@@ -1,4 +1,4 @@
-type ResultResponseData<T> = {
+export type ResultResponseData<T> = {
   code: {
     httpStatus: string
     code: string
@@ -7,5 +7,6 @@ type ResultResponseData<T> = {
   }
   result: T
 }
-
-export type { ResultResponseData }
+export type Gender = 'MALE' | 'FEMALE';
+export type Role = 'ADMIN' | 'YOUTH' | 'HELPER' | 'GUEST';
+export type AlarmType = 'DAILY' | 'COMFORT' | 'INFO';

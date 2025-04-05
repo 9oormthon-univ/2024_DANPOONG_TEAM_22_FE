@@ -1,8 +1,6 @@
-import {getHelperNum} from '@apis/member';
+import {getMemberHelperNum} from '@apis/RetrieveMemberInformation/get/MemberHelperNum/fetch';
 import {useQuery} from '@tanstack/react-query';
 
-const useGetHelperNum = () => {
-  return useQuery({queryKey: ['getHelperNum'], queryFn: () => getHelperNum()});
+export const useGetHelperNum = () => {
+  return useQuery({queryKey: ['getHelperNum'], queryFn: () => getMemberHelperNum()});
 };
-
-export default useGetHelperNum;

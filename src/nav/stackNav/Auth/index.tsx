@@ -1,15 +1,15 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import LoginScreen from '@screens/Login';
-import MemberInfoWriteScreen from '@screens/Login/MemberInfoWrite';
-import NicknameWriteScreen from '@screens/Login/NicknameWrite';
-import RoleSelectScreen from '@screens/Login/RoleSelect';
-import VolunteerNoticeScreen from '@screens/Login/VolunteerNotice';
-import VolunteerOnboardingScreen from '@screens/Login/VolunteerOnboarding';
-import YouthEatScreen from '@screens/Login/YouthEat';
-import YouthNoticeScreen from '@screens/Login/YouthNotice';
-import YouthOnboardingScreen from '@screens/Login/YouthOnboarding';
-import YouthSleepTimeScreen from '@screens/Login/YouthSleepTime';
-import YouthWakeUpTimeScreen from '@screens/Login/YouthWakeUpTime';
+import { LoginScreen } from '@screens/Login';
+import { MemberInfoWriteScreen } from '@screens/Login/MemberInfoWrite';
+import { NicknameWriteScreen } from '@screens/Login/NicknameWrite';
+import { RoleSelectScreen } from '@screens/Login/RoleSelect';
+import { VolunteerNoticeScreen } from '@screens/Login/VolunteerNotice';
+import { VolunteerOnboardingScreen } from '@screens/Login/VolunteerOnboarding';
+import { YouthEatScreen } from '@screens/Login/YouthEat';
+import { YouthNoticeScreen } from '@screens/Login/YouthNotice';
+import { YouthOnboardingScreen } from '@screens/Login/YouthOnboarding';
+import { YouthSleepTimeScreen } from '@screens/Login/YouthSleepTime';
+import { YouthWakeUpTimeScreen } from '@screens/Login/YouthWakeUpTime';
 
 export type AuthStackParamList = {
   // 공통
@@ -43,7 +43,7 @@ export type AuthStackParamList = {
 
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 
-const AuthStackNav = () => {
+export const AuthStackNav = () => {
   return (
     <AuthStack.Navigator screenOptions={{headerShown: false}}>
       <AuthStack.Screen
@@ -104,5 +104,3 @@ const AuthStackNav = () => {
     </AuthStack.Navigator>
   );
 };
-
-export default AuthStackNav;

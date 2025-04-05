@@ -1,12 +1,12 @@
-import { RCD } from "@apis/RCDApis/getRCDList";
-import { PostAskGPTResponse } from "@apis/RCDApis/postAskGPT";
+import { AlarmListByCategoryTypeType } from "@apis/VolunteerRecord/get/AlarmListByCategoryType/type";
+import { VoicefilesGptByAlarmIdResponse } from "@apis/VolunteerRecord/post/VoicefilesGptByAlarmId/type";
 import { RecordType } from "@type/RecordType";
 export type HomeStackParamList = {
     Home: undefined;
     RCDList: {type: RecordType};
-    RCDNotice: {type: RecordType,item:RCD};
-    RCDSelectText:{type: RecordType,item:RCD};
-    RCDText: {type: RecordType,item:RCD,gptRes:PostAskGPTResponse|null,alarmId:number};
+    RCDNotice: {type: RecordType,item:AlarmListByCategoryTypeType};
+    RCDSelectText:{type: RecordType,item:AlarmListByCategoryTypeType};
+    RCDText: {type: RecordType,item:AlarmListByCategoryTypeType,gptRes:VoicefilesGptByAlarmIdResponse|null,alarmId:number};
     RCDRecord: {type: RecordType,voiceFileId:number,content:string};
     RCDError: {type: RecordType,errorType:RCDErrorType};
     RCDFeedBack: undefined;

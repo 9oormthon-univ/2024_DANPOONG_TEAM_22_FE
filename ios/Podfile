@@ -14,7 +14,7 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'nm' do
+target 'naeilmorae' do
   config = use_native_modules!
 
   pod 'GoogleUtilities', :modular_headers => true
@@ -26,7 +26,7 @@ target 'nm' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'nmTests' do
+  target 'naeilmoraeTests' do
     inherit! :complete
     # Pods for testing
   end

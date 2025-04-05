@@ -1,5 +1,5 @@
 // API
-import {getAlarmCategoryDetail} from '@apis/alarm';
+import {getAlarmAlarmCategoryDetailByChildrenAlarmCategory} from '@apis/VolunteerRecord/get/AlarmAlarmCategoryDetailByChildrenAlarmCategory/fetch';
 
 // 아이콘
 import CloseBlackIcon from '@assets/svgs/closeBlack.svg';
@@ -10,14 +10,14 @@ import LogoIcon from '@assets/svgs/Main2.svg';
 import SettingSmallIcon from '@assets/svgs/settingSmall.svg';
 
 // 컴포넌트
-import Txt from '@components/atom/Txt';
+import {CustomText} from '@components/CustomText';
 
 // 상수
 import { COLORS } from '@constants/Colors';
 
 // 훅
-import useGetAlarmComfort from '@hooks/alarm/useGetAlarmComfort';
-import useGetHelperNum from '@hooks/member/useGetHelperNum';
+import { useGetAlarmComfort } from '@hooks/alarm/useGetAlarmComfort';
+import { useGetHelperNum } from '@hooks/member/useGetHelperNum';
 
 // 라이브러리
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -50,7 +50,7 @@ const VOICE_MENU = [
   },
 ];
 
-const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
+export const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
   const [clicked, setClicked] = useState(false);
   const {data: helperNumData, isError: isHelperNumError} = useGetHelperNum();
   const [nickname, setNickname] = useState('');
@@ -89,11 +89,8 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
       }
 
       try {
-        const {result} = await getAlarmCategoryDetail({
-          childrenAlarmCategory,
-        });
-        const {alarmId} = result;
-        console.log('getAlarmCategory', result);
+        const {alarmId} = await getAlarmAlarmCategoryDetailByChildrenAlarmCategory(childrenAlarmCategory);
+        console.log('getAlarmCategory', alarmId);
         navigation.navigate('YouthListenScreen', {
           alarmId,
         });
@@ -156,26 +153,23 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
         onPress={() => navigation.navigate('SystemStackNav')}>
         <SettingSmallIcon />
         <View className="w-[6.5]" />
-        <Txt type="caption1" text="설정" className="text-blue200" />
+        <CustomText type="caption1" text="설정" className="text-blue200" />
       </Pressable>
 
-      <Txt
-        type="body2"
+      <CustomText        type="body2"
         text={`${nickname}님, 반가워요!`}
         className="text-gray300 pt-[60.5] px-[30]"
       />
       <View className="h-[12]" />
       <View className="px-[30]">
         <View className="flex-row items-center">
-          <Txt
-            type="title2"
+          <CustomText            type="title2"
             text={`${helperNumData?.result.youthMemberNum ?? '0'}명의 목소리`}
             className="text-yellowPrimary"
           />
-          <Txt type="title2" text="가" className="text-white" />
+          <CustomText type="title2" text="가" className="text-white" />
         </View>
-        <Txt
-          type="title2"
+        <CustomText          type="title2"
           text="당신의 일상을 비추고 있어요"
           className="text-white"
         />
@@ -204,8 +198,7 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
               ],
             }}
             className="flex-row items-center mb-[14]">
-            <Txt
-              type="button"
+            <CustomText              type="button"
               text={alarmCategoryKoreanName}
               className="text-white"
             />
@@ -225,10 +218,10 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
         <View className="flex-row items-center">
           <Animated.View style={{opacity: textOpacity}}>
             {!clicked && (
-              <Txt type="button" text="위로 받기" className="text-white" />
+              <CustomText type="button" text="위로 받기" className="text-white" />
             )}
             {clicked && (
-              <Txt type="button" text="위로 받기" className="text-white" />
+              <CustomText type="button" text="위로 받기" className="text-white" />
             )}
           </Animated.View>
           <View className="w-[16]" />
@@ -245,5 +238,3 @@ const YouthHomeScreen = ({navigation}: Readonly<YouthProps>) => {
     </ImageBackground>
   );
 };
-
-export default YouthHomeScreen;

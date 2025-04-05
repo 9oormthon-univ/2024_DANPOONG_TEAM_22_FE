@@ -7,18 +7,18 @@ import { NavigationProp, RouteProp, useFocusEffect, useNavigation } from '@react
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 
 // API 임포트
-import {postSaveVoice} from '@apis/RCDApis/postSaveVoice';
-import {postVoiceAnalysis} from '@apis/RCDApis/postVoiceAnalysis';
+import {postVoicefilesByVoiceFileId} from '@apis/VolunteerRecord/post/VoicefilesByVoiceFileId/fetch';
+import {postVoicefilesAnalysisByVoiceFileId} from '@apis/VolunteerRecord/post/VoicefilesAnalysisByVoiceFileId/fetch';
 
 // 컴포넌트 임포트
-import AppBar from '@components/atom/AppBar';
-import BG from '@components/atom/BG';
-import RCDTimer from '@components/atom/RCDTimer';
-import RCDWave from '@components/atom/RCDWave';
-import Txt from '@components/atom/Txt';
-import RCDBtnBar from '@components/molecule/RCDBtnBar';
-import Indicator from '@components/atom/Indicator';
-import FlexableMargin from '@components/atom/FlexableMargin';
+import {AppBar} from '@components/AppBar';
+import {BG} from '@components/BG';
+import {RCDTimer} from '@screens/RCD/RCDRecord/components/RCDTimer';
+import {RCDWave} from '@screens/RCD/RCDRecord/components/RCDWave';
+import {CustomText} from '@components/CustomText';
+import {RCDBtnBar} from '@screens/RCD/RCDRecord/components/RCDBtnBar';
+import {FlexableMargin} from '@components/FlexableMargin';
+import {Spinner} from '@components/Spinner';
 // 녹음 관련 임포트
 import {trackEvent} from '@utils/tracker';
 import {
@@ -37,7 +37,7 @@ import {
 } from './RecordAndroid';
 
 // 녹음 화면 컴포넌트
-const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDRecord'>}) => {
+export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDRecord'>}) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
   const windowHeight = Dimensions.get("window").height;
 
@@ -182,16 +182,16 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
         type: 'audio/wav',
       } as any);
 
-      await postSaveVoice(voiceFileId, formData);
+      await postVoicefilesByVoiceFileId(voiceFileId, formData);
       await uploadAnalysis();
-    } catch (error: any) {
+    } catch (error) {
       console.log('음성 파일 업로드 오류:', error);
     }
   };
   // 음성 분석 업로드 함수
   const uploadAnalysis = async () => {
     try {
-      const res = await postVoiceAnalysis(voiceFileId);
+      const res = await postVoicefilesAnalysisByVoiceFileId(voiceFileId);
       const {code} = res;
 
       if (code !== 'ANALYSIS001') {
@@ -227,7 +227,7 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
           navigation.navigate('RCDError', {type: type, errorType: 'noisy'});
           break;
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('분석 에러:', error);
       if (!isMountedRef.current) {
         console.log('에러 처리 중 컴포넌트가 언마운트되어 처리를 중단합니다.');
@@ -281,8 +281,7 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
           <View className="px-px h-2/5">
               <ScrollView className="h-full">
                 <View className="mt-[53]" />
-                <Txt
-                  type="body4"
+                <CustomText                  type="body4"
                   text={
                     type === 'INFO'
                       ? '준비된 문장을 시간 내에 또박또박 발음해주세요'
@@ -291,8 +290,7 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
                   className="text-gray200"
                 />
                 <View className="mt-[28] pb-[20]">
-                  <Txt
-                    type={type === 'DAILY' ? 'title2' : 'body3'}
+                  <CustomText                    type={type === 'DAILY' ? 'title2' : 'body3'}
                     text={content}
                     className="text-white"
                   />
@@ -341,15 +339,14 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
       ) : (
         <>
           <View className="flex-1 justify-center items-center">
-            <Txt type="title1" text="듣고 있어요..." className="text-white" />
+            <CustomText type="title1" text="듣고 있어요..." className="text-white" />
             <View className="mt-[23]" />
-            <Txt
-              type="body3"
+            <CustomText              type="body3"
               text={`세심한 확인이 필요할 때는\n시간이 조금 더 소요될 수 있어요`}
               className="text-gray200 text-center"
             />
             <View className="mt-[54]" />
-            <Indicator />
+            <Spinner />
 
           </View>
         </>
@@ -357,5 +354,3 @@ const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDReco
     </BG>
   );
 };
-
-export default RCDRecordScreen;
