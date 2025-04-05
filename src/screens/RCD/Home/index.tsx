@@ -1,19 +1,18 @@
 import {useEffect, useState} from 'react';
 import {ImageBackground, TouchableOpacity, View} from 'react-native';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Portal} from '@gorhom/portal';
-import type {NavigationProp} from '@react-navigation/native';
-import {useNavigation} from '@react-navigation/native';
-
 import {getMemberYouthNum} from '@apis/RetrieveMemberInformation/get/MemberYouthNum/fetch';
 import {BG} from '@components/BG';
 import {CustomText} from '@components/CustomText';
 import {FlexableMargin} from '@components/FlexableMargin';
 import {Modal} from '@components/Modal';
 import {RecordTypeConstant} from '@constants/RecordType';
+import {Portal} from '@gorhom/portal';
 import {useAppVersion} from '@hooks/useAppVersion';
 import {useModal} from '@hooks/useModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import type {NavigationProp} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import type {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import type {RecordType} from '@type/RecordType';
 import {trackEvent} from '@utils/tracker';
@@ -33,7 +32,7 @@ export const HomeScreen = () => {
   const {isUpdateAvailable, goToStore} = useAppVersion();
   
   useEffect(() => {
-    if (!isUpdateAvailable) {
+    if (isUpdateAvailable) {
       openModal();
     }
   }, [isUpdateAvailable]);
