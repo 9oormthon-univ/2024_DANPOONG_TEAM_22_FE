@@ -21,6 +21,9 @@ export default [
       'react/react-in-jsx-scope': 'off',
       'react/jsx-uses-react': 'off',
 
+      /** require() 사용을 허용하는 rule */
+      '@typescript-eslint/no-require-imports': 'off',
+
       /** 컴포넌트의 display-name 이 누락되었는지 체크하는 rule */
       'react/display-name': 'warn',
 
@@ -31,7 +34,7 @@ export default [
       'import/first': 'error',
 
       /** import 구문 후 빈 줄이 하나 존재하는지 체크하는 rule */
-      'import/newline-after-import': ['error', { count: 1 }],
+      // 'import/newline-after-import': ['error', { count: 1 }],
 
       /** 사용하지 않는 변수에 대한 처리 rule */
       '@typescript-eslint/no-unused-vars': [
