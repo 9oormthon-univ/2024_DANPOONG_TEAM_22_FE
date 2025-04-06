@@ -15,6 +15,7 @@ import { YouthStackNav } from '@stackNav/Youth';
 import { AppTabNav } from '@tabNav/App';
 import { type Role } from '@type/api/common';
 import { type RootStackParamList } from '@type/nav/RootStackParamList';
+import { navigateToVolunteerHomeScreen } from '@utils/navigateToVolunteerHomeScreen';
 import { navigateToYouthListenScreen } from '@utils/navigateToYouthListenScreen';
 import { navigateToYouthOnboardingScreen } from '@utils/navigateToYouthOnboardingScreen';
 import { trackEvent } from '@utils/tracker';
@@ -126,27 +127,50 @@ export const AppInner = () => {
     saveMemberData();
   }, [memberData]);
 
-  // 알람 처리 및 청년 리스닝 화면 이동
+  // 알람 처리 (청년, 봉사자)
   useEffect(() => {
-    if (!isLoggedIn || role === 'HELPER' || !isNavigationReady) return;
+    if (!isLoggedIn || !isNavigationReady) return;
 
     (async () => {
       // 알람 관련 데이터 가져오기
       const alarmId = await AsyncStorage.getItem('alarmId');
       const alarmTitle = await AsyncStorage.getItem('alarmTitle');
 
-      if (alarmId) {
-        // 청년 리스닝 화면으로 이동
-        navigateToYouthListenScreen({
-          alarmId: Number(alarmId),
-        });
-        // 알람 데이터 삭제
-        await AsyncStorage.removeItem('alarmId');
-        await AsyncStorage.removeItem('alarmTitle');
+      // 받은 알람이 없는 경우 종료
+      if (!alarmTitle) {
+        return;
+      }
+
+      const isYouthAlarm = role === 'YOUTH' && alarmId;
+      const isVolunteerAlarm = role === 'HELPER' && !alarmId;
+
+      if (isYouthAlarm) {
         trackEvent('push_prefer', {
           entry_screen_name: 'YouthListenScreen',
           title: alarmTitle,
         });
+
+        navigateToYouthListenScreen({
+          alarmId: Number(alarmId),
+        });
+
+        // 알람 데이터 삭제
+        await AsyncStorage.removeItem('alarmId');
+        await AsyncStorage.removeItem('alarmTitle');
+
+        return;
+      }
+
+      if (isVolunteerAlarm) {
+        trackEvent('push_prefer', {
+          entry_screen_name: 'VolunteerHomeScreen',
+          title: alarmTitle,
+        });
+
+        navigateToVolunteerHomeScreen();
+
+        // 알람 데이터 삭제
+        await AsyncStorage.removeItem('alarmTitle');
       }
     })();
   }, [isLoggedIn, role, isNavigationReady]);

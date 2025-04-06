@@ -21,7 +21,9 @@ import {
   type NavigationState,
 } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { type Role } from '@type/api/common';
 import { type RootStackParamList } from '@type/nav/RootStackParamList';
+import { navigateToVolunteerHomeScreen } from '@utils/navigateToVolunteerHomeScreen';
 import { navigateToYouthListenScreen } from '@utils/navigateToYouthListenScreen';
 import { pushNoti, type RemoteMessageData } from '@utils/pushNoti';
 import { trackAppStart, trackEvent, trackScreenView } from '@utils/tracker';
@@ -35,6 +37,9 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+const DEFAULT_YOUTH_ALARM_TITLE = '따뜻한 목소리가 도착했어요!';
+const DEFAULT_VOLUNTEER_ALARM_TITLE = '청년들이 당신의 목소리를 기다려요!';
 
 // 네비게이션 참조 생성
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
@@ -84,23 +89,36 @@ export function App(): React.JSX.Element {
   // 포그라운드 상태에서 푸시 알림 처리
   useEffect(() => {
     (async () => {
-      const role = await AsyncStorage.getItem('role');
-
-      if (role !== 'YOUTH') {
-        return;
-      }
+      const role = (await AsyncStorage.getItem('role')) as Role;
 
       const unsubscribe = messaging().onMessage(async remoteMessage => {
         console.log('Foreground Push in App', remoteMessage);
 
         const { alarmId } = remoteMessage.data as RemoteMessageData;
 
-        pushNoti.displayNotification({
-          title: '내일모래',
-          body:
-            remoteMessage.notification?.title ?? '따뜻한 목소리가 도착했어요',
-          data: { alarmId: Number(alarmId) },
-        });
+        const isYouthAlarm = role === 'YOUTH' && alarmId;
+        const isVolunteerAlarm = role === 'HELPER' && !alarmId;
+
+        if (isYouthAlarm) {
+          pushNoti.displayNotification({
+            title: '내일모래',
+            body:
+              remoteMessage.notification?.title ?? DEFAULT_YOUTH_ALARM_TITLE,
+            data: { alarmId: Number(alarmId) },
+          });
+
+          return;
+        }
+
+        if (isVolunteerAlarm) {
+          pushNoti.displayNotification({
+            title: '내일모래',
+            body:
+              remoteMessage.notification?.title ??
+              DEFAULT_VOLUNTEER_ALARM_TITLE,
+            data: {},
+          });
+        }
       });
 
       return unsubscribe;
@@ -110,11 +128,7 @@ export function App(): React.JSX.Element {
   // 앱 초기화 및 푸시 알림 설정
   useEffect(() => {
     (async () => {
-      const role = await AsyncStorage.getItem('role');
-
-      if (role !== 'YOUTH') {
-        return;
-      }
+      const role = (await AsyncStorage.getItem('role')) as Role;
 
       requestUserPermission();
 
@@ -126,13 +140,30 @@ export function App(): React.JSX.Element {
 
             const { alarmId } = remoteMessage.data as RemoteMessageData;
 
-            navigateToYouthListenScreen({
-              alarmId: Number(alarmId),
-            });
-            trackEvent('push_prefer', {
-              entry_screen_name: 'YouthListenScreen',
-              title: remoteMessage.notification?.title ?? '',
-            });
+            const isYouthAlarm = role === 'YOUTH' && alarmId;
+            const isVolunteerAlarm = role === 'HELPER' && !alarmId;
+
+            if (isYouthAlarm) {
+              trackEvent('push_prefer', {
+                entry_screen_name: 'YouthListenScreen',
+                title: remoteMessage.notification?.title ?? '',
+              });
+
+              navigateToYouthListenScreen({
+                alarmId: Number(alarmId),
+              });
+
+              return;
+            }
+
+            if (isVolunteerAlarm) {
+              trackEvent('push_prefer', {
+                entry_screen_name: 'VolunteerHomeScreen',
+                title: remoteMessage.notification?.title ?? '',
+              });
+
+              navigateToVolunteerHomeScreen();
+            }
           }
         })();
       });
@@ -147,12 +178,29 @@ export function App(): React.JSX.Element {
 
               const { alarmId } = remoteMessage.data as RemoteMessageData;
 
-              // AsyncStorage에 알림 데이터 저장
-              await AsyncStorage.setItem('alarmId', alarmId);
-              await AsyncStorage.setItem(
-                'alarmTitle',
-                remoteMessage.notification?.title ?? '',
-              );
+              const isYouthAlarm = role === 'YOUTH' && alarmId;
+              const isVolunteerAlarm = role === 'HELPER' && !alarmId;
+
+              if (isYouthAlarm) {
+                // AsyncStorage에 알림 데이터 저장
+                await AsyncStorage.setItem('alarmId', alarmId);
+                await AsyncStorage.setItem(
+                  'alarmTitle',
+                  remoteMessage.notification?.title ??
+                    DEFAULT_YOUTH_ALARM_TITLE,
+                );
+
+                return;
+              }
+
+              if (isVolunteerAlarm) {
+                // AsyncStorage에 alarmTitle 만 저장
+                await AsyncStorage.setItem(
+                  'alarmTitle',
+                  remoteMessage.notification?.title ??
+                    DEFAULT_VOLUNTEER_ALARM_TITLE,
+                );
+              }
             }
           })();
         });

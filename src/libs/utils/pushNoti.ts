@@ -6,6 +6,7 @@
  */
 
 import notifee, { AndroidImportance, EventType } from '@notifee/react-native';
+import { navigateToVolunteerHomeScreen } from '@utils/navigateToVolunteerHomeScreen';
 import { navigateToYouthListenScreen } from '@utils/navigateToYouthListenScreen';
 import { trackEvent } from '@utils/tracker';
 
@@ -28,7 +29,7 @@ const displayNotification = async ({
   title,
   body,
   data,
-}: Readonly<{ title: string; body: string; data: { alarmId: number } }>) => {
+}: Readonly<{ title: string; body: string; data: { alarmId?: number } }>) => {
   const channelAnoucement = await notifee.createChannel({
     id: 'default',
     name: '내일모래',
@@ -65,16 +66,28 @@ notifee.onForegroundEvent(({ type, detail }) => {
     }
 
     const { data } = detail.notification;
-    const { alarmId } = data as { alarmId: string };
+    const { alarmId } = data as { alarmId?: string };
 
-    if (!alarmId) return;
+    if (!alarmId) {
+      // 봉사자 알림인 경우 - 홈으로 이동
+      trackEvent('push_prefer', {
+        entry_screen_name: 'VolunteerHomeScreen',
+        title: detail.notification?.title ?? '',
+      });
 
-    navigateToYouthListenScreen({
-      alarmId: Number(alarmId),
-    });
+      navigateToVolunteerHomeScreen();
+
+      return;
+    }
+
+    // 청년 알림인 경우 - 녹음듣기 화면으로 이동
     trackEvent('push_prefer', {
       entry_screen_name: 'YouthListenScreen',
       title: detail.notification?.title ?? '',
+    });
+
+    navigateToYouthListenScreen({
+      alarmId: Number(alarmId),
     });
   } else if (type === EventType.DISMISSED) {
     // noti 삭제
