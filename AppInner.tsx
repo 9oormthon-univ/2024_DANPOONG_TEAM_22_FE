@@ -1,26 +1,24 @@
 // 네비게이션 관련 라이브러리 및 타입 임포트
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {RootStackParamList} from '@type/nav/RootStackParamList';
-
-// 네비게이션 스택 컴포넌트 임포트
-import {AuthStackNav} from '@stackNav/Auth';
-import {YouthStackNav} from '@stackNav/Youth';
-import {AppTabNav} from '@tabNav/App';
-
 // React 관련 임포트
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
+import { default as RNSplashScreen } from 'react-native-splash-screen';
 
 // API 및 타입 임포트
-import {useGetMember} from '@hooks/auth/useGetMember';
-import {useAxiosInterceptor} from '@hooks/useAxiosInterceptor';
+import { useGetMember } from '@hooks/auth/useGetMember';
+import { useAxiosInterceptor } from '@hooks/useAxiosInterceptor';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SplashScreen } from '@screens/Splash';
-import {Role} from '@type/api/common';
-import {navigateToYouthListenScreen} from '@utils/navigateToYouthListenScreen';
-import {navigateToYouthOnboardingScreen} from '@utils/navigateToYouthOnboardingScreen';
-import {trackEvent} from '@utils/tracker';
-import {navigationRef} from 'App';
-import {default as RNSplashScreen} from 'react-native-splash-screen';
+// 네비게이션 스택 컴포넌트 임포트
+import { AuthStackNav } from '@stackNav/Auth';
+import { YouthStackNav } from '@stackNav/Youth';
+import { AppTabNav } from '@tabNav/App';
+import { type Role } from '@type/api/common';
+import { type RootStackParamList } from '@type/nav/RootStackParamList';
+import { navigateToYouthListenScreen } from '@utils/navigateToYouthListenScreen';
+import { navigateToYouthOnboardingScreen } from '@utils/navigateToYouthOnboardingScreen';
+import { trackEvent } from '@utils/tracker';
+import { navigationRef } from 'App';
 
 // 네비게이션 스택 생성
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -37,6 +35,7 @@ export const AppInner = () => {
     error: memberError,
   } = useGetMember(token);
   const [isNavigationReady, setIsNavigationReady] = useState(false);
+
   useAxiosInterceptor();
 
   // 로그인 상태 및 사용자 정보 확인
@@ -51,8 +50,10 @@ export const AppInner = () => {
       // await AsyncStorage.removeItem('role');
 
       const token = await AsyncStorage.getItem('accessToken');
+
       setIsLoggedIn(!!token);
       setToken(token);
+
       if (!token) {
         setIsInitializing(false); // 비로그인 상태에서도 스플래시 숨기기
         RNSplashScreen.hide();
@@ -73,6 +74,7 @@ export const AppInner = () => {
 
     const isSignupAllCompleted =
       memberData?.result.youthMemberInfoDto?.wakeUpTime;
+
     if (!isSignupAllCompleted) {
       navigateToYouthOnboardingScreen(); // 네비게이션 준비 후 실행
     }
@@ -80,21 +82,26 @@ export const AppInner = () => {
 
   useEffect(() => {
     if (!isMemberError) return;
+
     // Alert.alert('오류', '사용자 정보를 가져오는데 실패했어요');
-    console.log({memberError});
+    console.log({ memberError });
     setIsInitializing(false); // 데이터 로드 완료 후 스플래시 숨기기
     RNSplashScreen.hide();
   }, [isMemberError]);
 
   useEffect(() => {
     if (!memberData) return;
-    console.log({memberData});
-    const {nickname, gender, profileImage, role, birth} = memberData.result;
+
+    console.log({ memberData });
+
+    const { nickname, gender, profileImage, role, birth } = memberData.result;
+
     setRole(role);
 
     if (role !== 'HELPER' && role !== 'YOUTH') {
       setIsInitializing(false); // 데이터 로드 완료 후 스플래시 숨기기
       RNSplashScreen.hide();
+
       return;
     }
 
@@ -154,6 +161,7 @@ export const AppInner = () => {
         </Stack.Group>
       );
     }
+
     if (role === 'YOUTH') {
       return (
         <Stack.Group>
@@ -162,6 +170,7 @@ export const AppInner = () => {
         </Stack.Group>
       );
     }
+
     return (
       <Stack.Group>
         <Stack.Screen name="AuthStackNav" component={AuthStackNav} />

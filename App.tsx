@@ -7,25 +7,25 @@
  * - 쿼리 클라이언트 설정
  */
 
+import { useEffect, useRef, useState } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Toast from 'react-native-toast-message';
+
+import { CustomToast } from '@components/CustomToast';
+import { PortalProvider } from '@gorhom/portal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import {
   createNavigationContainerRef,
   NavigationContainer,
-  NavigationState,
+  type NavigationState,
 } from '@react-navigation/native';
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import {RootStackParamList} from '@type/nav/RootStackParamList';
-import {pushNoti,RemoteMessageData} from '@utils/pushNoti';
-import {AppInner} from 'AppInner';
-import {useEffect, useRef, useState} from 'react';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
-
-import {CustomToast} from '@components/CustomToast';
-import {PortalProvider} from '@gorhom/portal';
-import {navigateToYouthListenScreen} from '@utils/navigateToYouthListenScreen';
-import {trackAppStart, trackEvent, trackScreenView} from '@utils/tracker';
-import Toast from 'react-native-toast-message';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { type RootStackParamList } from '@type/nav/RootStackParamList';
+import { navigateToYouthListenScreen } from '@utils/navigateToYouthListenScreen';
+import { pushNoti, type RemoteMessageData } from '@utils/pushNoti';
+import { trackAppStart, trackEvent, trackScreenView } from '@utils/tracker';
+import { AppInner } from 'AppInner';
 
 // 쿼리 클라이언트 설정
 const queryClient = new QueryClient({
@@ -51,6 +51,7 @@ export function App(): React.JSX.Element {
   // GA 트래킹 설정
   useEffect(() => {
     const state = navigationRef.current?.getRootState();
+
     if (state) {
       routeNameRef.current = getActiveRouteName(state);
     }
@@ -58,20 +59,23 @@ export function App(): React.JSX.Element {
 
   const getActiveRouteName = (state: NavigationState) => {
     const route = state.routes[state.index];
+
     if (route.state) {
       return getActiveRouteName(route.state as NavigationState);
     }
+
     return route.name;
   };
 
   const onStateChange = async (state: NavigationState | undefined) => {
     if (state === undefined) return;
+
     const previousRouteName = routeNameRef.current;
     const currentRouteName = getActiveRouteName(state);
 
     if (previousRouteName !== currentRouteName) {
       // Google Analytics에 스크린 전송
-      trackScreenView({screenName: currentRouteName});
+      trackScreenView({ screenName: currentRouteName });
     }
 
     routeNameRef.current = currentRouteName;
@@ -81,19 +85,21 @@ export function App(): React.JSX.Element {
   useEffect(() => {
     (async () => {
       const role = await AsyncStorage.getItem('role');
+
       if (role !== 'YOUTH') {
         return;
       }
 
       const unsubscribe = messaging().onMessage(async remoteMessage => {
         console.log('Foreground Push in App', remoteMessage);
-        const {alarmId} = remoteMessage.data as RemoteMessageData;
+
+        const { alarmId } = remoteMessage.data as RemoteMessageData;
 
         pushNoti.displayNotification({
           title: '내일모래',
           body:
             remoteMessage.notification?.title ?? '따뜻한 목소리가 도착했어요',
-          data: {alarmId: Number(alarmId)},
+          data: { alarmId: Number(alarmId) },
         });
       });
 
@@ -105,6 +111,7 @@ export function App(): React.JSX.Element {
   useEffect(() => {
     (async () => {
       const role = await AsyncStorage.getItem('role');
+
       if (role !== 'YOUTH') {
         return;
       }
@@ -116,7 +123,9 @@ export function App(): React.JSX.Element {
         (async () => {
           if (remoteMessage) {
             console.log('Background Push in App', remoteMessage);
-            const {alarmId} = remoteMessage.data as RemoteMessageData;
+
+            const { alarmId } = remoteMessage.data as RemoteMessageData;
+
             navigateToYouthListenScreen({
               alarmId: Number(alarmId),
             });
@@ -135,7 +144,9 @@ export function App(): React.JSX.Element {
           (async () => {
             if (remoteMessage) {
               console.log('Quit Push in App', remoteMessage);
-              const {alarmId} = remoteMessage.data as RemoteMessageData;
+
+              const { alarmId } = remoteMessage.data as RemoteMessageData;
+
               // AsyncStorage에 알림 데이터 저장
               await AsyncStorage.setItem('alarmId', alarmId);
               await AsyncStorage.setItem(
@@ -165,6 +176,7 @@ export function App(): React.JSX.Element {
    */
   const getToken = async () => {
     const fcmToken = await messaging().getToken();
+
     console.log('디바이스 토큰값', fcmToken);
     await AsyncStorage.setItem('fcmToken', fcmToken);
   };
@@ -172,14 +184,14 @@ export function App(): React.JSX.Element {
   return (
     <QueryClientProvider client={queryClient}>
       <PortalProvider>
-        <GestureHandlerRootView style={{flex: 1}}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
           <NavigationContainer
             ref={navigationRef}
             onStateChange={onStateChange}
             onReady={() => setIsNavigationReady(true)}>
             {isNavigationReady && <AppInner />}
             <Toast
-              config={{custom: CustomToast}}
+              config={{ custom: CustomToast }}
               topOffset={0}
               bottomOffset={0}
             />
