@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "nm.app"
-               BlueprintName = "nm"
-               ReferencedContainer = "container:nm.xcodeproj">
+               BuildableName = "naeilmorae.app"
+               BlueprintName = "naeilmorae"
+               ReferencedContainer = "container:naeilmorae.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "nmTests.xctest"
-               BlueprintName = "nmTests"
-               ReferencedContainer = "container:nm.xcodeproj">
+               BuildableName = "naeilmoraeTests.xctest"
+               BlueprintName = "naeilmoraeTests"
+               ReferencedContainer = "container:naeilmorae.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "nm.app"
-            BlueprintName = "nm"
-            ReferencedContainer = "container:nm.xcodeproj">
+            BuildableName = "naeilmorae.app"
+            BlueprintName = "naeilmorae"
+            ReferencedContainer = "container:naeilmorae.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "nm.app"
-            BlueprintName = "nm"
-            ReferencedContainer = "container:nm.xcodeproj">
+            BuildableName = "naeilmorae.app"
+            BlueprintName = "naeilmorae"
+            ReferencedContainer = "container:naeilmorae.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
