@@ -9,6 +9,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
 import { CustomToast } from '@components/CustomToast';
@@ -231,21 +232,23 @@ export function App(): React.JSX.Element {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <PortalProvider>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <NavigationContainer
-            ref={navigationRef}
-            onStateChange={onStateChange}
-            onReady={() => setIsNavigationReady(true)}>
-            {isNavigationReady && <AppInner />}
-            <Toast
-              config={{ custom: CustomToast }}
-              topOffset={0}
-              bottomOffset={0}
-            />
-          </NavigationContainer>
-        </GestureHandlerRootView>
-      </PortalProvider>
+      <SafeAreaProvider>
+        <PortalProvider>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <NavigationContainer
+              ref={navigationRef}
+              onStateChange={onStateChange}
+              onReady={() => setIsNavigationReady(true)}>
+              {isNavigationReady && <AppInner />}
+              <Toast
+                config={{ custom: CustomToast }}
+                topOffset={0}
+                bottomOffset={0}
+              />
+            </NavigationContainer>
+          </GestureHandlerRootView>
+        </PortalProvider>
+      </SafeAreaProvider>
     </QueryClientProvider>
   );
 }
