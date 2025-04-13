@@ -33,15 +33,17 @@ export const ConnectedAccountScreen = () => {
       {/* 전체 컨테이너 */}
       <View className="flex-1 items-center px-px  pt-[28]">
         {/* 연결된 소셜 계정 컨테이너 */}
-        <View className="w-full h-[89] bg-blue600 rounded-[10px] px-[27] py-[17]">
-          <View className="flex-row items-center gap-[10]">
+        <View className="w-full h-[89] bg-blue600 rounded-[10px] px-[27] py-[17] justify-center">
+          <View className="flex-row items-center">
             <KakaoLogo />
+            <View className="w-[8.64]" />
             <CustomText
               type="caption1"
               text="카카오 계정"
               className="text-gray200"
             />
           </View>
+          <View className="h-[6]" />
           <View className="w-full h-[27] overflow-hidden">
             <CustomText type="body3" text={email} className="text-white" />
           </View>
