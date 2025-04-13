@@ -261,7 +261,7 @@ const YouthNoticeScreen = ({ route, navigation }: Readonly<Props>) => {
 
       <FlexableMargin flexGrow={140} />
 
-      <View className="absolute left-0 bottom-[55] w-full px-[30]">
+      <View className="absolute left-0 bottom-[79] w-full px-[30]">
         <Button text="시작하기" onPress={handleNext} />
       </View>
 
