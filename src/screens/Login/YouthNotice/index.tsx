@@ -1,30 +1,37 @@
-import AlarmIcon from '@assets/svgs/alarm.svg';
-import LocationIcon from '@assets/svgs/location.svg';
-import {AppBar} from '@components/AppBar';
-import {BG} from '@components/BG';
-import {Button} from '@components/Button';
-import {FlexableMargin} from '@components/FlexableMargin';
-import {Toast} from '@components/Toast';
-import {CustomText} from '@components/CustomText';
-import {usePostYouth} from '@hooks/auth/usePostYouth';
-import notifee, {AuthorizationStatus} from '@notifee/react-native';
+import { useCallback, useRef, useState } from 'react';
+import { Alert, Platform, View } from 'react-native';
+import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
+
+import { AppBar } from '@components/AppBar';
+import { BG } from '@components/BG';
+import { Button } from '@components/Button';
+import { CustomText } from '@components/CustomText';
+import { FlexableMargin } from '@components/FlexableMargin';
+import { Toast } from '@components/Toast';
+import { usePostYouth } from '@hooks/auth/usePostYouth';
+import notifee, { AuthorizationStatus } from '@notifee/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geolocation from '@react-native-community/geolocation';
-import {CompositeScreenProps, useFocusEffect} from '@react-navigation/native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {AuthStackParamList} from '@stackNav/Auth';
-import {YouthRequestData} from '@type/api/member';
-import {RootStackParamList} from '@type/nav/RootStackParamList';
-import {trackEvent} from '@utils/tracker';
-import {useCallback, useRef, useState} from 'react';
-import {Alert, Platform, View} from 'react-native';
-import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
+import {
+  type CompositeScreenProps,
+  useFocusEffect,
+} from '@react-navigation/native';
+import { type NativeStackScreenProps } from '@react-navigation/native-stack';
+import { type AuthStackParamList } from '@stackNav/Auth';
+import { type YouthRequestData } from '@type/api/member';
+import { type RootStackParamList } from '@type/nav/RootStackParamList';
+import { trackEvent } from '@utils/tracker';
+
+import AlarmIcon from '@assets/svgs/alarm.svg';
+import LocationIcon from '@assets/svgs/location.svg';
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'YouthNoticeScreen'
 >;
+
 type RootProps = NativeStackScreenProps<RootStackParamList>;
+
 type Props = CompositeScreenProps<AuthProps, RootProps>;
 
 const NOTICE_CONTENTS = [
@@ -41,13 +48,13 @@ const NOTICE_CONTENTS = [
   },
 ];
 
-Geolocation.setRNConfiguration({skipPermissionRequests: false});
+Geolocation.setRNConfiguration({ skipPermissionRequests: false });
 
-const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
-  const {wakeUpTime, breakfast, lunch, dinner, sleepTime} = route.params;
+const YouthNoticeScreen = ({ route, navigation }: Readonly<Props>) => {
+  const { wakeUpTime, breakfast, lunch, dinner, sleepTime } = route.params;
   const [isToast, setIsToast] = useState(false); // 토스트 메시지 표시 상태
   const [toastMessage, setToastMessage] = useState(''); // 토스트 메시지
-  const {mutate: postYouth} = usePostYouth();
+  const { mutate: postYouth } = usePostYouth();
 
   const startTime = useRef(0);
 
@@ -61,17 +68,21 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
   const requestNotificationPermission = async () => {
     try {
       const settings = await notifee.requestPermission();
+
       if (settings.authorizationStatus >= AuthorizationStatus.AUTHORIZED) {
         setIsToast(true);
         setToastMessage('알림 권한이 허용되었어요');
+
         return true;
       } else {
         setIsToast(true);
         setToastMessage('알림 권한이 거부되었어요');
+
         return false;
       }
     } catch (error) {
       console.error('알림 권한 요청 중 오류 발생:', error);
+
       return false;
     }
   };
@@ -85,28 +96,35 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
           : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
 
       const status = await check(permission);
+
       if (status === RESULTS.GRANTED) {
         setIsToast(true);
         setToastMessage('위치 정보 권한이 이미 허용되었어요');
+
         return true;
       } else if (status === RESULTS.DENIED) {
         const result = await request(permission);
+
         if (result === RESULTS.GRANTED) {
           setIsToast(true);
           setToastMessage('위치 정보 권한이 허용되었어요');
+
           return true;
         } else {
           setIsToast(true);
           setToastMessage('위치 정보 권한이 거부되었어요');
+
           return false;
         }
       } else {
         setIsToast(true);
         setToastMessage('위치 정보 권한을 요청할 수 없어요');
+
         return false;
       }
     } catch (error) {
       console.error('위치 정보 권한 요청 중 오류 발생:', error);
+
       return false;
     }
   };
@@ -134,6 +152,7 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
           },
         ],
       );
+
       return;
     }
 
@@ -148,6 +167,7 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
           },
         ],
       );
+
       return;
     }
 
@@ -214,7 +234,8 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
       <FlexableMargin flexGrow={80} />
 
       {/* header */}
-      <CustomText        type="title2"
+      <CustomText
+        type="title2"
         text={'거의 다 왔어요!\n원활한 서비스를 위해\n권한 동의가 필요해요'}
         className="text-white px-px"
       />
@@ -224,9 +245,17 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
           <FlexableMargin flexGrow={40} />
           {item.icon}
           <FlexableMargin flexGrow={24} />
-          <CustomText type="title4" text={item.title} className="text-yellowPrimary" />
+          <CustomText
+            type="title4"
+            text={item.title}
+            className="text-yellowPrimary"
+          />
           <FlexableMargin flexGrow={10} />
-          <CustomText type="body4" text={item.content} className="text-gray200" />
+          <CustomText
+            type="body4"
+            text={item.content}
+            className="text-gray200"
+          />
         </View>
       ))}
 
@@ -245,4 +274,4 @@ const YouthNoticeScreen = ({route, navigation}: Readonly<Props>) => {
   );
 };
 
-export {YouthNoticeScreen};
+export { YouthNoticeScreen };

@@ -1,34 +1,39 @@
-import CameraIcon from '@assets/svgs/camera.svg';
-import {AnimatedView} from '@components/AnimatedView';
-import {AppBar} from '@components/AppBar';
-import {BG} from '@components/BG';
-import {BottomMenu} from '@components/BottomMenu';
-import {Button} from '@components/Button';
-import {DismissKeyboardView} from '@components/DismissKeyboardView';
-import {Modal} from '@components/Modal';
-import {TextInput} from '@components/TextInput';
-import {CustomText} from '@components/CustomText';
-import {KEYBOARD_DELAY_MS} from '@constants/common';
-import {useModal} from '@hooks/useModal';
-import {useValidateInput} from '@hooks/useValidateInput';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {AuthStackParamList} from '@stackNav/Auth';
-import {trackEvent} from '@utils/tracker';
-import {useEffect, useState} from 'react';
-import {Image, Keyboard, Pressable, View} from 'react-native';
+import { useEffect, useState } from 'react';
+import { Image, Keyboard, Pressable, View } from 'react-native';
 import {
-  ImageLibraryOptions,
-  ImagePickerResponse,
+  type ImageLibraryOptions,
+  type ImagePickerResponse,
   launchImageLibrary,
 } from 'react-native-image-picker';
+
+import { AnimatedView } from '@components/AnimatedView';
+import { AppBar } from '@components/AppBar';
+import { BG } from '@components/BG';
+import { BottomMenu } from '@components/BottomMenu';
+import { Button } from '@components/Button';
+import { CustomText } from '@components/CustomText';
+import { DismissKeyboardView } from '@components/DismissKeyboardView';
+import { Modal } from '@components/Modal';
+import { TextInput } from '@components/TextInput';
+import { KEYBOARD_DELAY_MS } from '@constants/common';
+import { useModal } from '@hooks/useModal';
+import { useValidateInput } from '@hooks/useValidateInput';
+import { type NativeStackScreenProps } from '@react-navigation/native-stack';
+import { type AuthStackParamList } from '@stackNav/Auth';
+import { trackEvent } from '@utils/tracker';
+
+import CameraIcon from '@assets/svgs/camera.svg';
 
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'NicknameWriteScreen'
 >;
 
-export const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) => {
-  const {role} = route.params;
+export const NicknameWriteScreen = ({
+  route,
+  navigation,
+}: Readonly<AuthProps>) => {
+  const { role } = route.params;
   const defaultImageUri =
     role === 'YOUTH'
       ? require('@assets/pngs/profile/youthDefault.png')
@@ -41,10 +46,10 @@ export const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) =>
     isError: isErrorNickname,
     isSuccess: isSuccessNickname,
     message: nicknameMessage,
-  } = useValidateInput({type: 'nickname'});
+  } = useValidateInput({ type: 'nickname' });
   const [clickedUpload, setClickedUpload] = useState(false);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  const {visible, openModal, closeModal} = useModal();
+  const { visible, openModal, closeModal } = useModal();
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
@@ -70,6 +75,7 @@ export const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) =>
     launchImageLibrary(options, (response: ImagePickerResponse) => {
       if (response.didCancel) {
         console.log('User cancelled camera picker');
+
         return;
       }
 
@@ -79,12 +85,14 @@ export const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) =>
           response.errorCode,
           response.errorMessage,
         );
+
         return;
       }
 
       if (!response?.assets?.[0]) {
         return;
       }
+
       console.log(response.assets[0].uri);
       setImageUri(response.assets[0].uri ?? null);
       setClickedUpload(false);
@@ -110,8 +118,8 @@ export const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) =>
   };
 
   const bottomMenuData = [
-    {title: '앨범에서 사진 선택', onPress: selectImage},
-    {title: '기본 이미지 적용', onPress: handleDefaultImageClick},
+    { title: '앨범에서 사진 선택', onPress: selectImage },
+    { title: '기본 이미지 적용', onPress: handleDefaultImageClick },
   ];
 
   return (
@@ -125,7 +133,8 @@ export const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) =>
         <View className="h-[120]" />
 
         <View className="items-center px-[30]">
-          <CustomText            type="title2"
+          <CustomText
+            type="title2"
             text={'내일모래가 당신을\n어떻게 부를까요?'}
             className="text-white text-center"
           />
@@ -139,15 +148,15 @@ export const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) =>
               className={`w-[107] h-[107] ${
                 imageUri ? 'border border-gray200' : ''
               }`}
-              style={{borderRadius: 53.5, overflow: 'hidden'}}>
+              style={{ borderRadius: 53.5, overflow: 'hidden' }}>
               <Image
-                source={imageUri ? {uri: imageUri} : defaultImageUri}
-                style={{width: '100%', height: '100%'}}
+                source={imageUri ? { uri: imageUri } : defaultImageUri}
+                style={{ width: '100%', height: '100%' }}
               />
             </View>
             <View
               className="absolute bottom-0 right-0 justify-center items-center w-[32] h-[32] border-2 border-blue700 bg-yellowPrimary"
-              style={{borderRadius: 16}}>
+              style={{ borderRadius: 16 }}>
               <CameraIcon />
             </View>
           </Pressable>
@@ -181,7 +190,7 @@ export const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) =>
           <Pressable onPress={() => {}} className="w-full">
             <AnimatedView
               visible={clickedUpload}
-              style={{borderRadius: 10}}
+              style={{ borderRadius: 10 }}
               className="bg-blue500 mb-[24]">
               <BottomMenu title="프로필 사진 설정" data={bottomMenuData} />
             </AnimatedView>
@@ -207,11 +216,13 @@ export const NicknameWriteScreen = ({route, navigation}: Readonly<AuthProps>) =>
         visible={visible}
         onCancel={closeModal}
         onConfirm={() => navigation.goBack()}>
-        <CustomText          type="title4"
+        <CustomText
+          type="title4"
           text="나가시겠어요?"
           className="text-white mt-[26.92] mb-[5]"
         />
-        <CustomText          type="caption1"
+        <CustomText
+          type="caption1"
           text="화면을 나가면 변경사항이 저장되지 않아요"
           className="text-gray300 mb-[32]"
         />
