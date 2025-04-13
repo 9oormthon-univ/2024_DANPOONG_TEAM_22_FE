@@ -5,8 +5,7 @@ import { AppBar } from '@components/AppBar';
 import { BG } from '@components/BG';
 import { CustomText } from '@components/CustomText';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
-import { type NavigationProp } from '@react-navigation/native';
+import { type NavigationProp, useNavigation } from '@react-navigation/native';
 import { type SystemStackParamList } from '@type/nav/SystemStackParamList';
 
 import KakaoLogo from '@assets/svgs/KakaoLogo.svg';
