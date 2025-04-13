@@ -1,11 +1,9 @@
-import {getAlarmCategory} from '@apis/alarm';
+import {getAlarmAlarmCategory} from '@apis/VolunteerMainPage/get/AlarmAlarmCategory/fetch';
 import {useQuery} from '@tanstack/react-query';
 
-const useGetAlarmCategory = () => {
+export const useGetAlarmCategory = () => {
   return useQuery({
     queryKey: ['getAlarmCategory'],
-    queryFn: () => getAlarmCategory(),
+    queryFn: () => getAlarmAlarmCategory(),
   });
 };
-
-export default useGetAlarmCategory;

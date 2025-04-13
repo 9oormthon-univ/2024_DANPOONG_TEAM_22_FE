@@ -1,21 +1,13 @@
-export const name = 'nm';
+export const name = 'naeilmorae';
 
 export default ({config}) => ({
   ...config,
   name: '내일모래',
-  slug: 'nm',
-  owner: 'obb8923',
-  // owner: 'bongjs',
+  slug: 'naeilmorae',
   version: '1.0.0',
   orientation: 'portrait',
   icon: './assets/images/logo/app/app_logo_yellow.png',
-  extra: {
-    storybookEnabled: process.env.STORYBOOK_ENABLED,
-    eas: {
-      projectId: '78435b24-b21d-4edc-8b96-fa1e666218e7', // obb8923
-      // projectId: '5fb90edd-f98c-44dd-a11e-3dd38dd2b57a', // bongjs
-    },
-  },
+  extra: {},
   splash: {
     image: './assets/images/logo/typo/typo_logo_white.png',
     resizeMode: 'contain',
@@ -33,7 +25,7 @@ export default ({config}) => ({
       foregroundImage: './assets/pngs/logo/NMLOGO.png',
       backgroundColor: '#252738',
     },
-    package: 'com.nail.morae',
+    package: 'com.jeong.naeilmorae',
     googleServicesFile: './google-services.json',
   },
   web: {

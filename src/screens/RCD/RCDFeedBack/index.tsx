@@ -1,7 +1,7 @@
 // 커스텀 컴포넌트 import
-import AppBar from '@components/atom/AppBar';
-import BG from '@components/atom/BG';
-import Txt from '@components/atom/Txt';
+import {AppBar} from '@components/AppBar';
+import {BG} from '@components/BG';
+import {CustomText} from '@components/CustomText';
 
 // React Native 기본 컴포넌트 import
 import {Animated, ImageBackground, View} from 'react-native';
@@ -16,7 +16,7 @@ import {trackEvent} from '@utils/tracker';
 import {useEffect, useRef, useState} from 'react';
 
 //  RCD 피드백 화면 컴포넌트 녹음 완료 후 로딩 및 완료 상태를 보여주는 화면
-const RCDFeedBackScreen = () => {
+export const RCDFeedBackScreen = () => {
   const [nickname, setNickname] = useState('');
   // 애니메이션 값 관리
   const opValue = useRef(new Animated.Value(0)).current;
@@ -57,13 +57,12 @@ const RCDFeedBackScreen = () => {
           />
         {/* 콘텐츠 섹션 */}
         <View className="absolute top-[33%] w-full">
-        <Txt
-          type="title1"
+        <CustomText          type="title1"
           text="녹음 완료"
           className="text-white text-center"
         />
         <View className="mb-[23]" />
-        <Txt 
+        <CustomText 
         type='body3' 
         text={`${nickname}님의 목소리 덕분에\n나그네가 힘차게 여행할 수 있을거예요`}
         className='text-[#a0a0a0] text-center'/>
@@ -81,13 +80,12 @@ const RCDFeedBackScreen = () => {
           />
         {/* 콘텐츠 섹션 */}
         <View className="absolute top-[33%] w-full">
-        <Txt
-          type="title1"
+        <CustomText          type="title1"
           text="녹음 완료"
           className="text-white text-center"
         />
         <View className="mb-[23]" />
-        <Txt 
+        <CustomText 
         type='body3' 
         text={`${nickname}님의 목소리 덕분에\n나그네가 힘차게 여행할 수 있을거예요`}
         className='text-[#d0d0d0] text-center'/>
@@ -97,5 +95,4 @@ const RCDFeedBackScreen = () => {
   );
 };
 
-export default RCDFeedBackScreen;
 

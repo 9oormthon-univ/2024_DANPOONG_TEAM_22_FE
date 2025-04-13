@@ -1,7 +1,4 @@
-type Gender = 'MALE' | 'FEMALE';
-
-type Role = 'ADMIN' | 'YOUTH' | 'HELPER' | 'GUEST';
-
+import { Gender, Role } from "@type/api/common";
 type MemberRequestData = {
   name: string;
   gender: Gender;

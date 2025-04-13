@@ -7,10 +7,10 @@ import {
 import {View} from 'react-native';
 
 // 커스텀 컴포넌트 임포트
-import AppBar from '@components/atom/AppBar';
-import BG from '@components/atom/BG';
-import Button from '@components/atom/Button';
-import Txt from '@components/atom/Txt';
+import {AppBar} from '@components/AppBar';
+import {BG} from '@components/BG';
+import {Button} from '@components/Button';
+import {CustomText} from '@components/CustomText';
 
 // SVG 아이콘 임포트
 import Notice2 from '@assets/svgs/Notice2.svg';
@@ -21,7 +21,7 @@ import Notice4 from '@assets/svgs/Notice4.svg';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
 import {trackEvent} from '@utils/tracker';
 
-const RCDErrorScreen = ({
+export const RCDErrorScreen = ({
   route,
 }: {
   route: RouteProp<HomeStackParamList, 'RCDError'>;
@@ -57,8 +57,7 @@ const RCDErrorScreen = ({
           )}
           <View className="mt-[43]" />
           {/* 오류 메시지 제목 */}
-          <Txt
-            type="title2"
+          <CustomText            type="title2"
             text={
               errorType === 'noisy'
                 ? '주변 소음이 크게 들려서\n녹음을 전송할 수 없어요'
@@ -72,8 +71,7 @@ const RCDErrorScreen = ({
           />
           <View className="mt-[25]" />
           {/* 오류 메시지 부제목 */}
-          <Txt
-            type="body4"
+          <CustomText            type="body4"
             text={
               errorType === 'noisy'
                 ? '조용한 장소에서 다시 녹음해주세요'
@@ -99,5 +97,3 @@ const RCDErrorScreen = ({
     </BG>
   );
 };
-
-export default RCDErrorScreen;

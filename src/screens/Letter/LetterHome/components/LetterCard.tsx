@@ -1,8 +1,8 @@
 import MoreDotIcon from '@assets/svgs/moreDot.svg';
-import ShadowView from '@components/atom/ShadowView';
-import Txt from '@components/atom/Txt';
+import {ShadowView} from '@components/ShadowView';
+import {CustomText} from '@components/CustomText';
 import {LetterResponseData} from '@type/api/providedFile';
-import formatDate from '@utils/formatDate';
+import {formatDate} from '@utils/convertFuncs';
 import {Image, Pressable, View} from 'react-native';
 
 type LetterCardProps = {
@@ -10,28 +10,25 @@ type LetterCardProps = {
   onPressMoreDot?: () => void;
 };
 
-const LetterCard = ({letter, onPressMoreDot}: Readonly<LetterCardProps>) => {
+export const LetterCard = ({letter, onPressMoreDot}: Readonly<LetterCardProps>) => {
   const renderCategoryText = () => {
     if (letter.alarmType === '위로' || letter.alarmType === '칭찬') {
       return (
-        <Txt
-          type="body4"
+        <CustomText          type="body4"
           text=" 받은"
           className="text-white mr-[5] font-[LeeSeoyun-Regular]"
         />
       );
     } else if (letter.alarmType === '우울') {
       return (
-        <Txt
-          type="body4"
+        <CustomText          type="body4"
           text="이 해소된 "
           className="text-white font-[LeeSeoyun-Regular]"
         />
       );
     }
     return (
-      <Txt
-        type="body4"
+      <CustomText        type="body4"
         text=" 알림 받은"
         className="text-white mr-[5] font-[LeeSeoyun-Regular]"
       />
@@ -43,8 +40,7 @@ const LetterCard = ({letter, onPressMoreDot}: Readonly<LetterCardProps>) => {
       <ShadowView>
         <View className="px-[20] py-[18] justify-between flex-1">
           <View className="flex-row items-center justify-between">
-            <Txt
-              type="body4"
+            <CustomText              type="body4"
               text={formatDate(letter.createdAt)}
               className="text-gray200 font-[LeeSeoyun-Regular]"
             />
@@ -55,8 +51,7 @@ const LetterCard = ({letter, onPressMoreDot}: Readonly<LetterCardProps>) => {
 
           <View className="h-[10]" />
 
-          <Txt
-            type="body4"
+          <CustomText            type="body4"
             text={letter.thanksMessage}
             className="text-white"
           />
@@ -64,21 +59,18 @@ const LetterCard = ({letter, onPressMoreDot}: Readonly<LetterCardProps>) => {
           <View className="h-[10]" />
 
           <View className="flex-row items-center self-end">
-            <Txt
-              type="body4"
+            <CustomText              type="body4"
               text="from."
               className="text-white mr-[8] font-[LeeSeoyun-Regular]"
               style={{fontSize: 16}}
             />
-            <Txt
-              type="body4"
+            <CustomText              type="body4"
               text={letter.alarmType}
               className="text-yellowPrimary font-[LeeSeoyun-Regular]"
               style={{fontSize: 16}}
             />
             {renderCategoryText()}
-            <Txt
-              type="body4"
+            <CustomText              type="body4"
               text={letter?.member?.name ?? ''}
               className="text-white mr-[10] max-w-[140]"
               numberOfLines={1}
@@ -98,5 +90,3 @@ const LetterCard = ({letter, onPressMoreDot}: Readonly<LetterCardProps>) => {
     </Pressable>
   );
 };
-
-export default LetterCard;

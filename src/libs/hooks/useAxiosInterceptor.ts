@@ -1,8 +1,21 @@
+/**
+ * Axios 인터셉터 훅
+ * 
+ * 설명:
+ * 이 훅은 API 요청과 응답을 가로채서 처리하는 인터셉터를 설정합니다.
+ * 주요 기능:
+ * 1. 요청 시 자동으로 인증 토큰 추가
+ * 2. 401 에러 발생 시 토큰 갱신 시도
+ * 3. 토큰 갱신 실패 시 로그인 페이지로 리다이렉트
+ * 4. 요청/응답 로깅
+ * 
+ * 입력: 없음
+ * 출력: 없음 (사이드 이펙트: Axios 인터셉터 설정)
+ */
+import { client } from '@apis/client';
 import { useEffect } from 'react';
 import { Alert } from 'react-native';
 import Config from 'react-native-config';
-
-import client from '@apis/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -17,6 +30,13 @@ export const useAxiosInterceptor = () => {
   const navigation = useNavigation<RootProps>();
 
   useEffect(() => {
+    /**
+     * 요청 핸들러
+     * 모든 요청에 인증 토큰을 추가하고 로깅합니다.
+     * 
+     * @param config - Axios 요청 설정
+     * @returns 수정된 설정
+     */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const requestHandler = async (config: InternalAxiosRequestConfig<any>) => {
       const accessToken = await AsyncStorage.getItem('accessToken');
@@ -38,6 +58,13 @@ export const useAxiosInterceptor = () => {
       (error: AxiosError) => Promise.reject(error),
     );
 
+    /**
+     * 에러 핸들러
+     * 401 에러 발생 시 토큰 갱신을 시도합니다.
+     * 
+     * @param error - Axios 에러 객체
+     * @returns 재시도된 요청 또는 에러
+     */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const errorHandler = async (error: any) => {
       const originalRequest = error.config;
@@ -86,6 +113,13 @@ export const useAxiosInterceptor = () => {
       return response;
     }, errorHandler);
 
+    /**
+     * 액세스 토큰 갱신 함수
+     * 리프레시 토큰을 사용하여 새 액세스 토큰을 요청합니다.
+     * 
+     * @param refreshToken - 리프레시 토큰
+     * @returns 새 액세스 토큰 또는 null
+     */
     const refreshAccessToken = async (refreshToken: string) => {
       try {
         const response = await axios.get(
@@ -129,6 +163,7 @@ export const useAxiosInterceptor = () => {
       }
     };
 
+    // 클린업 함수: 인터셉터 제거
     return () => {
       client.interceptors.request.eject(requestInterceptor);
       client.interceptors.response.eject(responseInterceptor);

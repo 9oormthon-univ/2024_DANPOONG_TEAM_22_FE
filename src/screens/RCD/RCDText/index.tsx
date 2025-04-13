@@ -1,27 +1,28 @@
-// React Native 및 기본 컴포넌트 import
-import {View} from 'react-native';
-// 커스텀 컴포넌트 import
-import {postVoicefilesAlarmIdSelf} from '@apis/RCDApis/postVoicefilesAlarmIdSelf';
-import AppBar from '@components/atom/AppBar';
-import BG from '@components/atom/BG';
-import Button from '@components/atom/Button';
-import StarIMG from '@components/atom/StarIMG';
-import Toast from '@components/atom/Toast';
-import Txt from '@components/atom/Txt';
-import ShadowTextInput from '@components/molecule/ShadowTextInput';
-import {
-  NavigationProp,
-  RouteProp,
-  useFocusEffect,
-  useNavigation,
-} from '@react-navigation/native';
+// React Native 및 기본 컴포넌트 임포트
+import {View, TextInput as RNTextInput, TouchableOpacity} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
+// 네비게이션 관련 임포트
+import {  NavigationProp, RouteProp, useFocusEffect, useNavigation } from '@react-navigation/native';
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
+
+// API 관련 임포트
+import {postVoicefilesSelfByAlarmId} from '@apis/VolunteerRecord/post/VoicefilesSelfByAlarmId/fetch';
+
+// 커스텀 컴포넌트 임포트
+import {AppBar} from '@components/AppBar';
+import {BG} from '@components/BG';
+import {Button} from '@components/Button';
+import {StarIMG} from '@components/StarIMG';
+import {Toast} from '@components/Toast';
+import {CustomText} from '@components/CustomText';
+import {ShadowView} from '@components/ShadowView';
+
+// 유틸리티 임포트
 import {trackEvent} from '@utils/tracker';
 import {useCallback, useEffect, useRef, useState} from 'react';
-import {ScrollView} from 'react-native-gesture-handler';
 
 //   RCD 텍스트 입력 화면 컴포넌트
-const RCDTextScreen = ({
+export const RCDTextScreen = ({
   route,
 }: {
   route: RouteProp<HomeStackParamList, 'RCDText'>;
@@ -62,7 +63,7 @@ const RCDTextScreen = ({
       setIsLoading(true);
       const content: string = text;
       console.log('content', content);
-      const res = await postVoicefilesAlarmIdSelf(alarmId, content);
+      const res = await postVoicefilesSelfByAlarmId(alarmId, content);
 
       if (res.code && res.code === 'ANALYSIS200') {
         setErrorMessage('주제와 다른 내용이 있어요');
@@ -130,7 +131,7 @@ const RCDTextScreen = ({
         <View className="mb-[29]" />
         {/* 헤더 섹션 */}
         <View className="h-auto items-center mb-[50]">
-          <Txt
+          <CustomText
             type="title2"
             text={item.title}
             className="text-white text-center"
@@ -162,4 +163,66 @@ const RCDTextScreen = ({
   );
 };
 
-export default RCDTextScreen;
+
+
+
+type ShadowTextInputProps= {
+  value: string;
+  onChangeText: (text: string) => void;
+  placeholder?: string;
+  isError?: boolean;
+  height?: number;
+  maxLength?: number;
+}
+
+const ShadowTextInput = ({
+  value,
+  onChangeText,
+  placeholder = '텍스트를 입력해주세요',
+  isError = false,
+  maxLength = 150,
+}: ShadowTextInputProps) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const textInputRef = useRef<RNTextInput>(null);
+
+  return (
+    <View
+      className={`flex-1 w-full h-[340px] rounded-card border-[1px] border-transparent ${
+        isFocused && 'border-gray300'
+      } ${isError && 'border-red  bg-red/5'}`}>
+      <ShadowView>
+        <RNTextInput
+          ref={textInputRef}
+          onChangeText={onChangeText}
+          value={value}
+          style={{
+            fontFamily: 'WantedSans-Regular',
+            fontSize: 20,
+            lineHeight: 30,
+            letterSpacing: 20 * -0.025,
+            color: '#fafafa',
+            textAlignVertical: 'top',
+          }}
+          className={'w-full h-auto px-[33] py-[30] bg-transparent'}
+          placeholder={placeholder}
+          placeholderTextColor="#a0a0a0"
+          autoCapitalize="none"
+          cursorColor="#fafafa"
+          multiline
+          textAlign="left"
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          maxLength={maxLength}
+        />
+        <TouchableOpacity
+          onPress={() => {
+            if (textInputRef.current) {
+              textInputRef.current.focus();
+            }
+          }}
+          className="flex-1 bg-transparent"
+        />
+      </ShadowView>
+    </View>
+  );
+};

@@ -4,7 +4,6 @@ import {
   Alert,
   Image,
   Keyboard,
-  KeyboardAvoidingView,
   Pressable,
   ScrollView,
   TextInput,
@@ -12,19 +11,18 @@ import {
 } from 'react-native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 
-// 아이콘 import
-import { postComment } from '@apis/providedFile';
-import { getVoiceFiles } from '@apis/voiceFile';
-import AppBar from '@components/atom/AppBar';
-import BG from '@components/atom/BG';
-import Txt from '@components/atom/Txt';
+import { getVoiceFilesWithAlarmId } from '@apis/YouthListenToVoice/get/VoiceFilesWithAlarmId/fetch';
+import { postProvidedfileCommentByProvidedFileId } from '@apis/YouthListenToVoice/post/ProvidedfileCommentByProvidedFileId/fetch';
+import { AppBar } from '@components/AppBar';
+import { BG } from '@components/BG';
+import { CustomText } from '@components/CustomText';
 import { COLORS } from '@constants/Colors';
 import { KEYBOARD_DELAY_MS } from '@constants/common';
 import { EMOTION_OPTIONS_YOUTH } from '@constants/letter';
 import { VOICE_DELAY_MS, VOICE_LOADING_MS } from '@constants/voice';
-import useDeleteComment from '@hooks/providedFile/useDeleteComment';
+import { useDeleteComment } from '@hooks/providedFile/useDeleteComment';
 import { type NativeStackScreenProps } from '@react-navigation/native-stack';
-import LoadingScreen from '@screens/Loading';
+import { LoadingScreen } from '@screens/Loading';
 import { type YouthStackParamList } from '@stackNav/Youth';
 import { type EmotionType } from '@type/api/providedFile';
 import { type VoiceFileResponseData } from '@type/api/voiceFile';
@@ -44,7 +42,10 @@ type YouthProps = NativeStackScreenProps<
   'YouthListenScreen'
 >;
 
-const YouthListenScreen = ({ route, navigation }: Readonly<YouthProps>) => {
+export const YouthListenScreen = ({
+  route,
+  navigation,
+}: Readonly<YouthProps>) => {
   const { alarmId } = route.params;
   // 상태 관리
   const [message, setMessage] = useState(''); // 메시지 입력값
@@ -110,7 +111,7 @@ const YouthListenScreen = ({ route, navigation }: Readonly<YouthProps>) => {
 
     (async () => {
       try {
-        const res = await getVoiceFiles({ alarmId });
+        const res = await getVoiceFilesWithAlarmId({ alarmId });
 
         console.log(res);
         setVoiceFile(res.result);
@@ -205,7 +206,7 @@ const YouthListenScreen = ({ route, navigation }: Readonly<YouthProps>) => {
     }
 
     try {
-      await postComment({
+      await postProvidedfileCommentByProvidedFileId({
         providedFileId: voiceFile.providedFileId,
         message: emotionType ?? message,
       });
@@ -297,7 +298,6 @@ const YouthListenScreen = ({ route, navigation }: Readonly<YouthProps>) => {
           style={{
             flex: 1,
           }}
-          // eslint-disable-next-line @typescript-eslint/no-require-imports
           source={require('@assets/lottie/voice.json')}
           autoPlay
           loop
@@ -320,8 +320,7 @@ const YouthListenScreen = ({ route, navigation }: Readonly<YouthProps>) => {
                 source={
                   voiceFile?.member?.profileImage
                     ? { uri: voiceFile?.member?.profileImage }
-                    : // eslint-disable-next-line @typescript-eslint/no-require-imports
-                      require('@assets/pngs/logo/app/app_logo_yellow.png')
+                    : require('@assets/pngs/logo/app/app_logo_yellow.png')
                 }
                 className="w-[25] h-[25]"
                 style={{ borderRadius: 25 }}
@@ -332,7 +331,7 @@ const YouthListenScreen = ({ route, navigation }: Readonly<YouthProps>) => {
               />
             </View>
             <View className="w-[10]" />
-            <Txt
+            <CustomText
               type="title4"
               text={voiceFile?.member?.name}
               className="text-yellowPrimary"
@@ -344,7 +343,7 @@ const YouthListenScreen = ({ route, navigation }: Readonly<YouthProps>) => {
           {/* 스크립트 */}
           <View className="px-[30] h-[244]">
             <ScrollView>
-              <Txt
+              <CustomText
                 type="body3"
                 text={voiceFile?.content ?? ''}
                 className="text-white"
@@ -387,7 +386,7 @@ const YouthListenScreen = ({ route, navigation }: Readonly<YouthProps>) => {
                     style={{ borderRadius: 50 }}
                     onPress={() => handleMessageSend(emotion.type)}>
                     {emotion.icon}
-                    <Txt
+                    <CustomText
                       type="body3"
                       text={emotion.label}
                       className="text-white ml-[10]"
@@ -432,5 +431,3 @@ const YouthListenScreen = ({ route, navigation }: Readonly<YouthProps>) => {
     </BG>
   );
 };
-
-export default YouthListenScreen;

@@ -1,11 +1,9 @@
-import {getAlarmComfort} from '@apis/alarm';
+import {getAlarmAlarmCategoryComport} from '@apis/YouthListenToVoice/get/AlarmAlarmCategoryComport/fetch';
 import {useQuery} from '@tanstack/react-query';
 
-const useGetAlarmComfort = () => {
+export const useGetAlarmComfort = () => {
   return useQuery({
     queryKey: ['getAlarmComfort'],
-    queryFn: () => getAlarmComfort(),
+    queryFn: () => getAlarmAlarmCategoryComport(),
   });
 };
-
-export default useGetAlarmComfort;

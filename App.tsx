@@ -7,25 +7,27 @@
  * - 쿼리 클라이언트 설정
  */
 
+import { useEffect, useRef, useState } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Toast from 'react-native-toast-message';
+
+import { CustomToast } from '@components/CustomToast';
+import { PortalProvider } from '@gorhom/portal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import {
   createNavigationContainerRef,
   NavigationContainer,
-  NavigationState,
+  type NavigationState,
 } from '@react-navigation/native';
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import {RootStackParamList} from '@type/nav/RootStackParamList';
-import pushNoti, {RemoteMessageData} from '@utils/pushNoti';
-import AppInner from 'AppInner';
-import {useEffect, useRef, useState} from 'react';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
-
-import CustomToast from '@components/atom/CustomToast';
-import {PortalProvider} from '@gorhom/portal';
-import navigateToYouthListenScreen from '@utils/navigateToYouthListenScreen';
-import {trackAppStart, trackEvent, trackScreenView} from '@utils/tracker';
-import Toast from 'react-native-toast-message';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { type Role } from '@type/api/common';
+import { type RootStackParamList } from '@type/nav/RootStackParamList';
+import { navigateToVolunteerHomeScreen } from '@utils/navigateToVolunteerHomeScreen';
+import { navigateToYouthListenScreen } from '@utils/navigateToYouthListenScreen';
+import { pushNoti, type RemoteMessageData } from '@utils/pushNoti';
+import { trackAppStart, trackEvent, trackScreenView } from '@utils/tracker';
+import { AppInner } from 'AppInner';
 
 // 쿼리 클라이언트 설정
 const queryClient = new QueryClient({
@@ -36,10 +38,13 @@ const queryClient = new QueryClient({
   },
 });
 
+const DEFAULT_YOUTH_ALARM_TITLE = '따뜻한 목소리가 도착했어요!';
+const DEFAULT_VOLUNTEER_ALARM_TITLE = '청년들이 당신의 목소리를 기다려요!';
+
 // 네비게이션 참조 생성
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
-function App(): React.JSX.Element {
+export function App(): React.JSX.Element {
   const routeNameRef = useRef<string | undefined>();
   const [isNavigationReady, setIsNavigationReady] = useState(false);
 
@@ -51,6 +56,7 @@ function App(): React.JSX.Element {
   // GA 트래킹 설정
   useEffect(() => {
     const state = navigationRef.current?.getRootState();
+
     if (state) {
       routeNameRef.current = getActiveRouteName(state);
     }
@@ -58,20 +64,23 @@ function App(): React.JSX.Element {
 
   const getActiveRouteName = (state: NavigationState) => {
     const route = state.routes[state.index];
+
     if (route.state) {
       return getActiveRouteName(route.state as NavigationState);
     }
+
     return route.name;
   };
 
   const onStateChange = async (state: NavigationState | undefined) => {
     if (state === undefined) return;
+
     const previousRouteName = routeNameRef.current;
     const currentRouteName = getActiveRouteName(state);
 
     if (previousRouteName !== currentRouteName) {
       // Google Analytics에 스크린 전송
-      trackScreenView({screenName: currentRouteName});
+      trackScreenView({ screenName: currentRouteName });
     }
 
     routeNameRef.current = currentRouteName;
@@ -80,21 +89,36 @@ function App(): React.JSX.Element {
   // 포그라운드 상태에서 푸시 알림 처리
   useEffect(() => {
     (async () => {
-      const role = await AsyncStorage.getItem('role');
-      if (role !== 'YOUTH') {
-        return;
-      }
+      const role = (await AsyncStorage.getItem('role')) as Role;
 
       const unsubscribe = messaging().onMessage(async remoteMessage => {
         console.log('Foreground Push in App', remoteMessage);
-        const {alarmId} = remoteMessage.data as RemoteMessageData;
 
-        pushNoti.displayNotification({
-          title: '내일모래',
-          body:
-            remoteMessage.notification?.title ?? '따뜻한 목소리가 도착했어요',
-          data: {alarmId: Number(alarmId)},
-        });
+        const { alarmId } = remoteMessage.data as RemoteMessageData;
+
+        const isYouthAlarm = role === 'YOUTH' && alarmId;
+        const isVolunteerAlarm = role === 'HELPER' && !alarmId;
+
+        if (isYouthAlarm) {
+          pushNoti.displayNotification({
+            title: '내일모래',
+            body:
+              remoteMessage.notification?.title ?? DEFAULT_YOUTH_ALARM_TITLE,
+            data: { alarmId: Number(alarmId) },
+          });
+
+          return;
+        }
+
+        if (isVolunteerAlarm) {
+          pushNoti.displayNotification({
+            title: '내일모래',
+            body:
+              remoteMessage.notification?.title ??
+              DEFAULT_VOLUNTEER_ALARM_TITLE,
+            data: {},
+          });
+        }
       });
 
       return unsubscribe;
@@ -104,10 +128,7 @@ function App(): React.JSX.Element {
   // 앱 초기화 및 푸시 알림 설정
   useEffect(() => {
     (async () => {
-      const role = await AsyncStorage.getItem('role');
-      if (role !== 'YOUTH') {
-        return;
-      }
+      const role = (await AsyncStorage.getItem('role')) as Role;
 
       requestUserPermission();
 
@@ -116,14 +137,33 @@ function App(): React.JSX.Element {
         (async () => {
           if (remoteMessage) {
             console.log('Background Push in App', remoteMessage);
-            const {alarmId} = remoteMessage.data as RemoteMessageData;
-            navigateToYouthListenScreen({
-              alarmId: Number(alarmId),
-            });
-            trackEvent('push_prefer', {
-              entry_screen_name: 'YouthListenScreen',
-              title: remoteMessage.notification?.title ?? '',
-            });
+
+            const { alarmId } = remoteMessage.data as RemoteMessageData;
+
+            const isYouthAlarm = role === 'YOUTH' && alarmId;
+            const isVolunteerAlarm = role === 'HELPER' && !alarmId;
+
+            if (isYouthAlarm) {
+              trackEvent('push_prefer', {
+                entry_screen_name: 'YouthListenScreen',
+                title: remoteMessage.notification?.title ?? '',
+              });
+
+              navigateToYouthListenScreen({
+                alarmId: Number(alarmId),
+              });
+
+              return;
+            }
+
+            if (isVolunteerAlarm) {
+              trackEvent('push_prefer', {
+                entry_screen_name: 'VolunteerHomeScreen',
+                title: remoteMessage.notification?.title ?? '',
+              });
+
+              navigateToVolunteerHomeScreen();
+            }
           }
         })();
       });
@@ -135,13 +175,32 @@ function App(): React.JSX.Element {
           (async () => {
             if (remoteMessage) {
               console.log('Quit Push in App', remoteMessage);
-              const {alarmId} = remoteMessage.data as RemoteMessageData;
-              // AsyncStorage에 알림 데이터 저장
-              await AsyncStorage.setItem('alarmId', alarmId);
-              await AsyncStorage.setItem(
-                'alarmTitle',
-                remoteMessage.notification?.title ?? '',
-              );
+
+              const { alarmId } = remoteMessage.data as RemoteMessageData;
+
+              const isYouthAlarm = role === 'YOUTH' && alarmId;
+              const isVolunteerAlarm = role === 'HELPER' && !alarmId;
+
+              if (isYouthAlarm) {
+                // AsyncStorage에 알림 데이터 저장
+                await AsyncStorage.setItem('alarmId', alarmId);
+                await AsyncStorage.setItem(
+                  'alarmTitle',
+                  remoteMessage.notification?.title ??
+                    DEFAULT_YOUTH_ALARM_TITLE,
+                );
+
+                return;
+              }
+
+              if (isVolunteerAlarm) {
+                // AsyncStorage에 alarmTitle 만 저장
+                await AsyncStorage.setItem(
+                  'alarmTitle',
+                  remoteMessage.notification?.title ??
+                    DEFAULT_VOLUNTEER_ALARM_TITLE,
+                );
+              }
             }
           })();
         });
@@ -165,6 +224,7 @@ function App(): React.JSX.Element {
    */
   const getToken = async () => {
     const fcmToken = await messaging().getToken();
+
     console.log('디바이스 토큰값', fcmToken);
     await AsyncStorage.setItem('fcmToken', fcmToken);
   };
@@ -172,14 +232,14 @@ function App(): React.JSX.Element {
   return (
     <QueryClientProvider client={queryClient}>
       <PortalProvider>
-        <GestureHandlerRootView style={{flex: 1}}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
           <NavigationContainer
             ref={navigationRef}
             onStateChange={onStateChange}
             onReady={() => setIsNavigationReady(true)}>
             {isNavigationReady && <AppInner />}
             <Toast
-              config={{custom: CustomToast}}
+              config={{ custom: CustomToast }}
               topOffset={0}
               bottomOffset={0}
             />
@@ -189,5 +249,3 @@ function App(): React.JSX.Element {
     </QueryClientProvider>
   );
 }
-
-export default App;

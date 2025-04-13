@@ -6,10 +6,10 @@ import {
 } from 'react-native';
 
 // 커스텀 컴포넌트 import
-import BG from '@components/atom/BG';
-import Txt from '@components/atom/Txt';
-import Carousel from '@components/molecule/Carousel';
-import AppBar from '@components/atom/AppBar';
+import {BG} from '@components/BG';
+import {CustomText} from '@components/CustomText';
+import {Carousel} from '@screens/RCD/RCDList/components/Carousel';
+import {AppBar} from '@components/AppBar';
 // React Navigation 관련 import
 import {
   NavigationProp,
@@ -19,10 +19,11 @@ import {
 
 // 타입 및 상수 import
 import {HomeStackParamList} from '@type/nav/HomeStackParamList';
-import {getRCDList, RCD} from '@apis/RCDApis/getRCDList';
+import {getAlarmListByCategoryType} from '@apis/VolunteerRecord/get/AlarmListByCategoryType/fetch';
+import {AlarmListByCategoryTypeType} from '@apis/VolunteerRecord/get/AlarmListByCategoryType/type';
 import {RecordType} from '@type/RecordType';
-import {RCDListHeader} from '@constants/RCDListHeader';
-import {RCDListAppBar} from '@constants/RCDListAppBar';
+import {RCDListHeader} from '@screens/RCD/RCDList/constants/RCDListHeader';
+import {RCDListAppBar} from '@screens/RCD/RCDList/constants/RCDListAppBar';
 import {COLORS} from '@constants/Colors';
 import {RecordTypeConstant} from '@constants/RecordType';
 // React Hooks import
@@ -31,7 +32,7 @@ import {useState, useEffect} from 'react';
  * RCD 목록을 보여주는 스크린 컴포넌트
  * @param route - 네비게이션 라우트 파라미터 (RCD 타입 정보 포함)
  */
-const RCDListScreen = ({
+export const RCDListScreen = ({
   route,
 }: {
   route: RouteProp<HomeStackParamList, 'RCDList'>;
@@ -40,7 +41,7 @@ const RCDListScreen = ({
   const {type} = route.params;
 
   // 상태 관리
-  const [rcdList, setRcdList] = useState<RCD[]>([]); // RCD 목록 상태
+  const [rcdList, setRcdList] = useState<AlarmListByCategoryTypeType[]>([]); // RCD 목록 상태
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
   
   // 네비게이션 객체
@@ -52,7 +53,7 @@ const RCDListScreen = ({
       const categoryType: RecordType = type;
       try {
         setIsLoading(true);
-        const data = await getRCDList(categoryType);
+        const data = await getAlarmListByCategoryType(categoryType);
         setRcdList(data);
         setIsLoading(false);
       } catch (error) {
@@ -104,8 +105,7 @@ const RCDListScreen = ({
       
       {/* 헤더 섹션 */}
       <View className="w-full mt-[132] px-px mb-[33]">
-        <Txt
-          type="title2"
+        <CustomText          type="title2"
           text={RCDListHeader[type]}
           className="text-white"
         />
@@ -122,5 +122,3 @@ const RCDListScreen = ({
     </BG>
   );
 };
-
-export default RCDListScreen;

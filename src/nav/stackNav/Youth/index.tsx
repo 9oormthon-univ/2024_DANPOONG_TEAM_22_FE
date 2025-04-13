@@ -1,7 +1,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import YouthHomeScreen from '@screens/Youth/YouthHome';
-import YouthListenScreen from '@screens/Youth/YouthListen';
-import SystemStackNav from '@stackNav/System';
+import { YouthHomeScreen } from '@screens/Youth/YouthHome';
+import { YouthListenScreen } from '@screens/Youth/YouthListen';
+import { SystemStackNav } from '@stackNav/System';
 
 export type YouthStackParamList = {
   YouthHomeScreen: undefined;
@@ -11,7 +11,7 @@ export type YouthStackParamList = {
 
 const YouthStack = createNativeStackNavigator<YouthStackParamList>();
 
-const YouthStackNav = () => {
+export const YouthStackNav = () => {
   return (
     <YouthStack.Navigator screenOptions={{headerShown: false}}>
       <YouthStack.Screen
@@ -32,5 +32,3 @@ const YouthStackNav = () => {
     </YouthStack.Navigator>
   );
 };
-
-export default YouthStackNav;

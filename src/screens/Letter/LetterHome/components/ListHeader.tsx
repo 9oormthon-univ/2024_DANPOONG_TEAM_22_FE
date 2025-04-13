@@ -1,10 +1,11 @@
-import Txt from '@components/atom/Txt';
-import {EMOTION_OPTIONS} from '@constants/letter';
-import {ResultResponseData} from '@type/api/common';
-import {SummaryResponseData} from '@type/api/providedFile';
 import {View} from 'react-native';
 
-const ListHeader = ({
+import {CustomText} from '@components/CustomText';
+import {EMOTION_OPTIONS} from '@constants/letter';
+import {type ResultResponseData} from '@type/api/common';
+import {type SummaryResponseData} from '@type/api/providedFile';
+
+export const ListHeader = ({
   nickname,
   summaryData,
 }: Readonly<{
@@ -18,20 +19,18 @@ const ListHeader = ({
   return (
     <View className="bg-blue700">
       <View className="h-[61]" />
-      <Txt
-        type="title2"
+      <CustomText        type="title2"
         text={`${nickname}님의 목소리를`}
         className="text-white px-[30]"
       />
       <View className="flex-row px-[30]">
         <View className="flex-row justify-start items-center">
-          <Txt type="title2" text="청년들이 " className="text-white" />
-          <Txt
-            type="title2"
+          <CustomText type="title2" text="청년들이 " className="text-white" />
+            <CustomText            type="title2"
             text={`${String(summaryData?.result.totalListeners ?? '')}번`}
             className="text-yellowPrimary"
           />
-          <Txt type="title2" text=" 청취했어요" className="text-white" />
+          <CustomText type="title2" text=" 청취했어요" className="text-white" />
         </View>
       </View>
 
@@ -43,10 +42,9 @@ const ListHeader = ({
             <View className="flex-row items-center flex-1">
               {emotion.icon}
               <View className="w-[5]" />
-              <Txt type="body3" text={emotion.label} className="text-white" />
+              <CustomText type="body3" text={emotion.label} className="text-white" />
               <View className="w-[8]" />
-              <Txt
-                type="body3"
+              <CustomText                type="body3"
                 text={displayNum(
                   summaryData?.result.reactionsNum[
                     emotion.type as keyof typeof summaryData.result.reactionsNum
@@ -68,10 +66,9 @@ const ListHeader = ({
             <View className="flex-row items-center flex-1">
               {emotion.icon}
               <View className="w-[5]" />
-              <Txt type="body3" text={emotion.label} className="text-white" />
+              <CustomText type="body3" text={emotion.label} className="text-white" />
               <View className="w-[8]" />
-              <Txt
-                type="body3"
+              <CustomText                type="body3"
                 text={String(
                   summaryData?.result.reactionsNum[
                     emotion.type as keyof typeof summaryData.result.reactionsNum
@@ -88,5 +85,3 @@ const ListHeader = ({
     </View>
   );
 };
-
-export default ListHeader;

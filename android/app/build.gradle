@@ -107,14 +107,14 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.nm"
+    namespace "com.jeong.naeilmorae"
     defaultConfig {
-        applicationId "com.nail.morae"
+        applicationId "com.jeong.naeilmorae"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
+        versionCode 1
         versionName "1.0.0"
-        resValue "string", "build_config_package", "com.nm"
+        resValue "string", "build_config_package", "com.jeong.naeilmorae"
     }
     signingConfigs {
         debug {
@@ -158,6 +158,9 @@ dependencies {
         implementation jscFlavor
     }
     implementation project(':react-native-audio-recorder-player')
+    implementation project(':amplitude_analytics-react-native')
+    implementation project(':notifee_react-native')
+    implementation project(':react-native-reanimated')
     implementation platform('com.google.firebase:firebase-bom:29.0.4')
     implementation 'com.google.firebase:firebase-analytics'
     implementation "com.kakao.sdk:v2-user:2.20.1"
