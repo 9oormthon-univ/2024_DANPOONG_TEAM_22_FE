@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { TextInput as RNTextInput, View } from 'react-native';
+import { Platform, TextInput as RNTextInput, View } from 'react-native';
 
 import { CustomText } from '@components/CustomText';
 import { COLORS } from '@constants/Colors';
@@ -52,7 +52,9 @@ export const TextInput = ({
             letterSpacing: 18 * -0.025,
             color: COLORS.white,
           }}
-          className={'flex-1 py-[16] px-[24]'}
+          className={`flex-1 px-[24] justify-center ${
+            Platform.OS === 'ios' ? 'pt-[16] pb-[21]' : 'py-[16]'
+          }`}
           placeholder={placeholder}
           placeholderTextColor={COLORS.gray300}
           autoCapitalize="none"
