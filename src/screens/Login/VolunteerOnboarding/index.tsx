@@ -34,6 +34,7 @@ type AuthProps = NativeStackScreenProps<
 export type PageProps = {
   nickname?: string;
   onNext: () => void;
+  onSkip?: () => void;
 };
 
 // 이미지 미리 로딩 함수
@@ -99,7 +100,7 @@ const Page1 = ({ nickname, onNext }: Readonly<PageProps>) => {
           text="라는 말이요"
           className="text-white text-center"
         />
-        <View className="absolute left-0 bottom-[55] w-full px-[30]">
+        <View className="absolute left-0 bottom-[79] w-full px-[30]">
           <Button text="다음" onPress={handleNext} />
         </View>
       </View>
@@ -141,7 +142,7 @@ const Page2 = ({ onNext }: Readonly<PageProps>) => {
           }
           className="text-white text-center"
         />
-        <View className="absolute left-0 bottom-[55] w-full px-[30]">
+        <View className="absolute left-0 bottom-[79] w-full px-[30]">
           <Button text="다음" onPress={handleNext} />
         </View>
       </View>
@@ -181,7 +182,7 @@ const Page3 = ({ nickname, onNext }: Readonly<PageProps>) => {
           text={`${nickname} 님의 말 한마디에는\n자립준비청년의 일상을\n밝게 비출 힘이 있어요`}
           className="text-white text-center"
         />
-        <View className="absolute left-0 bottom-[55] w-full px-[30]">
+        <View className="absolute left-0 bottom-[79] w-full px-[30]">
           <Button text="다음" onPress={handleNext} />
         </View>
       </View>
@@ -223,7 +224,7 @@ const Page4 = ({ onNext }: Readonly<PageProps>) => {
           }
           className="text-gray100 text-center"
         />
-        <View className="absolute left-0 bottom-[55] w-full px-[30]">
+        <View className="absolute left-0 bottom-[79] w-full px-[30]">
           <Button text="다음" onPress={handleNext} />
         </View>
       </View>
