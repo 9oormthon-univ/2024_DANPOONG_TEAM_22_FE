@@ -11,6 +11,7 @@ export const NICKNAME_MESSAGES = {
 
 const NICKNAME_REGEX = /^[ㄱ-ㅎ가-힣ㅏ-ㅣa-zA-Z0-9]{2,10}$/;
 const SPACES_REGEX = /\s/;
+// eslint-disable-next-line no-useless-escape
 const SPECIAL_CHARS_REGEX = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
 
 export const validateNickname = (text: string): ValidationResult => {

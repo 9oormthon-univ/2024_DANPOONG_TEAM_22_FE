@@ -75,7 +75,12 @@ export const RCDRecordScreen = ({
 
     return () => {
       // 컴포넌트 언마운트 시 녹음 중지
-      isAndroid ? stopEverythingAndroid() : stopEverythingIOS();
+      if (isAndroid) {
+        stopEverythingAndroid();
+      } else {
+        stopEverythingIOS();
+      }
+
       // 언마운트 되었음을 표시하고, 재시도 타이머가 있으면 해제
       isMountedRef.current = false;
 
@@ -205,7 +210,7 @@ export const RCDRecordScreen = ({
         uri: Platform.OS === 'android' ? `file://${uri}` : uri,
         name: 'recording.wav',
         type: 'audio/wav',
-      } as any);
+      } as { uri: string; name: string; type: string });
 
       await postVoicefilesByVoiceFileId(voiceFileId, formData);
       await uploadAnalysis();
@@ -262,7 +267,8 @@ export const RCDRecordScreen = ({
         return;
       }
 
-      const errorCode = error.response?.data.code;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const errorCode = (error as any).response?.data.code;
 
       const endTime = new Date().getTime();
       const viewTime = endTime - startTime.current;

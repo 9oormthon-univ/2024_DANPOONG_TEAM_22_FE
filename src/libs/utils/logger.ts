@@ -10,7 +10,8 @@
  * 출력:
  * @returns {void} - 반환값 없음, 콘솔에 로그 출력
  */
-export const logRequest = config => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const logRequest = (config: any): void => {
   console.log(
     'Request:',
     JSON.stringify(
@@ -38,7 +39,8 @@ export const logRequest = config => {
  * 출력:
  * @returns {void} - 반환값 없음, 콘솔에 로그 출력
  */
-export const logResponse = response => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const logResponse = (response: any): void => {
   console.log(
     'Response:',
     JSON.stringify(
@@ -65,7 +67,8 @@ export const logResponse = response => {
  * 출력:
  * @returns {void} - 반환값 없음, 콘솔에 로그 출력
  */
-export const logResponseError = error => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const logResponseError = (error: any): void => {
   console.log(
     'Response Error:',
     JSON.stringify(

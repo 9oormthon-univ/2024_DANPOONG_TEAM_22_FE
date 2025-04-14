@@ -15,6 +15,7 @@ import * as amplitude from '@amplitude/analytics-react-native';
  */
 export const trackAmplitudeEvent = async (
   eventName: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   additionalParams: Record<string, any> = {},
 ) => {
   amplitude.track(eventName, additionalParams);

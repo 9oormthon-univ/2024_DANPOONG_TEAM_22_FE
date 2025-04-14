@@ -16,6 +16,7 @@ import analytics from '@react-native-firebase/analytics';
  */
 export const trackGtmEvent = async (
   eventName: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   additionalParams: Record<string, any> = {},
 ) => {
   try {

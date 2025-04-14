@@ -22,6 +22,7 @@ import { getCommonParams } from '@utils/trackerUtils';
  */
 const trackEvent = async (
   eventName: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   additionalParams: Record<string, any> = {},
 ) => {
   // 공통 파라미터 처리
