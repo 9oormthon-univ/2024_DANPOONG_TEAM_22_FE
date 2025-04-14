@@ -1,8 +1,16 @@
 // 필요한 컴포넌트 및 아이콘 import
+import {
+  ActivityIndicator,
+  Pressable,
+  View,
+  type ViewStyle,
+} from 'react-native';
+
+import { CustomText } from '@components/CustomText';
+
 import ChevronLeftWhiteIcon from '@assets/svgs/chevron/chevron_left_white.svg';
 import ExitWhiteIcon from '@assets/svgs/exit_white.svg';
-import {CustomText} from '@components/CustomText';
-import {ActivityIndicator, Pressable, View, ViewStyle} from 'react-native';
+
 // AppBar 컴포넌트의 props 타입 정의
 type AppBarProps = {
   title?: string;
@@ -13,6 +21,7 @@ type AppBarProps = {
   style?: ViewStyle | ViewStyle[];
   isLoading?: boolean; // 로딩 상태(완료버튼 클릭시 로딩 상태)
 };
+
 // AppBar 컴포넌트
 export const AppBar = ({
   title,
@@ -22,7 +31,6 @@ export const AppBar = ({
   isLoading,
   ...props
 }: Readonly<AppBarProps>) => {
-
   // 오른쪽 버튼 렌더링
   const renderRightButton = (
     exitCallbackFn?: () => void,
@@ -36,6 +44,7 @@ export const AppBar = ({
           <ExitWhiteIcon />
         </Pressable>
       );
+
     if (confirmCallbackFn)
       return (
         <Pressable
@@ -48,9 +57,12 @@ export const AppBar = ({
           )}
         </Pressable>
       );
-    return <View className="flex-1 py-[18] flex-row justify-end" >
-            <CustomText type="title4" text="" className="text-white" />
-            </View>;
+
+    return (
+      <View className="flex-1 py-[18] flex-row justify-end">
+        <CustomText type="title4" text="" className="text-white" />
+      </View>
+    );
   };
 
   return (
@@ -81,4 +93,3 @@ export const AppBar = ({
     </View>
   );
 };
-

@@ -1,6 +1,6 @@
 export const name = 'naeilmorae';
 
-export default ({config}) => ({
+export default ({ config }) => ({
   ...config,
   name: '내일모래',
   slug: 'naeilmorae',

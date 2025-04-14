@@ -1,9 +1,9 @@
-import { ResultResponseData } from "@type/api/common";
+import { type ResultResponseData } from '@type/api/common';
 
 export type deleteMemberResponse = ResultResponseData<{
-    memberId: number;
-}>
+  memberId: number;
+}>;
 
-export type deleteMemberRequest= {
+export type deleteMemberRequest = {
   reasonList: string[];
-}
+};

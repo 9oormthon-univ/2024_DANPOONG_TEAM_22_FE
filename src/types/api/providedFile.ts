@@ -1,4 +1,4 @@
-import {FileMemberResponseData} from '@type/api/member';
+import { type FileMemberResponseData } from '@type/api/member';
 
 type AlarmType = '외출' | '기상' | '식사' | '취침' | '위로' | '우울' | '칭찬';
 

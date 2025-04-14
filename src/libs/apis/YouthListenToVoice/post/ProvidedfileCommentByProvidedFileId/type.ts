@@ -1,4 +1,4 @@
 export type CommentRequestData = {
-    providedFileId: number;
-    message: string;
-  };
+  providedFileId: number;
+  message: string;
+};

@@ -1,5 +1,4 @@
-import { Gender, Role } from "@type/api/common";
-
+import { type Gender, type Role } from '@type/api/common';
 
 export type postMemberRequestData = {
   name: string;
@@ -9,4 +8,4 @@ export type postMemberRequestData = {
   birth: string;
   fcmToken: string;
 };
-export type postMemberResponseData = {memberId: number};
+export type postMemberResponseData = { memberId: number };

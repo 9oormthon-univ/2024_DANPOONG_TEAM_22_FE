@@ -1,4 +1,4 @@
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
 
 const isIOS = Platform.OS === 'ios';
 
@@ -13,8 +13,8 @@ export const TabNavOptions = {
     padding: 10,
     position: 'absolute',
   },
-  tabBarItemStyle: {flex: 1},
-  tabBarIconStyle: {flex: 1},
+  tabBarItemStyle: { flex: 1 },
+  tabBarIconStyle: { flex: 1 },
   tabBarLabelStyle: {
     flex: 1,
     fontSize: 11,

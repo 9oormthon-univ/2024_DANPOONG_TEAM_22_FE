@@ -1,6 +1,7 @@
-import {CustomText} from '@components/CustomText';
+import { Pressable, type TextStyle, type ViewStyle } from 'react-native';
+
+import { CustomText } from '@components/CustomText';
 import LottieView from 'lottie-react-native';
-import {Pressable, TextStyle, ViewStyle} from 'react-native';
 
 type ButtonProps = {
   text: string;
@@ -24,7 +25,7 @@ export const Button = ({
       className={`h-[57] justify-center items-center flex-row ${
         disabled ? 'bg-gray300' : 'bg-yellowPrimary'
       }`}
-      style={[{borderRadius: 10}, containerStyle]}
+      style={[{ borderRadius: 10 }, containerStyle]}
       onPress={onPress}
       disabled={disabled}>
       {isLoading ? (

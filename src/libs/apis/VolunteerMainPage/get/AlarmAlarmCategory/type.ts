@@ -1,4 +1,5 @@
-import { AlarmType } from "@type/api/common";
+import { type AlarmType } from '@type/api/common';
+
 export type getAlarmAlarmCategoryResponse = {
   title: string;
   categoryType: AlarmType;

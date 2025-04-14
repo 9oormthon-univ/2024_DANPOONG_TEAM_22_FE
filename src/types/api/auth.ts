@@ -1,4 +1,4 @@
-import {Role} from '@type/api/common';
+import { type Role } from '@type/api/common';
 
 type LoginRequestData = {
   accessToken: string;
@@ -16,4 +16,4 @@ type LoginResponseData = {
   pushTimeRegistered: boolean;
 };
 
-export type {LoginRequestData, LoginResponseData};
+export type { LoginRequestData, LoginResponseData };

@@ -1,14 +1,14 @@
-import { ResultResponseData } from "@type/api/common";
+import { type ResultResponseData } from '@type/api/common';
 
 export type patchMemberInfoYouthRequest = {
-    wakeUpTime: string;
-    sleepTime: string;
-    breakfast: string;
-    lunch: string;
-    dinner: string;
-    outgoingTime: string;
-  }
-  
-  export type patchMemberInfoYouthResponse = ResultResponseData<{
-      memberId: number;
-    }>
+  wakeUpTime: string;
+  sleepTime: string;
+  breakfast: string;
+  lunch: string;
+  dinner: string;
+  outgoingTime: string;
+};
+
+export type patchMemberInfoYouthResponse = ResultResponseData<{
+  memberId: number;
+}>;

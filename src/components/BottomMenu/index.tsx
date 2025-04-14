@@ -1,12 +1,13 @@
-import {CustomText} from '@components/CustomText';
-import {Pressable, View} from 'react-native';
+import { Pressable, View } from 'react-native';
+
+import { CustomText } from '@components/CustomText';
 
 type BottomMenuProps = {
   title?: string;
-  data: {title: string; onPress: () => void}[];
+  data: { title: string; onPress: () => void }[];
 };
 
-export const BottomMenu = ({title, data}: Readonly<BottomMenuProps>) => {
+export const BottomMenu = ({ title, data }: Readonly<BottomMenuProps>) => {
   return (
     <>
       {title && (
@@ -15,7 +16,7 @@ export const BottomMenu = ({title, data}: Readonly<BottomMenuProps>) => {
         </View>
       )}
       <View className="bg-blue600 h-[1]" />
-      {data.map(({title, onPress}, index) => (
+      {data.map(({ title, onPress }, index) => (
         <View key={title}>
           <Pressable
             className="h-[61] justify-center items-center"

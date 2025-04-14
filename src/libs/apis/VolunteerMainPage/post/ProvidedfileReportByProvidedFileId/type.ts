@@ -1,4 +1,4 @@
 export type postProvidedfileReportByProvidedFileIdRequest = {
-    providedFileId: number;
-    reason: string;
-  };
+  providedFileId: number;
+  reason: string;
+};

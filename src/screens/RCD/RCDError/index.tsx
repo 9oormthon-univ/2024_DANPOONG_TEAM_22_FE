@@ -1,25 +1,24 @@
 // React Native 및 Navigation 관련 임포트
-import {
-  NavigationProp,
-  RouteProp,
-  useNavigation,
-} from '@react-navigation/native';
-import {View} from 'react-native';
+import { View } from 'react-native';
 
 // 커스텀 컴포넌트 임포트
-import {AppBar} from '@components/AppBar';
-import {BG} from '@components/BG';
-import {Button} from '@components/Button';
-import {CustomText} from '@components/CustomText';
+import { AppBar } from '@components/AppBar';
+import { BG } from '@components/BG';
+import { Button } from '@components/Button';
+import { CustomText } from '@components/CustomText';
+import {
+  type NavigationProp,
+  type RouteProp,
+  useNavigation,
+} from '@react-navigation/native';
+// 타입 임포트
+import { type HomeStackParamList } from '@type/nav/HomeStackParamList';
+import { trackEvent } from '@utils/tracker';
 
 // SVG 아이콘 임포트
 import Notice2 from '@assets/svgs/Notice2.svg';
 import Notice3 from '@assets/svgs/Notice3.svg';
 import Notice4 from '@assets/svgs/Notice4.svg';
-
-// 타입 임포트
-import {HomeStackParamList} from '@type/nav/HomeStackParamList';
-import {trackEvent} from '@utils/tracker';
 
 export const RCDErrorScreen = ({
   route,
@@ -27,7 +26,7 @@ export const RCDErrorScreen = ({
   route: RouteProp<HomeStackParamList, 'RCDError'>;
 }) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
-  const {type, errorType} = route.params;
+  const { type, errorType } = route.params;
 
   return (
     <BG type="solid">
@@ -36,8 +35,8 @@ export const RCDErrorScreen = ({
       <AppBar
         title=""
         exitCallbackFn={() => {
-          navigation.navigate('RCDList', {type: type});
-          trackEvent('recording_rejected', {type, errorType});
+          navigation.navigate('RCDList', { type: type });
+          trackEvent('recording_rejected', { type, errorType });
         }}
         className="absolute top-[0] w-full"
       />
@@ -57,7 +56,8 @@ export const RCDErrorScreen = ({
           )}
           <View className="mt-[43]" />
           {/* 오류 메시지 제목 */}
-          <CustomText            type="title2"
+          <CustomText
+            type="title2"
             text={
               errorType === 'noisy'
                 ? '주변 소음이 크게 들려서\n녹음을 전송할 수 없어요'
@@ -71,7 +71,8 @@ export const RCDErrorScreen = ({
           />
           <View className="mt-[25]" />
           {/* 오류 메시지 부제목 */}
-          <CustomText            type="body4"
+          <CustomText
+            type="body4"
             text={
               errorType === 'noisy'
                 ? '조용한 장소에서 다시 녹음해주세요'
@@ -88,7 +89,7 @@ export const RCDErrorScreen = ({
             text="다시 녹음하기"
             onPress={() => {
               navigation.goBack();
-              trackEvent('recording_retry', {type, errorType});
+              trackEvent('recording_retry', { type, errorType });
             }}
             disabled={false}
           />

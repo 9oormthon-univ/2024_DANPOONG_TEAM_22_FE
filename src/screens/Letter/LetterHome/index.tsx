@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -8,14 +8,14 @@ import {
 } from 'react-native';
 import Skeleton from 'react-native-reanimated-skeleton';
 
-import {AnimatedView} from '@components/AnimatedView';
-import {BottomMenu} from '@components/BottomMenu';
-import {Button} from '@components/Button';
-import {CustomText} from '@components/CustomText';
-import {Modal} from '@components/Modal';
-import {Toast} from '@components/Toast';
-import {COLORS} from '@constants/Colors';
-import {Portal} from '@gorhom/portal';
+import { AnimatedView } from '@components/AnimatedView';
+import { BottomMenu } from '@components/BottomMenu';
+import { Button } from '@components/Button';
+import { CustomText } from '@components/CustomText';
+import { Modal } from '@components/Modal';
+import { Toast } from '@components/Toast';
+import { COLORS } from '@constants/Colors';
+import { Portal } from '@gorhom/portal';
 import { useGetAlarmCategory } from '@hooks/alarm/useGetAlarmCategory';
 import { useDeleteLetter } from '@hooks/providedFile/useDeleteLetter';
 import { useGetLetters } from '@hooks/providedFile/useGetLetters';
@@ -24,33 +24,33 @@ import { usePostReport } from '@hooks/providedFile/usePostReport';
 import { useModal } from '@hooks/useModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
-import {type NativeStackScreenProps} from '@react-navigation/native-stack';
+import { type NativeStackScreenProps } from '@react-navigation/native-stack';
 import { LetterCard } from '@screens/Letter/LetterHome/components/LetterCard';
 import { ListCategory } from '@screens/Letter/LetterHome/components/ListCategory';
 import { ListEmpty } from '@screens/Letter/LetterHome/components/ListEmpty';
 import { ListHeader } from '@screens/Letter/LetterHome/components/ListHeader';
-import {type LetterResponseData} from '@type/api/providedFile';
-import {type LetterStackParamList} from '@type/nav/LetterStackParamList';
+import { type LetterResponseData } from '@type/api/providedFile';
+import { type LetterStackParamList } from '@type/nav/LetterStackParamList';
 
 type LetterProps = NativeStackScreenProps<
   LetterStackParamList,
   'LetterHomeScreen'
 >;
 
-type Category = {category: string; label: string};
+type Category = { category: string; label: string };
 
-export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
+export const LetterHomeScreen = ({ navigation }: Readonly<LetterProps>) => {
   const [nickname, setNickname] = useState('');
   const [selectedFilterIdx, setSelectedFilterIdx] = useState(0);
   const [parentCategories, setParentCategories] = useState<
-    {category: string; label: string}[]
+    { category: string; label: string }[]
   >([]);
   const [clickedMoreDot, setClickedMoreDot] = useState(false);
   const [selectedFileId, setSelectedFileId] = useState<number | null>(null);
   const [isToast, setIsToast] = useState(false); // 토스트 메시지 표시 상태
   const [toastMessage, setToastMessage] = useState(''); // 토스트 메시지
-  const {mutate: postReport} = usePostReport();
-  const {mutate: deleteLetter} = useDeleteLetter();
+  const { mutate: postReport } = usePostReport();
+  const { mutate: deleteLetter } = useDeleteLetter();
   const {
     visible: visibleReport,
     openModal: openModalReport,
@@ -80,7 +80,9 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
     hasNextPage,
     isFetchingNextPage,
     isLoading: isLettersLoading,
-  } = useGetLetters({pageable: {page: 0, size: 10, sort: 'createdAt,desc'}});
+  } = useGetLetters({
+    pageable: { page: 0, size: 10, sort: 'createdAt,desc' },
+  });
 
   const lettersFlatData =
     lettersData?.pages.flatMap(page => page.result.content) || [];
@@ -90,7 +92,7 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
       (async () => {
         const nickname = await AsyncStorage.getItem('nickname');
 
-      setNickname(nickname ?? '');
+        setNickname(nickname ?? '');
       })();
     }, []),
   );
@@ -119,10 +121,10 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   useEffect(() => {
     if (!alarmCategoryData) return;
 
-    console.log({alarmCategoryData});
+    console.log({ alarmCategoryData });
 
     const categories: Category[] = [
-      {category: 'ALL', label: '전체'},
+      { category: 'ALL', label: '전체' },
       ...alarmCategoryData.result.map(item => ({
         category: item.alarmCategory,
         label: item.alarmCategoryKoreanName,
@@ -135,7 +137,7 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   const handleReportClick = () => {
     if (!selectedFileId) return;
 
-    postReport({providedFileId: selectedFileId, reason: ''});
+    postReport({ providedFileId: selectedFileId, reason: '' });
     setIsToast(true);
     setToastMessage('신고한 편지가 삭제되었어요');
     closeModalReport();
@@ -144,7 +146,7 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
   const handleDeleteClick = () => {
     if (!selectedFileId) return;
 
-    deleteLetter({providedFileId: selectedFileId, reason: ''});
+    deleteLetter({ providedFileId: selectedFileId, reason: '' });
     setIsToast(true);
     setToastMessage('편지가 삭제되었어요');
     closeModalDelete();
@@ -202,7 +204,7 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
           <ListHeader nickname={nickname} summaryData={summaryData} />
         }
         stickyHeaderIndices={[1]}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <>
             {item.providedFileId === -1 && (
               <>
@@ -212,7 +214,7 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
                   }
                   boneColor={COLORS.blue500}
                   highlightColor={COLORS.blue400}
-                  containerStyle={{paddingHorizontal: 0}}
+                  containerStyle={{ paddingHorizontal: 0 }}
                   layout={[
                     {
                       key: 'alarmCategory_wrapper',
@@ -271,7 +273,7 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
                   isLoading={isLettersLoading}
                   boneColor={COLORS.blue500}
                   highlightColor={COLORS.blue400}
-                  containerStyle={{paddingHorizontal: 30}}
+                  containerStyle={{ paddingHorizontal: 30 }}
                   layout={[
                     {
                       key: 'letterCard1',
@@ -334,7 +336,7 @@ export const LetterHomeScreen = ({navigation}: Readonly<LetterProps>) => {
           <Pressable onPress={() => {}} className="w-full">
             <AnimatedView
               visible={clickedMoreDot}
-              style={{borderRadius: 10}}
+              style={{ borderRadius: 10 }}
               className="bg-blue500 mb-[24]">
               <BottomMenu data={bottomMenuData} />
             </AnimatedView>

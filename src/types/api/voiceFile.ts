@@ -1,4 +1,4 @@
-import {FileMemberResponseData} from '@type/api/member';
+import { type FileMemberResponseData } from '@type/api/member';
 
 type VoiceFilesRequestData = {
   alarmId: number;
@@ -12,4 +12,4 @@ type VoiceFileResponseData = {
   member: FileMemberResponseData;
 };
 
-export type {VoiceFileResponseData, VoiceFilesRequestData};
+export type { VoiceFileResponseData, VoiceFilesRequestData };

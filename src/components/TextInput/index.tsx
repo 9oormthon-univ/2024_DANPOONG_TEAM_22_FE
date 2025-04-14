@@ -1,10 +1,12 @@
-import ErrorIcon from '@assets/svgs/TextInputError.svg';
-import {CustomText} from '@components/CustomText';
-import {COLORS} from '@constants/Colors';
-import {useRef, useState} from 'react';
-import {TextInput as RNTextInput, View} from 'react-native';
+import { useRef, useState } from 'react';
+import { TextInput as RNTextInput, View } from 'react-native';
 
-type TextInputProps ={
+import { CustomText } from '@components/CustomText';
+import { COLORS } from '@constants/Colors';
+
+import ErrorIcon from '@assets/svgs/TextInputError.svg';
+
+type TextInputProps = {
   value: string;
   onChangeText: (text: string) => void;
   placeholder?: string;
@@ -13,7 +15,7 @@ type TextInputProps ={
   message?: string;
   maxLength?: number;
   autoFocus?: boolean;
-}
+};
 
 // TextInput 컴포넌트
 export const TextInput = ({
@@ -80,4 +82,3 @@ export const TextInput = ({
     </>
   );
 };
-

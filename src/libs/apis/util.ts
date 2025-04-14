@@ -1,7 +1,8 @@
-import S3Config from '@config/S3config';
-import {Buffer} from 'buffer';
-import AWS from 'aws-sdk';
 import RNFS from 'react-native-fs';
+
+import S3Config from '@config/S3config';
+import AWS from 'aws-sdk';
+import { Buffer } from 'buffer';
 
 export const uploadImageToS3 = async (imageUri: string) => {
   if (!imageUri) {
@@ -36,4 +37,3 @@ export const uploadImageToS3 = async (imageUri: string) => {
     });
   });
 };
-

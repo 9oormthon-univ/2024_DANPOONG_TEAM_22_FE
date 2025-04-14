@@ -1,4 +1,3 @@
-
 export const BackType = {
   GRADATION: 'gradation',
   SOLID: 'solid',

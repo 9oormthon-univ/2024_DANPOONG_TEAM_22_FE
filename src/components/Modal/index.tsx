@@ -1,7 +1,4 @@
-import InfoIcon from '@assets/svgs/modalInfo.svg';
-import {Button} from '@components/Button';
-import {COLORS} from '@constants/Colors';
-import React, {useEffect, useRef} from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   Animated,
   KeyboardAvoidingView,
@@ -9,6 +6,11 @@ import {
   Pressable,
   View,
 } from 'react-native';
+
+import { Button } from '@components/Button';
+import { COLORS } from '@constants/Colors';
+
+import InfoIcon from '@assets/svgs/modalInfo.svg';
 
 export const Modal = ({
   visible,
@@ -52,7 +54,7 @@ export const Modal = ({
   return (
     <Animated.View
       className="absolute top-0 left-0 right-0 bottom-0 bg-black/50 justify-center items-center"
-      style={[{opacity: fadeAnim}]}>
+      style={[{ opacity: fadeAnim }]}>
       {/* 딤 처리된 배경 클릭 시 모달 닫힘 */}
       <Pressable
         className="absolute top-0 left-0 right-0 bottom-0"
@@ -60,7 +62,7 @@ export const Modal = ({
       />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={{width: '90%', maxWidth: 320}}>
+        style={{ width: '90%', maxWidth: 320 }}>
         <View
           className="bg-blue500 px-[22] pb-[19] items-center"
           style={{
@@ -81,7 +83,7 @@ export const Modal = ({
                   backgroundColor: COLORS.gray300,
                   flex: buttonRatio === '1:2' ? 1 : 1,
                 }}
-                textStyle={{color: COLORS.white}}
+                textStyle={{ color: COLORS.white }}
               />
             )}
             <View className="w-[15]" />

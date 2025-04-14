@@ -1,16 +1,17 @@
+import { Platform } from 'react-native';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { encryptUserId } from '@utils/encryptUserId';
-import {Platform} from 'react-native';
 
 /**
  * 이벤트 추적에 사용되는 공통 매개변수를 가져오는 유틸리티 함수
- * 
+ *
  * 설명:
  * 이 함수는 이벤트 추적 시 필요한 사용자 ID, 타임스탬프, 앱 버전 등의 공통 매개변수를 제공합니다.
- * 
+ *
  * 입력:
  * 없음
- * 
+ *
  * 출력:
  * @returns {Promise<object>} - 이벤트 추적에 사용할 공통 매개변수 객체
  */
@@ -30,6 +31,7 @@ export const getCommonParams = async () => {
     };
   } catch (error) {
     console.error('Error getting common params:', error);
+
     return {
       timestamp: new Date().toISOString(),
       user_id: 'guest', // 에러 발생 시 기본값

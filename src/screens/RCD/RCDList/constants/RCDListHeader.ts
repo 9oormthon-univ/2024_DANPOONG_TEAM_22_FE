@@ -1,4 +1,4 @@
-import {RecordType} from '@type/RecordType';
+import { type RecordType } from '@type/RecordType';
 
 export const RCDListHeader: Record<RecordType, string> = {
   DAILY: '청년에게 일상을 응원하는\n목소리를 들려주세요',

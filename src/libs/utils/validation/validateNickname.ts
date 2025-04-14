@@ -1,4 +1,4 @@
-import {ValidationResult} from '@hooks/useValidateInput';
+import { type ValidationResult } from '@hooks/useValidateInput';
 
 export const NICKNAME_MESSAGES = {
   SUCCESS: '사용 가능한 닉네임이에요',
@@ -57,6 +57,7 @@ export const validateNickname = (text: string): ValidationResult => {
       message: NICKNAME_MESSAGES.SUCCESS,
     };
   }
+
   return {
     isValid: false,
     isError: false,
@@ -64,4 +65,3 @@ export const validateNickname = (text: string): ValidationResult => {
     message: NICKNAME_MESSAGES.DEFAULT,
   };
 };
-
