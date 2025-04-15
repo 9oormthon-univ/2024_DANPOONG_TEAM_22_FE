@@ -171,23 +171,20 @@ export const NicknameWriteScreen = ({
         />
       </DismissKeyboardView>
 
-      {clickedUpload && (
-        <Pressable
-          onPress={() => setClickedUpload(false)}
-          className={`absolute left-0 bottom-0 w-full h-full bg-black/50 px-[30] pb-[55] justify-end`}>
-          {/* 내부 컴포넌트에는 상위 onPress 이벤트가 전파되지 않도록 함 */}
-          <Pressable onPress={() => {}} className="w-full">
-            <AnimatedView
-              visible={clickedUpload}
-              style={{ borderRadius: 10 }}
-              className="bg-blue500 mb-[24]">
-              <BottomMenu title="프로필 사진 설정" data={bottomMenuData} />
-            </AnimatedView>
-
-            <Button text="취소" onPress={() => setClickedUpload(false)} />
-          </Pressable>
+      <Pressable
+        onPress={() => setClickedUpload(false)}
+        className={`absolute left-0 bottom-0 w-full h-full bg-black/50 px-[30] pb-[55] justify-end ${
+          clickedUpload ? '' : 'hidden'
+        }`}>
+        {/* 내부 컴포넌트에는 상위 onPress 이벤트가 전파되지 않도록 함 */}
+        <Pressable onPress={() => {}} className="w-full">
+          <AnimatedView visible={clickedUpload}>
+            <BottomMenu title="프로필 사진 설정" data={bottomMenuData} />
+          </AnimatedView>
+          <View className="h-[24]" />
+          <Button text="취소" onPress={() => setClickedUpload(false)} />
         </Pressable>
-      )}
+      </Pressable>
 
       <Modal
         type="info"
