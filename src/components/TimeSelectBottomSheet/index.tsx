@@ -5,19 +5,21 @@ import { CustomText } from '@components/CustomText';
 
 import SelectCheckIcon from '@assets/svgs/selectCheck.svg';
 
+type Props = {
+  type: 'hour' | 'minute';
+  value: string;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
+  onClose: () => void;
+  onSelect?: () => void;
+};
+
 export const TimeSelectBottomSheet = ({
   type,
   value,
   setValue,
   onClose,
   onSelect,
-}: Readonly<{
-  type: 'hour' | 'minute';
-  value: string;
-  setValue: React.Dispatch<React.SetStateAction<string>>;
-  onClose: () => void;
-  onSelect?: () => void;
-}>) => {
+}: Props) => {
   const slideAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -44,7 +46,9 @@ export const TimeSelectBottomSheet = ({
     setValue(option);
     onClose();
 
-    if (onSelect) onSelect();
+    if (onSelect) {
+      onSelect();
+    }
   };
 
   return (
