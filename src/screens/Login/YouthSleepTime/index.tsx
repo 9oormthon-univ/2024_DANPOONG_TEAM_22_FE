@@ -101,7 +101,7 @@ const YouthSleepTimeScreen = ({ route, navigation }: Readonly<AuthProps>) => {
             </Pressable>
           </View>
 
-          <View className="absolute left-0 bottom-[55] w-full px-[30]">
+          <View className="absolute left-0 bottom-[79] w-full px-[30]">
             <Button text="다음" onPress={handleNext} />
           </View>
 

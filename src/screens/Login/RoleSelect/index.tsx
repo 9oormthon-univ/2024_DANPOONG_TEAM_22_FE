@@ -113,7 +113,7 @@ export const RoleSelectScreen = ({ navigation }: Readonly<AuthProps>) => {
         source={require('@assets/pngs/background/signup2.png')}
         className="w-full h-auto mt-[54]"
       />
-      <View className="absolute left-0 bottom-[55] w-full px-[30]">
+      <View className="absolute left-0 bottom-[79] w-full px-[30]">
         <Button text="다음" onPress={handleNext} disabled={!role} />
       </View>
     </BG>
