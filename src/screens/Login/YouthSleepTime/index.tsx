@@ -1,24 +1,27 @@
+import { useCallback, useRef, useState } from 'react';
+import { Pressable, View } from 'react-native';
+
+import { AppBar } from '@components/AppBar';
+import { BG } from '@components/BG';
+import { Button } from '@components/Button';
+import { CustomText } from '@components/CustomText';
+import { TimeSelectBottomSheet } from '@components/TimeSelectBottomSheet';
+import { useFocusEffect } from '@react-navigation/native';
+import { type NativeStackScreenProps } from '@react-navigation/native-stack';
+import { DEFAULT_TIME } from '@screens/Login/YouthWakeUpTime';
+import { type AuthStackParamList } from '@stackNav/Auth';
+import { convertTimeFormat } from '@utils/convertFuncs';
+import { trackEvent } from '@utils/tracker';
+
 import ChevronBottomGrayIcon from '@assets/svgs/chevron/chevron_bottom_gray.svg';
-import {AppBar} from '@components/AppBar';
-import {BG} from '@components/BG';
-import {Button} from '@components/Button';
-import {TimeSelectBottomSheet} from '@components/TimeSelectBottomSheet';
-import {CustomText} from '@components/CustomText';
-import {useFocusEffect} from '@react-navigation/native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {DEFAULT_TIME} from '@screens/Login/YouthWakeUpTime';
-import {AuthStackParamList} from '@stackNav/Auth';
-import {trackEvent} from '@utils/tracker';
-import {useCallback, useRef, useState} from 'react';
-import {Pressable, View} from 'react-native';
-import {convertTimeFormat} from '@utils/convertFuncs';
+
 type AuthProps = NativeStackScreenProps<
   AuthStackParamList,
   'YouthSleepTimeScreen'
 >;
 
-const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
-  const {wakeUpTime, breakfast, lunch, dinner} = route.params;
+const YouthSleepTimeScreen = ({ route, navigation }: Readonly<AuthProps>) => {
+  const { wakeUpTime, breakfast, lunch, dinner } = route.params;
   const [hour, setHour] = useState(DEFAULT_TIME.sleepTime.hour);
   const [minute, setMinute] = useState(DEFAULT_TIME.sleepTime.minute);
   const [showHourBottomSheet, setShowHourBottomSheet] = useState(false);
@@ -64,12 +67,14 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
         <View className="h-[180]" />
 
         <View className="items-center flex-1">
-          <CustomText            type="title2"
+          <CustomText
+            type="title2"
             text="취침 시간을 알려주세요"
             className="text-white text-center"
           />
           <View className="h-[9]" />
-          <CustomText            type="body3"
+          <CustomText
+            type="body3"
             text="취침 알림을 받고 싶은 시간을 입력해주세요"
             className="text-gray300 text-center"
           />
@@ -80,7 +85,8 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
             <Pressable
               onPress={() => setShowHourBottomSheet(true)}
               className="border-b border-b-gray300 flex-row items-center justify-between w-full shrink">
-              <CustomText                type="title2"
+              <CustomText
+                type="title2"
                 text={hour.includes('자정') ? '오전 12시' : hour}
                 className="text-white"
               />
@@ -123,4 +129,4 @@ const YouthSleepTimeScreen = ({route, navigation}: Readonly<AuthProps>) => {
   );
 };
 
-export {YouthSleepTimeScreen};
+export { YouthSleepTimeScreen };

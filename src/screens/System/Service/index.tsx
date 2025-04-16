@@ -1,19 +1,19 @@
-import {Linking,View} from 'react-native';
+import { Linking, View } from 'react-native';
 
-import {AppBar} from '@components/AppBar';
-import {BG} from '@components/BG';
-import {CustomText} from '@components/CustomText';
-import {SystemButton} from '@components/SystemButton';
+import { AppBar } from '@components/AppBar';
+import { BG } from '@components/BG';
+import { CustomText } from '@components/CustomText';
+import { SystemButton } from '@components/SystemButton';
 import { useAppVersion } from '@hooks/useAppVersion';
-import type {NavigationProp} from '@react-navigation/native';
-import {useNavigation} from '@react-navigation/native';
-import type {SystemStackParamList} from '@type/nav/SystemStackParamList';
+import type { NavigationProp } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import type { SystemStackParamList } from '@type/nav/SystemStackParamList';
 
-import {SERVICE_ITEMS} from './constants';
+import { SERVICE_ITEMS } from './constants';
 
 export const ServiceScreen = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
-  const {currentVersion, isUpdateAvailable, goToStore} = useAppVersion();
+  const { currentVersion, isUpdateAvailable, goToStore } = useAppVersion();
 
   const openWebsite = async (url: string) => {
     try {
@@ -68,4 +68,3 @@ export const ServiceScreen = () => {
     </BG>
   );
 };
-

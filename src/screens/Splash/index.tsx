@@ -1,7 +1,9 @@
+import { View } from 'react-native';
+
+import { BG } from '@components/BG';
+
 import LogoIcon from '@assets/svgs/splash/splash_logo.svg';
 import TextIcon from '@assets/svgs/splash/splash_text.svg';
-import {BG} from '@components/BG';
-import {View} from 'react-native';
 
 export const SplashScreen = () => {
   return (

@@ -1,12 +1,12 @@
-import React, {useRef, useEffect} from 'react';
-import {Animated, ViewStyle} from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Animated, type ViewStyle } from 'react-native';
 
 type AnimatedViewProps = {
   visible: boolean;
   children: React.ReactNode;
   className?: string;
   style?: ViewStyle;
-}
+};
 
 export const AnimatedView: React.FC<AnimatedViewProps> = ({
   visible,
@@ -52,7 +52,7 @@ export const AnimatedView: React.FC<AnimatedViewProps> = ({
       style={[
         {
           opacity: fadeAnim,
-          transform: [{translateY: translateYAnim}],
+          transform: [{ translateY: translateYAnim }],
         },
         style,
       ]}
@@ -61,4 +61,3 @@ export const AnimatedView: React.FC<AnimatedViewProps> = ({
     </Animated.View>
   );
 };
-

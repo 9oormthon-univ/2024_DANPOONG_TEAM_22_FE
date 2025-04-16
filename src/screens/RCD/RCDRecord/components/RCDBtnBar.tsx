@@ -1,7 +1,8 @@
-import {View, TouchableOpacity} from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
+
+import { CustomText } from '@components/CustomText';
 import { RCDBtn } from '@screens/RCD/RCDRecord/components/RCDBtn';
-import {CustomText} from '@components/CustomText';
-import {RCDBtnBarProps} from '@type/component/RCDBtnBarType';
+import { type RCDBtnBarProps } from '@type/component/RCDBtnBarType';
 
 const TransparentButton = ({
   content,
@@ -34,6 +35,7 @@ export const RCDBtnBar = ({
   stop,
 }: RCDBtnBarProps) => {
   const justifyType = isDone ? 'between' : 'center';
+
   return (
     <View
       className={`w-full h-20 flex flex-row justify-${justifyType} items-center`}>

@@ -1,10 +1,12 @@
-import Play from '@assets/svgs/play.svg';
-import {TouchableOpacity} from 'react-native';
+import { useEffect, useState } from 'react';
+import { TouchableOpacity } from 'react-native';
+
+import { type RCDBtnProps } from '@type/component/RCDBtnType';
+
 // import Pause from '@assets/svgs/pause.svg'
 import Circle from '@assets/svgs/Circle.svg';
 import Halt from '@assets/svgs/Halt.svg';
-import {useEffect, useState} from 'react';
-import {RCDBtnProps} from '@type/component/RCDBtnType';
+import Play from '@assets/svgs/play.svg';
 
 export const RCDBtn = ({
   record,
@@ -40,6 +42,7 @@ export const RCDBtn = ({
       play();
     } // 녹음 완료 이면 재생, 재생중이지 않으면
   };
+
   return (
     <TouchableOpacity
       style={{

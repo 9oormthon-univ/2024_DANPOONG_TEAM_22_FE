@@ -1,5 +1,5 @@
-import {useEffect, useState} from 'react';
-import {Alert, Image, Pressable, View} from 'react-native';
+import { useEffect, useState } from 'react';
+import { Alert, Image, Pressable, View } from 'react-native';
 import {
   type ImageLibraryOptions,
   type ImagePickerResponse,
@@ -7,20 +7,20 @@ import {
 } from 'react-native-image-picker';
 
 import { patchMemberInfo } from '@apis/EditInformation/patch/MemberInfo/fetch';
-import  type {patchMemberInfoRequest } from '@apis/EditInformation/patch/MemberInfo/type';
+import type { patchMemberInfoRequest } from '@apis/EditInformation/patch/MemberInfo/type';
 import { uploadImageToS3 } from '@apis/util';
-import {AnimatedView} from '@components/AnimatedView';
-import {AppBar} from '@components/AppBar';
-import {BG} from '@components/BG';
-import {Button} from '@components/Button';
-import {CustomText} from '@components/CustomText';
-import {Modal} from '@components/Modal';
-import {TextInput} from '@components/TextInput';
+import { AnimatedView } from '@components/AnimatedView';
+import { AppBar } from '@components/AppBar';
+import { BG } from '@components/BG';
+import { Button } from '@components/Button';
+import { CustomText } from '@components/CustomText';
+import { Modal } from '@components/Modal';
+import { TextInput } from '@components/TextInput';
 import { useModal } from '@hooks/useModal';
 import { useValidateInput } from '@hooks/useValidateInput';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {type NavigationProp, useNavigation} from '@react-navigation/native';
-import {type SystemStackParamList} from '@type/nav/SystemStackParamList';
+import { type NavigationProp, useNavigation } from '@react-navigation/native';
+import { type SystemStackParamList } from '@type/nav/SystemStackParamList';
 
 import ProfileCameraIcon from '@assets/svgs/ProfileCamera.svg';
 
@@ -35,13 +35,13 @@ export const ModifyInfoScreen = () => {
     isError: isErrorNickname,
     isSuccess: isSuccessNickname,
     message: nicknameMessage,
-  } = useValidateInput({type: 'nickname'});
+  } = useValidateInput({ type: 'nickname' });
   // 프로필 이미지 관련 state
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [clickedUpload, setClickedUpload] = useState(false);
   const [isImageChanged, setIsImageChanged] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const {visible, openModal, closeModal} = useModal();
+  const { visible, openModal, closeModal } = useModal();
   const [birth, setBirth] = useState('');
   const [fcmToken, setFcmToken] = useState('');
   const defaultImageUri =
@@ -194,7 +194,7 @@ export const ModifyInfoScreen = () => {
           <View className="relative w-[107] h-[107]">
             {imageUri ? (
               <Image
-                source={{uri: imageUri}}
+                source={{ uri: imageUri }}
                 style={{
                   width: '100%',
                   height: '100%',
@@ -218,7 +218,8 @@ export const ModifyInfoScreen = () => {
         <View className="h-[39]" />
         {/* 닉네임 수정 Section */}
         <View className="w-full px-px gap-y-[10]">
-          <CustomText            type="caption1"
+          <CustomText
+            type="caption1"
             text="닉네임"
             className="ml-[9] mb-[8px] text-gray200"
           />
@@ -243,10 +244,11 @@ export const ModifyInfoScreen = () => {
             <Pressable onPress={() => {}} className="w-full">
               <AnimatedView
                 visible={clickedUpload}
-                style={{borderRadius: 10}}
+                style={{ borderRadius: 10 }}
                 className="bg-blue500 mb-[24]">
                 <View className="h-[43] justify-center items-center">
-                  <CustomText                    type="caption1"
+                  <CustomText
+                    type="caption1"
                     text="프로필 사진 설정"
                     className="text-gray300"
                   />
@@ -255,7 +257,8 @@ export const ModifyInfoScreen = () => {
                 <Pressable
                   className="h-[61] justify-center items-center"
                   onPress={() => !isLoading && selectImage()}>
-                  <CustomText                    type="body3"
+                  <CustomText
+                    type="body3"
                     text="앨범에서 사진 선택"
                     className="text-white"
                   />
@@ -264,7 +267,8 @@ export const ModifyInfoScreen = () => {
                 <Pressable
                   className="h-[61] justify-center items-center"
                   onPress={() => !isLoading && handleDefaultImageClick()}>
-                  <CustomText                    type="body3"
+                  <CustomText
+                    type="body3"
                     text="기본 이미지 적용"
                     className="text-white"
                   />
@@ -287,11 +291,13 @@ export const ModifyInfoScreen = () => {
           navigation.goBack();
         }}
         buttonRatio="1:1">
-        <CustomText          type="title4"
+        <CustomText
+          type="title4"
           text="수정을 취소하고 나가시겠어요?"
           className="text-white mt-[32] mb-[5]"
         />
-        <CustomText          type="caption1"
+        <CustomText
+          type="caption1"
           text="화면을 나가면 변경사항이 저장되지 않아요"
           className="text-gray300 mb-[32]"
         />

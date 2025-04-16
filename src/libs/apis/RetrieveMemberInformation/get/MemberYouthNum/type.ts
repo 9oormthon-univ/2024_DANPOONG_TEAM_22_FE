@@ -1,6 +1,5 @@
-import { ResultResponseData } from "@type/api/common";
+import { type ResultResponseData } from '@type/api/common';
 
 export type getMemberYouthNumResponse = ResultResponseData<{
-      youthMemberNum: number;
-    }>;
-  
+  youthMemberNum: number;
+}>;

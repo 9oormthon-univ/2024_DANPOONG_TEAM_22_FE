@@ -1,9 +1,11 @@
 // 필요한 컴포넌트 및 아이콘 import
+import { useEffect } from 'react';
+import { Animated, View } from 'react-native';
+
+import { CustomText } from '@components/CustomText';
+
 import Bang from '@assets/svgs/Bang.svg';
 import CheckYellowIcon from '@assets/svgs/checkYellow.svg';
-import {CustomText} from '@components/CustomText';
-import {useEffect} from 'react';
-import {Animated, View} from 'react-native';
 
 // Toast 컴포넌트의 props 타입 정의
 export const Toast = ({
@@ -74,7 +76,11 @@ export const Toast = ({
         }}>
         {type === 'check' ? <CheckYellowIcon /> : <Bang />}
         <View className="ml-[14]" />
-        <CustomText type="body4" text={text} className="text-white text-center" />
+        <CustomText
+          type="body4"
+          text={text}
+          className="text-white text-center"
+        />
       </Animated.View>
     </View>
   );

@@ -1,4 +1,5 @@
-import { Role } from "@type/api/common";
+import { type Role } from '@type/api/common';
+
 export type postAuthLoginWithAccessTokenAndLoginTypeRequest = {
   accessToken: string;
   loginType: string;

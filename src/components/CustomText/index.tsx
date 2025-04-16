@@ -1,5 +1,6 @@
-import {TextProps} from '@type/component/TextType';
-import {Text, TextStyle} from 'react-native';
+import { Text, type TextStyle } from 'react-native';
+
+import { type TextProps } from '@type/component/TextType';
 
 const getStyle = (type: string): TextStyle => {
   const fontStyles = {
@@ -86,10 +87,12 @@ const getStyle = (type: string): TextStyle => {
   return fontStyles[type as keyof typeof fontStyles];
 };
 
-export const CustomText = ({text, type, ...props}: TextProps) => {
+export const CustomText = ({ text, type, ...props }: TextProps) => {
   const style = getStyle(type);
+
   return (
-    <Text      {...props}
+    <Text
+      {...props}
       className={props.className}
       style={[style, props.style]}
       numberOfLines={props.numberOfLines}>

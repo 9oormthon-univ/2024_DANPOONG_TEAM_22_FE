@@ -1,6 +1,14 @@
-import {useEffect, useState, useRef} from 'react';
-import {View, Dimensions, ViewStyle, Animated, Easing, Platform} from 'react-native';
-const {width} = Dimensions.get('window');
+import { useEffect, useRef, useState } from 'react';
+import {
+  Animated,
+  Dimensions,
+  Easing,
+  Platform,
+  View,
+  type ViewStyle,
+} from 'react-native';
+
+const { width } = Dimensions.get('window');
 
 type RCDWaveProps = {
   volumeList: number[];
@@ -10,7 +18,13 @@ type RCDWaveProps = {
   elapsedTime: number;
 };
 
-export const RCDWave = ({volumeList, isPlaying, recording, isDone, elapsedTime}: RCDWaveProps) => {
+export const RCDWave = ({
+  volumeList,
+  isPlaying,
+  recording,
+  isDone,
+  elapsedTime,
+}: RCDWaveProps) => {
   const circleSize = 8;
   const lineSize = 1;
   // 웨이브 애니메이션을 위한 translateX 값
@@ -48,7 +62,7 @@ export const RCDWave = ({volumeList, isPlaying, recording, isDone, elapsedTime}:
         }),
         Animated.timing(translateXAnim, {
           toValue: 0,
-          duration: elapsedTime+500,
+          duration: elapsedTime + 500,
           easing: Easing.linear,
           useNativeDriver: true,
         }),
@@ -57,10 +71,10 @@ export const RCDWave = ({volumeList, isPlaying, recording, isDone, elapsedTime}:
   }, [isPlaying, volumeList.length, elapsedTime]);
 
   const calculate_height = (item: number) => {
-    if(isAndroid) {
+    if (isAndroid) {
       // 구간: 0 ~ 100 -> 10% ~ 70%
       return (item / 100) * 60 + 10;
-    }else{
+    } else {
       if (item <= -50) {
         // 구간 1: -160 ~ -50 -> 10% ~ 20%
         return ((item + 50) / 50) * 10 + 10;
@@ -73,7 +87,7 @@ export const RCDWave = ({volumeList, isPlaying, recording, isDone, elapsedTime}:
 
   return (
     // 전체 틀
-    <View style={{width, height: 204}}>
+    <View style={{ width, height: 204 }}>
       {/* 배경 색 */}
       <View className="w-full h-full bg-white opacity-10" />
       {/* 가로 회색선 */}
@@ -81,7 +95,7 @@ export const RCDWave = ({volumeList, isPlaying, recording, isDone, elapsedTime}:
         className="absolute w-full bg-[#717171] top-1/2"
         style={{
           height: lineSize / 2,
-          transform: [{translateY: -lineSize / 4}],
+          transform: [{ translateY: -lineSize / 4 }],
         }}
       />
       {/* 세로 노랑선 위 원 */}
@@ -91,19 +105,19 @@ export const RCDWave = ({volumeList, isPlaying, recording, isDone, elapsedTime}:
           width: circleSize,
           height: circleSize,
           top: -circleSize,
-          transform: [{translateX: -circleSize / 2}],
+          transform: [{ translateX: -circleSize / 2 }],
         }}
       />
       {/* 세로 노랑선 */}
       <View
         className="absolute bg-yellowPrimary h-full left-1/2"
-        style={{width: lineSize, transform: [{translateX: -lineSize / 2}]}}
+        style={{ width: lineSize, transform: [{ translateX: -lineSize / 2 }] }}
       />
       {/* Wave 영역 */}
       <View className="absolute w-full h-full">
         <Animated.View
           className="flex-row items-center w-full h-full"
-          style={[waveStyle, {transform: [{translateX: translateXAnim}]}]}>
+          style={[waveStyle, { transform: [{ translateX: translateXAnim }] }]}>
           {volumeList.map((item, index) => (
             <View
               key={index}

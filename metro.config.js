@@ -1,4 +1,5 @@
-const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
+/* eslint-disable no-undef */
+const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 
 const defaultConfig = getDefaultConfig(__dirname);
 

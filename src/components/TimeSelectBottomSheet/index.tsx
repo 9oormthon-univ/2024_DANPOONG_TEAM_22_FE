@@ -1,7 +1,9 @@
+import { useEffect, useRef } from 'react';
+import { Animated, Pressable, ScrollView, View } from 'react-native';
+
+import { CustomText } from '@components/CustomText';
+
 import SelectCheckIcon from '@assets/svgs/selectCheck.svg';
-import {CustomText} from '@components/CustomText';
-import {useEffect, useRef} from 'react';
-import {Animated, Pressable, ScrollView, View} from 'react-native';
 
 export const TimeSelectBottomSheet = ({
   type,
@@ -26,10 +28,11 @@ export const TimeSelectBottomSheet = ({
     }).start();
   }, []);
 
-  const hourOptions = Array.from({length: 12 * 2}, (_, i) => {
+  const hourOptions = Array.from({ length: 12 * 2 }, (_, i) => {
     const period = i < 12 ? '오전' : '오후';
     const hour = i % 12 === 0 ? 12 : i % 12;
     const label = i === 0 ? '오전 12시(자정)' : `${period} ${hour}시`;
+
     return label;
   });
   const minuteOptions = ['00분', '30분'];
@@ -40,6 +43,7 @@ export const TimeSelectBottomSheet = ({
   const handleOptionClick = (option: string) => {
     setValue(option);
     onClose();
+
     if (onSelect) onSelect();
   };
 
@@ -69,7 +73,7 @@ export const TimeSelectBottomSheet = ({
         <View className="items-center">
           <View
             className="h-[4] w-[52] bg-blue300"
-            style={{borderRadius: 100}}
+            style={{ borderRadius: 100 }}
           />
         </View>
 
@@ -85,7 +89,8 @@ export const TimeSelectBottomSheet = ({
                 key={option}
                 className="h-[56] flex-row items-center justify-between"
                 onPress={() => handleOptionClick(option)}>
-                <CustomText                  type="body3"
+                <CustomText
+                  type="body3"
                   text={option}
                   className={`${
                     value === option ? 'text-yellowPrimary' : 'text-white'

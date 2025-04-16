@@ -7,9 +7,9 @@ type AlarmData = {
   alarmCategoryKoreanName: string;
 };
 
-type AlarmComfortResponseData = AlarmData &{
+type AlarmComfortResponseData = AlarmData & {
   children: AlarmData[];
-}
+};
 
 type AlarmCategoryRequestData = {
   alarmCategoryId: number;

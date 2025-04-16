@@ -1,27 +1,30 @@
-import { AlarmListByCategoryTypeType } from "@apis/VolunteerRecord/get/AlarmListByCategoryType/type";
-import { VoicefilesGptByAlarmIdResponse } from "@apis/VolunteerRecord/post/VoicefilesGptByAlarmId/type";
-import { RecordType } from "@type/RecordType";
+import { type AlarmListByCategoryTypeType } from '@apis/VolunteerRecord/get/AlarmListByCategoryType/type';
+import { type VoicefilesGptByAlarmIdResponse } from '@apis/VolunteerRecord/post/VoicefilesGptByAlarmId/type';
+import { type RecordType } from '@type/RecordType';
+
 export type HomeStackParamList = {
-    Home: undefined;
-    RCDList: {type: RecordType};
-    RCDNotice: {type: RecordType,item:AlarmListByCategoryTypeType};
-    RCDSelectText:{type: RecordType,item:AlarmListByCategoryTypeType};
-    RCDText: {type: RecordType,item:AlarmListByCategoryTypeType,gptRes:VoicefilesGptByAlarmIdResponse|null,alarmId:number};
-    RCDRecord: {type: RecordType,voiceFileId:number,content:string};
-    RCDError: {type: RecordType,errorType:RCDErrorType};
-    RCDFeedBack: undefined;
+  Home: undefined;
+  RCDList: { type: RecordType };
+  RCDNotice: { type: RecordType; item: AlarmListByCategoryTypeType };
+  RCDSelectText: { type: RecordType; item: AlarmListByCategoryTypeType };
+  RCDText: {
+    type: RecordType;
+    item: AlarmListByCategoryTypeType;
+    gptRes: VoicefilesGptByAlarmIdResponse | null;
+    alarmId: number;
   };
+  RCDRecord: { type: RecordType; voiceFileId: number; content: string };
+  RCDError: { type: RecordType; errorType: RCDErrorType };
+  RCDFeedBack: undefined;
+};
 
+type RCDErrorType = 'noisy' | 'bad' | 'wrong' | 'notsame' | 'server';
 
-  type RCDErrorType = 'noisy' | 'bad'|'wrong'|'notsame'|'server';
-
-
-
-  // 'text has not been read as it is' |// 텍스트를 그대로 읽지 않았습니다.
-  // 'Include inappropriate content' |// 부적절한 내용이 포함되어 있습니다.
-  // 'notAnalyzing'|// 분석 중이지 않습니다.
-  // 'invalidScript' | // GPT: 올바르지 않은 스크립트입니다.
-  // 'server'; // 서버 오류
+// 'text has not been read as it is' |// 텍스트를 그대로 읽지 않았습니다.
+// 'Include inappropriate content' |// 부적절한 내용이 포함되어 있습니다.
+// 'notAnalyzing'|// 분석 중이지 않습니다.
+// 'invalidScript' | // GPT: 올바르지 않은 스크립트입니다.
+// 'server'; // 서버 오류
 
 //  code 200 but need to handle:
 // 텍스트를 그대로 읽지 않았습니다.

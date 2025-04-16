@@ -1,9 +1,9 @@
+import Config from 'react-native-config';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import Config from 'react-native-config';
-import {client} from '@apis/client';
-import { deleteAuthLogoutResponse } from './type';
 
+import { type deleteAuthLogoutResponse } from './type';
 
 export const deleteAuthLogout = async (): Promise<deleteAuthLogoutResponse> => {
   try {
@@ -17,9 +17,11 @@ export const deleteAuthLogout = async (): Promise<deleteAuthLogoutResponse> => {
         },
       },
     );
+
     return response.data;
   } catch (error) {
     console.log('로그아웃 오류:', error);
+
     throw error;
   }
 };

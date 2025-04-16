@@ -1,4 +1,5 @@
-import { Gender, Role } from "@type/api/common";
+import { type Gender, type Role } from '@type/api/common';
+
 type MemberRequestData = {
   name: string;
   gender: Gender;
@@ -18,7 +19,7 @@ type YouthRequestData = {
   dinner: string;
 };
 
-type MemberResponseData = {memberId: number};
+type MemberResponseData = { memberId: number };
 
 type MemberInfoResponseData = Omit<MemberRequestData, 'name'> & {
   youthMemberInfoDto: YouthRequestData;
