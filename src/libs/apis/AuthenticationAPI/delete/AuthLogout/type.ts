@@ -1,5 +1,5 @@
-import { ResultResponseData } from "@type/api/common";
+import { type ResultResponseData } from '@type/api/common';
 
-export type deleteAuthLogoutResponse= ResultResponseData<{
-    memberId: number;
-    }>
+export type deleteAuthLogoutResponse = ResultResponseData<{
+  memberId: number;
+}>;

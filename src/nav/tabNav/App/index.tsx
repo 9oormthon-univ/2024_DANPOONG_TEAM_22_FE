@@ -1,14 +1,15 @@
+import { TabNavOptions } from '@constants/TabNavOptions';
 import {
-  BottomTabNavigationOptions,
+  type BottomTabNavigationOptions,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
-import {HomeStackNav} from '@stackNav/Home';
-import {LetterStackNav} from '@stackNav/Letter';
-import {SystemStackNav} from '@stackNav/System';
+import { HomeStackNav } from '@stackNav/Home';
+import { LetterStackNav } from '@stackNav/Letter';
+import { SystemStackNav } from '@stackNav/System';
+
 import HomeIcon from '@assets/svgs/Home.svg';
 import LetterIcon from '@assets/svgs/Letter.svg';
 import SystemIcon from '@assets/svgs/System.svg';
-import {TabNavOptions} from '@constants/TabNavOptions';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,11 +21,11 @@ export const AppTabNav = () => {
         component={HomeStackNav}
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: ({focused}) =>
+          tabBarIcon: ({ focused }) =>
             focused ? (
-              <HomeIcon style={{color: '#fafafa'}} />
+              <HomeIcon style={{ color: '#fafafa' }} />
             ) : (
-              <HomeIcon style={{color: '#5e6071'}} />
+              <HomeIcon style={{ color: '#5e6071' }} />
             ),
         }}
       />
@@ -33,11 +34,11 @@ export const AppTabNav = () => {
         component={LetterStackNav}
         options={{
           tabBarLabel: 'Letter',
-          tabBarIcon: ({focused}) =>
+          tabBarIcon: ({ focused }) =>
             focused ? (
-              <LetterIcon style={{color: '#fafafa'}} />
+              <LetterIcon style={{ color: '#fafafa' }} />
             ) : (
-              <LetterIcon style={{color: '#5e6071'}} />
+              <LetterIcon style={{ color: '#5e6071' }} />
             ),
         }}
       />
@@ -46,11 +47,11 @@ export const AppTabNav = () => {
         component={SystemStackNav}
         options={{
           tabBarLabel: 'System',
-          tabBarIcon: ({focused}) =>
+          tabBarIcon: ({ focused }) =>
             focused ? (
-              <SystemIcon style={{color: '#fafafa'}} />
+              <SystemIcon style={{ color: '#fafafa' }} />
             ) : (
-              <SystemIcon style={{color: '#5e6071'}} />
+              <SystemIcon style={{ color: '#5e6071' }} />
             ),
         }}
       />

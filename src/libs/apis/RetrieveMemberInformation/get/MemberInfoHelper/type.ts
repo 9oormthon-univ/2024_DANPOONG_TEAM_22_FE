@@ -1,6 +1,6 @@
-import { ResultResponseData } from "@type/api/common";
+import { type ResultResponseData } from '@type/api/common';
 
 export type getMemberInfoHelperResponse = ResultResponseData<{
-        thankYouMessage: boolean;
-        welcomeReminder: boolean;
-    }>
+  thankYouMessage: boolean;
+  welcomeReminder: boolean;
+}>;

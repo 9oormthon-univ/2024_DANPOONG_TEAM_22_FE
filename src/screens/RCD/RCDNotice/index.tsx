@@ -1,27 +1,27 @@
 // React Native 및 Navigation 관련 임포트
-import {View, ScrollView} from 'react-native';
+import { useState } from 'react';
+import { ScrollView, View } from 'react-native';
+
+import { AppBar } from '@components/AppBar';
+// 커스텀 컴포넌트 임포트
+import { BG } from '@components/BG';
+import { Button } from '@components/Button';
+import { CustomText } from '@components/CustomText';
 import {
-  NavigationProp,
-  RouteProp,
+  type NavigationProp,
+  type RouteProp,
   useNavigation,
 } from '@react-navigation/native';
-// 커스텀 컴포넌트 임포트
-import {BG} from '@components/BG';
-import {CustomText} from '@components/CustomText';
-import {Button} from '@components/Button';
+import { RCDNoticeSectionConstant } from '@screens/RCD/RCDNotice/constants/RCDNoticeSectionConstant';
+// 타입 임포트
+import { type HomeStackParamList } from '@type/nav/HomeStackParamList';
 
 // SVG 아이콘 임포트
 import Notice1 from '@assets/svgs/Notice1.svg';
 import Notice2 from '@assets/svgs/Notice2.svg';
-// 타입 임포트
-import {HomeStackParamList} from '@type/nav/HomeStackParamList';
-import {AppBar} from '@components/AppBar';
-import { RCDNoticeSectionConstant } from '@screens/RCD/RCDNotice/constants/RCDNoticeSectionConstant';
-import { useState } from 'react';
 // import { getAlarmAlarmCategoryDetailByChildrenAlarmCategory } from '@apis/VolunteerRecord/get/AlarmAlarmCategoryDetailByChildrenAlarmCategory/fetch';
 // import { postVoicefilesGptByAlarmId } from '@apis/VolunteerRecord/post/VoicefilesGptByAlarmId/fetch';
 // import { postVoicefilesSelfByAlarmId } from '@apis/VolunteerRecord/post/VoicefilesSelfByAlarmId/fetch';
-
 
 /**
  * 주의사항 섹션 컴포넌트
@@ -38,7 +38,6 @@ const Section = ({
   title: string;
   content: string;
 }) => {
-  
   return (
     <View className="w-full h-auto mt-[37]">
       {seq === 0 ? <Notice1 /> : <Notice2 />}
@@ -59,12 +58,10 @@ export const RCDNoticeScreen = ({
 }: {
   route: RouteProp<HomeStackParamList, 'RCDNotice'>;
 }) => {
-
-  
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
-  const {item, type} = route.params;
+  const { item, type } = route.params;
   const [isLoading, setIsLoading] = useState(false);
- 
+
   const handleNavigate = async () => {
     // if(type === 'INFO'){
     //   try{
@@ -79,9 +76,9 @@ export const RCDNoticeScreen = ({
     //     setIsLoading(false);
     //   }
     // }else{
-      navigation.navigate('RCDSelectText', {type, item});
+    navigation.navigate('RCDSelectText', { type, item });
     // }
-  }
+  };
 
   return (
     <BG type="solid">
@@ -93,14 +90,13 @@ export const RCDNoticeScreen = ({
         }}
         className="absolute top-[0] w-full"
       />
-      
-      <ScrollView
-        className="flex-1 px-px mt-[64]"
-      >
+
+      <ScrollView className="flex-1 px-px mt-[64]">
         <View className="flex-1 mb-[121]">
           {/* 헤더 섹션 */}
           <View className="mt-[63]" />
-          <CustomText            type="title2"
+          <CustomText
+            type="title2"
             text={'녹음 전에,\n꼭 확인해주세요!'}
             className="text-white"
           />

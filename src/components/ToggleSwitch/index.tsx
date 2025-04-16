@@ -1,16 +1,14 @@
 import { useEffect, useRef } from 'react';
-import { View, TouchableWithoutFeedback, Animated } from 'react-native';
+import { Animated, TouchableWithoutFeedback, View } from 'react-native';
+
 import { COLORS } from '@constants/Colors';
 
-type ToggleSwitchProps ={
+type ToggleSwitchProps = {
   isOn: boolean;
   onToggle: () => void;
-}
+};
 
-export const ToggleSwitch = ({ 
-  isOn,
-  onToggle,
-}: ToggleSwitchProps) => {
+export const ToggleSwitch = ({ isOn, onToggle }: ToggleSwitchProps) => {
   // 초기값을 isOn 상태에 따라 0 또는 1로 설정
   const animation = useRef(new Animated.Value(isOn ? 1 : 0)).current;
 
@@ -18,7 +16,7 @@ export const ToggleSwitch = ({
     Animated.timing(animation, {
       toValue: isOn ? 1 : 0,
       duration: 200,
-      useNativeDriver: false,  // layout 관련 속성 애니메이션이므로 false
+      useNativeDriver: false, // layout 관련 속성 애니메이션이므로 false
     }).start();
   }, [isOn]);
 
@@ -30,11 +28,12 @@ export const ToggleSwitch = ({
 
   return (
     <TouchableWithoutFeedback onPress={onToggle}>
-      <View 
+      <View
         className="w-[51] h-[29] rounded-full justify-center p-[2]"
-        style={{ backgroundColor: isOn ? COLORS.yellowPrimary : COLORS.gray400 }}
-      >
-        <Animated.View 
+        style={{
+          backgroundColor: isOn ? COLORS.yellowPrimary : COLORS.gray400,
+        }}>
+        <Animated.View
           className="w-[25] h-[25] rounded-full bg-white"
           style={{ transform: [{ translateX }] }}
         />
@@ -42,4 +41,3 @@ export const ToggleSwitch = ({
     </TouchableWithoutFeedback>
   );
 };
-

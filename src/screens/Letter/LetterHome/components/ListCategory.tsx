@@ -1,5 +1,6 @@
-import {CustomText} from '@components/CustomText';
-import {Pressable, ScrollView, Text , View} from 'react-native';
+import { Pressable, ScrollView, Text, View } from 'react-native';
+
+import { CustomText } from '@components/CustomText';
 
 export const ListCategory = ({
   nickname,
@@ -31,9 +32,10 @@ export const ListCategory = ({
                   ? 'border-blue400 bg-white/10'
                   : 'border-white10'
               } mr-[8]`}
-              style={{borderRadius: 20}}
+              style={{ borderRadius: 20 }}
               onPress={() => setSelectedFilterIdx(index)}>
-              <CustomText                type="body4"
+              <CustomText
+                type="body4"
                 text={menu.label}
                 className={`${
                   index === selectedFilterIdx
@@ -55,7 +57,8 @@ export const ListCategory = ({
           }}>
           TO.
         </Text>
-        <CustomText          type="title4"
+        <CustomText
+          type="title4"
           text={nickname ?? ''}
           className="text-yellowPrimary ml-[7]"
         />

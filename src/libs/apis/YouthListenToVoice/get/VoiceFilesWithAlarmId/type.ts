@@ -1,9 +1,9 @@
 type FileMemberResponseData = {
-    id: number;
-    name: string;
-    profileImage: string;
-  };
-  
+  id: number;
+  name: string;
+  profileImage: string;
+};
+
 export type VoiceFilesRequestData = {
   alarmId: number;
 };

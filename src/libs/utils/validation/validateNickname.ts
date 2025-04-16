@@ -1,4 +1,4 @@
-import {ValidationResult} from '@hooks/useValidateInput';
+import { type ValidationResult } from '@hooks/useValidateInput';
 
 export const NICKNAME_MESSAGES = {
   SUCCESS: '사용 가능한 닉네임이에요',
@@ -11,6 +11,7 @@ export const NICKNAME_MESSAGES = {
 
 const NICKNAME_REGEX = /^[ㄱ-ㅎ가-힣ㅏ-ㅣa-zA-Z0-9]{2,10}$/;
 const SPACES_REGEX = /\s/;
+// eslint-disable-next-line no-useless-escape
 const SPECIAL_CHARS_REGEX = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
 
 export const validateNickname = (text: string): ValidationResult => {
@@ -57,6 +58,7 @@ export const validateNickname = (text: string): ValidationResult => {
       message: NICKNAME_MESSAGES.SUCCESS,
     };
   }
+
   return {
     isValid: false,
     isError: false,
@@ -64,4 +66,3 @@ export const validateNickname = (text: string): ValidationResult => {
     message: NICKNAME_MESSAGES.DEFAULT,
   };
 };
-

@@ -1,26 +1,30 @@
 // React 관련 임포트
-import React, {useEffect, useRef, useState} from 'react';
-import {Platform, ScrollView, View,Dimensions} from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Dimensions, Platform, ScrollView, View } from 'react-native';
 
-// 네비게이션 관련 임포트
-import { NavigationProp, RouteProp, useFocusEffect, useNavigation } from '@react-navigation/native';
-import {HomeStackParamList} from '@type/nav/HomeStackParamList';
-
+import { postVoicefilesAnalysisByVoiceFileId } from '@apis/VolunteerRecord/post/VoicefilesAnalysisByVoiceFileId/fetch';
 // API 임포트
-import {postVoicefilesByVoiceFileId} from '@apis/VolunteerRecord/post/VoicefilesByVoiceFileId/fetch';
-import {postVoicefilesAnalysisByVoiceFileId} from '@apis/VolunteerRecord/post/VoicefilesAnalysisByVoiceFileId/fetch';
-
+import { postVoicefilesByVoiceFileId } from '@apis/VolunteerRecord/post/VoicefilesByVoiceFileId/fetch';
 // 컴포넌트 임포트
-import {AppBar} from '@components/AppBar';
-import {BG} from '@components/BG';
-import {RCDTimer} from '@screens/RCD/RCDRecord/components/RCDTimer';
-import {RCDWave} from '@screens/RCD/RCDRecord/components/RCDWave';
-import {CustomText} from '@components/CustomText';
-import {RCDBtnBar} from '@screens/RCD/RCDRecord/components/RCDBtnBar';
-import {FlexableMargin} from '@components/FlexableMargin';
-import {Spinner} from '@components/Spinner';
+import { AppBar } from '@components/AppBar';
+import { BG } from '@components/BG';
+import { CustomText } from '@components/CustomText';
+import { FlexableMargin } from '@components/FlexableMargin';
+import { Spinner } from '@components/Spinner';
+// 네비게이션 관련 임포트
+import {
+  type NavigationProp,
+  type RouteProp,
+  useFocusEffect,
+  useNavigation,
+} from '@react-navigation/native';
+import { RCDBtnBar } from '@screens/RCD/RCDRecord/components/RCDBtnBar';
+import { RCDTimer } from '@screens/RCD/RCDRecord/components/RCDTimer';
+import { RCDWave } from '@screens/RCD/RCDRecord/components/RCDWave';
+import { type HomeStackParamList } from '@type/nav/HomeStackParamList';
 // 녹음 관련 임포트
-import {trackEvent} from '@utils/tracker';
+import { trackEvent } from '@utils/tracker';
+
 import {
   getCurrentMeteringIOS,
   playSoundIOS,
@@ -37,12 +41,16 @@ import {
 } from './RecordAndroid';
 
 // 녹음 화면 컴포넌트
-export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, 'RCDRecord'>}) => {
+export const RCDRecordScreen = ({
+  route,
+}: {
+  route: RouteProp<HomeStackParamList, 'RCDRecord'>;
+}) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
-  const windowHeight = Dimensions.get("window").height;
+  const windowHeight = Dimensions.get('window').height;
 
   // 라우트 파라미터 추출
-  const {type, voiceFileId, content} = route.params;
+  const { type, voiceFileId, content } = route.params;
   // 녹음 상태 관리
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [uri, setUri] = useState<string | null>(null);
@@ -64,11 +72,18 @@ export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, '
   // 컴포넌트 마운트/언마운트 시 녹음 상태 초기화
   useEffect(() => {
     refreshRCDStates();
+
     return () => {
       // 컴포넌트 언마운트 시 녹음 중지
-      isAndroid ? stopEverythingAndroid() : stopEverythingIOS();
+      if (isAndroid) {
+        stopEverythingAndroid();
+      } else {
+        stopEverythingIOS();
+      }
+
       // 언마운트 되었음을 표시하고, 재시도 타이머가 있으면 해제
       isMountedRef.current = false;
+
       if (analysisTimeoutRef.current) {
         clearTimeout(analysisTimeoutRef.current);
       }
@@ -84,11 +99,13 @@ export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, '
   useEffect(() => {
     const monitorVolume = async () => {
       if (!isRecording) return;
+
       // 100ms마다 볼륨 측정
       setTimeout(async () => {
         const currentMetering = await (isAndroid
           ? getCurrentMeteringAndroid()
           : getCurrentMeteringIOS());
+
         // console.log('currentMetering', currentMetering);
         if (currentMetering !== undefined) {
           setVolumeList(prev => [...prev, currentMetering]);
@@ -98,6 +115,7 @@ export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, '
 
     monitorVolume();
   }, [isRecording, volumeList]);
+
   // 녹음 관련 상태 초기화 함수
   const refreshRCDStates = async () => {
     try {
@@ -106,6 +124,7 @@ export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, '
       } else {
         await stopEverythingIOS();
       }
+
       setIsDone(false);
       setIsPlaying(false);
       setVolumeList([]);
@@ -119,8 +138,9 @@ export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, '
   const startRecording = async () => {
     // 이미 녹음 중인 경우 중지
     if (isRecording) await stopRecording();
-    
+
     let tmpPath: string | null = null;
+
     if (isAndroid) {
       tmpPath = await startRecordingAndroid();
     } else {
@@ -136,8 +156,10 @@ export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, '
   const stopRecording = async () => {
     if (!isRecording && __DEV__) {
       console.log('녹음이 진행되지 않았습니다.');
+
       return;
     }
+
     let tmpPath: string | null = null;
 
     if (isAndroid) {
@@ -145,26 +167,32 @@ export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, '
     } else {
       await stopRecordingIOS();
     }
+
     if (tmpPath) {
       setUri(tmpPath);
     }
+
     setIsRecording(false);
     setIsDone(true);
   };
   const playRecording = async () => {
     if (!uri || isPlaying) return;
+
     setIsPlaying(true);
+
     if (isAndroid) {
       await playRecordingAndroid();
     } else {
       await playSoundIOS(uri);
     }
+
     await new Promise(resolve => setTimeout(resolve, volumeList.length * 100));
     setIsPlaying(false);
   };
   // 녹음 파일 업로드 함수
   const uploadRecording = async () => {
     if (!uri) return;
+
     setIsUploading(true);
     // 로딩 시간 계산
     startTime.current = new Date().getTime();
@@ -175,12 +203,14 @@ export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, '
       } else {
         await stopEverythingIOS();
       }
+
       const formData = new FormData();
+
       formData.append('file', {
         uri: Platform.OS === 'android' ? `file://${uri}` : uri,
         name: 'recording.wav',
         type: 'audio/wav',
-      } as any);
+      } as { uri: string; name: string; type: string });
 
       await postVoicefilesByVoiceFileId(voiceFileId, formData);
       await uploadAnalysis();
@@ -192,7 +222,7 @@ export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, '
   const uploadAnalysis = async () => {
     try {
       const res = await postVoicefilesAnalysisByVoiceFileId(voiceFileId);
-      const {code} = res;
+      const { code } = res;
 
       if (code !== 'ANALYSIS001') {
         const endTime = new Date().getTime();
@@ -215,25 +245,30 @@ export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, '
         case 'ANALYSIS003':
           setIsUploading(false);
 
-          navigation.navigate('RCDError', {type: type, errorType: 'notsame'});
+          navigation.navigate('RCDError', { type: type, errorType: 'notsame' });
           break;
         case 'COMMON200':
           setIsUploading(false);
           navigation.navigate('RCDFeedBack');
           trackEvent('recording_approved');
           break;
+
         default:
           setIsUploading(false);
-          navigation.navigate('RCDError', {type: type, errorType: 'noisy'});
+          navigation.navigate('RCDError', { type: type, errorType: 'noisy' });
           break;
       }
     } catch (error) {
       console.error('분석 에러:', error);
+
       if (!isMountedRef.current) {
         console.log('에러 처리 중 컴포넌트가 언마운트되어 처리를 중단합니다.');
+
         return;
       }
-      const errorCode = error.response?.data.code;
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const errorCode = (error as any).response?.data.code;
 
       const endTime = new Date().getTime();
       const viewTime = endTime - startTime.current;
@@ -252,10 +287,11 @@ export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, '
         case 'ANALYSIS108':
           setIsUploading(false);
 
-          navigation.navigate('RCDError', {type: type, errorType: 'server'});
+          navigation.navigate('RCDError', { type: type, errorType: 'server' });
           break;
+
         default:
-          navigation.navigate('RCDError', {type: type, errorType: 'server'});
+          navigation.navigate('RCDError', { type: type, errorType: 'server' });
           break;
       }
     }
@@ -273,15 +309,20 @@ export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, '
                 ? '위로 알림 녹음'
                 : '정보 알림 녹음'
             }
-            goBackCallbackFn={() => { navigation.goBack(); }}
+            goBackCallbackFn={() => {
+              navigation.goBack();
+            }}
             className="absolute top-0 left-0 w-full"
           />
-          <View className="mt-[64] justify-between" style={{height: windowHeight-64}}>
-          {/* 상단 텍스트 영역 - 자막 */}
-          <View className="px-px h-2/5">
+          <View
+            className="mt-[64] justify-between"
+            style={{ height: windowHeight - 64 }}>
+            {/* 상단 텍스트 영역 - 자막 */}
+            <View className="px-px h-2/5">
               <ScrollView className="h-full">
                 <View className="mt-[53]" />
-                <CustomText                  type="body4"
+                <CustomText
+                  type="body4"
                   text={
                     type === 'INFO'
                       ? '준비된 문장을 시간 내에 또박또박 발음해주세요'
@@ -290,7 +331,8 @@ export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, '
                   className="text-gray200"
                 />
                 <View className="mt-[28] pb-[20]">
-                  <CustomText                    type={type === 'DAILY' ? 'title2' : 'body3'}
+                  <CustomText
+                    type={type === 'DAILY' ? 'title2' : 'body3'}
                     text={content}
                     className="text-white"
                   />
@@ -337,19 +379,21 @@ export const RCDRecordScreen = ({route}: {route: RouteProp<HomeStackParamList, '
           </View>
         </>
       ) : (
-        <>
-          <View className="flex-1 justify-center items-center">
-            <CustomText type="title1" text="듣고 있어요..." className="text-white" />
-            <View className="mt-[23]" />
-            <CustomText              type="body3"
-              text={`세심한 확인이 필요할 때는\n시간이 조금 더 소요될 수 있어요`}
-              className="text-gray200 text-center"
-            />
-            <View className="mt-[54]" />
-            <Spinner />
-
-          </View>
-        </>
+        <View className="flex-1 justify-center items-center">
+          <CustomText
+            type="title1"
+            text="듣고 있어요..."
+            className="text-white"
+          />
+          <View className="mt-[23]" />
+          <CustomText
+            type="body3"
+            text={`세심한 확인이 필요할 때는\n시간이 조금 더 소요될 수 있어요`}
+            className="text-gray200 text-center"
+          />
+          <View className="mt-[54]" />
+          <Spinner />
+        </View>
       )}
     </BG>
   );

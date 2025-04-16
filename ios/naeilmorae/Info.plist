@@ -27,7 +27,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>kakaof75a34680c8df270b1e012834770bae4</string>
+			<string>kakaof75a34680c8df270b1e012834770bae4</string>
 			</array>
 		</dict>
 	</array>
@@ -45,7 +45,15 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>내일모래에서 위치별 날씨 알림을 제공하기 위해 사용됩니다. 해당 정보는 내일모래 서버에 저장되며 서비스 외 용도로 사용되지 않습니다.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  	<string>내일모래에서 위치별 날씨 알림을 제공하기 위해 사용됩니다. 해당 정보는 내일모래 서버에 저장되며 서비스 외 용도로 사용되지 않습니다.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>내일모래에서 프로필 작성 용도로 사용됩니다.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>내일모래에서 프로필 작성 용도로 사용됩니다.</string>
+	<key>NSMicrophoneUsageDescription</key>
+  	<string>내일모래에서 목소리 알림 녹음의 용도로 사용됩니다.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>WantedSans-Medium.otf</string>

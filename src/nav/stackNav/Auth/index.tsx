@@ -1,4 +1,4 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { LoginScreen } from '@screens/Login';
 import { MemberInfoWriteScreen } from '@screens/Login/MemberInfoWrite';
 import { NicknameWriteScreen } from '@screens/Login/NicknameWrite';
@@ -15,8 +15,8 @@ export type AuthStackParamList = {
   // 공통
   LoginScreen: undefined;
   RoleSelectScreen: undefined;
-  NicknameWriteScreen: {role: string};
-  MemberInfoWriteScreen: {role: string; nickname: string; imageUri: string}; // 여기서 가입시킨다
+  NicknameWriteScreen: { role: string };
+  MemberInfoWriteScreen: { role: string; nickname: string; imageUri: string }; // 여기서 가입시킨다
   // 봉사자
   VolunteerOnboardingScreen: undefined;
   VolunteerNoticeScreen: undefined;
@@ -45,61 +45,61 @@ const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 
 export const AuthStackNav = () => {
   return (
-    <AuthStack.Navigator screenOptions={{headerShown: false}}>
+    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
       <AuthStack.Screen
         name="LoginScreen"
         component={LoginScreen}
-        options={{title: '로그인'}}
+        options={{ title: '로그인' }}
       />
       <AuthStack.Screen
         name="RoleSelectScreen"
         component={RoleSelectScreen}
-        options={{title: '역할 선택'}}
+        options={{ title: '역할 선택' }}
       />
       <AuthStack.Screen
         name="NicknameWriteScreen"
         component={NicknameWriteScreen}
-        options={{title: '닉네임 입력 및 프로필사진 등록'}}
+        options={{ title: '닉네임 입력 및 프로필사진 등록' }}
       />
       <AuthStack.Screen
         name="MemberInfoWriteScreen"
         component={MemberInfoWriteScreen}
-        options={{title: '생년월일/성별 입력'}}
+        options={{ title: '생년월일/성별 입력' }}
       />
       <AuthStack.Screen
         name="VolunteerOnboardingScreen"
         component={VolunteerOnboardingScreen}
-        options={{title: '봉사자 온보딩'}}
+        options={{ title: '봉사자 온보딩' }}
       />
       <AuthStack.Screen
         name="VolunteerNoticeScreen"
         component={VolunteerNoticeScreen}
-        options={{title: '봉사자 주의사항'}}
+        options={{ title: '봉사자 주의사항' }}
       />
       <AuthStack.Screen
         name="YouthOnboardingScreen"
         component={YouthOnboardingScreen}
-        options={{title: '청년 온보딩'}}
+        options={{ title: '청년 온보딩' }}
       />
       <AuthStack.Screen
         name="YouthWakeUpTimeScreen"
         component={YouthWakeUpTimeScreen}
-        options={{title: '청년 기상 시간 입력'}}
+        options={{ title: '청년 기상 시간 입력' }}
       />
       <AuthStack.Screen
         name="YouthEatScreen"
         component={YouthEatScreen}
-        options={{title: '청년 식사 시간 입력'}}
+        options={{ title: '청년 식사 시간 입력' }}
       />
       <AuthStack.Screen
         name="YouthSleepTimeScreen"
         component={YouthSleepTimeScreen}
-        options={{title: '청년 취침 시간 입력'}}
+        options={{ title: '청년 취침 시간 입력' }}
       />
       <AuthStack.Screen
         name="YouthNoticeScreen"
         component={YouthNoticeScreen}
-        options={{title: '청년 주의사항'}}
+        options={{ title: '청년 주의사항' }}
       />
     </AuthStack.Navigator>
   );

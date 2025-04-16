@@ -1,25 +1,28 @@
 // React Native 및 기본 컴포넌트 임포트
-import {View, TextInput as RNTextInput, TouchableOpacity} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
-// 네비게이션 관련 임포트
-import {  NavigationProp, RouteProp, useFocusEffect, useNavigation } from '@react-navigation/native';
-import {HomeStackParamList} from '@type/nav/HomeStackParamList';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { TextInput as RNTextInput, TouchableOpacity, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 // API 관련 임포트
-import {postVoicefilesSelfByAlarmId} from '@apis/VolunteerRecord/post/VoicefilesSelfByAlarmId/fetch';
-
+import { postVoicefilesSelfByAlarmId } from '@apis/VolunteerRecord/post/VoicefilesSelfByAlarmId/fetch';
 // 커스텀 컴포넌트 임포트
-import {AppBar} from '@components/AppBar';
-import {BG} from '@components/BG';
-import {Button} from '@components/Button';
-import {StarIMG} from '@components/StarIMG';
-import {Toast} from '@components/Toast';
-import {CustomText} from '@components/CustomText';
-import {ShadowView} from '@components/ShadowView';
-
+import { AppBar } from '@components/AppBar';
+import { BG } from '@components/BG';
+import { Button } from '@components/Button';
+import { CustomText } from '@components/CustomText';
+import { ShadowView } from '@components/ShadowView';
+import { StarIMG } from '@components/StarIMG';
+import { Toast } from '@components/Toast';
+// 네비게이션 관련 임포트
+import {
+  type NavigationProp,
+  type RouteProp,
+  useFocusEffect,
+  useNavigation,
+} from '@react-navigation/native';
+import { type HomeStackParamList } from '@type/nav/HomeStackParamList';
 // 유틸리티 임포트
-import {trackEvent} from '@utils/tracker';
-import {useCallback, useEffect, useRef, useState} from 'react';
+import { trackEvent } from '@utils/tracker';
 
 //   RCD 텍스트 입력 화면 컴포넌트
 export const RCDTextScreen = ({
@@ -28,7 +31,7 @@ export const RCDTextScreen = ({
   route: RouteProp<HomeStackParamList, 'RCDText'>;
 }) => {
   // 라우트 파라미터 추출
-  const {item, gptRes, alarmId, type} = route.params;
+  const { item, gptRes, alarmId, type } = route.params;
   // 상태 관리
   const [text, setText] = useState(''); // 텍스트 입력값
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>(); // 네비게이션
@@ -61,14 +64,18 @@ export const RCDTextScreen = ({
   const scriptSubmitHandler = async () => {
     try {
       setIsLoading(true);
+
       const content: string = text;
+
       console.log('content', content);
+
       const res = await postVoicefilesSelfByAlarmId(alarmId, content);
 
       if (res.code && res.code === 'ANALYSIS200') {
         setErrorMessage('주제와 다른 내용이 있어요');
         setIsError(true);
         setIsToast(true);
+
         return;
       }
 
@@ -76,10 +83,12 @@ export const RCDTextScreen = ({
         setErrorMessage('부적절한 언어가 있어요');
         setIsError(true);
         setIsToast(true);
+
         return;
       }
 
       const voiceFileId = res.result.voiceFileId;
+
       navigation.navigate('RCDRecord', {
         type,
         voiceFileId,
@@ -125,7 +134,7 @@ export const RCDTextScreen = ({
       {/* 메인 스크롤 영역 */}
       <ScrollView
         className="w-full h-full px-px mt-[65] pt-[52]"
-        contentContainerStyle={{alignItems: 'center'}}>
+        contentContainerStyle={{ alignItems: 'center' }}>
         {/* 이미지 섹션 */}
         <StarIMG />
         <View className="mb-[29]" />
@@ -163,17 +172,14 @@ export const RCDTextScreen = ({
   );
 };
 
-
-
-
-type ShadowTextInputProps= {
+type ShadowTextInputProps = {
   value: string;
   onChangeText: (text: string) => void;
   placeholder?: string;
   isError?: boolean;
   height?: number;
   maxLength?: number;
-}
+};
 
 const ShadowTextInput = ({
   value,

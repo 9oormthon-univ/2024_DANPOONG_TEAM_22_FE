@@ -1,5 +1,5 @@
 import React from 'react';
-import {ImageBackground, View} from 'react-native';
+import { ImageBackground, View } from 'react-native';
 
 export const ShadowView = ({
   children,
@@ -10,8 +10,7 @@ export const ShadowView = ({
 }) => {
   return (
     <View
-      className={`w-full h-full rounded-card overflow-hidden ${className} `}
-     >
+      className={`w-full h-full rounded-card overflow-hidden ${className} `}>
       <ImageBackground
         source={require('@assets/webps/ShadowBox.webp')}
         className="w-full h-full"

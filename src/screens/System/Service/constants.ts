@@ -1,7 +1,7 @@
 type ServiceItem = {
   title: string;
   url: string;
-}
+};
 
 export const SERVICE_ITEMS: ServiceItem[] = [
   {

@@ -1,33 +1,31 @@
 // 필요한 API 관련 import
-import {AlarmListByCategoryTypeType} from '@apis/VolunteerRecord/get/AlarmListByCategoryType/type';
+// React 관련 import
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, TouchableOpacity, View } from 'react-native';
 
-import {getAlarmAlarmCategoryDetailByChildrenAlarmCategory} from '@apis/VolunteerRecord/get/AlarmAlarmCategoryDetailByChildrenAlarmCategory/fetch';
-import {postVoicefilesGptByAlarmId} from '@apis/VolunteerRecord/post/VoicefilesGptByAlarmId/fetch';
-
-// 아이콘 및 컴포넌트 import
-import BackIcon from '@assets/svgs/Back.svg';
-import {AppBar} from '@components/AppBar';
-import {BG} from '@components/BG';
-import {ShadowView} from '@components/ShadowView';
-import {StarIMG} from '@components/StarIMG';
-import {CustomText} from '@components/CustomText';
-import {RCDSelectButtonConstant} from '@screens/RCD/RCDSelectText/constants/RCDSelectButtonConstant';
+import { getAlarmAlarmCategoryDetailByChildrenAlarmCategory } from '@apis/VolunteerRecord/get/AlarmAlarmCategoryDetailByChildrenAlarmCategory/fetch';
+import { type AlarmListByCategoryTypeType } from '@apis/VolunteerRecord/get/AlarmListByCategoryType/type';
+import { postVoicefilesGptByAlarmId } from '@apis/VolunteerRecord/post/VoicefilesGptByAlarmId/fetch';
+import { AppBar } from '@components/AppBar';
+import { BG } from '@components/BG';
+import { CustomText } from '@components/CustomText';
+import { ShadowView } from '@components/ShadowView';
+import { StarIMG } from '@components/StarIMG';
 // React Navigation 관련 import
 import {
-  NavigationProp,
-  RouteProp,
+  type NavigationProp,
+  type RouteProp,
   useFocusEffect,
   useNavigation,
 } from '@react-navigation/native';
-
+import { RCDSelectButtonConstant } from '@screens/RCD/RCDSelectText/constants/RCDSelectButtonConstant';
 // 타입 import
-import {HomeStackParamList} from '@type/nav/HomeStackParamList';
-import {RecordType} from '@type/RecordType';
-import {trackEvent} from '@utils/tracker';
+import { type HomeStackParamList } from '@type/nav/HomeStackParamList';
+import { type RecordType } from '@type/RecordType';
+import { trackEvent } from '@utils/tracker';
 
-// React 관련 import
-import {useCallback, useEffect, useRef, useState} from 'react';
-import {ActivityIndicator, TouchableOpacity, View} from 'react-native';
+// 아이콘 및 컴포넌트 import
+import BackIcon from '@assets/svgs/Back.svg';
 
 // SelectButton 컴포넌트의 Props 타입 정의
 type SelectButtonProps = {
@@ -64,6 +62,7 @@ const SelectButton = ({
   // GPT API 호출 및 네비게이션 처리
   const gptApiHandler = async () => {
     setIsLoading(true);
+
     try {
       const endTime = new Date().getTime();
       const viewTime = endTime - startTime.current;
@@ -80,6 +79,7 @@ const SelectButton = ({
       if (gpt) {
         // console.log('alarmId:', alarmId);
         const res = await postVoicefilesGptByAlarmId(alarmId);
+
         // console.log(res);
         navigation.navigate('RCDText', {
           item: item,
@@ -109,7 +109,11 @@ const SelectButton = ({
       <ShadowView>
         <View className="pl-[33] pr-[20] py-[37] flex-row justify-between items-center">
           <View>
-            <CustomText type="title4" text={head} className="text-yellowPrimary" />
+            <CustomText
+              type="title4"
+              text={head}
+              className="text-yellowPrimary"
+            />
             <View className="mt-[5]" />
             <CustomText type="body4" text={sub} className="text-gray200" />
           </View>
@@ -134,17 +138,21 @@ export const RCDSelectTextScreen = ({
   route: RouteProp<HomeStackParamList, 'RCDSelectText'>;
 }) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
-  const {item, type} = route.params;
+  const { item, type } = route.params;
   const [subTitle, setSubTitle] = useState<string>('');
   const [alarmId, setAlarmId] = useState<number>(0);
 
   // 초기 데이터 로드
   useEffect(() => {
     const getTopTextHandler = async () => {
-      const res = await getAlarmAlarmCategoryDetailByChildrenAlarmCategory(item.children[0]);
+      const res = await getAlarmAlarmCategoryDetailByChildrenAlarmCategory(
+        item.children[0],
+      );
+
       setSubTitle(res.title);
       setAlarmId(res.alarmId);
     };
+
     getTopTextHandler();
   }, []);
 
@@ -163,12 +171,14 @@ export const RCDSelectTextScreen = ({
         <StarIMG />
         {/* 제목 섹션 */}
         <View className="mt-[29]  mb-[52]  items-center">
-          <CustomText            type="title2"
+          <CustomText
+            type="title2"
             text={item.title}
             className="text-white text-center"
           />
           <View className="mt-[19]">
-            <CustomText              type="body3"
+            <CustomText
+              type="body3"
               text={subTitle}
               className="text-gray300 text-center"
             />

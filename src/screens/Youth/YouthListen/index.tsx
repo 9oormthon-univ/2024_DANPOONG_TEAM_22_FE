@@ -10,7 +10,6 @@ import {
   View,
 } from 'react-native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-import Toast from 'react-native-toast-message';
 
 import { getVoiceFilesWithAlarmId } from '@apis/YouthListenToVoice/get/VoiceFilesWithAlarmId/fetch';
 import { postProvidedfileCommentByProvidedFileId } from '@apis/YouthListenToVoice/post/ProvidedfileCommentByProvidedFileId/fetch';
@@ -299,7 +298,6 @@ export const YouthListenScreen = ({
           style={{
             flex: 1,
           }}
-          // eslint-disable-next-line @typescript-eslint/no-require-imports
           source={require('@assets/lottie/voice.json')}
           autoPlay
           loop
@@ -322,8 +320,7 @@ export const YouthListenScreen = ({
                 source={
                   voiceFile?.member?.profileImage
                     ? { uri: voiceFile?.member?.profileImage }
-                    : // eslint-disable-next-line @typescript-eslint/no-require-imports
-                      require('@assets/pngs/logo/app/app_logo_yellow.png')
+                    : require('@assets/pngs/logo/app/app_logo_yellow.png')
                 }
                 className="w-[25] h-[25]"
                 style={{ borderRadius: 25 }}

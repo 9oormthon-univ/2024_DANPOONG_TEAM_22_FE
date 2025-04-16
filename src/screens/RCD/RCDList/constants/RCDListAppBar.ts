@@ -1,4 +1,4 @@
-import {RecordType} from '@type/RecordType';
+import { type RecordType } from '@type/RecordType';
 
 export const RCDListAppBar: Record<RecordType, string> = {
   DAILY: '일상 알림',

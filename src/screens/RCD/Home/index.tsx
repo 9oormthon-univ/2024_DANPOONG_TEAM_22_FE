@@ -1,21 +1,21 @@
-import {useCallback, useEffect, useState} from 'react';
-import {ImageBackground, TouchableOpacity, View} from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { ImageBackground, TouchableOpacity, View } from 'react-native';
 
-import {getMemberYouthNum} from '@apis/RetrieveMemberInformation/get/MemberYouthNum/fetch';
-import {BG} from '@components/BG';
-import {CustomText} from '@components/CustomText';
-import {FlexableMargin} from '@components/FlexableMargin';
-import {Modal} from '@components/Modal';
-import {RecordTypeConstant} from '@constants/RecordType';
-import {Portal} from '@gorhom/portal';
-import {useAppVersion} from '@hooks/useAppVersion';
-import {useModal} from '@hooks/useModal';
+import { getMemberYouthNum } from '@apis/RetrieveMemberInformation/get/MemberYouthNum/fetch';
+import { BG } from '@components/BG';
+import { CustomText } from '@components/CustomText';
+import { FlexableMargin } from '@components/FlexableMargin';
+import { Modal } from '@components/Modal';
+import { RecordTypeConstant } from '@constants/RecordType';
+import { Portal } from '@gorhom/portal';
+import { useAppVersion } from '@hooks/useAppVersion';
+import { useModal } from '@hooks/useModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import type {NavigationProp} from '@react-navigation/native';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import type {HomeStackParamList} from '@type/nav/HomeStackParamList';
-import type {RecordType} from '@type/RecordType';
-import {trackEvent} from '@utils/tracker';
+import type { NavigationProp } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import type { HomeStackParamList } from '@type/nav/HomeStackParamList';
+import type { RecordType } from '@type/RecordType';
+import { trackEvent } from '@utils/tracker';
 
 import Main1 from '@assets/svgs/Main1.svg';
 import Main2 from '@assets/svgs/Main2.svg';
@@ -28,15 +28,14 @@ export const HomeScreen = () => {
   // 상태 관리
   const [nickname, setNickname] = useState('');
   const [youthNum, setYouthNum] = useState<number>(999);
-  const {visible, openModal, closeModal} = useModal();
-  const {isUpdateAvailable, goToStore} = useAppVersion();
-  
+  const { visible, openModal, closeModal } = useModal();
+  const { isUpdateAvailable, goToStore } = useAppVersion();
+
   useEffect(() => {
     if (isUpdateAvailable) {
       openModal();
     }
   }, [isUpdateAvailable]);
-  
 
   // 닉네임 불러오기 - 화면이 포커싱될 때마다 실행
   useFocusEffect(
@@ -61,24 +60,31 @@ export const HomeScreen = () => {
       {/* 배경 이미지 */}
       <ImageBackground
         source={require('@assets/pngs/BGmain.png')}
-        style={{position: 'absolute', bottom: -23, width: '100%', height: '100%'}}
+        style={{
+          position: 'absolute',
+          bottom: -23,
+          width: '100%',
+          height: '100%',
+        }}
       />
       {/* 전체 frame */}
       <View className="flex-1 px-[30] pt-[117]">
         {/* header */}
         <View className="w-full mb-[46]">
-          <CustomText            type="title3"
+          <CustomText
+            type="title3"
             text={`${nickname ?? ''}님, 반가워요!`}
             className="text-gray300"
           />
           <View className="flex flex-row mt-[9]">
-            <CustomText              type="title2"
+            <CustomText
+              type="title2"
               text={`${youthNum}명의 청년들`}
               className="text-yellowPrimary"
             />
             <CustomText type="title2" text="이" className="text-white" />
           </View>
-          <CustomText            
+          <CustomText
             type="title2"
             text={'당신의 목소리를 기다리고 있어요'}
             className="text-white"
@@ -102,13 +108,20 @@ export const HomeScreen = () => {
           confirmText="업데이트"
           onCancel={closeModal}
           onConfirm={goToStore}>
-            <View className='mt-[26]'/>
-          <CustomText type="title4" text="최신 버전으로 업데이트 해주세요" className="text-white" />
-          <View className='mt-[13]'/>
+          <View className="mt-[26]" />
+          <CustomText
+            type="title4"
+            text="최신 버전으로 업데이트 해주세요"
+            className="text-white"
+          />
+          <View className="mt-[13]" />
 
-          <CustomText type="caption1" text={`더 나은 내일모래가 준비됐어요\n스토어에서 최신 버전으로 업데이트 해주세요`} className="text-gray300 text-center" />
-          <View className='mt-[29]'/>
-
+          <CustomText
+            type="caption1"
+            text={`더 나은 내일모래가 준비됐어요\n스토어에서 최신 버전으로 업데이트 해주세요`}
+            className="text-gray300 text-center"
+          />
+          <View className="mt-[29]" />
         </Modal>
       </Portal>
     </BG>
@@ -175,23 +188,23 @@ export const HomeScreen = () => {
 // };
 
 // 일상, 위로 알림만 있고 정보 알림이 없을때의 버튼
-const SelectBtn = ({type}: {type: RecordType}) => {
+const SelectBtn = ({ type }: { type: RecordType }) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
-  
+
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate('RCDList', {type});
-        trackEvent('recording_type_select', {type});
+        navigation.navigate('RCDList', { type });
+        trackEvent('recording_type_select', { type });
       }}
       className=" bg-blue700 border border-white/10"
-      style={{borderRadius: 10, width: '47.5%', aspectRatio: 168 / 207}}>
+      style={{ borderRadius: 10, width: '47.5%', aspectRatio: 168 / 207 }}>
       <FlexableMargin flexGrow={20} />
       {/* 아이콘 */}
       <View className="flex flex-row">
         <FlexableMargin flexGrow={28} />
-        <View style={{flexGrow: 112}}>
-        {type === RecordTypeConstant.DAILY ? <Main1 /> : <Main2 />}
+        <View style={{ flexGrow: 112 }}>
+          {type === RecordTypeConstant.DAILY ? <Main1 /> : <Main2 />}
         </View>
         <FlexableMargin flexGrow={28} />
       </View>
@@ -199,34 +212,38 @@ const SelectBtn = ({type}: {type: RecordType}) => {
 
       {/* 텍스트 */}
       <View className="flex flex-row">
-      <FlexableMargin flexGrow={78} />
-        <View style={{flexDirection: 'row',flexGrow: 112}}>
-        <CustomText          type="title3"
-          text={`${type === RecordTypeConstant.DAILY ? '일상' : '위로'}`}
-          className="text-white"
-        />
-        <CustomText          type="title3"
-          text={`${type === RecordTypeConstant.COMFORT ? '의 말' : ' 알림'}`}
-          className="text-white "
-        />
+        <FlexableMargin flexGrow={78} />
+        <View style={{ flexDirection: 'row', flexGrow: 112 }}>
+          <CustomText
+            type="title3"
+            text={`${type === RecordTypeConstant.DAILY ? '일상' : '위로'}`}
+            className="text-white"
+          />
+          <CustomText
+            type="title3"
+            text={`${type === RecordTypeConstant.COMFORT ? '의 말' : ' 알림'}`}
+            className="text-white "
+          />
         </View>
         <FlexableMargin flexGrow={78} />
-
       </View>
       <FlexableMargin flexGrow={43} />
 
       {/* 녹음하기 텍스트와 화살표 */}
       <View className="flex flex-row w-full">
-      <FlexableMargin flexGrow={78} />
+        <FlexableMargin flexGrow={78} />
 
-        <CustomText type="title3" text="녹음하기" className="text-yellowPrimary" />
+        <CustomText
+          type="title3"
+          text="녹음하기"
+          className="text-yellowPrimary"
+        />
         <FlexableMargin flexGrow={28} />
 
         <View className="flex justify-center items-center">
           <MainArrow2 />
         </View>
         <FlexableMargin flexGrow={78} />
-
       </View>
       <FlexableMargin flexGrow={20} />
     </TouchableOpacity>

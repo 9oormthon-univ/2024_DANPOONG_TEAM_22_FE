@@ -1,3 +1,4 @@
-import { RecordTypeConstant } from '@constants/RecordType';
+import { type RecordTypeConstant } from '@constants/RecordType';
 
-export type RecordType = typeof RecordTypeConstant[keyof typeof RecordTypeConstant];
+export type RecordType =
+  (typeof RecordTypeConstant)[keyof typeof RecordTypeConstant];
