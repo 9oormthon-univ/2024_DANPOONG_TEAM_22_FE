@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Image, Keyboard, Pressable, View } from 'react-native';
+import { useState } from 'react';
+import { Image, Pressable, View } from 'react-native';
 import {
   type ImageLibraryOptions,
   type ImagePickerResponse,
@@ -15,7 +15,6 @@ import { CustomText } from '@components/CustomText';
 import { DismissKeyboardView } from '@components/DismissKeyboardView';
 import { Modal } from '@components/Modal';
 import { TextInput } from '@components/TextInput';
-import { KEYBOARD_DELAY_MS } from '@constants/common';
 import { useModal } from '@hooks/useModal';
 import { useValidateInput } from '@hooks/useValidateInput';
 import { type NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -48,24 +47,7 @@ export const NicknameWriteScreen = ({
     message: nicknameMessage,
   } = useValidateInput({ type: 'nickname' });
   const [clickedUpload, setClickedUpload] = useState(false);
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const { visible, openModal, closeModal } = useModal();
-
-  useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
-      setIsKeyboardVisible(true),
-    );
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      setTimeout(() => {
-        setIsKeyboardVisible(false);
-      }, KEYBOARD_DELAY_MS);
-    });
-
-    return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
-  }, []);
 
   const selectImage = () => {
     const options: ImageLibraryOptions = {
@@ -124,7 +106,16 @@ export const NicknameWriteScreen = ({
 
   return (
     <BG type="main">
-      <DismissKeyboardView>
+      <DismissKeyboardView
+        footer={
+          <View className={`absolute left-0 bottom-[55] w-full px-[30]`}>
+            <Button
+              text="다음"
+              onPress={handleNext}
+              disabled={!isValidNickname}
+            />
+          </View>
+        }>
         <AppBar
           goBackCallbackFn={openModal}
           className="absolute top-[0] w-full"
@@ -180,12 +171,10 @@ export const NicknameWriteScreen = ({
         />
       </DismissKeyboardView>
 
-      {clickedUpload ? (
+      {clickedUpload && (
         <Pressable
           onPress={() => setClickedUpload(false)}
-          className={`absolute left-0 bottom-0 w-full h-full bg-black/50 px-[30] pb-[55] justify-end ${
-            isKeyboardVisible ? 'hidden' : ''
-          }`}>
+          className={`absolute left-0 bottom-0 w-full h-full bg-black/50 px-[30] pb-[55] justify-end`}>
           {/* 내부 컴포넌트에는 상위 onPress 이벤트가 전파되지 않도록 함 */}
           <Pressable onPress={() => {}} className="w-full">
             <AnimatedView
@@ -198,17 +187,6 @@ export const NicknameWriteScreen = ({
             <Button text="취소" onPress={() => setClickedUpload(false)} />
           </Pressable>
         </Pressable>
-      ) : (
-        <View
-          className={`absolute left-0 bottom-[55] w-full px-[30] ${
-            isKeyboardVisible ? 'hidden' : ''
-          }`}>
-          <Button
-            text="다음"
-            onPress={handleNext}
-            disabled={!isValidNickname}
-          />
-        </View>
       )}
 
       <Modal
