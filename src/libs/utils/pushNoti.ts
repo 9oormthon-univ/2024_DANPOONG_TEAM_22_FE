@@ -5,12 +5,17 @@
  * 이 모듈은 앱 내 푸시 알림 표시, 알림 클릭 이벤트 처리 등의 기능을 제공합니다.
  */
 
+import { Platform } from 'react-native';
+
 import notifee, { AndroidImportance, EventType } from '@notifee/react-native';
 import { navigateToVolunteerHomeScreen } from '@utils/navigateToVolunteerHomeScreen';
 import { navigateToYouthListenScreen } from '@utils/navigateToYouthListenScreen';
 import { trackEvent } from '@utils/tracker';
 
 export type RemoteMessageData = { alarmId: string };
+
+const ID = 'default';
+const NAME = '내일모래';
 
 /**
  * 푸시 알림을 화면에 표시하는 함수
@@ -30,24 +35,45 @@ const displayNotification = async ({
   body,
   data,
 }: Readonly<{ title: string; body: string; data: { alarmId?: number } }>) => {
-  const channelAnoucement = await notifee.createChannel({
-    id: 'default',
-    name: '내일모래',
-    importance: AndroidImportance.HIGH,
-  });
+  if (Platform.OS === 'android') {
+    const channelAnoucement = await notifee.createChannel({
+      id: ID,
+      name: NAME,
+      importance: AndroidImportance.HIGH,
+      sound: 'sound',
+    });
 
-  await notifee.displayNotification({
-    title,
-    body,
-    android: {
-      channelId: channelAnoucement,
-      // smallIcon: 'ic_launcher',
-      largeIcon: 'ic_launcher',
-      circularLargeIcon: true,
-      color: '#555555',
-    },
-    data,
-  });
+    await notifee.displayNotification({
+      id: ID,
+      title,
+      body,
+      android: {
+        channelId: channelAnoucement,
+        // smallIcon: 'ic_launcher',
+        largeIcon: 'ic_launcher',
+        circularLargeIcon: true,
+        color: '#555555',
+        sound: 'sound',
+        timestamp: Date.now(),
+        showTimestamp: true,
+      },
+      data,
+    });
+
+    return;
+  }
+
+  if (Platform.OS === 'ios') {
+    notifee.displayNotification({
+      id: ID,
+      title,
+      body,
+      ios: {
+        sound: 'default',
+      },
+      data,
+    });
+  }
 };
 
 /**
