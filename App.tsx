@@ -91,6 +91,7 @@ export function App(): React.JSX.Element {
     (async () => {
       const role = (await AsyncStorage.getItem('role')) as Role;
 
+      // TODO: forground 상태에서 똑같은 푸시알림이 연속 두 번 오는 문제 (only ios)
       const unsubscribe = messaging().onMessage(async remoteMessage => {
         console.log('Foreground Push in App', remoteMessage);
 
