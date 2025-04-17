@@ -244,24 +244,21 @@ export const NotificationSettingYouth = () => {
         />
       ))}
 
-      {showHourBottomSheet && (
-        <TimeSelectBottomSheet
-          type="hour"
-          value={notifications[selectedIndex]?.hour || '오전 00시'}
-          setValue={setTempHour}
-          onClose={() => setShowHourBottomSheet(false)}
-          onSelect={() => setShowMinuteBottomSheet(true)}
-        />
-      )}
-
-      {showMinuteBottomSheet && (
-        <TimeSelectBottomSheet
-          type="minute"
-          value={notifications[selectedIndex]?.minute || '00분'}
-          setValue={setTempMinute}
-          onClose={() => setShowMinuteBottomSheet(false)}
-        />
-      )}
+      <TimeSelectBottomSheet
+        type="hour"
+        value={notifications[selectedIndex]?.hour || '오전 00시'}
+        setValue={setTempHour}
+        onClose={() => setShowHourBottomSheet(false)}
+        onSelect={() => setShowMinuteBottomSheet(true)}
+        isShow={showHourBottomSheet}
+      />
+      <TimeSelectBottomSheet
+        type="minute"
+        value={notifications[selectedIndex]?.minute || '00분'}
+        setValue={setTempMinute}
+        onClose={() => setShowMinuteBottomSheet(false)}
+        isShow={showMinuteBottomSheet}
+      />
     </BG>
   );
 };

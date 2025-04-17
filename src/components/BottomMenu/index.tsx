@@ -9,7 +9,7 @@ type BottomMenuProps = {
 
 export const BottomMenu = ({ title, data }: Readonly<BottomMenuProps>) => {
   return (
-    <>
+    <View style={{ borderRadius: 10 }} className="bg-blue500">
       {title && (
         <View className="h-[43] justify-center items-center">
           <CustomText type="caption1" text={title} className="text-gray300" />
@@ -26,6 +26,6 @@ export const BottomMenu = ({ title, data }: Readonly<BottomMenuProps>) => {
           {index !== data.length - 1 && <View className="bg-blue600 h-[1]" />}
         </View>
       ))}
-    </>
+    </View>
   );
 };
