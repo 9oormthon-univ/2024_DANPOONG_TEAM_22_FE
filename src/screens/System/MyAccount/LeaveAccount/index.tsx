@@ -1,19 +1,13 @@
 import { useState } from 'react';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  ScrollView,
-  View,
-} from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 
 import { AppBar } from '@components/AppBar';
 import { BG } from '@components/BG';
 import { Button } from '@components/Button';
 import { CustomText } from '@components/CustomText';
+import { DismissKeyboardView } from '@components/DismissKeyboardView';
 import { TextInput } from '@components/TextInput';
-import { useNavigation } from '@react-navigation/native';
-import { type NavigationProp } from '@react-navigation/native';
+import { type NavigationProp, useNavigation } from '@react-navigation/native';
 import { type SystemStackParamList } from '@type/nav/SystemStackParamList';
 
 const LeaveReasons = [
@@ -39,17 +33,31 @@ export const LeaveAccountScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <BG type="solid">
+    <BG type="solid">
+      <DismissKeyboardView
+        footer={
+          <View className={`absolute left-0 bottom-[55] w-full px-[30]`}>
+            <Button
+              text="다음"
+              onPress={() => {
+                navigation.navigate('LeaveAccount2', {
+                  reasons: selectedReasons,
+                  otherReason: selectedReasons.includes('기타')
+                    ? detailReason
+                    : '',
+                });
+              }}
+              disabled={selectedReasons.length === 0}
+            />
+          </View>
+        }>
         <AppBar
           title="회원 탈퇴"
           goBackCallbackFn={() => navigation.goBack()}
         />
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           {/* 전체 컨테이너 */}
-          <View className="flex-1 items-center">
+          <View className="flex-1 items-center pb-[150]">
             {/* 안내 문구 */}
             <View className="py-[41] px-px gap-[3] w-full">
               <CustomText
@@ -74,70 +82,52 @@ export const LeaveAccountScreen = () => {
                 onPress={() => toggleReason(reason)}
               />
             ))}
-            <>
-              <ReasonItem
-                reason="기타"
-                isSelected={selectedReasons.includes('기타')}
-                onPress={() => {
-                  toggleReason('기타');
+            <ReasonItem
+              reason="기타"
+              isSelected={selectedReasons.includes('기타')}
+              onPress={() => {
+                toggleReason('기타');
+                setIsDetailTyping(true);
+              }}
+            />
+            {selectedReasons.includes('기타') && (
+              <View
+                className="w-full px-px"
+                onTouchStart={() => {
                   setIsDetailTyping(true);
-                }}
-              />
-              {selectedReasons.includes('기타') && (
-                <View
-                  className="w-full px-px"
-                  onTouchStart={() => {
-                    setIsDetailTyping(true);
-                  }}>
-                  <TextInput
-                    autoFocus
-                    value={detailReason}
-                    onChangeText={setDetailReason}
-                    placeholder="내용을 입력해주세요"
-                    isError={false}
-                    maxLength={160}
-                  />
-                </View>
-              )}
-            </>
-            <View className="w-full px-px mt-[29] mb-[55]">
-              <Button
-                text="다음"
-                onPress={() => {
-                  navigation.navigate('LeaveAccount2', {
-                    reasons: selectedReasons,
-                    otherReason: selectedReasons.includes('기타')
-                      ? detailReason
-                      : '',
-                  });
-                }}
-                disabled={selectedReasons.length === 0}
-              />
-            </View>
+                }}>
+                <TextInput
+                  autoFocus
+                  value={detailReason}
+                  onChangeText={setDetailReason}
+                  placeholder="내용을 입력해주세요"
+                  isError={false}
+                  maxLength={160}
+                />
+              </View>
+            )}
           </View>
         </ScrollView>
         {isDetailTyping && (
           <View className="absolute top-0 right-0 h-full w-full z-[9]">
             <BG type="solid">
-              <View className="mt-[64]">
-                <ReasonItem
-                  reason="기타"
-                  isSelected={selectedReasons.includes('기타')}
-                  onPress={() => {
-                    toggleReason('기타');
-                    setIsDetailTyping(false);
-                  }}
+              <ReasonItem
+                reason="기타"
+                isSelected={selectedReasons.includes('기타')}
+                onPress={() => {
+                  toggleReason('기타');
+                  setIsDetailTyping(false);
+                }}
+              />
+              <View className="w-full px-px">
+                <TextInput
+                  autoFocus
+                  value={detailReason}
+                  onChangeText={setDetailReason}
+                  placeholder="내용을 입력해주세요"
+                  isError={false}
+                  maxLength={160}
                 />
-                <View className="w-full px-px">
-                  <TextInput
-                    autoFocus
-                    value={detailReason}
-                    onChangeText={setDetailReason}
-                    placeholder="내용을 입력해주세요"
-                    isError={false}
-                    maxLength={160}
-                  />
-                </View>
               </View>
               <View
                 className="flex-1"
@@ -148,8 +138,8 @@ export const LeaveAccountScreen = () => {
             </BG>
           </View>
         )}
-      </BG>
-    </KeyboardAvoidingView>
+      </DismissKeyboardView>
+    </BG>
   );
 };
 
