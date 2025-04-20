@@ -28,8 +28,7 @@ export const SystemButton = ({
     // 버튼 컨테이너
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [styles.base, pressed && styles.pressed]}
-      android_ripple={{ color: COLORS.blue600 }}>
+      style={({ pressed }) => [styles.base, pressed && styles.pressed]}>
       {/* 텍스트 영역 */}
       <View className="flex-1">
         {/* 메뉴 제목 */}
