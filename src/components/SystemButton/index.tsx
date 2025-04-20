@@ -1,4 +1,4 @@
-import { Pressable, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import { CustomText } from '@components/CustomText';
 import { ToggleSwitch } from '@components/ToggleSwitch';
@@ -28,11 +28,7 @@ export const SystemButton = ({
     // 버튼 컨테이너
     <Pressable
       onPress={onPress}
-      className="w-full flex-row justify-between items-center px-px py-[21]"
-      style={({ pressed }) => ({
-        backgroundColor: pressed ? COLORS.blue600 : 'transparent',
-      })}
-      android_ripple={{ color: COLORS.blue600 }}>
+      style={({ pressed }) => [styles.base, pressed && styles.pressed]}>
       {/* 텍스트 영역 */}
       <View className="flex-1">
         {/* 메뉴 제목 */}
@@ -56,3 +52,18 @@ export const SystemButton = ({
     </Pressable>
   );
 };
+
+const styles = StyleSheet.create({
+  base: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 21,
+    paddingHorizontal: 30,
+    backgroundColor: 'transparent',
+    width: '100%',
+  },
+  pressed: {
+    backgroundColor: COLORS.blue600,
+  },
+});
