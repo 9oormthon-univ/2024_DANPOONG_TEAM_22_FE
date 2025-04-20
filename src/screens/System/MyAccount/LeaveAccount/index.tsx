@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { Platform, Pressable, ScrollView, View } from 'react-native';
 
 import { AppBar } from '@components/AppBar';
 import { BG } from '@components/BG';
@@ -36,20 +36,30 @@ export const LeaveAccountScreen = () => {
     <BG type="solid">
       <DismissKeyboardView
         footer={
-          <View className={`absolute left-0 bottom-[55] w-full px-[30]`}>
-            <Button
-              text="다음"
-              onPress={() => {
-                navigation.navigate('LeaveAccount2', {
-                  reasons: selectedReasons,
-                  otherReason: selectedReasons.includes('기타')
-                    ? detailReason
-                    : '',
-                });
-              }}
-              disabled={selectedReasons.length === 0}
+          <>
+            <View
+              className={`absolute left-0 bottom-0 w-full bg-blue700 ${
+                Platform.OS === 'ios' ? 'h-[163]' : 'h-[139]'
+              }`}
             />
-          </View>
+            <View
+              className={`absolute left-0 w-full px-[30] ${
+                Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
+              }`}>
+              <Button
+                text="다음"
+                onPress={() => {
+                  navigation.navigate('LeaveAccount2', {
+                    reasons: selectedReasons,
+                    otherReason: selectedReasons.includes('기타')
+                      ? detailReason
+                      : '',
+                  });
+                }}
+                disabled={selectedReasons.length === 0}
+              />
+            </View>
+          </>
         }>
         <AppBar
           title="회원 탈퇴"
@@ -57,7 +67,7 @@ export const LeaveAccountScreen = () => {
         />
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           {/* 전체 컨테이너 */}
-          <View className="flex-1 items-center pb-[150]">
+          <View className="flex-1 items-center pb-[174]">
             {/* 안내 문구 */}
             <View className="py-[41] px-px gap-[3] w-full">
               <CustomText
@@ -155,7 +165,7 @@ const ReasonItem = ({
   return (
     <Pressable
       onPress={onPress}
-      className="flex-row gap-[21] items-center w-full px-px py-[32]">
+      className="flex-row gap-[21] items-center w-full px-px py-[24]">
       <View
         className={`w-[20px] h-[20px] ${
           isSelected ? 'bg-yellowPrimary' : 'bg-blue500'
