@@ -1871,6 +1871,8 @@ PODS:
     - React-logger (= 0.76.3)
     - React-perflogger (= 0.76.3)
     - React-utils (= 0.76.3)
+  - RNAppleAuthentication (2.4.1):
+    - React-Core
   - RNAudioRecorderPlayer (3.6.12):
     - React-Core
   - RNCAsyncStorage (2.1.1):
@@ -2269,6 +2271,7 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - RNAudioRecorderPlayer (from `../node_modules/react-native-audio-recorder-player`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
@@ -2457,6 +2460,8 @@ EXTERNAL SOURCES:
     :path: build/generated/ios
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNAppleAuthentication:
+    :path: "../node_modules/@invertase/react-native-apple-authentication"
   RNAudioRecorderPlayer:
     :path: "../node_modules/react-native-audio-recorder-player"
   RNCAsyncStorage:
@@ -2582,6 +2587,7 @@ SPEC CHECKSUMS:
   React-utils: ee370a52b08a000963af1a60c31e6c87a70620a5
   ReactCodegen: 5148a0102fc8f0a1f9b05d955da886b44447679d
   ReactCommon: b8485556b596ef2f44f59bc586113bda138fb804
+  RNAppleAuthentication: c3dddf5918126c9aae85dc2e2ce9fb87835e9e04
   RNAudioRecorderPlayer: 11df0c7b614e9767ef24d896465c3a758c592de7
   RNCAsyncStorage: d40800ad5002f992f4ebe404055b744b3274b364
   RNCPushNotificationIOS: 6c4ca3388c7434e4a662b92e4dfeeee858e6f440

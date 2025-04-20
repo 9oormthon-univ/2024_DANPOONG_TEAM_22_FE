@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Image, Linking, Pressable, View } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
@@ -6,6 +6,9 @@ import { postAuthLoginWithAccessTokenAndLoginType } from '@apis/AuthenticationAP
 import { BG } from '@components/BG';
 import { CustomText } from '@components/CustomText';
 import { useGetMember } from '@hooks/auth/useGetMember';
+import appleAuth, {
+  AppleButton,
+} from '@invertase/react-native-apple-authentication';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   getProfile,
@@ -84,6 +87,40 @@ export const LoginScreen = ({ navigation }: Readonly<Props>) => {
     }
   };
 
+  async function handleAppleLogin() {
+    // performs login request
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: appleAuth.Operation.LOGIN,
+      // Note: it appears putting FULL_NAME first is important, see issue #293
+      requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+    });
+
+    // get current authentication state for user
+    // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
+    const credentialState = await appleAuth.getCredentialStateForUser(
+      appleAuthRequestResponse.user,
+    );
+
+    // use credentialState response to ensure the user is authenticated
+    if (credentialState === appleAuth.State.AUTHORIZED) {
+      // user is authenticated
+      const { identityToken } = appleAuthRequestResponse;
+
+      console.log({ identityToken });
+
+      // TODO: 서버와 api 스펙 맞춰봐야 함
+    }
+  }
+
+  useEffect(() => {
+    // onCredentialRevoked returns a function that will remove the event listener. useEffect will call this function when the component unmounts
+    return appleAuth.onCredentialRevoked(async () => {
+      console.warn(
+        'If this function executes, User Credentials have been Revoked',
+      );
+    });
+  }, []); // passing in an empty array as the second argument ensures this is only ran once when component mounts initially.
+
   return (
     <BG type="main">
       <View className="flex-1">
@@ -119,7 +156,7 @@ export const LoginScreen = ({ navigation }: Readonly<Props>) => {
             style={{ borderRadius: 7 }}
             onPress={() => {
               handleLogin({ loginType: 'KAKAO' });
-              trackEvent('signup_start');
+              trackEvent('signup_start', { loginType: 'KAKAO' });
             }}>
             <KakaoIcon />
             <CustomText
@@ -129,8 +166,25 @@ export const LoginScreen = ({ navigation }: Readonly<Props>) => {
               style={{ fontSize: 17.6 }}
             />
           </Pressable>
+          <View className="h-[30]" />
+          {/* 애플로 로그인 버튼 */}
+          {/* TODO: 로그인 버튼 위치 조정 */}
+          <AppleButton
+            buttonStyle={AppleButton.Style.WHITE}
+            buttonType={AppleButton.Type.SIGN_IN}
+            style={{
+              width: '100%',
+              height: 52.8,
+              borderRadius: 7,
+            }}
+            onPress={() => {
+              handleAppleLogin();
+              trackEvent('signup_start', { loginType: 'APPLE' });
+            }}
+          />
+          <View className="h-[18.2]" />
           {/* 서비스이용약관, 개인정보처리방침 */}
-          <View className="mt-[18.2] flex-row justify-center">
+          <View className="flex-row justify-center">
             <View className="flex-row justify-center">
               <CustomText
                 type="caption2"
