@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { TextInput as RNTextInput, View } from 'react-native';
+import { Platform, TextInput as RNTextInput, View } from 'react-native';
 
 import { CustomText } from '@components/CustomText';
 import { COLORS } from '@constants/Colors';
@@ -35,7 +35,7 @@ export const TextInput = ({
   return (
     <>
       <View
-        className={`flex-row h-auto items-center justify-between w-full rounded-lg border-[1px] border-gray300 ${
+        className={`flex-row h-auto items-center justify-between w-full rounded-lg border border-gray300 ${
           !isFocused || !autoFocus ? 'bg-[#fafafa1a]' : 'bg-transparent'
         }`}>
         <RNTextInput
@@ -52,7 +52,9 @@ export const TextInput = ({
             letterSpacing: 18 * -0.025,
             color: COLORS.white,
           }}
-          className={'flex-1 py-[16px] px-[24px]'}
+          className={`flex-1 px-[24] justify-center ${
+            Platform.OS === 'ios' ? 'pt-[16] pb-[21]' : 'py-[16]'
+          }`}
           placeholder={placeholder}
           placeholderTextColor={COLORS.gray300}
           autoCapitalize="none"
@@ -62,7 +64,7 @@ export const TextInput = ({
           maxLength={maxLength}
         />
         {isError && (
-          <View className="m-[16px]">
+          <View className="m-[16]">
             <ErrorIcon />
           </View>
         )}

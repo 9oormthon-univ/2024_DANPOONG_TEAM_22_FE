@@ -91,8 +91,34 @@ export function App(): React.JSX.Element {
     (async () => {
       const role = (await AsyncStorage.getItem('role')) as Role;
 
+      let lastMessageId: string | null = null;
+
       const unsubscribe = messaging().onMessage(async remoteMessage => {
         console.log('Foreground Push in App', remoteMessage);
+
+        /**
+         * TODO: forground 상태에서 똑같은 푸시알림이 연속 두 번 오는 문제 (only ios)
+         *
+         * 해결방안 1. 프론트에서 messageId 를 비교해서 중복 알림인 경우 무시한다. -> 현재 이걸로 적용
+         * 해결방안 2. 서버에서 data-only 알림을 보내준다.
+         * 지금은 알림 데이터가 아래처럼 data 필드 이외에 notification 필드가 함께 오고 있다.
+         * {
+         *  messageId: '1745148372238320',
+         *  data: { alarmId: '1' },
+         *  notification: { title: 'testtest' },
+         *  from: '427805097209'
+         * }
+         */
+        if (remoteMessage?.messageId === lastMessageId) {
+          console.log(
+            '[foreground] duplicate notification:',
+            remoteMessage.messageId,
+          );
+
+          return;
+        }
+
+        lastMessageId = remoteMessage.messageId ?? null;
 
         const { alarmId } = remoteMessage.data as RemoteMessageData;
 
