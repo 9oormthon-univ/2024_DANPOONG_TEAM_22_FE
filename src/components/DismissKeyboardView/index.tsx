@@ -1,3 +1,4 @@
+import { type ReactNode } from 'react';
 import {
   Keyboard,
   type StyleProp,
@@ -8,7 +9,7 @@ import {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 type Component = {
-  children: JSX.Element[] | JSX.Element;
+  children: ReactNode;
   footer?: JSX.Element;
   style?: StyleProp<ViewStyle>;
 };
