@@ -107,17 +107,7 @@ export const MemberInfoWriteScreen = ({
 
   return (
     <BG type="main">
-      <DismissKeyboardView
-        footer={
-          <View className={`absolute left-0 bottom-[55] w-full px-[30]`}>
-            <Button
-              text="다음"
-              onPress={handleNext}
-              disabled={!birthday || !gender || isLoading}
-              isLoading={isLoading}
-            />
-          </View>
-        }>
+      <DismissKeyboardView>
         <AppBar
           goBackCallbackFn={openModal}
           className="absolute top-[0] w-full"
@@ -193,6 +183,17 @@ export const MemberInfoWriteScreen = ({
           source={require('@assets/pngs/background/signup2.png')}
           className="w-full h-auto flex-1 mt-[54]"
         />
+
+        <DismissKeyboardView.Footer>
+          <View className={`absolute left-0 bottom-[55] w-full px-[30]`}>
+            <Button
+              text="다음"
+              onPress={handleNext}
+              disabled={!birthday || !gender || isLoading}
+              isLoading={isLoading}
+            />
+          </View>
+        </DismissKeyboardView.Footer>
       </DismissKeyboardView>
 
       <DatePicker

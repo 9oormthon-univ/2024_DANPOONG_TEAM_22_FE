@@ -34,33 +34,7 @@ export const LeaveAccountScreen = () => {
 
   return (
     <BG type="solid">
-      <DismissKeyboardView
-        footer={
-          <>
-            <View
-              className={`absolute left-0 bottom-0 w-full bg-blue700 ${
-                Platform.OS === 'ios' ? 'h-[163]' : 'h-[139]'
-              }`}
-            />
-            <View
-              className={`absolute left-0 w-full px-[30] ${
-                Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
-              }`}>
-              <Button
-                text="다음"
-                onPress={() => {
-                  navigation.navigate('LeaveAccount2', {
-                    reasons: selectedReasons,
-                    otherReason: selectedReasons.includes('기타')
-                      ? detailReason
-                      : '',
-                  });
-                }}
-                disabled={selectedReasons.length === 0}
-              />
-            </View>
-          </>
-        }>
+      <DismissKeyboardView>
         <AppBar
           title="회원 탈퇴"
           goBackCallbackFn={() => navigation.goBack()}
@@ -148,6 +122,33 @@ export const LeaveAccountScreen = () => {
             </BG>
           </View>
         )}
+
+        <DismissKeyboardView.Footer>
+          <>
+            <View
+              className={`absolute left-0 bottom-0 w-full bg-blue700 ${
+                Platform.OS === 'ios' ? 'h-[163]' : 'h-[139]'
+              }`}
+            />
+            <View
+              className={`absolute left-0 w-full px-[30] ${
+                Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
+              }`}>
+              <Button
+                text="다음"
+                onPress={() => {
+                  navigation.navigate('LeaveAccount2', {
+                    reasons: selectedReasons,
+                    otherReason: selectedReasons.includes('기타')
+                      ? detailReason
+                      : '',
+                  });
+                }}
+                disabled={selectedReasons.length === 0}
+              />
+            </View>
+          </>
+        </DismissKeyboardView.Footer>
       </DismissKeyboardView>
     </BG>
   );
