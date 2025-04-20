@@ -15,6 +15,7 @@ type Props = {
   style?: StyleProp<ViewStyle>;
 };
 
+// TODO: 안드로이드에서는 footer 고정이 안 되는 문제
 export const DismissKeyboardView = ({ children, ...props }: Props) => {
   // 푸터로 렌더링될 React 노드를 저장할 변수
   let footer: ReactNode = null;
