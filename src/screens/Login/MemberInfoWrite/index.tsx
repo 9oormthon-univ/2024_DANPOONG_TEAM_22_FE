@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Alert, Image, Keyboard, Pressable, View } from 'react-native';
+import {
+  Alert,
+  Image,
+  Keyboard,
+  Platform,
+  Pressable,
+  View,
+} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 
 import { uploadImageToS3 } from '@apis/util';
@@ -204,9 +211,9 @@ export const MemberInfoWriteScreen = ({
       </DismissKeyboardView>
 
       <View
-        className={`absolute left-0 bottom-[79] w-full px-[30] ${
+        className={`absolute left-0 w-full px-[30] ${
           isKeyboardVisible ? 'hidden' : ''
-        }`}>
+        } ${Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'}`}>
         <Button
           text="다음"
           onPress={handleNext}

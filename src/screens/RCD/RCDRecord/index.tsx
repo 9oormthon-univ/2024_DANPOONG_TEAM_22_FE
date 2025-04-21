@@ -374,7 +374,7 @@ export const RCDRecordScreen = ({
                   stop={stopRecording}
                 />
               </View>
-              <FlexableMargin flexGrow={55} />
+              <FlexableMargin flexGrow={Platform.OS === 'ios' ? 79 : 55} />
             </View>
           </View>
         </>

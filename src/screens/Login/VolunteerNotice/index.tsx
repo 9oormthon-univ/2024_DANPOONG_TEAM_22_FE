@@ -199,7 +199,11 @@ const VolunteerNoticeScreen = ({ navigation }: Readonly<Props>) => {
       />
       {/* section */}
       {NOTICE_CONTENTS.map((item, index) => (
-        <View key={index} className="px-px flex-grow-[55]">
+        <View
+          key={index}
+          className={`px-px ${
+            Platform.OS === 'ios' ? 'flex-grow-[79]' : 'flex-grow-[55]'
+          }`}>
           <FlexableMargin flexGrow={40} />
           {item.icon}
           <FlexableMargin flexGrow={24} />
@@ -219,7 +223,10 @@ const VolunteerNoticeScreen = ({ navigation }: Readonly<Props>) => {
 
       <FlexableMargin flexGrow={140} />
 
-      <View className="absolute left-0 bottom-[79] w-full px-[30]">
+      <View
+        className={`absolute left-0 ${
+          Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
+        } w-full px-[30]`}>
         <Button text="시작하기" onPress={handleNext} />
       </View>
 

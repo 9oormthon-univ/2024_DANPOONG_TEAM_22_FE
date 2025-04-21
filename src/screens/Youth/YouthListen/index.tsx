@@ -396,6 +396,7 @@ export const YouthListenScreen = ({
               </ScrollView>
             )}
             {/* 메시지 입력 영역 */}
+            {/* TODO: 플로팅 버튼 pr 합쳐지면 바텀 간격도 ios, android 별도 다르게 설정 */}
             <View className="h-[86] px-[25] bg-blue500 flex-row items-center">
               <View className="flex-[7.5] relative">
                 <TextInput

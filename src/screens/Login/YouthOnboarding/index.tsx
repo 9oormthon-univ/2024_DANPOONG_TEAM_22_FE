@@ -4,6 +4,7 @@ import {
   Dimensions,
   Image,
   ImageBackground,
+  Platform,
   Pressable,
   StyleSheet,
   View,
@@ -82,7 +83,10 @@ const Page1 = ({ nickname, onNext }: Readonly<PageProps>) => {
           text={`${nickname} 님,\n지금도 내일모래에는\n당신을 위해 목소리를 내는\n사람들이 있어요`}
           className="text-white text-center"
         />
-        <View className="absolute left-0 bottom-[79] w-full px-[30]">
+        <View
+          className={`absolute left-0 ${
+            Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
+          } w-full px-[30]`}>
           <Button text="다음" onPress={handleNext} />
         </View>
       </View>
@@ -224,7 +228,10 @@ const Page2 = ({
           </View>
         </Animated.View>
 
-        <View className="absolute left-0 bottom-[79] w-full px-[30]">
+        <View
+          className={`absolute left-0 ${
+            Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
+          } w-full px-[30]`}>
           <Button text="다음" onPress={handleJump} />
         </View>
       </View>
@@ -325,7 +332,10 @@ const Page3 = ({ onNext }: Readonly<PageProps>) => {
         />
       </View>
 
-      <View className="absolute left-0 bottom-[79] w-full px-[30]">
+      <View
+        className={`absolute left-0 ${
+          Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
+        } w-full px-[30]`}>
         <Button text="다음" onPress={handleNext} />
       </View>
     </View>
@@ -407,7 +417,10 @@ const Page4 = ({ onNext, onSkip }: Readonly<PageProps>) => {
             text={`이제부터 내일모래가 내일도, 모레도,\n당신의 일상에 따스한 목소리를 전달해줄게요`}
             className="text-white text-center"
           />
-          <View className="absolute left-0 bottom-[79] w-full px-[30]">
+          <View
+            className={`absolute left-0 ${
+              Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
+            } w-full px-[30]`}>
             <Button text="다음" onPress={handleNext} />
           </View>
         </View>
@@ -427,7 +440,10 @@ const Page4 = ({ onNext, onSkip }: Readonly<PageProps>) => {
             text={`이제부터 내일모래가 내일도, 모레도,\n당신의 일상에 따스한 목소리를 전달해줄게요`}
             className="text-white text-center"
           />
-          <View className="absolute left-0 bottom-[79] w-full px-[30]">
+          <View
+            className={`absolute left-0 ${
+              Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
+            } w-full px-[30]`}>
             <Button text="다음" onPress={handleNext} />
           </View>
         </View>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Alert, Image, Pressable, View } from 'react-native';
+import { Alert, Image, Platform, Pressable, View } from 'react-native';
 import {
   type ImageLibraryOptions,
   type ImagePickerResponse,
@@ -240,7 +240,9 @@ export const ModifyInfoScreen = () => {
         {clickedUpload && (
           <Pressable
             onPress={() => !isLoading && setClickedUpload(false)}
-            className="absolute left-0 bottom-0 w-full h-full bg-black/50 px-[30] pb-[55] justify-end">
+            className={`absolute left-0 bottom-0 w-full h-full bg-black/50 px-[30] ${
+              Platform.OS === 'ios' ? 'pb-[79]' : 'pb-[55]'
+            } justify-end`}>
             <Pressable onPress={() => {}} className="w-full">
               <AnimatedView
                 visible={clickedUpload}
