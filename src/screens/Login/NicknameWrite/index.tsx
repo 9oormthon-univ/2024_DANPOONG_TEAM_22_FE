@@ -106,7 +106,7 @@ export const NicknameWriteScreen = ({
 
   return (
     <BG type="main">
-      <DismissKeyboardView>
+      <DismissKeyboardView extraHeight={80}>
         <AppBar
           goBackCallbackFn={openModal}
           className="absolute top-[0] w-full"
