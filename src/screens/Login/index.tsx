@@ -130,7 +130,7 @@ export const LoginScreen = ({ navigation }: Readonly<Props>) => {
             />
           </Pressable>
           {/* 서비스이용약관, 개인정보처리방침 */}
-          <View className="mt-[18.2] flex-row justify-center">
+          <View className="mt-[18.2] flex-row justify-center mb-[24]">
             <View className="flex-row justify-center">
               <CustomText
                 type="caption2"

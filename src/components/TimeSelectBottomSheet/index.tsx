@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Animated, Pressable, ScrollView, View } from 'react-native';
+import { Animated, Platform, Pressable, ScrollView, View } from 'react-native';
 
 import { CustomText } from '@components/CustomText';
 
@@ -88,7 +88,9 @@ export const TimeSelectBottomSheet = ({
   return (
     <Animated.View
       style={{ opacity: opacityAnim }}
-      className={`absolute top-0 left-0 right-0 bottom-0 bg-black/50 justify-end px-[30] pb-[27]`}>
+      className={`absolute top-0 left-0 right-0 bottom-0 bg-black/50 justify-end px-[30] ${
+        Platform.OS === 'ios' ? 'pb-[51]' : 'pb-[27]'
+      }`}>
       <Pressable
         className="absolute top-0 left-0 right-0 bottom-0"
         onPress={onClose}

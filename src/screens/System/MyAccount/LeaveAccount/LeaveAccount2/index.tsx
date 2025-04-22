@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Dimensions, View } from 'react-native';
+import { Dimensions, Platform, View } from 'react-native';
 
 import { deleteMember } from '@apis/DeleteAccount/delete/Member/fetch';
 import { type deleteMemberRequest } from '@apis/DeleteAccount/delete/Member/type';
@@ -231,7 +231,10 @@ export const LeaveAccount2Screen = ({
       </View>
 
       {/* 버튼 영역 */}
-      <View className={`absolute left-0 bottom-[55] w-full px-[30]`}>
+      <View
+        className={`absolute left-0 ${
+          Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
+        } w-full px-[30]`}>
         {/* 회원 탈퇴 확인완료 버튼 */}
         <View
           className="flex-row items-center justify-center py-[18] space-x-[10px]"
@@ -259,6 +262,7 @@ export const LeaveAccount2Screen = ({
           disabled={!isConfirmed}
         />
       </View>
+      <FlexableMargin flexGrow={Platform.OS === 'ios' ? 79 : 55} />
     </BG>
   );
 };

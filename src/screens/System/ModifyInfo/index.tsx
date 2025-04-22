@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Alert, Image, Pressable, View } from 'react-native';
+import { Alert, Image, Platform, Pressable, View } from 'react-native';
 import {
   type ImageLibraryOptions,
   type ImagePickerResponse,
@@ -239,50 +239,54 @@ export const ModifyInfoScreen = () => {
       </DismissKeyboardView>
 
       {/* 이미지 수정 모달 (앨범에서 사진 선택 / 기본 이미지 적용) */}
-      {clickedUpload && (
-        <Pressable
-          onPress={() => !isLoading && setClickedUpload(false)}
-          className="absolute left-0 bottom-0 w-full h-full bg-black/50 px-[30] pb-[55] justify-end">
-          <Pressable onPress={() => {}} className="w-full">
-            <AnimatedView
-              visible={clickedUpload}
-              style={{ borderRadius: 10 }}
-              className="bg-blue500 mb-[24]">
-              <View className="h-[43] justify-center items-center">
-                <CustomText
-                  type="caption1"
-                  text="프로필 사진 설정"
-                  className="text-gray300"
-                />
-              </View>
-              <View className="bg-blue600 h-[1]" />
-              <Pressable
-                className="h-[61] justify-center items-center"
-                onPress={() => !isLoading && selectImage()}>
-                <CustomText
-                  type="body3"
-                  text="앨범에서 사진 선택"
-                  className="text-white"
-                />
-              </Pressable>
-              <View className="bg-blue600 h-[1]" />
-              <Pressable
-                className="h-[61] justify-center items-center"
-                onPress={() => !isLoading && handleDefaultImageClick()}>
-                <CustomText
-                  type="body3"
-                  text="기본 이미지 적용"
-                  className="text-white"
-                />
-              </Pressable>
-            </AnimatedView>
-            <Button
-              text="취소"
-              onPress={() => !isLoading && setClickedUpload(false)}
-            />
+      <>
+        {clickedUpload && (
+          <Pressable
+            onPress={() => !isLoading && setClickedUpload(false)}
+            className={`absolute left-0 bottom-0 w-full h-full bg-black/50 px-[30] ${
+              Platform.OS === 'ios' ? 'pb-[79]' : 'pb-[55]'
+            } justify-end`}>
+            <Pressable onPress={() => {}} className="w-full">
+              <AnimatedView
+                visible={clickedUpload}
+                style={{ borderRadius: 10 }}
+                className="bg-blue500 mb-[24]">
+                <View className="h-[43] justify-center items-center">
+                  <CustomText
+                    type="caption1"
+                    text="프로필 사진 설정"
+                    className="text-gray300"
+                  />
+                </View>
+                <View className="bg-blue600 h-[1]" />
+                <Pressable
+                  className="h-[61] justify-center items-center"
+                  onPress={() => !isLoading && selectImage()}>
+                  <CustomText
+                    type="body3"
+                    text="앨범에서 사진 선택"
+                    className="text-white"
+                  />
+                </Pressable>
+                <View className="bg-blue600 h-[1]" />
+                <Pressable
+                  className="h-[61] justify-center items-center"
+                  onPress={() => !isLoading && handleDefaultImageClick()}>
+                  <CustomText
+                    type="body3"
+                    text="기본 이미지 적용"
+                    className="text-white"
+                  />
+                </Pressable>
+              </AnimatedView>
+              <Button
+                text="취소"
+                onPress={() => !isLoading && setClickedUpload(false)}
+              />
+            </Pressable>
           </Pressable>
-        </Pressable>
-      )}
+        )}
+      </>
 
       <Modal
         type="info"

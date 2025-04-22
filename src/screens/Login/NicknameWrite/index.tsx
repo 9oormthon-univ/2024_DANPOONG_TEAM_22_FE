@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Image, Pressable, View } from 'react-native';
+import { Image, Platform, Pressable, View } from 'react-native';
 import {
   type ImageLibraryOptions,
   type ImagePickerResponse,
@@ -162,7 +162,10 @@ export const NicknameWriteScreen = ({
         />
 
         <DismissKeyboardView.Footer>
-          <View className={`absolute left-0 bottom-[55] w-full px-[30]`}>
+          <View
+            className={`absolute left-0 ${
+              Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
+            } w-full px-[30]`}>
             <Button
               text="다음"
               onPress={handleNext}

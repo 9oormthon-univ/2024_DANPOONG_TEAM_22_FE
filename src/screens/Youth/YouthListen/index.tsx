@@ -4,6 +4,7 @@ import {
   Alert,
   Image,
   Keyboard,
+  Platform,
   Pressable,
   ScrollView,
   TextInput,
@@ -402,34 +403,37 @@ export const YouthListenScreen = ({
         {/* 메시지 입력 영역 */}
         {/* MEMO: absolute 스타일을 가진 View 상위에 View 로 감싸야 키보드가 올라갔을 때 키보드 위로 컴포넌트가 올라감 (이유 조사 필요) */}
         <View>
-          <View className="absolute left-0 bottom-0 w-full h-[86] px-[25] bg-blue500 flex-row items-center">
-            <View className="flex-[7.5] relative">
-              <TextInput
-                value={message}
-                onChangeText={setMessage}
-                placeholder="감사의 말을 전해보세요"
-                placeholderTextColor={COLORS.gray300}
-                className={`h-[40] text-gray100 py-[8] pl-[27] pr-[45] font-r bg-blue400 border ${
-                  isKeyboardVisible ? 'border-gray200' : 'border-blue400'
-                }`}
-                style={{ fontSize: 15, borderRadius: 100 }}
-                onSubmitEditing={() => handleMessageSend()}
-                maxLength={160}
-              />
-              {!!message && (
-                <Pressable
-                  className={`absolute right-[6] top-[5]`}
-                  onPress={() => handleMessageSend()}>
-                  <SendIcon />
-                </Pressable>
-              )}
+          <View className="absolute left-0 bottom-0 w-full">
+            <View className="h-[86] px-[25] bg-blue500 flex-row items-center">
+              <View className="flex-[7.5] relative">
+                <TextInput
+                  value={message}
+                  onChangeText={setMessage}
+                  placeholder="감사의 말을 전해보세요"
+                  placeholderTextColor={COLORS.gray300}
+                  className={`h-[40] text-gray100 py-[8] pl-[27] pr-[45] font-r bg-blue400 border ${
+                    isKeyboardVisible ? 'border-gray200' : 'border-blue400'
+                  }`}
+                  style={{ fontSize: 15, borderRadius: 100 }}
+                  onSubmitEditing={() => handleMessageSend()}
+                  maxLength={160}
+                />
+                {!!message && (
+                  <Pressable
+                    className={`absolute right-[6] top-[5]`}
+                    onPress={() => handleMessageSend()}>
+                    <SendIcon />
+                  </Pressable>
+                )}
+              </View>
+              <View className="w-[15]" />
+              <Pressable
+                className="flex-[1]"
+                onPress={() => setIsClickedEmotion(prev => !prev)}>
+                {isClickedEmotion ? <SmileGrayIcon /> : <SmileIcon />}
+              </Pressable>
             </View>
-            <View className="w-[15]" />
-            <Pressable
-              className="flex-[1]"
-              onPress={() => setIsClickedEmotion(prev => !prev)}>
-              {isClickedEmotion ? <SmileGrayIcon /> : <SmileIcon />}
-            </Pressable>
+            {Platform.OS === 'ios' && <View className="h-[24] bg-blue500" />}
           </View>
         </View>
       </DismissKeyboardView>
