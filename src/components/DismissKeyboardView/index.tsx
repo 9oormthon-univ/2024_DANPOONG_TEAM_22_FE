@@ -13,6 +13,8 @@ import { useKeyboardHeight } from '@hooks/useKeyboardHeight';
 
 type FooterProps = { children: ReactNode };
 
+type HeaderProps = { children: ReactNode };
+
 type Props = {
   children: ReactNode;
   /** 고정시킬 푸터가 있고, 키보드가 올라오면서 키보드 위 간격을 띄우고 싶을 경우, 키보드 위 간격 (android-only) */
@@ -34,6 +36,9 @@ export const DismissKeyboardView = ({
 }: Props) => {
   const { maxKeyboardHeight } = useKeyboardHeight();
 
+  // 헤더로 렌더링될 React 노드를 저장할 변수
+  let header: ReactNode = null;
+
   // 푸터로 렌더링될 React 노드를 저장할 변수
   let footer: ReactNode = null;
 
@@ -42,6 +47,17 @@ export const DismissKeyboardView = ({
   // 찾은 경우 해당 컴포넌트의 자식(푸터 내용)을 footer 변수에 저장하고,
   // 원래 자식 목록에서는 제거합니다.
   const filteredChildren = Children.map(children, child => {
+    if (
+      isValidElement(child) &&
+      child.type === DismissKeyboardView.Header // 자식 요소의 타입이 DismissKeyboardView.Header인지 확인
+    ) {
+      // DismissKeyboardView.Header 컴포넌트의 자식 요소를 header 변수에 할당
+      header = (child as React.ReactElement<FooterProps>).props.children;
+
+      // 해당 자식(DismissKeyboardView.Header)은 메인 컨텐츠 영역에서 렌더링하지 않도록 null 반환
+      return null;
+    }
+
     if (
       isValidElement(child) &&
       child.type === DismissKeyboardView.Footer // 자식 요소의 타입이 DismissKeyboardView.Footer인지 확인
@@ -53,13 +69,16 @@ export const DismissKeyboardView = ({
       return null;
     }
 
-    // DismissKeyboardView.Footer가 아닌 다른 자식 요소는 그대로 반환
+    // DismissKeyboardView.Footer 또는 DismissKeyboardView.Header 가 아닌 다른 자식 요소는 그대로 반환
     return child;
   });
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={{ flex: 1 }}>
+        {/* 키보드와 관계없이 항상 고정 */}
+        {header}
+
         <KeyboardAwareScrollView
           enableOnAndroid
           extraHeight={extraHeight}
@@ -85,8 +104,11 @@ export const DismissKeyboardView = ({
   );
 };
 
+const Header = ({ children }: HeaderProps) => <>{children}</>;
 const Footer = ({ children }: FooterProps) => <>{children}</>;
 
 Footer.displayName = 'DismissKeyboardView.Footer';
+Header.displayName = 'DismissKeyboardView.Header';
 
 DismissKeyboardView.Footer = Footer;
+DismissKeyboardView.Header = Header;
