@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { Platform, Pressable, View } from 'react-native';
 
 import { AppBar } from '@components/AppBar';
 import { BG } from '@components/BG';
@@ -103,7 +103,10 @@ const YouthWakeUpTimeScreen = ({ navigation }: Readonly<AuthProps>) => {
           </View>
         </View>
 
-        <View className="absolute left-0 bottom-[55] w-full px-[30]">
+        <View
+          className={`absolute left-0 ${
+            Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
+          } w-full px-[30]`}>
           <Button text="다음" onPress={handleNext} />
         </View>
 

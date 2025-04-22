@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Dimensions, View } from 'react-native';
+import { Dimensions, Platform, View } from 'react-native';
 
 import { deleteMember } from '@apis/DeleteAccount/delete/Member/fetch';
 import { type deleteMemberRequest } from '@apis/DeleteAccount/delete/Member/type';
@@ -14,8 +14,11 @@ import { Button } from '@components/Button';
 import { CustomText } from '@components/CustomText';
 import { FlexableMargin } from '@components/FlexableMargin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
-import { type NavigationProp, type RouteProp } from '@react-navigation/native';
+import {
+  type NavigationProp,
+  type RouteProp,
+  useNavigation,
+} from '@react-navigation/native';
 import { type SystemStackParamList } from '@type/nav/SystemStackParamList';
 // utils
 import { redirectToAuthScreen } from '@utils/redirectToAuthScreen';
@@ -254,7 +257,7 @@ export const LeaveAccount2Screen = ({
             disabled={!isConfirmed}
           />
         </View>
-        <FlexableMargin flexGrow={55} />
+        <FlexableMargin flexGrow={Platform.OS === 'ios' ? 79 : 55} />
       </View>
     </BG>
   );

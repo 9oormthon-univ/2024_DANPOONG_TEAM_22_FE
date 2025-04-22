@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Image, Pressable, View } from 'react-native';
+import { Image, Platform, Pressable, View } from 'react-native';
 
 import { BG } from '@components/BG';
 import { Button } from '@components/Button';
@@ -113,7 +113,10 @@ export const RoleSelectScreen = ({ navigation }: Readonly<AuthProps>) => {
         source={require('@assets/pngs/background/signup2.png')}
         className="w-full h-auto mt-[54]"
       />
-      <View className="absolute left-0 bottom-[55] w-full px-[30]">
+      <View
+        className={`absolute left-0 ${
+          Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
+        } w-full px-[30]`}>
         <Button text="다음" onPress={handleNext} disabled={!role} />
       </View>
     </BG>

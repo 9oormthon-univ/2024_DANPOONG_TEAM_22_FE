@@ -4,6 +4,7 @@ import {
   Dimensions,
   Image,
   ImageBackground,
+  Platform,
   Pressable,
   StyleSheet,
   View,
@@ -12,6 +13,7 @@ import { SlidingDot } from 'react-native-animated-pagination-dots';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 import { type ValueOf } from 'react-native-gesture-handler/lib/typescript/typeUtils';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { type PanGestureHandlerEventPayload } from 'react-native-screens';
 
 import { BG } from '@components/BG';
@@ -81,7 +83,10 @@ const Page1 = ({ nickname, onNext }: Readonly<PageProps>) => {
           text={`${nickname} 님,\n지금도 내일모래에는\n당신을 위해 목소리를 내는\n사람들이 있어요`}
           className="text-white text-center"
         />
-        <View className="absolute left-0 bottom-[55] w-full px-[30]">
+        <View
+          className={`absolute left-0 ${
+            Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
+          } w-full px-[30]`}>
           <Button text="다음" onPress={handleNext} />
         </View>
       </View>
@@ -223,7 +228,10 @@ const Page2 = ({
           </View>
         </Animated.View>
 
-        <View className="absolute left-0 bottom-[55] w-full px-[30]">
+        <View
+          className={`absolute left-0 ${
+            Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
+          } w-full px-[30]`}>
           <Button text="다음" onPress={handleJump} />
         </View>
       </View>
@@ -324,7 +332,10 @@ const Page3 = ({ onNext }: Readonly<PageProps>) => {
         />
       </View>
 
-      <View className="absolute left-0 bottom-[55] w-full px-[30]">
+      <View
+        className={`absolute left-0 ${
+          Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
+        } w-full px-[30]`}>
         <Button text="다음" onPress={handleNext} />
       </View>
     </View>
@@ -334,9 +345,11 @@ const Page3 = ({ onNext }: Readonly<PageProps>) => {
 const AnimatedImageBackground =
   Animated.createAnimatedComponent(ImageBackground);
 
-const Page4 = ({ onNext }: Readonly<PageProps>) => {
+const Page4 = ({ onNext, onSkip }: Readonly<PageProps>) => {
   const opacityAnim = useRef(new Animated.Value(1)).current;
   const nextOpacityAnim = useRef(new Animated.Value(0)).current;
+
+  const { top: statusBarHeight } = useSafeAreaInsets();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -377,19 +390,37 @@ const Page4 = ({ onNext }: Readonly<PageProps>) => {
     onNext();
   };
 
+  const handleSkip = () => {
+    trackEvent('onboarding_skip_click', {
+      step: '3.4',
+    });
+
+    if (onSkip) {
+      onSkip();
+    }
+  };
+
   return (
     <View className="flex-1 items-center">
       <AnimatedImageBackground
         source={require('@assets/pngs/background/youthOnboarding3.png')}
         style={{ ...StyleSheet.absoluteFillObject, opacity: opacityAnim }}>
-        <View className="flex-1 w-full">
+        <View
+          className="absolute top-0 left-0 w-full z-10"
+          style={{ marginTop: statusBarHeight }}>
+          <SkipBar onSkip={handleSkip} />
+        </View>
+        <View className="flex-1 w-full" style={{ marginTop: statusBarHeight }}>
           <View className="h-[200]" />
           <CustomText
             type="body2"
             text={`이제부터 내일모래가 내일도, 모레도,\n당신의 일상에 따스한 목소리를 전달해줄게요`}
             className="text-white text-center"
           />
-          <View className="absolute left-0 bottom-[55] w-full px-[30]">
+          <View
+            className={`absolute left-0 ${
+              Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
+            } w-full px-[30]`}>
             <Button text="다음" onPress={handleNext} />
           </View>
         </View>
@@ -397,14 +428,22 @@ const Page4 = ({ onNext }: Readonly<PageProps>) => {
       <AnimatedImageBackground
         source={require('@assets/pngs/background/youthOnboarding4.png')}
         style={{ ...StyleSheet.absoluteFillObject, opacity: nextOpacityAnim }}>
-        <View className="flex-1 w-full">
+        <View
+          className="absolute top-0 left-0 w-full z-10"
+          style={{ marginTop: statusBarHeight }}>
+          <SkipBar onSkip={handleSkip} />
+        </View>
+        <View className="flex-1 w-full" style={{ marginTop: statusBarHeight }}>
           <View className="h-[200]" />
           <CustomText
             type="body2"
             text={`이제부터 내일모래가 내일도, 모레도,\n당신의 일상에 따스한 목소리를 전달해줄게요`}
             className="text-white text-center"
           />
-          <View className="absolute left-0 bottom-[55] w-full px-[30]">
+          <View
+            className={`absolute left-0 ${
+              Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
+            } w-full px-[30]`}>
             <Button text="다음" onPress={handleNext} />
           </View>
         </View>
@@ -417,6 +456,8 @@ const YouthOnboardingScreen = ({ navigation }: Readonly<AuthProps>) => {
   const [nickname, setNickname] = useState('');
   const [currentPageIdx, setCurrentPageIdx] = useState(0);
   const fadeAnim = useRef(new Animated.Value(1)).current;
+
+  const { top: statusBarHeight } = useSafeAreaInsets();
 
   // 닉네임 가져오기
   useEffect(() => {
@@ -550,26 +591,30 @@ const YouthOnboardingScreen = ({ navigation }: Readonly<AuthProps>) => {
       jumpStep={handleJumpStep}
     />,
     <Page3 key="3" onNext={handleNext} />,
-    <Page4 key="4" onNext={handleNext} />,
+    <Page4 key="4" onNext={handleNext} onSkip={handleSkip} />,
   ];
 
   const canJumpPageIdx = 2;
 
   return (
-    <BG type="main">
+    <BG type="main" isShowStatusBar={currentPageIdx === 3 ? false : true}>
       <>
         {currentPageIdx !== canJumpPageIdx && (
           <>
-            <View className="absolute top-0 left-0 w-full z-10">
-              <SkipBar
-                onSkip={() => {
-                  handleSkip();
-                  trackSkipEvent();
-                }}
-              />
-            </View>
+            {currentPageIdx !== 3 && (
+              <View className="absolute top-0 left-0 w-full z-10">
+                <SkipBar
+                  onSkip={() => {
+                    handleSkip();
+                    trackSkipEvent();
+                  }}
+                />
+              </View>
+            )}
 
-            <View className="absolute top-[100] left-1/2 -translate-x-1/2">
+            <View
+              className="absolute top-[100] left-1/2 -translate-x-1/2"
+              style={{ marginTop: currentPageIdx === 3 ? statusBarHeight : 0 }}>
               <SlidingDot
                 marginHorizontal={6}
                 containerStyle={{ top: 30 }}

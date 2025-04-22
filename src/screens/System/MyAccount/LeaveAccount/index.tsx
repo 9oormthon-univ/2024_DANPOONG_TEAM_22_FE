@@ -12,8 +12,7 @@ import { BG } from '@components/BG';
 import { Button } from '@components/Button';
 import { CustomText } from '@components/CustomText';
 import { TextInput } from '@components/TextInput';
-import { useNavigation } from '@react-navigation/native';
-import { type NavigationProp } from '@react-navigation/native';
+import { type NavigationProp, useNavigation } from '@react-navigation/native';
 import { type SystemStackParamList } from '@type/nav/SystemStackParamList';
 
 const LeaveReasons = [
@@ -100,7 +99,10 @@ export const LeaveAccountScreen = () => {
                 </View>
               )}
             </>
-            <View className="w-full px-px mt-[29] mb-[55]">
+            <View
+              className={`w-full px-px mt-[29] ${
+                Platform.OS === 'ios' ? 'mb-[79]' : 'mb-[55]'
+              }`}>
               <Button
                 text="다음"
                 onPress={() => {

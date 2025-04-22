@@ -199,7 +199,10 @@ export const YouthHomeScreen = ({ navigation }: Readonly<YouthProps>) => {
         onPress={clicked ? handleMenuToggle : null}
       />
 
-      <View className="absolute bottom-[90] right-[41] items-end">
+      <View
+        className={`absolute ${
+          Platform.OS === 'ios' ? 'bottom-[114]' : 'bottom-[90]'
+        } right-[41] items-end`}>
         {VOICE_MENU.map(({ alarmCategory, alarmCategoryKoreanName }, index) => (
           <Animated.View
             key={alarmCategory}
