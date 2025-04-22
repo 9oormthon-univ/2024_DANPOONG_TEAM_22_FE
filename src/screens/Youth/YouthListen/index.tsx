@@ -290,7 +290,7 @@ export const YouthListenScreen = ({
   // 메인 UI 렌더링
   return (
     <BG type="main">
-      <DismissKeyboardView extraScrollHeight={23}>
+      <DismissKeyboardView extraScrollHeight={24}>
         <View
           className={`absolute left-0 bottom-[40] w-full h-full ${
             isKeyboardVisible ? 'hidden' : ''

@@ -17,16 +17,13 @@ type Props = {
   children: ReactNode;
   /** 고정시킬 푸터가 있고, 키보드가 올라오면서 키보드 위 간격을 띄우고 싶을 경우, 키보드 위 간격 (android-only) */
   extraHeight?: number;
-  /** 키보드 위에 올릴 컴포넌트가 있을 경우, 컴포넌트를 띄울 키보드 위 간격 (android-only) */
+  /** 키보드 위에 올릴 컴포넌트가 있을 경우, 컴포넌트를 띄울 키보드 위 간격 */
   extraScrollHeight?: number;
   style?: StyleProp<ViewStyle>;
 };
 
 /** default extra offset when focusing the TextInputs. */
 const DEFAULT_EXTRA_HEIGHT = 75;
-
-/** iOS 키보드 위 간격 임시 지정 (ios-only) */
-const DEFAULT_IOS_EXTRA_HEIGHT = 10;
 
 // TODO: 안드로이드에서는 footer 고정이 안 되는 문제
 export const DismissKeyboardView = ({
@@ -70,7 +67,7 @@ export const DismissKeyboardView = ({
           extraScrollHeight={
             extraScrollHeight &&
             (Platform.OS === 'ios'
-              ? -DEFAULT_IOS_EXTRA_HEIGHT
+              ? extraScrollHeight
               : maxKeyboardHeight - DEFAULT_EXTRA_HEIGHT + extraScrollHeight)
           }
           // 사용자가 키보드가 열린 상태에서 아무 뷰나 터치하면, 그 터치 이벤트가 keyboard dismiss도 하고, 터치도 정상 처리
