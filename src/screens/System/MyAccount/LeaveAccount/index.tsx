@@ -1,16 +1,11 @@
 import { useState } from 'react';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  ScrollView,
-  View,
-} from 'react-native';
+import { Platform, Pressable, ScrollView, View } from 'react-native';
 
 import { AppBar } from '@components/AppBar';
 import { BG } from '@components/BG';
 import { Button } from '@components/Button';
 import { CustomText } from '@components/CustomText';
+import { DismissKeyboardView } from '@components/DismissKeyboardView';
 import { TextInput } from '@components/TextInput';
 import { type NavigationProp, useNavigation } from '@react-navigation/native';
 import { type SystemStackParamList } from '@type/nav/SystemStackParamList';
@@ -38,17 +33,15 @@ export const LeaveAccountScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <BG type="solid">
+    <BG type="solid">
+      <DismissKeyboardView>
         <AppBar
           title="회원 탈퇴"
           goBackCallbackFn={() => navigation.goBack()}
         />
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           {/* 전체 컨테이너 */}
-          <View className="flex-1 items-center">
+          <View className="flex-1 items-center pb-[174]">
             {/* 안내 문구 */}
             <View className="py-[41] px-px gap-[3] w-full">
               <CustomText
@@ -73,35 +66,73 @@ export const LeaveAccountScreen = () => {
                 onPress={() => toggleReason(reason)}
               />
             ))}
-            <>
+            <ReasonItem
+              reason="기타"
+              isSelected={selectedReasons.includes('기타')}
+              onPress={() => {
+                toggleReason('기타');
+                setIsDetailTyping(true);
+              }}
+            />
+            {selectedReasons.includes('기타') && (
+              <View
+                className="w-full px-px"
+                onTouchStart={() => {
+                  setIsDetailTyping(true);
+                }}>
+                <TextInput
+                  autoFocus
+                  value={detailReason}
+                  onChangeText={setDetailReason}
+                  placeholder="내용을 입력해주세요"
+                  isError={false}
+                  maxLength={160}
+                />
+              </View>
+            )}
+          </View>
+        </ScrollView>
+        {isDetailTyping && (
+          <View className="absolute top-0 right-0 h-full w-full z-[9]">
+            <BG type="solid">
               <ReasonItem
                 reason="기타"
                 isSelected={selectedReasons.includes('기타')}
                 onPress={() => {
                   toggleReason('기타');
-                  setIsDetailTyping(true);
+                  setIsDetailTyping(false);
                 }}
               />
-              {selectedReasons.includes('기타') && (
-                <View
-                  className="w-full px-px"
-                  onTouchStart={() => {
-                    setIsDetailTyping(true);
-                  }}>
-                  <TextInput
-                    autoFocus
-                    value={detailReason}
-                    onChangeText={setDetailReason}
-                    placeholder="내용을 입력해주세요"
-                    isError={false}
-                    maxLength={160}
-                  />
-                </View>
-              )}
-            </>
+              <View className="w-full px-px">
+                <TextInput
+                  autoFocus
+                  value={detailReason}
+                  onChangeText={setDetailReason}
+                  placeholder="내용을 입력해주세요"
+                  isError={false}
+                  maxLength={160}
+                />
+              </View>
+              <View
+                className="flex-1"
+                onTouchStart={() => {
+                  setIsDetailTyping(false);
+                }}
+              />
+            </BG>
+          </View>
+        )}
+
+        <DismissKeyboardView.Footer>
+          <>
             <View
-              className={`w-full px-px mt-[29] ${
-                Platform.OS === 'ios' ? 'mb-[79]' : 'mb-[55]'
+              className={`absolute left-0 bottom-0 w-full bg-blue700 ${
+                Platform.OS === 'ios' ? 'h-[163]' : 'h-[139]'
+              }`}
+            />
+            <View
+              className={`absolute left-0 w-full px-[30] ${
+                Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
               }`}>
               <Button
                 text="다음"
@@ -116,42 +147,10 @@ export const LeaveAccountScreen = () => {
                 disabled={selectedReasons.length === 0}
               />
             </View>
-          </View>
-        </ScrollView>
-        {isDetailTyping && (
-          <View className="absolute top-0 right-0 h-full w-full z-[9]">
-            <BG type="solid">
-              <View className="mt-[64]">
-                <ReasonItem
-                  reason="기타"
-                  isSelected={selectedReasons.includes('기타')}
-                  onPress={() => {
-                    toggleReason('기타');
-                    setIsDetailTyping(false);
-                  }}
-                />
-                <View className="w-full px-px">
-                  <TextInput
-                    autoFocus
-                    value={detailReason}
-                    onChangeText={setDetailReason}
-                    placeholder="내용을 입력해주세요"
-                    isError={false}
-                    maxLength={160}
-                  />
-                </View>
-              </View>
-              <View
-                className="flex-1"
-                onTouchStart={() => {
-                  setIsDetailTyping(false);
-                }}
-              />
-            </BG>
-          </View>
-        )}
-      </BG>
-    </KeyboardAvoidingView>
+          </>
+        </DismissKeyboardView.Footer>
+      </DismissKeyboardView>
+    </BG>
   );
 };
 
@@ -167,7 +166,7 @@ const ReasonItem = ({
   return (
     <Pressable
       onPress={onPress}
-      className="flex-row gap-[21] items-center w-full px-px py-[32]">
+      className="flex-row gap-[21] items-center w-full px-px py-[24]">
       <View
         className={`w-[20px] h-[20px] ${
           isSelected ? 'bg-yellowPrimary' : 'bg-blue500'

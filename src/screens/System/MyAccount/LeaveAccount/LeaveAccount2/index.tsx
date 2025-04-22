@@ -114,7 +114,7 @@ export const LeaveAccount2Screen = ({
           navigation.goBack();
         }}
       />
-      <View className="px-px" style={{ height: windowHeight - 64 }}>
+      <View className="px-px" style={{ height: windowHeight - 196 }}>
         {/* 상단 영역 */}
         {role == 'HELPER' ? (
           <>
@@ -127,7 +127,7 @@ export const LeaveAccount2Screen = ({
             />
             <FlexableMargin flexGrow={21} />
             <View className="w-full flex-row">
-              <CustomText type="title4" text="정말" className="text-white" />
+              <CustomText type="title4" text="정말 " className="text-white" />
               <CustomText
                 type="title4"
                 text="내일모래"
@@ -227,38 +227,42 @@ export const LeaveAccount2Screen = ({
             <FlexableMargin flexGrow={479} />
           </>
         )}
+        <FlexableMargin flexGrow={196} />
+      </View>
 
-        {/* 버튼 영역 */}
-        <View className="w-full ">
-          {/* 회원 탈퇴 확인완료 버튼 */}
+      {/* 버튼 영역 */}
+      <View
+        className={`absolute left-0 ${
+          Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
+        } w-full px-[30]`}>
+        {/* 회원 탈퇴 확인완료 버튼 */}
+        <View
+          className="flex-row items-center justify-center py-[18] space-x-[10px]"
+          onTouchEnd={() => setIsConfirmed(!isConfirmed)}>
+          {/* 체크박스 원 */}
           <View
-            className="flex-row items-center justify-center py-[18] space-x-[10px]"
-            onTouchEnd={() => setIsConfirmed(!isConfirmed)}>
-            {/* 체크박스 원 */}
-            <View
-              className={`w-[20px] h-[20px] rounded-full ${
-                isConfirmed ? 'bg-yellowPrimary' : 'bg-blue600'
-              } justify-center items-center`}>
-              {isConfirmed && (
-                <View className="w-[6px] h-[10px] border-r-2 border-b-2 border-blue700 rotate-45" />
-              )}
-            </View>
-            {/* 텍스트 */}
-            <CustomText
-              type="body4"
-              text="회원 탈퇴 유의사항을 확인했습니다"
-              className="text-gray200"
-            />
+            className={`w-[20px] h-[20px] rounded-full ${
+              isConfirmed ? 'bg-yellowPrimary' : 'bg-blue600'
+            } justify-center items-center`}>
+            {isConfirmed && (
+              <View className="w-[6px] h-[10px] border-r-2 border-b-2 border-blue700 rotate-45" />
+            )}
           </View>
-          {/* 회원 탈퇴 버튼 */}
-          <Button
-            text="회원 탈퇴하고 계정 삭제하기"
-            onPress={handleDeleteMember}
-            disabled={!isConfirmed}
+          {/* 텍스트 */}
+          <CustomText
+            type="body4"
+            text="회원 탈퇴 유의사항을 확인했습니다"
+            className="text-gray200"
           />
         </View>
-        <FlexableMargin flexGrow={Platform.OS === 'ios' ? 79 : 55} />
+        {/* 회원 탈퇴 버튼 */}
+        <Button
+          text="회원 탈퇴하고 계정 삭제하기"
+          onPress={handleDeleteMember}
+          disabled={!isConfirmed}
+        />
       </View>
+      <FlexableMargin flexGrow={Platform.OS === 'ios' ? 79 : 55} />
     </BG>
   );
 };

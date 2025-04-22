@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Image, Keyboard, Platform, Pressable, View } from 'react-native';
+import { useState } from 'react';
+import { Image, Platform, Pressable, View } from 'react-native';
 import {
   type ImageLibraryOptions,
   type ImagePickerResponse,
@@ -15,7 +15,6 @@ import { CustomText } from '@components/CustomText';
 import { DismissKeyboardView } from '@components/DismissKeyboardView';
 import { Modal } from '@components/Modal';
 import { TextInput } from '@components/TextInput';
-import { KEYBOARD_DELAY_MS } from '@constants/common';
 import { useModal } from '@hooks/useModal';
 import { useValidateInput } from '@hooks/useValidateInput';
 import { type NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -48,24 +47,7 @@ export const NicknameWriteScreen = ({
     message: nicknameMessage,
   } = useValidateInput({ type: 'nickname' });
   const [clickedUpload, setClickedUpload] = useState(false);
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const { visible, openModal, closeModal } = useModal();
-
-  useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
-      setIsKeyboardVisible(true),
-    );
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      setTimeout(() => {
-        setIsKeyboardVisible(false);
-      }, KEYBOARD_DELAY_MS);
-    });
-
-    return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
-  }, []);
 
   const selectImage = () => {
     const options: ImageLibraryOptions = {
@@ -124,7 +106,7 @@ export const NicknameWriteScreen = ({
 
   return (
     <BG type="main">
-      <DismissKeyboardView>
+      <DismissKeyboardView extraHeight={80}>
         <AppBar
           goBackCallbackFn={openModal}
           className="absolute top-[0] w-full"
@@ -178,38 +160,35 @@ export const NicknameWriteScreen = ({
           source={require('@assets/pngs/background/signup2.png')}
           className="w-full h-auto flex-1 mt-[80]"
         />
+
+        <DismissKeyboardView.Footer>
+          <View
+            className={`absolute left-0 ${
+              Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
+            } w-full px-[30]`}>
+            <Button
+              text="다음"
+              onPress={handleNext}
+              disabled={!isValidNickname}
+            />
+          </View>
+        </DismissKeyboardView.Footer>
       </DismissKeyboardView>
 
-      {clickedUpload ? (
-        <Pressable
-          onPress={() => setClickedUpload(false)}
-          className={`absolute left-0 bottom-0 w-full h-full bg-black/50 px-[30] pb-[55] justify-end ${
-            isKeyboardVisible ? 'hidden' : ''
-          }`}>
-          {/* 내부 컴포넌트에는 상위 onPress 이벤트가 전파되지 않도록 함 */}
-          <Pressable onPress={() => {}} className="w-full">
-            <AnimatedView
-              visible={clickedUpload}
-              style={{ borderRadius: 10 }}
-              className="bg-blue500 mb-[24]">
-              <BottomMenu title="프로필 사진 설정" data={bottomMenuData} />
-            </AnimatedView>
-
-            <Button text="취소" onPress={() => setClickedUpload(false)} />
-          </Pressable>
+      <Pressable
+        onPress={() => setClickedUpload(false)}
+        className={`absolute left-0 bottom-0 w-full h-full bg-black/50 px-[30] pb-[55] justify-end ${
+          clickedUpload ? '' : 'hidden'
+        }`}>
+        {/* 내부 컴포넌트에는 상위 onPress 이벤트가 전파되지 않도록 함 */}
+        <Pressable onPress={() => {}} className="w-full">
+          <AnimatedView visible={clickedUpload}>
+            <BottomMenu title="프로필 사진 설정" data={bottomMenuData} />
+          </AnimatedView>
+          <View className="h-[24]" />
+          <Button text="취소" onPress={() => setClickedUpload(false)} />
         </Pressable>
-      ) : (
-        <View
-          className={`absolute left-0 ${
-            Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
-          } w-full px-[30] ${isKeyboardVisible ? 'hidden' : ''}`}>
-          <Button
-            text="다음"
-            onPress={handleNext}
-            disabled={!isValidNickname}
-          />
-        </View>
-      )}
+      </Pressable>
 
       <Modal
         type="info"
