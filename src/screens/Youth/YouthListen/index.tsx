@@ -338,12 +338,14 @@ export const YouthListenScreen = ({
           <Pressable onPress={handlePlayButtonClick} className="w-[69] h-[69]">
             {isPlaying ? <StopIcon /> : <PlayIcon />}
           </Pressable>
+        </View>
 
-          {/* 하단 입력 영역 */}
+        {/* MEMO: absolute 스타일을 가진 View 상위에 View 로 감싸야 키보드가 올라갔을 때 키보드 위로 컴포넌트가 올라감 (이유 조사 필요) */}
+        <View>
           <View
-            className="absolute bottom-0 w-full"
+            className="absolute left-0 bottom-0 w-full"
             style={{ borderTopLeftRadius: 10, borderTopRightRadius: 10 }}>
-            {/* 감정 표현 옵션 */}
+            {/* 이모지 영역 */}
             {isClickedEmotion && (
               <ScrollView
                 horizontal
@@ -376,13 +378,8 @@ export const YouthListenScreen = ({
                 ))}
               </ScrollView>
             )}
-          </View>
-        </View>
 
-        {/* 메시지 입력 영역 */}
-        {/* MEMO: absolute 스타일을 가진 View 상위에 View 로 감싸야 키보드가 올라갔을 때 키보드 위로 컴포넌트가 올라감 (이유 조사 필요) */}
-        <View>
-          <View className="absolute left-0 bottom-0 w-full">
+            {/* 메시지 입력 영역 */}
             <View className="py-[23] px-[25] bg-blue500 flex-row items-center">
               <View className="flex-[7.5]">
                 <TextInput
