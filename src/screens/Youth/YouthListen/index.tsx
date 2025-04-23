@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import {
   Alert,
+  Dimensions,
   Image,
   Keyboard,
   Platform,
@@ -36,6 +37,11 @@ import SendIcon from '@assets/svgs/send.svg';
 import SmileIcon from '@assets/svgs/smile.svg';
 import SmileGrayIcon from '@assets/svgs/smile_gray.svg';
 import StopIcon from '@assets/svgs/stop.svg';
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const WAVE_LOTTIE_WIDTH = 300;
+
+export const WAVE_LOTTIE_SCALE = SCREEN_WIDTH / WAVE_LOTTIE_WIDTH;
 
 // 네비게이션 Props 타입 정의
 type YouthProps = NativeStackScreenProps<
@@ -273,7 +279,7 @@ export const YouthListenScreen = ({
         <DismissKeyboardView.Header>
           <View
             className={`absolute left-0 bottom-[40] w-full h-full`}
-            style={{ transform: [{ scale: 1.1 }] }}>
+            style={{ transform: [{ scale: WAVE_LOTTIE_SCALE }] }}>
             <LottieView
               ref={animation}
               style={{

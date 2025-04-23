@@ -26,6 +26,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import { type NativeStackScreenProps } from '@react-navigation/native-stack';
 import { type PageProps } from '@screens/Login/VolunteerOnboarding';
+import { WAVE_LOTTIE_SCALE } from '@screens/Youth/YouthListen';
 import { type AuthStackParamList } from '@stackNav/Auth';
 import { trackEvent } from '@utils/tracker';
 import LottieView from 'lottie-react-native';
@@ -288,7 +289,7 @@ const Page3 = ({ onNext }: Readonly<PageProps>) => {
     <View className="flex-1 w-full ">
       <View
         className="absolute left-0 bottom-0 w-full h-full"
-        style={{ transform: [{ scale: 1.1 }] }}>
+        style={{ transform: [{ scale: WAVE_LOTTIE_SCALE }] }}>
         <LottieView
           ref={animation}
           style={{
