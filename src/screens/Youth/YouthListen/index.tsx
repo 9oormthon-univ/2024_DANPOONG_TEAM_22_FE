@@ -390,9 +390,7 @@ export const YouthListenScreen = ({
                   onChangeText={setMessage}
                   placeholder="감사의 말을 전해보세요"
                   placeholderTextColor={COLORS.gray300}
-                  className={`min-h-[40] max-h-[137] text-gray100 pb-[8] ${
-                    Platform.OS === 'ios' ? 'pt-[10]' : 'pt-[8]'
-                  } pl-[27] pr-[45] font-r bg-blue400 border ${
+                  className={`min-h-[40] max-h-[137] text-gray100 py-[8] pl-[27] pr-[45] font-r bg-blue400 border ${
                     message.length > 0 ? 'border-gray200' : 'border-blue400'
                   }`}
                   style={{
