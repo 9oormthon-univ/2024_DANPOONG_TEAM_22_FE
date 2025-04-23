@@ -1,11 +1,14 @@
 // 필요한 컴포넌트 및 아이콘 import
 import { useEffect } from 'react';
-import { Animated, View } from 'react-native';
+import { Animated, Platform, View } from 'react-native';
 
 import { CustomText } from '@components/CustomText';
 
 import Bang from '@assets/svgs/Bang.svg';
 import CheckYellowIcon from '@assets/svgs/checkYellow.svg';
+
+// 애니메이션을 위한 opacity 값
+const opacity = new Animated.Value(0);
 
 // Toast 컴포넌트의 props 타입 정의
 export const Toast = ({
@@ -21,9 +24,6 @@ export const Toast = ({
   position?: 'top' | 'bottom' | 'left'; // 토스트 표시 위치
   type?: 'notice' | 'check'; // 토스트 타입
 }) => {
-  // 애니메이션을 위한 opacity 값
-  const opacity = new Animated.Value(0);
-
   // 토스트 표시 상태가 변경될 때마다 실행
   useEffect(() => {
     if (isToast) {
@@ -65,7 +65,9 @@ export const Toast = ({
         position === 'top'
           ? 'top-[100]'
           : position === 'left'
-          ? 'top-[88] left-[25] items-start'
+          ? Platform.OS === 'ios'
+            ? 'top-[125] left-[25] items-start'
+            : 'top-[88] left-[25] items-start'
           : 'bottom-[89] '
       }`}>
       <Animated.View
