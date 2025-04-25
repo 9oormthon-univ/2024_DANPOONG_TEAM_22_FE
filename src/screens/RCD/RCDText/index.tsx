@@ -1,7 +1,11 @@
 // React Native 및 기본 컴포넌트 임포트
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { TextInput as RNTextInput, TouchableOpacity, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import {
+  Platform,
+  TextInput as RNTextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 // API 관련 임포트
 import { postVoicefilesSelfByAlarmId } from '@apis/VolunteerRecord/post/VoicefilesSelfByAlarmId/fetch';
@@ -10,6 +14,8 @@ import { AppBar } from '@components/AppBar';
 import { BG } from '@components/BG';
 import { Button } from '@components/Button';
 import { CustomText } from '@components/CustomText';
+// 유틸리티 임포트
+import { FlexableMargin } from '@components/FlexableMargin';
 import { ShadowView } from '@components/ShadowView';
 import { StarIMG } from '@components/StarIMG';
 import { Toast } from '@components/Toast';
@@ -21,7 +27,6 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import { type HomeStackParamList } from '@type/nav/HomeStackParamList';
-// 유틸리티 임포트
 import { trackEvent } from '@utils/tracker';
 
 //   RCD 텍스트 입력 화면 컴포넌트
@@ -117,6 +122,7 @@ export const RCDTextScreen = ({
 
   return (
     <BG type="solid">
+      {/* TODO: DismissKeyboardView 적용해야 함 */}
       {/* 상단 앱바 */}
       <AppBar
         title="녹음 내용 작성"
@@ -131,22 +137,23 @@ export const RCDTextScreen = ({
         isToast={isToast}
         setIsToast={() => setIsToast(false)}
       />
-      {/* 메인 스크롤 영역 */}
-      <ScrollView
-        className="w-full h-full px-px mt-[65] pt-[52]"
-        contentContainerStyle={{ alignItems: 'center' }}>
-        {/* 이미지 섹션 */}
+      <FlexableMargin flexGrow={130} />
+      {/* 이미지 섹션 */}
+      <View className="items-center">
         <StarIMG />
-        <View className="mb-[29]" />
-        {/* 헤더 섹션 */}
-        <View className="h-auto items-center mb-[50]">
-          <CustomText
-            type="title2"
-            text={item.title}
-            className="text-white text-center"
-          />
-        </View>
-        {/* 텍스트 입력 섹션 */}
+      </View>
+      <FlexableMargin flexGrow={29} />
+      {/* 헤더 섹션 */}
+      <View className="h-auto items-center">
+        <CustomText
+          type="title2"
+          text={item.title}
+          className="text-white text-center"
+        />
+      </View>
+      <FlexableMargin flexGrow={50} />
+      {/* 텍스트 입력 섹션 */}
+      <View className="px-px w-full h-[340]">
         <ShadowTextInput
           value={text}
           onChangeText={onChangeText}
@@ -156,18 +163,19 @@ export const RCDTextScreen = ({
           isError={isError}
           maxLength={type === 'DAILY' ? 150 : 300}
         />
-        <View className="mb-[51]" />
+      </View>
+      <FlexableMargin flexGrow={51} />
 
-        {/* 버튼 섹션 */}
-        <View className="w-full mb-[78]">
-          <Button
-            text="녹음하기"
-            onPress={scriptSubmitHandler}
-            disabled={text.length === 0 || isLoading}
-            isLoading={isLoading}
-          />
-        </View>
-      </ScrollView>
+      {/* 버튼 섹션 */}
+      <View className="w-full px-px">
+        <Button
+          text="녹음하기"
+          onPress={scriptSubmitHandler}
+          disabled={text.length === 0 || isLoading}
+          isLoading={isLoading}
+        />
+      </View>
+      <FlexableMargin flexGrow={Platform.OS === 'ios' ? 79 : 55} />
     </BG>
   );
 };
