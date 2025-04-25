@@ -260,8 +260,7 @@ export const YouthListenScreen = ({
         await audioPlayer.current.pausePlayer();
         setIsPlaying(false);
       } else {
-        // TODO: 내부적으로 파일 열고 오디오 세션 준비하는 데 시간 소요되는 문제
-        await audioPlayer.current.startPlayer(voiceFile.fileUrl);
+        await audioPlayer.current.resumePlayer();
 
         // 저장한 위치로 이동
         await audioPlayer.current.seekToPlayer(playTimeRef.current);
