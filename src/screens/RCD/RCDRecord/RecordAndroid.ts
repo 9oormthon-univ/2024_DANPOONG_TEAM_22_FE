@@ -1,4 +1,4 @@
-import { NativeEventEmitter, NativeModules, Platform } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 
 /** Android 전용 WavRecorder 네이티브 모듈 */
 const { WavRecorder } = NativeModules;
@@ -11,8 +11,6 @@ if (WavRecorder && !WavRecorder.addListener) {
 if (WavRecorder && !WavRecorder.removeListeners) {
   WavRecorder.removeListeners = () => {};
 }
-
-const volumeEmitter = new NativeEventEmitter(WavRecorder);
 
 /**
  * 마이크 권한 상태를 확인합니다.
@@ -50,19 +48,6 @@ export async function requestMicrophonePermissionAndroid(): Promise<boolean> {
   return false;
 }
 
-/**
- * 볼륨 업데이트 이벤트 리스너를 추가합니다.
- * @param callback - 볼륨(dB) 업데이트를 받을 콜백 함수
- * @returns 리스너를 제거할 수 있는 함수
- */
-export function addVolumeListenerAndroid(
-  callback: (dB: number) => void,
-): () => void {
-  const subscription = volumeEmitter.addListener('volumeUpdate', callback);
-
-  return () => subscription.remove();
-}
-
 /** 녹음 시작 함수 */
 export async function startRecordingAndroid(): Promise<string | null> {
   try {
@@ -92,33 +77,10 @@ export async function startRecordingAndroid(): Promise<string | null> {
   }
 }
 
-/** 녹음 일시 중지 함수 */
-export async function pauseRecordingAndroid(): Promise<unknown> {
-  try {
-    const result = await WavRecorder.pauseRecording();
-
-    console.log(result);
-
-    return result;
-  } catch (error) {
-    console.error('녹음 일시중지 오류:', error);
-  }
-}
-
-/** 녹음 재개 함수 */
-export async function resumeRecordingAndroid(): Promise<unknown> {
-  try {
-    const result = await WavRecorder.resumeRecording();
-
-    console.log(result);
-
-    return result;
-  } catch (error) {
-    console.error('녹음 재개 오류:', error);
-  }
-}
-
-/** 녹음 종료, 파일 경로 반환 */
+/**
+ * 녹음 중지 함수
+ * @returns 녹음 파일 경로
+ */
 export async function stopRecordingAndroid(): Promise<string | null> {
   try {
     const filePath = await WavRecorder.stopRecording();
