@@ -9,30 +9,7 @@ import AudioRecorderPlayer, {
 // 오디오 녹음 플레이어 인스턴스 생성
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
-// 녹음 중지 함수
-export const stopEverythingIOS = async () => {
-  // 녹음 중지
-  await audioRecorderPlayer.stopRecorder();
-  // 플레이어 중지
-  await audioRecorderPlayer.stopPlayer();
-  // 녹음 리스너 제거
-  audioRecorderPlayer.removeRecordBackListener();
-  // 플레이어 리스너 제거
-  audioRecorderPlayer.removePlayBackListener();
-};
-
-// 현재 볼륨 레벨 반환 함수
-export const getCurrentMeteringIOS = async (): Promise<number | undefined> => {
-  let currentMetering: number | undefined;
-
-  audioRecorderPlayer.addRecordBackListener(e => {
-    currentMetering = e.currentMetering;
-  });
-
-  return currentMetering;
-};
-
-// 녹음 시작 함수
+/** 녹음 시작 함수 */
 export const startRecordingIOS = async () => {
   try {
     const path = 'recording.mp4';
@@ -66,7 +43,8 @@ export const startRecordingIOS = async () => {
     return null;
   }
 };
-// 녹음 중지 함수
+
+/** 녹음 중지 함수 */
 export const stopRecordingIOS = async () => {
   try {
     await audioRecorderPlayer.stopRecorder();
@@ -76,7 +54,7 @@ export const stopRecordingIOS = async () => {
   }
 };
 
-// 녹음 파일 재생 함수
+/** 녹음 파일 재생 함수 */
 export const playSoundIOS = async (uri: string) => {
   try {
     await audioRecorderPlayer.startPlayer(uri);
@@ -86,4 +64,27 @@ export const playSoundIOS = async (uri: string) => {
   } catch (err) {
     console.log('Failed to play sound', err);
   }
+};
+
+/** 모든 녹음 중지 함수 */
+export const stopEverythingIOS = async () => {
+  // 녹음 중지
+  await audioRecorderPlayer.stopRecorder();
+  // 플레이어 중지
+  await audioRecorderPlayer.stopPlayer();
+  // 녹음 리스너 제거
+  audioRecorderPlayer.removeRecordBackListener();
+  // 플레이어 리스너 제거
+  audioRecorderPlayer.removePlayBackListener();
+};
+
+/** 현재 볼륨 레벨 반환 함수 */
+export const getCurrentMeteringIOS = async (): Promise<number | undefined> => {
+  let currentMetering: number | undefined;
+
+  audioRecorderPlayer.addRecordBackListener(e => {
+    currentMetering = e.currentMetering;
+  });
+
+  return currentMetering;
 };
