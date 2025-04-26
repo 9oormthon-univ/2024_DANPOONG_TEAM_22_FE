@@ -1,90 +1,138 @@
-// 오디오 녹음 관련 라이브러리 임포트
-import AudioRecorderPlayer, {
-  type AudioSet,
-  AVEncoderAudioQualityIOSType,
-  AVEncodingOption,
-  AVModeIOSOption,
-} from 'react-native-audio-recorder-player';
+import { NativeModules } from 'react-native';
 
-// 오디오 녹음 플레이어 인스턴스 생성
-const audioRecorderPlayer = new AudioRecorderPlayer();
+/** iOS 전용 WavRecorder 네이티브 모듈 */
+const { WavRecorder } = NativeModules;
+
+// WavRecorder가 addListener, removeListeners 제공하지 않으면 Dummy 메서드로 채워줍니다.
+if (WavRecorder && !WavRecorder.addListener) {
+  WavRecorder.addListener = () => {};
+}
+
+if (WavRecorder && !WavRecorder.removeListeners) {
+  WavRecorder.removeListeners = () => {};
+}
+
+/**
+ * 마이크 권한 상태를 확인합니다.
+ * @returns 권한이 있으면 true, 없으면 false
+ */
+export async function checkMicrophonePermissionIOS(): Promise<boolean> {
+  try {
+    const hasPermission = await WavRecorder.checkPermissionStatus();
+
+    return hasPermission;
+  } catch (error) {
+    console.error('마이크 권한 확인 오류:', error);
+
+    return false;
+  }
+}
+
+/**
+ * 마이크 권한을 요청합니다.
+ * @returns 권한이 부여되면 true, 거부되면 false
+ */
+export async function requestMicrophonePermissionIOS(): Promise<boolean> {
+  try {
+    const granted = await WavRecorder.requestRecordAudioPermission();
+
+    return granted;
+  } catch (error) {
+    console.error('마이크 권한 요청 오류:', error);
+
+    return false;
+  }
+}
 
 /** 녹음 시작 함수 */
-export const startRecordingIOS = async () => {
+export async function startRecordingIOS(): Promise<string | null> {
   try {
-    const path = 'recording.mp4';
+    // 마이크 권한 확인
+    const hasPermission = await checkMicrophonePermissionIOS();
 
-    try {
-      const audioSet: AudioSet = {
-        // IOS
-        AVModeIOS: AVModeIOSOption.measurement, // IOS 녹음 모드 설정
-        AVEncoderAudioQualityKeyIOS: AVEncoderAudioQualityIOSType.high, // IOS 녹음 퀄리티 설정
-        AVNumberOfChannelsKeyIOS: 2, // IOS 채널 설정
-        AVFormatIDKeyIOS: AVEncodingOption.wav, // IOS 포맷 설정
-      };
+    // 권한이 없는 경우 권한 요청
+    if (!hasPermission) {
+      const granted = await requestMicrophonePermissionIOS();
 
-      const result = await audioRecorderPlayer.startRecorder(
-        path,
-        audioSet,
-        true,
-      );
+      if (!granted) {
+        console.log('마이크 권한이 거부되었습니다.');
 
-      audioRecorderPlayer.setSubscriptionDuration(0.1);
-
-      return result;
-    } catch (e) {
-      console.log('e', e);
-
-      return null;
+        return null;
+      }
     }
-  } catch (err) {
-    console.log('Failed to start recording', err);
+
+    const result = await WavRecorder.startRecording('recording.wav');
+
+    console.log('녹음 시작 경로:', result);
+
+    return result;
+  } catch (error) {
+    console.error('녹음 시작 오류:', error);
 
     return null;
   }
-};
+}
 
-/** 녹음 중지 함수 */
-export const stopRecordingIOS = async () => {
+/**
+ * 녹음 중지 함수
+ * @returns 녹음 파일 경로
+ */
+export async function stopRecordingIOS(): Promise<string | null> {
   try {
-    await audioRecorderPlayer.stopRecorder();
-    audioRecorderPlayer.removeRecordBackListener();
-  } catch (err) {
-    if (__DEV__) console.log('Failed to stop recording', err);
+    const filePath = await WavRecorder.stopRecording();
+
+    console.log('녹음 파일 경로:', filePath);
+
+    return filePath;
+  } catch (error) {
+    console.error('녹음 종료 오류:', error);
+
+    return null;
   }
-};
+}
 
 /** 녹음 파일 재생 함수 */
-export const playSoundIOS = async (uri: string) => {
+export async function playRecordingIOS(): Promise<unknown> {
   try {
-    await audioRecorderPlayer.startPlayer(uri);
-    audioRecorderPlayer.addPlayBackListener(() => {});
-    await audioRecorderPlayer.stopPlayer();
-    audioRecorderPlayer.removePlayBackListener();
-  } catch (err) {
-    console.log('Failed to play sound', err);
+    const result = await WavRecorder.playRecording();
+
+    console.log(result);
+
+    return result;
+  } catch (error) {
+    console.error('녹음 파일 재생 오류:', error);
   }
-};
+}
 
 /** 모든 녹음 중지 함수 */
-export const stopEverythingIOS = async () => {
-  // 녹음 중지
-  await audioRecorderPlayer.stopRecorder();
-  // 플레이어 중지
-  await audioRecorderPlayer.stopPlayer();
-  // 녹음 리스너 제거
-  audioRecorderPlayer.removeRecordBackListener();
-  // 플레이어 리스너 제거
-  audioRecorderPlayer.removePlayBackListener();
-};
+export async function stopEverythingIOS(): Promise<void> {
+  try {
+    // 녹음 중인 상태라면 녹음을 중지합니다.
+    if (WavRecorder && typeof WavRecorder.stopRecording === 'function') {
+      await WavRecorder.stopRecording();
+    }
+
+    // 재생 중인 상태라면 재생을 중지합니다.
+    if (WavRecorder && typeof WavRecorder.stopPlaying === 'function') {
+      await WavRecorder.stopPlaying();
+    }
+
+    // 필요에 따라 추가적인 메모리 해제 작업 등을 수행할 수 있습니다.
+    console.log('모든 녹음 및 재생 인스턴스와 메모리가 종료되었습니다.');
+  } catch (error) {
+    console.error('녹음, 재생 인스턴스 종료 중 오류:', error);
+  }
+}
 
 /** 현재 볼륨 레벨 반환 함수 */
 export const getCurrentMeteringIOS = async (): Promise<number | undefined> => {
-  let currentMetering: number | undefined;
+  try {
+    const currentMetering = await WavRecorder.getCurrentMetering();
 
-  audioRecorderPlayer.addRecordBackListener(e => {
-    currentMetering = e.currentMetering;
-  });
+    return currentMetering;
+  } catch (error) {
+    console.error('볼륨 레벨 측정 오류:', error);
 
-  return currentMetering;
+    return undefined;
+  }
 };

@@ -34,7 +34,7 @@ import {
 } from './RecordAndroid';
 import {
   getCurrentMeteringIOS,
-  playSoundIOS,
+  playRecordingIOS,
   startRecordingIOS,
   stopEverythingIOS,
   stopRecordingIOS,
@@ -185,7 +185,7 @@ export const RCDRecordScreen = ({
     setIsPlaying(true);
 
     if (isIOS) {
-      await playSoundIOS(uri);
+      await playRecordingIOS();
     } else {
       await playRecordingAndroid();
     }
@@ -211,7 +211,7 @@ export const RCDRecordScreen = ({
       const formData = new FormData();
 
       formData.append('file', {
-        uri: isIOS ? uri : `file://${uri}`,
+        uri: `file://${uri}`,
         name: 'recording.wav',
         type: 'audio/wav',
       } as { uri: string; name: string; type: string });
