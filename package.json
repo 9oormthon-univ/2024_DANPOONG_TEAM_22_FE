@@ -11,7 +11,10 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint --ext .tsx --ext .ts src/"
+    "lint": "eslint --ext .tsx --ext .ts src/",
+    "bundle:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output dist/android/index.android.bundle --assets-dest dist/android",
+    "bundle:ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output dist/ios/index.ios.bundle --assets-dest dist/ios",
+    "bundle": "yarn bundle:android && yarn bundle:ios"
   },
   "dependencies": {
     "@amplitude/analytics-react-native": "^1.4.11",

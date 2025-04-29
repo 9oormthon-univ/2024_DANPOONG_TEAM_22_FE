@@ -20,6 +20,17 @@ class MainApplication : Application(), ReactApplication {
 
   override val reactNativeHost: ReactNativeHost =
       object : DefaultReactNativeHost(this) {
+        // Code Push via CDN
+        override fun getJSBundleFile(): String? {
+            return if (BuildConfig.DEBUG) {
+                // 디버그 모드일 때는 null 반환해서 Metro 서버 연결
+                null
+            } else {
+                // 릴리즈 모드일 때는 CDN 번들 사용
+                "https://ip-file-upload-test.s3.ap-northeast-2.amazonaws.com/naeilmorae-bundle/index.android.bundle"
+            }
+        }
+        
         override fun getPackages(): List<ReactPackage> =
             PackageList(this).packages.apply {
               // Packages that cannot be autolinked yet can be added manually here, for example:
