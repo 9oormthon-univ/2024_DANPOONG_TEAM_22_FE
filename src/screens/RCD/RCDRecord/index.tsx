@@ -1,6 +1,6 @@
 // React 관련 임포트
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, Platform, ScrollView, View } from 'react-native';
+import { Platform, ScrollView, View } from 'react-native';
 
 import { postVoicefilesAnalysisByVoiceFileId } from '@apis/VolunteerRecord/post/VoicefilesAnalysisByVoiceFileId/fetch';
 // API 임포트
@@ -26,19 +26,21 @@ import { type HomeStackParamList } from '@type/nav/HomeStackParamList';
 import { trackEvent } from '@utils/tracker';
 
 import {
-  getCurrentMeteringIOS,
-  playSoundIOS,
-  startRecordingIOS,
-  stopEverythingIOS,
-  stopRecordingIOS,
-} from './Record';
-import {
   getCurrentMeteringAndroid,
   playRecordingAndroid,
   startRecordingAndroid,
   stopEverythingAndroid,
   stopRecordingAndroid,
 } from './RecordAndroid';
+import {
+  getCurrentMeteringIOS,
+  playRecordingIOS,
+  startRecordingIOS,
+  stopEverythingIOS,
+  stopRecordingIOS,
+} from './RecordIos';
+
+const isIOS = Platform.OS === 'ios';
 
 // 녹음 화면 컴포넌트
 export const RCDRecordScreen = ({
@@ -47,7 +49,6 @@ export const RCDRecordScreen = ({
   route: RouteProp<HomeStackParamList, 'RCDRecord'>;
 }) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
-  const windowHeight = Dimensions.get('window').height;
 
   // 라우트 파라미터 추출
   const { type, voiceFileId, content } = route.params;
@@ -63,7 +64,7 @@ export const RCDRecordScreen = ({
   // 컴포넌트 언마운트 여부 및 재시도 타이머 관리 ref
   const isMountedRef = useRef(true);
   const analysisTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [isAndroid] = useState<boolean>(Platform.OS === 'android');
+
   // 경과 시간 관리
   const [elapsedTime, setElapsedTime] = useState<number>(0);
   // 로딩 시간 관리
@@ -75,10 +76,10 @@ export const RCDRecordScreen = ({
 
     return () => {
       // 컴포넌트 언마운트 시 녹음 중지
-      if (isAndroid) {
-        stopEverythingAndroid();
-      } else {
+      if (isIOS) {
         stopEverythingIOS();
+      } else {
+        stopEverythingAndroid();
       }
 
       // 언마운트 되었음을 표시하고, 재시도 타이머가 있으면 해제
@@ -96,15 +97,16 @@ export const RCDRecordScreen = ({
       refreshRCDStates();
     }, []),
   );
+
   useEffect(() => {
     const monitorVolume = async () => {
       if (!isRecording) return;
 
-      // 100ms마다 볼륨 측정
+      // 50ms마다 볼륨 측정
       setTimeout(async () => {
-        const currentMetering = await (isAndroid
-          ? getCurrentMeteringAndroid()
-          : getCurrentMeteringIOS());
+        const currentMetering = await (isIOS
+          ? getCurrentMeteringIOS()
+          : getCurrentMeteringAndroid());
 
         // console.log('currentMetering', currentMetering);
         if (currentMetering !== undefined) {
@@ -119,10 +121,10 @@ export const RCDRecordScreen = ({
   // 녹음 관련 상태 초기화 함수
   const refreshRCDStates = async () => {
     try {
-      if (isAndroid) {
-        await stopEverythingAndroid();
-      } else {
+      if (isIOS) {
         await stopEverythingIOS();
+      } else {
+        await stopEverythingAndroid();
       }
 
       setIsDone(false);
@@ -135,16 +137,17 @@ export const RCDRecordScreen = ({
       console.log('refresh error', e);
     }
   };
+
   const startRecording = async () => {
     // 이미 녹음 중인 경우 중지
     if (isRecording) await stopRecording();
 
     let tmpPath: string | null = null;
 
-    if (isAndroid) {
-      tmpPath = await startRecordingAndroid();
-    } else {
+    if (isIOS) {
       tmpPath = await startRecordingIOS();
+    } else {
+      tmpPath = await startRecordingAndroid();
     }
 
     if (tmpPath) {
@@ -162,10 +165,10 @@ export const RCDRecordScreen = ({
 
     let tmpPath: string | null = null;
 
-    if (isAndroid) {
-      tmpPath = await stopRecordingAndroid();
-    } else {
+    if (isIOS) {
       await stopRecordingIOS();
+    } else {
+      tmpPath = await stopRecordingAndroid();
     }
 
     if (tmpPath) {
@@ -175,15 +178,16 @@ export const RCDRecordScreen = ({
     setIsRecording(false);
     setIsDone(true);
   };
+
   const playRecording = async () => {
     if (!uri || isPlaying) return;
 
     setIsPlaying(true);
 
-    if (isAndroid) {
-      await playRecordingAndroid();
+    if (isIOS) {
+      await playRecordingIOS();
     } else {
-      await playSoundIOS(uri);
+      await playRecordingAndroid();
     }
 
     await new Promise(resolve => setTimeout(resolve, volumeList.length * 100));
@@ -198,16 +202,16 @@ export const RCDRecordScreen = ({
     startTime.current = new Date().getTime();
 
     try {
-      if (isAndroid) {
-        await stopEverythingAndroid();
-      } else {
+      if (isIOS) {
         await stopEverythingIOS();
+      } else {
+        await stopEverythingAndroid();
       }
 
       const formData = new FormData();
 
       formData.append('file', {
-        uri: Platform.OS === 'android' ? `file://${uri}` : uri,
+        uri: `file://${uri}`,
         name: 'recording.wav',
         type: 'audio/wav',
       } as { uri: string; name: string; type: string });
