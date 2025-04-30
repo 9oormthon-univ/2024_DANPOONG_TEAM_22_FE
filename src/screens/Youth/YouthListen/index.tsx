@@ -267,7 +267,9 @@ export const YouthListenScreen = ({
   // 메인 UI 렌더링
   return (
     <BG type="main">
-      <DismissKeyboardView extraScrollHeight={24}>
+      <DismissKeyboardView
+        extraScrollHeightForAndroid={24}
+        extraScrollHeightForIos={84}>
         <DismissKeyboardView.Header>
           <View
             className={`absolute left-0 bottom-[40] w-full h-full`}
@@ -381,34 +383,41 @@ export const YouthListenScreen = ({
         {/* MEMO: absolute 스타일을 가진 View 상위에 View 로 감싸야 키보드가 올라갔을 때 키보드 위로 컴포넌트가 올라감 (이유 조사 필요) */}
         <View>
           <View className="absolute left-0 bottom-0 w-full">
-            <View className="h-[86] px-[25] bg-blue500 flex-row items-center">
-              <View className="flex-[7.5] relative">
+            <View className="py-[23] px-[25] bg-blue500 flex-row items-center">
+              <View className="flex-[7.5]">
                 <TextInput
                   value={message}
                   onChangeText={setMessage}
                   placeholder="감사의 말을 전해보세요"
                   placeholderTextColor={COLORS.gray300}
-                  className={`h-[40] text-gray100 py-[8] pl-[27] pr-[45] font-r bg-blue400 border ${
+                  className={`min-h-[40] max-h-[137] text-gray100 py-[8] pl-[27] pr-[45] font-r bg-blue400 border ${
                     message.length > 0 ? 'border-gray200' : 'border-blue400'
                   }`}
-                  style={{ fontSize: 15, borderRadius: 100 }}
+                  style={{
+                    fontSize: 15,
+                    lineHeight: 15 * 1.5,
+                    borderRadius: 30,
+                  }}
                   onSubmitEditing={() => handleMessageSend()}
                   maxLength={160}
+                  multiline
                 />
-                {!!message && (
+              </View>
+              <View className="w-[15]" />
+              <View className="flex-[1] relative">
+                <Pressable onPress={() => setIsClickedEmotion(prev => !prev)}>
+                  {isClickedEmotion ? <SmileGrayIcon /> : <SmileIcon />}
+                </Pressable>
+
+                {/* 전송버튼은 absolute 로 위치 조정 */}
+                {message !== '' && (
                   <Pressable
-                    className={`absolute right-[6] top-[5]`}
+                    className={`absolute -left-[51] bottom-[5]`}
                     onPress={() => handleMessageSend()}>
                     <SendIcon />
                   </Pressable>
                 )}
               </View>
-              <View className="w-[15]" />
-              <Pressable
-                className="flex-[1]"
-                onPress={() => setIsClickedEmotion(prev => !prev)}>
-                {isClickedEmotion ? <SmileGrayIcon /> : <SmileIcon />}
-              </Pressable>
             </View>
             {Platform.OS === 'ios' && <View className="h-[24] bg-blue500" />}
           </View>

@@ -19,8 +19,10 @@ type Props = {
   children: ReactNode;
   /** 고정시킬 푸터가 있고, 키보드가 올라오면서 키보드 위 간격을 띄우고 싶을 경우, 키보드 위 간격 (android-only) */
   extraHeight?: number;
-  /** 키보드 위에 올릴 컴포넌트가 있을 경우, 컴포넌트를 띄울 키보드 위 간격 */
-  extraScrollHeight?: number;
+  /** 키보드 위에 올릴 컴포넌트가 있을 경우, 컴포넌트를 띄울 키보드 위 간격 (android-only) */
+  extraScrollHeightForAndroid?: number;
+  /** 키보드 위에 올릴 컴포넌트가 있을 경우, 컴포넌트를 띄울 키보드 위 간격 (ios-only) */
+  extraScrollHeightForIos?: number;
   style?: StyleProp<ViewStyle>;
 };
 
@@ -31,7 +33,8 @@ const DEFAULT_EXTRA_HEIGHT = 75;
 export const DismissKeyboardView = ({
   children,
   extraHeight = 0,
-  extraScrollHeight = 0,
+  extraScrollHeightForAndroid = 0,
+  extraScrollHeightForIos = 0,
   ...props
 }: Props) => {
   const { maxKeyboardHeight } = useKeyboardHeight();
@@ -84,10 +87,12 @@ export const DismissKeyboardView = ({
           extraHeight={extraHeight}
           // KeyboardAwareScrollView 안에 있는 컴포넌트 중 키보드에 가려지는 컴포넌트의 경우, 키보드 위로 올라오도록 함
           extraScrollHeight={
-            extraScrollHeight &&
-            (Platform.OS === 'ios'
-              ? extraScrollHeight
-              : maxKeyboardHeight - DEFAULT_EXTRA_HEIGHT + extraScrollHeight)
+            Platform.OS === 'ios'
+              ? extraScrollHeightForIos
+              : extraScrollHeightForAndroid &&
+                maxKeyboardHeight -
+                  DEFAULT_EXTRA_HEIGHT +
+                  extraScrollHeightForAndroid
           }
           // 사용자가 키보드가 열린 상태에서 아무 뷰나 터치하면, 그 터치 이벤트가 keyboard dismiss도 하고, 터치도 정상 처리
           keyboardShouldPersistTaps="handled"
