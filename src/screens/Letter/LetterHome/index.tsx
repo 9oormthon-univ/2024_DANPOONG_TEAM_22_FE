@@ -10,6 +10,7 @@ import {
 import Skeleton from 'react-native-reanimated-skeleton';
 
 import { AnimatedView } from '@components/AnimatedView';
+import { BG } from '@components/BG';
 import { BottomMenu } from '@components/BottomMenu';
 import { Button } from '@components/Button';
 import { CustomText } from '@components/CustomText';
@@ -193,7 +194,7 @@ export const LetterHomeScreen = ({ navigation }: Readonly<LetterProps>) => {
   ];
 
   return (
-    <View className="flex-1 bg-blue600">
+    <BG type="solid">
       <FlatList
         data={filteredData}
         keyExtractor={item => String(item.providedFileId)}
@@ -398,6 +399,6 @@ export const LetterHomeScreen = ({ navigation }: Readonly<LetterProps>) => {
         position="bottom"
         type="check"
       />
-    </View>
+    </BG>
   );
 };
