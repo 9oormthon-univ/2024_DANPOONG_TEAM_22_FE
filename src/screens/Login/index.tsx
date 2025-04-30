@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Image, Linking, Pressable, View } from 'react-native';
+import { Image, Linking, Platform, Pressable, View } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
 import { postAuthLoginWithAccessTokenAndLoginType } from '@apis/AuthenticationAPI/post/AuthLoginWithAccessTokenAndLoginType/fetch';
 import { BG } from '@components/BG';
 import { CustomText } from '@components/CustomText';
 import { useGetMember } from '@hooks/auth/useGetMember';
+import appleAuth from '@invertase/react-native-apple-authentication';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   getProfile,
@@ -31,16 +32,21 @@ export const LoginScreen = ({ navigation }: Readonly<Props>) => {
   const [token, setToken] = useState<string | null>(null); // 액세스 토큰
   const { refetch: refetchMember } = useGetMember(token);
 
-  const handleLogin = async ({ loginType }: { loginType: string }) => {
+  /** 로그인 로직 처리를 위한 공통 함수 */
+  const handleLogin = async ({
+    token,
+    loginType,
+  }: {
+    token: string;
+    loginType: 'ANOYMOUS' | 'KAKAO' | 'APPLE';
+  }) => {
     try {
-      const token: KakaoOAuthToken = await login();
-
       // iOS에서는 macAddress를 가져오는 것이 정책상 허용되지 않음
       const { result } = await postAuthLoginWithAccessTokenAndLoginType({
         accessToken:
           loginType === 'ANOYMOUS'
             ? DeviceInfo.getDeviceId() + (await DeviceInfo.getMacAddress())
-            : token.accessToken,
+            : token,
         loginType,
       });
 
@@ -80,7 +86,44 @@ export const LoginScreen = ({ navigation }: Readonly<Props>) => {
         navigation.navigate('AppTabNav');
       }
     } catch (error) {
+      console.log('login error in handleLogin:', error);
+    }
+  };
+
+  /** 카카오 로그인 */
+  const handleLoginWithKakao = async () => {
+    try {
+      const token: KakaoOAuthToken = await login();
+
+      await handleLogin({ token: token.accessToken, loginType: 'KAKAO' });
+    } catch (error) {
       console.error('login error:', error);
+    }
+  };
+
+  /** 애플로 로그인 */
+  const handleLoginWithApple = async () => {
+    // performs login request
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: appleAuth.Operation.LOGIN,
+      // Note: it appears putting FULL_NAME first is important, see issue #293
+      requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+    });
+
+    // get current authentication state for user
+    // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
+    const credentialState = await appleAuth.getCredentialStateForUser(
+      appleAuthRequestResponse.user,
+    );
+
+    // use credentialState response to ensure the user is authenticated
+    if (credentialState === appleAuth.State.AUTHORIZED) {
+      // user is authenticated
+      const { identityToken } = appleAuthRequestResponse;
+
+      if (identityToken) {
+        await handleLogin({ token: identityToken, loginType: 'APPLE' });
+      }
     }
   };
 
@@ -118,8 +161,8 @@ export const LoginScreen = ({ navigation }: Readonly<Props>) => {
             className="h-[52.8] bg-[#FEE500] justify-center items-center flex-row"
             style={{ borderRadius: 7 }}
             onPress={() => {
-              handleLogin({ loginType: 'KAKAO' });
-              trackEvent('signup_start');
+              trackEvent('signup_start', { loginType: 'KAKAO' });
+              handleLoginWithKakao();
             }}>
             <KakaoIcon />
             <CustomText
@@ -129,8 +172,36 @@ export const LoginScreen = ({ navigation }: Readonly<Props>) => {
               style={{ fontSize: 17.6 }}
             />
           </Pressable>
+          {/* 애플로 로그인 버튼 */}
+          {Platform.OS === 'ios' && (
+            <>
+              <View className="h-[18.2]" />
+              <Pressable
+                className="h-[52.8] bg-black justify-center items-center flex-row"
+                style={{ borderRadius: 7 }}
+                onPress={() => {
+                  trackEvent('signup_start', { loginType: 'APPLE' });
+                  handleLoginWithApple();
+                }}>
+                <Image
+                  source={{
+                    uri: 'https://ip-file-upload-test.s3.ap-northeast-2.amazonaws.com/assets/apple_logo_white_32.png',
+                  }}
+                  className="w-[21] h-[21]"
+                  resizeMode="contain"
+                />
+                <CustomText
+                  type="body3"
+                  text="Apple로 로그인"
+                  className="ml-[9.39] font-[AppleSDGothicNeoR] text-white"
+                  style={{ fontSize: 17.6 }}
+                />
+              </Pressable>
+            </>
+          )}
+          <View className="h-[18.2]" />
           {/* 서비스이용약관, 개인정보처리방침 */}
-          <View className="mt-[18.2] flex-row justify-center mb-[24]">
+          <View className="flex-row justify-center">
             <View className="flex-row justify-center">
               <CustomText
                 type="caption2"

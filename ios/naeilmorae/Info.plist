@@ -43,6 +43,14 @@
 		<false/>
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>api-server-env-1.eba-dgkay2ac.ap-northeast-2.elasticbeanstalk.com</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
 	</dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>내일모래에서 위치별 날씨 알림을 제공하기 위해 사용됩니다. 해당 정보는 내일모래 서버에 저장되며 서비스 외 용도로 사용되지 않습니다.</string>
