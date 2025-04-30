@@ -4,6 +4,7 @@ import {
   Alert,
   Image,
   Keyboard,
+  Platform,
   Pressable,
   ScrollView,
   TextInput,
@@ -16,6 +17,7 @@ import { postProvidedfileCommentByProvidedFileId } from '@apis/YouthListenToVoic
 import { AppBar } from '@components/AppBar';
 import { BG } from '@components/BG';
 import { CustomText } from '@components/CustomText';
+import { DismissKeyboardView } from '@components/DismissKeyboardView';
 import { COLORS } from '@constants/Colors';
 import { KEYBOARD_DELAY_MS } from '@constants/common';
 import { EMOTION_OPTIONS_YOUTH } from '@constants/letter';
@@ -288,23 +290,23 @@ export const YouthListenScreen = ({
   // 메인 UI 렌더링
   return (
     <BG type="main">
-      <View
-        className={`absolute left-0 bottom-[40] w-full h-full ${
-          isKeyboardVisible ? 'hidden' : ''
-        }`}
-        style={{ transform: [{ scale: 1.1 }] }}>
-        <LottieView
-          ref={animation}
-          style={{
-            flex: 1,
-          }}
-          source={require('@assets/lottie/voice.json')}
-          autoPlay
-          loop
-        />
-      </View>
+      <DismissKeyboardView extraScrollHeight={24}>
+        <View
+          className={`absolute left-0 bottom-[40] w-full h-full ${
+            isKeyboardVisible ? 'hidden' : ''
+          }`}
+          style={{ transform: [{ scale: 1.1 }] }}>
+          <LottieView
+            ref={animation}
+            style={{
+              flex: 1,
+            }}
+            source={require('@assets/lottie/voice.json')}
+            autoPlay
+            loop
+          />
+        </View>
 
-      <View className="flex-1">
         <AppBar
           exitCallbackFn={() => navigation.goBack()}
           className="absolute top-[0] w-full"
@@ -395,7 +397,13 @@ export const YouthListenScreen = ({
                 ))}
               </ScrollView>
             )}
-            {/* 메시지 입력 영역 */}
+          </View>
+        </View>
+
+        {/* 메시지 입력 영역 */}
+        {/* MEMO: absolute 스타일을 가진 View 상위에 View 로 감싸야 키보드가 올라갔을 때 키보드 위로 컴포넌트가 올라감 (이유 조사 필요) */}
+        <View>
+          <View className="absolute left-0 bottom-0 w-full">
             <View className="h-[86] px-[25] bg-blue500 flex-row items-center">
               <View className="flex-[7.5] relative">
                 <TextInput
@@ -425,9 +433,10 @@ export const YouthListenScreen = ({
                 {isClickedEmotion ? <SmileGrayIcon /> : <SmileIcon />}
               </Pressable>
             </View>
+            {Platform.OS === 'ios' && <View className="h-[24] bg-blue500" />}
           </View>
         </View>
-      </View>
+      </DismissKeyboardView>
     </BG>
   );
 };

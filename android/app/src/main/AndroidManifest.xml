@@ -24,12 +24,14 @@
       android:theme="@style/AppTheme"
       android:usesCleartextTraffic="true"
       android:supportsRtl="true">
+      <!-- android:windowSoftInputMode="adjustNothing" 설정함으로써 -->
+      <!-- 키보드가 올라올 때 화면을 조정하지 않도록 함. 컴포넌트가 키보드 위로 올라오는 문제 해결을 위함 -->
       <activity
         android:name=".MainActivity"
         android:label="내일모래"
         android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
-        android:launchMode="singleTask"
-        android:windowSoftInputMode="adjustResize"
+        android:launchMode="singleTask"        
+        android:windowSoftInputMode="adjustNothing"
         android:exported="true"
         android:networkSecurityConfig="@xml/network_security_config">
         <intent-filter>

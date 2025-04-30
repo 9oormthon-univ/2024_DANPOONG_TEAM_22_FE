@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Alert, Image, Keyboard, Pressable, View } from 'react-native';
+import { useState } from 'react';
+import { Alert, Image, Platform, Pressable, View } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 
 import { uploadImageToS3 } from '@apis/util';
@@ -9,7 +9,6 @@ import { Button } from '@components/Button';
 import { CustomText } from '@components/CustomText';
 import { DismissKeyboardView } from '@components/DismissKeyboardView';
 import { Modal } from '@components/Modal';
-import { KEYBOARD_DELAY_MS } from '@constants/common';
 import { usePostMember } from '@hooks/auth/usePostMember';
 import { useLoading } from '@hooks/useLoading';
 import { useModal } from '@hooks/useModal';
@@ -31,7 +30,6 @@ export const MemberInfoWriteScreen = ({
   route,
   navigation,
 }: Readonly<AuthProps>) => {
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const { nickname, imageUri, role } = route.params;
   const [birthday, setBirthday] = useState<Date | null>(null);
   const [gender, setGender] = useState<Gender | null>(null);
@@ -40,22 +38,6 @@ export const MemberInfoWriteScreen = ({
   const { visible, openModal, closeModal } = useModal();
   const [visible2, setVisible2] = useState(false);
   const { mutate: postMember } = usePostMember();
-
-  useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
-      setIsKeyboardVisible(true),
-    );
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      setTimeout(() => {
-        setIsKeyboardVisible(false);
-      }, KEYBOARD_DELAY_MS);
-    });
-
-    return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
-  }, []);
 
   const handleNext = async () => {
     if (!gender || !birthday) return;
@@ -125,7 +107,7 @@ export const MemberInfoWriteScreen = ({
 
   return (
     <BG type="main">
-      <DismissKeyboardView>
+      <DismissKeyboardView extraHeight={80}>
         <AppBar
           goBackCallbackFn={openModal}
           className="absolute top-[0] w-full"
@@ -201,19 +183,21 @@ export const MemberInfoWriteScreen = ({
           source={require('@assets/pngs/background/signup2.png')}
           className="w-full h-auto flex-1 mt-[54]"
         />
-      </DismissKeyboardView>
 
-      <View
-        className={`absolute left-0 bottom-[55] w-full px-[30] ${
-          isKeyboardVisible ? 'hidden' : ''
-        }`}>
-        <Button
-          text="다음"
-          onPress={handleNext}
-          disabled={!birthday || !gender || isLoading}
-          isLoading={isLoading}
-        />
-      </View>
+        <DismissKeyboardView.Footer>
+          <View
+            className={`absolute left-0 ${
+              Platform.OS === 'ios' ? 'bottom-[79]' : 'bottom-[55]'
+            } w-full px-[30]`}>
+            <Button
+              text="다음"
+              onPress={handleNext}
+              disabled={!birthday || !gender || isLoading}
+              isLoading={isLoading}
+            />
+          </View>
+        </DismissKeyboardView.Footer>
+      </DismissKeyboardView>
 
       <DatePicker
         modal

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Animated, type ViewStyle } from 'react-native';
 
 type AnimatedViewProps = {
@@ -14,11 +14,15 @@ export const AnimatedView: React.FC<AnimatedViewProps> = ({
   className,
   style,
 }) => {
+  const [shouldRender, setShouldRender] = useState(visible);
+
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const translateYAnim = useRef(new Animated.Value(50)).current;
 
   useEffect(() => {
     if (visible) {
+      setShouldRender(true); // 먼저 보여주고 애니메이션 시작
+
       Animated.parallel([
         Animated.timing(fadeAnim, {
           toValue: 1,
@@ -43,9 +47,13 @@ export const AnimatedView: React.FC<AnimatedViewProps> = ({
           duration: 200,
           useNativeDriver: true,
         }),
-      ]).start();
+      ]).start(() => {
+        setShouldRender(false); // 애니메이션 끝난 후 숨기기
+      });
     }
   }, [visible]);
+
+  if (!shouldRender) return null;
 
   return (
     <Animated.View

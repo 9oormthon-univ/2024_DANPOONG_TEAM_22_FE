@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   Alert,
   FlatList,
+  Platform,
   Pressable,
   View,
 } from 'react-native';
@@ -329,18 +330,15 @@ export const LetterHomeScreen = ({ navigation }: Readonly<LetterProps>) => {
       <Portal>
         <Pressable
           onPress={() => setClickedMoreDot(false)}
-          className={`absolute left-0 bottom-0 w-full h-full bg-black/50 px-[30] pb-[55] justify-end ${
-            clickedMoreDot ? '' : 'hidden'
-          }`}>
+          className={`absolute left-0 bottom-0 w-full h-full bg-black/50 px-[30] ${
+            Platform.OS === 'ios' ? 'pb-[79]' : 'pb-[55]'
+          } justify-end ${clickedMoreDot ? '' : 'hidden'}`}>
           {/* 내부 컴포넌트에는 상위 onPress 이벤트가 전파되지 않도록 함 */}
           <Pressable onPress={() => {}} className="w-full">
-            <AnimatedView
-              visible={clickedMoreDot}
-              style={{ borderRadius: 10 }}
-              className="bg-blue500 mb-[24]">
+            <AnimatedView visible={clickedMoreDot}>
               <BottomMenu data={bottomMenuData} />
             </AnimatedView>
-
+            <View className="h-[24]" />
             <Button text="취소" onPress={() => setClickedMoreDot(false)} />
           </Pressable>
         </Pressable>
