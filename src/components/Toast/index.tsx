@@ -68,6 +68,8 @@ export const Toast = ({
           ? Platform.OS === 'ios'
             ? 'top-[125] left-[25] items-start'
             : 'top-[88] left-[25] items-start'
+          : Platform.OS === 'ios'
+          ? 'bottom-[115]'
           : 'bottom-[89] '
       }`}>
       <Animated.View
