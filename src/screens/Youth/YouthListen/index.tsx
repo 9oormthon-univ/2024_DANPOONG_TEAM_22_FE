@@ -19,7 +19,6 @@ import { BG } from '@components/BG';
 import { CustomText } from '@components/CustomText';
 import { DismissKeyboardView } from '@components/DismissKeyboardView';
 import { COLORS } from '@constants/Colors';
-import { KEYBOARD_DELAY_MS } from '@constants/common';
 import { EMOTION_OPTIONS_YOUTH } from '@constants/letter';
 import { VOICE_DELAY_MS, VOICE_LOADING_MS } from '@constants/voice';
 import { useDeleteComment } from '@hooks/providedFile/useDeleteComment';
@@ -52,7 +51,6 @@ export const YouthListenScreen = ({
   // 상태 관리
   const [message, setMessage] = useState(''); // 메시지 입력값
   const [isClickedEmotion, setIsClickedEmotion] = useState(false); // 감정 표현 클릭 여부
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false); // 키보드 표시 여부
   const animation = useRef<LottieView>(null); // 애니메이션 ref
   const [isPlaying, setIsPlaying] = useState(false); // 오디오 재생 여부
   const [voiceFile, setVoiceFile] = useState<VoiceFileResponseData>(
@@ -88,23 +86,6 @@ export const YouthListenScreen = ({
       animation.current?.pause();
     };
   }, [isPlaying]);
-
-  // 키보드 이벤트 리스너 설정
-  useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
-      setIsKeyboardVisible(true),
-    );
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      setTimeout(() => {
-        setIsKeyboardVisible(false);
-      }, KEYBOARD_DELAY_MS);
-    });
-
-    return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
-  }, []);
 
   useEffect(() => {
     if (!alarmId) {
@@ -241,10 +222,6 @@ export const YouthListenScreen = ({
 
       if (Keyboard.isVisible()) {
         Keyboard.dismiss();
-
-        setTimeout(() => {
-          setIsKeyboardVisible(false);
-        }, KEYBOARD_DELAY_MS);
       }
 
       setMessage('');
@@ -291,21 +268,21 @@ export const YouthListenScreen = ({
   return (
     <BG type="main">
       <DismissKeyboardView extraScrollHeight={24}>
-        <View
-          className={`absolute left-0 bottom-[40] w-full h-full ${
-            isKeyboardVisible ? 'hidden' : ''
-          }`}
-          style={{ transform: [{ scale: 1.1 }] }}>
-          <LottieView
-            ref={animation}
-            style={{
-              flex: 1,
-            }}
-            source={require('@assets/lottie/voice.json')}
-            autoPlay
-            loop
-          />
-        </View>
+        <DismissKeyboardView.Header>
+          <View
+            className={`absolute left-0 bottom-[40] w-full h-full`}
+            style={{ transform: [{ scale: 1.1 }] }}>
+            <LottieView
+              ref={animation}
+              style={{
+                flex: 1,
+              }}
+              source={require('@assets/lottie/voice.json')}
+              autoPlay
+              loop
+            />
+          </View>
+        </DismissKeyboardView.Header>
 
         <AppBar
           exitCallbackFn={() => navigation.goBack()}
@@ -412,7 +389,7 @@ export const YouthListenScreen = ({
                   placeholder="감사의 말을 전해보세요"
                   placeholderTextColor={COLORS.gray300}
                   className={`h-[40] text-gray100 py-[8] pl-[27] pr-[45] font-r bg-blue400 border ${
-                    isKeyboardVisible ? 'border-gray200' : 'border-blue400'
+                    message.length > 0 ? 'border-gray200' : 'border-blue400'
                   }`}
                   style={{ fontSize: 15, borderRadius: 100 }}
                   onSubmitEditing={() => handleMessageSend()}
