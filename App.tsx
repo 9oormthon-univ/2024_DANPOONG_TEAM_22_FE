@@ -129,8 +129,7 @@ export function App(): React.JSX.Element {
         if (isYouthAlarm) {
           pushNoti.displayNotification({
             title: '내일모래',
-            body:
-              remoteMessage.notification?.title ?? DEFAULT_YOUTH_ALARM_TITLE,
+            body: remoteMessage.notification?.body ?? DEFAULT_YOUTH_ALARM_TITLE,
             data: { alarmId: Number(alarmId) },
           });
 
@@ -141,8 +140,7 @@ export function App(): React.JSX.Element {
           pushNoti.displayNotification({
             title: '내일모래',
             body:
-              remoteMessage.notification?.title ??
-              DEFAULT_VOLUNTEER_ALARM_TITLE,
+              remoteMessage.notification?.body ?? DEFAULT_VOLUNTEER_ALARM_TITLE,
             data: {},
           });
         }
@@ -173,7 +171,7 @@ export function App(): React.JSX.Element {
             if (isYouthAlarm) {
               trackEvent('push_prefer', {
                 entry_screen_name: 'YouthListenScreen',
-                title: remoteMessage.notification?.title ?? '',
+                title: remoteMessage.notification?.body ?? '',
               });
 
               navigateToYouthListenScreen({
@@ -186,7 +184,7 @@ export function App(): React.JSX.Element {
             if (isVolunteerAlarm) {
               trackEvent('push_prefer', {
                 entry_screen_name: 'VolunteerHomeScreen',
-                title: remoteMessage.notification?.title ?? '',
+                title: remoteMessage.notification?.body ?? '',
               });
 
               navigateToVolunteerHomeScreen();
@@ -213,8 +211,7 @@ export function App(): React.JSX.Element {
                 await AsyncStorage.setItem('alarmId', alarmId);
                 await AsyncStorage.setItem(
                   'alarmTitle',
-                  remoteMessage.notification?.title ??
-                    DEFAULT_YOUTH_ALARM_TITLE,
+                  remoteMessage.notification?.body ?? DEFAULT_YOUTH_ALARM_TITLE,
                 );
 
                 return;
@@ -224,7 +221,7 @@ export function App(): React.JSX.Element {
                 // AsyncStorage에 alarmTitle 만 저장
                 await AsyncStorage.setItem(
                   'alarmTitle',
-                  remoteMessage.notification?.title ??
+                  remoteMessage.notification?.body ??
                     DEFAULT_VOLUNTEER_ALARM_TITLE,
                 );
               }
