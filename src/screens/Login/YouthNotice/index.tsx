@@ -141,20 +141,21 @@ const YouthNoticeScreen = ({ route, navigation }: Readonly<Props>) => {
       status: locationGranted ? 'GRANTED' : 'DENIED',
     });
 
-    if (!notificationGranted) {
-      Alert.alert(
-        '권한 필요',
-        '알림 권한이 필요합니다. 설정에서 권한을 허용해주세요.',
-        [
-          {
-            text: '확인',
-            onPress: () => console.log('확인 버튼 클릭'),
-          },
-        ],
-      );
+    // 푸시 알림은 선택 사항이어야 하며, 앱 내에서 사용하려면 사용자의 동의를 받아야 합니다.
+    // if (!notificationGranted) {
+    //   Alert.alert(
+    //     '권한 필요',
+    //     '알림 권한이 필요합니다. 설정에서 권한을 허용해주세요.',
+    //     [
+    //       {
+    //         text: '확인',
+    //         onPress: () => console.log('확인 버튼 클릭'),
+    //       },
+    //     ],
+    //   );
 
-      return;
-    }
+    //   return;
+    // }
 
     if (!locationGranted) {
       Alert.alert(
