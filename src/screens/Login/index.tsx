@@ -66,10 +66,6 @@ export const LoginScreen = ({ navigation }: Readonly<Props>) => {
       setToken(accessToken);
       await refetchMember();
 
-      const profile: KakaoProfile = await getProfile();
-
-      await AsyncStorage.setItem('email', profile.email);
-
       if (!infoRegistered) {
         navigation.navigate('RoleSelectScreen');
 
@@ -96,6 +92,10 @@ export const LoginScreen = ({ navigation }: Readonly<Props>) => {
       const token: KakaoOAuthToken = await login();
 
       await handleLogin({ token: token.accessToken, loginType: 'KAKAO' });
+
+      const profile: KakaoProfile = await getProfile();
+
+      await AsyncStorage.setItem('email', profile.email);
     } catch (error) {
       console.error('login error:', error);
     }
@@ -119,10 +119,14 @@ export const LoginScreen = ({ navigation }: Readonly<Props>) => {
     // use credentialState response to ensure the user is authenticated
     if (credentialState === appleAuth.State.AUTHORIZED) {
       // user is authenticated
-      const { identityToken } = appleAuthRequestResponse;
+      const { identityToken, email } = appleAuthRequestResponse;
 
       if (identityToken) {
         await handleLogin({ token: identityToken, loginType: 'APPLE' });
+      }
+
+      if (email) {
+        await AsyncStorage.setItem('email', email);
       }
     }
   };
