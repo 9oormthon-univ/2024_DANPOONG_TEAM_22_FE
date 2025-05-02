@@ -96,6 +96,7 @@ export const LoginScreen = ({ navigation }: Readonly<Props>) => {
       const profile: KakaoProfile = await getProfile();
 
       await AsyncStorage.setItem('email', profile.email);
+      await AsyncStorage.setItem('loginType', 'KAKAO');
     } catch (error) {
       console.error('login error:', error);
     }
@@ -128,6 +129,8 @@ export const LoginScreen = ({ navigation }: Readonly<Props>) => {
       if (email) {
         await AsyncStorage.setItem('email', email);
       }
+
+      await AsyncStorage.setItem('loginType', 'APPLE');
     }
   };
 

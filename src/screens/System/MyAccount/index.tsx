@@ -1,17 +1,28 @@
+import { useEffect, useState } from 'react';
+
 import { AppBar } from '@components/AppBar';
 import { BG } from '@components/BG';
 import { CustomText } from '@components/CustomText';
 import { Modal } from '@components/Modal';
 import { SystemButton } from '@components/SystemButton';
 import { useModal } from '@hooks/useModal';
-import { useNavigation } from '@react-navigation/native';
-import { type NavigationProp } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { type NavigationProp, useNavigation } from '@react-navigation/native';
 import { type SystemStackParamList } from '@type/nav/SystemStackParamList';
 import { handleLogout } from '@utils/handleLogout';
 
 export const MyAccountScreen = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
   const { visible, openModal, closeModal } = useModal();
+  const [loginType, setLoginType] = useState('');
+
+  useEffect(() => {
+    (async () => {
+      const storedLoginType = await AsyncStorage.getItem('loginType');
+
+      if (storedLoginType) setLoginType(storedLoginType);
+    })();
+  }, []);
 
   return (
     <>
@@ -24,7 +35,7 @@ export const MyAccountScreen = () => {
         />
         <SystemButton
           title="연결된 소셜 계정"
-          kakaoLogo={true}
+          loginType={loginType}
           onPress={() => {
             navigation.navigate('ConnectedAccount');
           }}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 
 import { AppBar } from '@components/AppBar';
 import { BG } from '@components/BG';
@@ -13,12 +13,16 @@ import KakaoLogo from '@assets/svgs/KakaoLogo.svg';
 export const ConnectedAccountScreen = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
   const [email, setEmail] = useState('');
+  const [loginType, setLoginType] = useState('');
 
   useEffect(() => {
     (async () => {
       const storedEmail = await AsyncStorage.getItem('email');
+      const storedLoginType = await AsyncStorage.getItem('loginType');
 
       if (storedEmail) setEmail(storedEmail);
+
+      if (storedLoginType) setLoginType(storedLoginType);
     })();
   }, []);
 
@@ -35,11 +39,20 @@ export const ConnectedAccountScreen = () => {
         {/* 연결된 소셜 계정 컨테이너 */}
         <View className="w-full h-[89] bg-blue600 rounded-[10px] px-[27] py-[17] justify-center">
           <View className="flex-row items-center">
-            <KakaoLogo />
+            {loginType == 'KAKAO' && <KakaoLogo />}
+            {loginType == 'APPLE' && (
+              <Image
+                source={{
+                  uri: 'https://ip-file-upload-test.s3.ap-northeast-2.amazonaws.com/assets/apple_logo_white_32.png',
+                }}
+                className="w-[16] h-[16]"
+                resizeMode="contain"
+              />
+            )}
             <View className="w-[8.64]" />
             <CustomText
               type="caption1"
-              text="카카오 계정"
+              text={loginType === 'KAKAO' ? '카카오 계정' : '애플 계정'}
               className="text-gray200"
             />
           </View>

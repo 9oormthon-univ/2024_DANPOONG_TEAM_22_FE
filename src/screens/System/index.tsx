@@ -26,6 +26,7 @@ export const SystemScreen = () => {
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('');
   const [profileImage, setProfileImage] = useState('');
+  const [loginType, setLoginType] = useState('');
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -36,6 +37,7 @@ export const SystemScreen = () => {
         const storedEmail = await AsyncStorage.getItem('email');
         const storedRole = await AsyncStorage.getItem('role');
         const storedProfileImage = await AsyncStorage.getItem('profileImage');
+        const storedLoginType = await AsyncStorage.getItem('loginType');
 
         if (storedNickname) setNickname(storedNickname);
 
@@ -44,6 +46,8 @@ export const SystemScreen = () => {
         if (storedRole) setRole(storedRole);
 
         if (storedProfileImage) setProfileImage(storedProfileImage);
+
+        if (storedLoginType) setLoginType(storedLoginType);
       })();
     }
   }, [isFocused]);
@@ -66,6 +70,7 @@ export const SystemScreen = () => {
           email={email}
           role={role}
           profileImage={profileImage}
+          loginType={loginType}
         />
         {/* 구분선 */}
         <View className="w-full h-[5px] bg-blue600" />
@@ -104,11 +109,13 @@ const AccountButton = ({
   email,
   role,
   profileImage,
+  loginType,
 }: {
   nickname: string;
   email: string;
   role: string;
   profileImage: string;
+  loginType: string;
 }) => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
 
@@ -144,7 +151,16 @@ const AccountButton = ({
         <View className="mt-[4.9]" />
         {/* 카카오 계정 */}
         <View className="flex-row items-center gap-[7.64] overflow-hidden">
-          <KakaoLogo />
+          {loginType == 'KAKAO' && <KakaoLogo />}
+          {loginType == 'APPLE' && (
+            <Image
+              source={{
+                uri: 'https://ip-file-upload-test.s3.ap-northeast-2.amazonaws.com/assets/apple_logo_white_32.png',
+              }}
+              className="w-[16] h-[16]"
+              resizeMode="contain"
+            />
+          )}
           <CustomText type="caption1" text={email} className="text-gray400" />
         </View>
       </View>

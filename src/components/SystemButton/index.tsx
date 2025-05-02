@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import { CustomText } from '@components/CustomText';
 import { ToggleSwitch } from '@components/ToggleSwitch';
@@ -12,14 +12,14 @@ import KakaoLogo from '@assets/svgs/KakaoLogo.svg';
 export const SystemButton = ({
   title,
   sub,
-  kakaoLogo,
+  loginType,
   onPress,
   type,
   isOn,
 }: {
   title: string;
   sub?: string;
-  kakaoLogo?: boolean;
+  loginType?: string;
   onPress?: () => void;
   type: 'button' | 'toggle' | 'link';
   isOn?: boolean;
@@ -34,7 +34,16 @@ export const SystemButton = ({
         {/* 메뉴 제목 */}
         <View className="flex-row justify-start items-center gap-x-[11]">
           <CustomText type="body3" text={title} className="text-white" />
-          {kakaoLogo && <KakaoLogo />}
+          {loginType == 'KAKAO' && <KakaoLogo />}
+          {loginType == 'APPLE' && (
+            <Image
+              source={{
+                uri: 'https://ip-file-upload-test.s3.ap-northeast-2.amazonaws.com/assets/apple_logo_white_32.png',
+              }}
+              className="w-[16] h-[16]"
+              resizeMode="contain"
+            />
+          )}
         </View>
         {/* 간격 조정 */}
         <View className="h-[4.9]" />
