@@ -15,14 +15,21 @@ import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 
 import { getVoiceFilesWithAlarmId } from '@apis/YouthListenToVoice/get/VoiceFilesWithAlarmId/fetch';
 import { postProvidedfileCommentByProvidedFileId } from '@apis/YouthListenToVoice/post/ProvidedfileCommentByProvidedFileId/fetch';
+import { usePostVoiceFilesReportByVoiceFileIdQuery } from '@apis/YouthListenToVoice/post/VoiceFilesReportByVoiceFileId/mutation';
+import { AnimatedView } from '@components/AnimatedView';
 import { AppBar } from '@components/AppBar';
 import { BG } from '@components/BG';
+import { BottomMenu } from '@components/BottomMenu';
+import { Button } from '@components/Button';
 import { CustomText } from '@components/CustomText';
 import { DismissKeyboardView } from '@components/DismissKeyboardView';
+import { Modal } from '@components/Modal';
 import { COLORS } from '@constants/Colors';
 import { EMOTION_OPTIONS_YOUTH } from '@constants/letter';
 import { VOICE_DELAY_MS, VOICE_LOADING_MS } from '@constants/voice';
+import { Portal } from '@gorhom/portal';
 import { useDeleteComment } from '@hooks/providedFile/useDeleteComment';
+import { useModal } from '@hooks/useModal';
 import { type NativeStackScreenProps } from '@react-navigation/native-stack';
 import { LoadingScreen } from '@screens/Loading';
 import { type YouthStackParamList } from '@stackNav/Youth';
@@ -32,6 +39,7 @@ import { showToast } from '@utils/showToast';
 import { type AxiosError } from 'axios';
 import LottieView from 'lottie-react-native';
 
+import MoreDotIcon from '@assets/svgs/moreDot.svg';
 import PlayIcon from '@assets/svgs/play_youth.svg';
 import SendIcon from '@assets/svgs/send.svg';
 import SmileIcon from '@assets/svgs/smile.svg';
@@ -69,6 +77,15 @@ export const YouthListenScreen = ({
     [key in EmotionType]?: boolean;
   }>({}); // 전송된 감정 표현
   const { mutate: deleteComment } = useDeleteComment();
+
+  const [clickedMoreDot, setClickedMoreDot] = useState(false);
+  const {
+    visible: visibleReport,
+    openModal: openModalReport,
+    closeModal: closeModalReport,
+  } = useModal();
+  const { mutate: postVoiceFilesReportByVoiceFileIdMutate } =
+    usePostVoiceFilesReportByVoiceFileIdQuery();
 
   // 초기 로딩 처리
   useEffect(() => {
@@ -272,6 +289,48 @@ export const YouthListenScreen = ({
     }
   };
 
+  const bottomMenuData = [
+    {
+      title: '신고하기',
+      onPress: () => {
+        openModalReport();
+        setClickedMoreDot(false);
+      },
+    },
+  ];
+
+  const handleMoreDotPress = () => {
+    setClickedMoreDot(true);
+  };
+
+  const handleReportClick = () => {
+    postVoiceFilesReportByVoiceFileIdMutate(
+      {
+        voiceFileId: voiceFile.voiceFileId,
+        reason: '',
+      },
+      {
+        onSuccess: () => {
+          showToast({
+            text: '신고가 완료되었어요',
+            type: 'text',
+            position: 'left',
+          });
+        },
+        onError: error => {
+          console.log(error);
+          // TODO: 에러 처리
+          showToast({
+            text: '신고가 완료되었어요',
+            type: 'text',
+            position: 'left',
+          });
+        },
+      },
+    );
+    closeModalReport();
+  };
+
   // 로딩 중일 때 로딩 화면 표시
   if (isLoading) {
     return <LoadingScreen />;
@@ -279,160 +338,205 @@ export const YouthListenScreen = ({
 
   // 메인 UI 렌더링
   return (
-    <BG type="main">
-      <DismissKeyboardView
-        extraScrollHeightForAndroid={24}
-        extraScrollHeightForIos={84}>
-        <DismissKeyboardView.Header>
-          <View
-            className={`absolute left-0 bottom-[40] w-full h-full`}
-            style={{ transform: [{ scale: WAVE_LOTTIE_SCALE }] }}>
-            <LottieView
-              ref={animation}
-              style={{
-                flex: 1,
-              }}
-              source={require('@assets/lottie/voice.json')}
-              autoPlay
-              loop
-            />
-          </View>
-        </DismissKeyboardView.Header>
-
-        <AppBar
-          exitCallbackFn={() => navigation.goBack()}
-          className="absolute top-[0] w-full"
-        />
-
-        <View className="h-[100] " />
-
-        <View className="flex-1 items-center">
-          {/* 프로필 */}
-          <View className="flex-row self-start px-[30]">
-            <View className="relative w-[31] h-[31] justify-center items-center">
-              <Image
-                source={
-                  voiceFile?.member?.profileImage
-                    ? { uri: voiceFile?.member?.profileImage }
-                    : require('@assets/pngs/logo/app/app_logo_yellow.png')
-                }
-                className="w-[25] h-[25]"
-                style={{ borderRadius: 25 }}
-              />
-              <View
-                className="absolute left-0 bottom-0 w-[31] h-[31] border border-yellowPrimary"
-                style={{ borderRadius: 31 }}
+    <>
+      <BG type="main">
+        <DismissKeyboardView
+          extraScrollHeightForAndroid={24}
+          extraScrollHeightForIos={84}>
+          <DismissKeyboardView.Header>
+            <View
+              className={`absolute left-0 bottom-[40] w-full h-full`}
+              style={{ transform: [{ scale: WAVE_LOTTIE_SCALE }] }}>
+              <LottieView
+                ref={animation}
+                style={{
+                  flex: 1,
+                }}
+                source={require('@assets/lottie/voice.json')}
+                autoPlay
+                loop
               />
             </View>
-            <View className="w-[10]" />
-            <CustomText
-              type="title4"
-              text={voiceFile?.member?.name}
-              className="text-yellowPrimary"
-            />
-          </View>
+          </DismissKeyboardView.Header>
 
-          <View className="h-[33] " />
+          <AppBar
+            exitCallbackFn={() => navigation.goBack()}
+            className="absolute top-[0] w-full"
+          />
 
-          {/* 스크립트 */}
-          <View className="px-[30] h-[244]">
-            <ScrollView>
-              <CustomText
-                type="body3"
-                text={voiceFile?.content ?? ''}
-                className="text-white"
-              />
-            </ScrollView>
-          </View>
-
-          <View className="h-[33] " />
-
-          {/* 재생/정지 버튼 */}
-          <Pressable onPress={handlePlayButtonClick} className="w-[69] h-[69]">
-            {isPlaying ? <StopIcon /> : <PlayIcon />}
+          <Pressable
+            className="absolute top-[2] left-[0] p-[16] z-20"
+            onPress={handleMoreDotPress}>
+            <MoreDotIcon />
           </Pressable>
-        </View>
 
-        {/* MEMO: absolute 스타일을 가진 View 상위에 View 로 감싸야 키보드가 올라갔을 때 키보드 위로 컴포넌트가 올라감 (이유 조사 필요) */}
-        <View>
-          <View
-            className="absolute left-0 bottom-0 w-full"
-            style={{ borderTopLeftRadius: 10, borderTopRightRadius: 10 }}>
-            {/* 이모지 영역 */}
-            {isClickedEmotion && (
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}
-                className="pl-[25] w-full mb-[27]"
-                keyboardShouldPersistTaps="always">
-                {EMOTION_OPTIONS_YOUTH.map((emotion, index) => (
-                  <Pressable
-                    key={emotion.label}
-                    className={`bg-blue400 py-[9] pl-[14] pr-[19] ${
-                      index === EMOTION_OPTIONS_YOUTH.length - 1
-                        ? 'mr-[50]'
-                        : 'mr-[10]'
-                    } flex-row items-center justify-center active:bg-blue500 ${
-                      sentEmotions[emotion.type] ? 'bg-blue500' : ''
-                    }`}
-                    style={{ borderRadius: 50 }}
-                    onPress={() => handleMessageSend(emotion.type)}>
-                    {emotion.icon}
-                    <CustomText
-                      type="body3"
-                      text={emotion.label}
-                      className="text-white ml-[10]"
-                    />
-                  </Pressable>
-                ))}
-              </ScrollView>
-            )}
+          <View className="h-[100] " />
 
-            {/* 메시지 입력 영역 */}
-            <View className="py-[23] px-[25] bg-blue500 flex-row items-center">
-              <View className="flex-[7.5]">
-                <TextInput
-                  value={message}
-                  onChangeText={setMessage}
-                  placeholder="감사의 말을 전해보세요"
-                  placeholderTextColor={COLORS.gray300}
-                  className={`min-h-[40] max-h-[137] text-gray100 py-[8] pl-[27] pr-[45] font-r bg-blue400 border ${
-                    message.length > 0 ? 'border-gray200' : 'border-blue400'
-                  }`}
-                  style={{
-                    fontSize: 15,
-                    lineHeight: 15 * 1.5,
-                    borderRadius: 30,
-                  }}
-                  onSubmitEditing={() => handleMessageSend()}
-                  maxLength={160}
-                  multiline
+          <View className="flex-1 items-center">
+            {/* 프로필 */}
+            <View className="flex-row self-start px-[30]">
+              <View className="relative w-[31] h-[31] justify-center items-center">
+                <Image
+                  source={
+                    voiceFile?.member?.profileImage
+                      ? { uri: voiceFile?.member?.profileImage }
+                      : require('@assets/pngs/logo/app/app_logo_yellow.png')
+                  }
+                  className="w-[25] h-[25]"
+                  style={{ borderRadius: 25 }}
+                />
+                <View
+                  className="absolute left-0 bottom-0 w-[31] h-[31] border border-yellowPrimary"
+                  style={{ borderRadius: 31 }}
                 />
               </View>
-              <View className="w-[15]" />
-              <View className="flex-[1] relative">
-                <Pressable onPress={() => setIsClickedEmotion(prev => !prev)}>
-                  {isClickedEmotion ? <SmileGrayIcon /> : <SmileIcon />}
-                </Pressable>
-
-                {/* 전송버튼은 absolute 로 위치 조정 */}
-                {message !== '' && (
-                  <Pressable
-                    className={`absolute -left-[51] bottom-[5]`}
-                    onPress={() => handleMessageSend()}>
-                    <SendIcon />
-                  </Pressable>
-                )}
-              </View>
+              <View className="w-[10]" />
+              <CustomText
+                type="title4"
+                text={voiceFile?.member?.name}
+                className="text-yellowPrimary"
+              />
             </View>
-            {Platform.OS === 'ios' && <View className="h-[24] bg-blue500" />}
+
+            <View className="h-[33] " />
+
+            {/* 스크립트 */}
+            <View className="px-[30] h-[244]">
+              <ScrollView>
+                <CustomText
+                  type="body3"
+                  text={voiceFile?.content ?? ''}
+                  className="text-white"
+                />
+              </ScrollView>
+            </View>
+
+            <View className="h-[33] " />
+
+            {/* 재생/정지 버튼 */}
+            <Pressable
+              onPress={handlePlayButtonClick}
+              className="w-[69] h-[69]">
+              {isPlaying ? <StopIcon /> : <PlayIcon />}
+            </Pressable>
           </View>
-        </View>
-      </DismissKeyboardView>
-    </BG>
+
+          {/* MEMO: absolute 스타일을 가진 View 상위에 View 로 감싸야 키보드가 올라갔을 때 키보드 위로 컴포넌트가 올라감 (이유 조사 필요) */}
+          <View>
+            <View
+              className="absolute left-0 bottom-0 w-full"
+              style={{ borderTopLeftRadius: 10, borderTopRightRadius: 10 }}>
+              {/* 이모지 영역 */}
+              {isClickedEmotion && (
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                  className="pl-[25] w-full mb-[27]"
+                  keyboardShouldPersistTaps="always">
+                  {EMOTION_OPTIONS_YOUTH.map((emotion, index) => (
+                    <Pressable
+                      key={emotion.label}
+                      className={`bg-blue400 py-[9] pl-[14] pr-[19] ${
+                        index === EMOTION_OPTIONS_YOUTH.length - 1
+                          ? 'mr-[50]'
+                          : 'mr-[10]'
+                      } flex-row items-center justify-center active:bg-blue500 ${
+                        sentEmotions[emotion.type] ? 'bg-blue500' : ''
+                      }`}
+                      style={{ borderRadius: 50 }}
+                      onPress={() => handleMessageSend(emotion.type)}>
+                      {emotion.icon}
+                      <CustomText
+                        type="body3"
+                        text={emotion.label}
+                        className="text-white ml-[10]"
+                      />
+                    </Pressable>
+                  ))}
+                </ScrollView>
+              )}
+
+              {/* 메시지 입력 영역 */}
+              <View className="py-[23] px-[25] bg-blue500 flex-row items-center">
+                <View className="flex-[7.5]">
+                  <TextInput
+                    value={message}
+                    onChangeText={setMessage}
+                    placeholder="감사의 말을 전해보세요"
+                    placeholderTextColor={COLORS.gray300}
+                    className={`min-h-[40] max-h-[137] text-gray100 py-[8] pl-[27] pr-[45] font-r bg-blue400 border ${
+                      message.length > 0 ? 'border-gray200' : 'border-blue400'
+                    }`}
+                    style={{
+                      fontSize: 15,
+                      lineHeight: 15 * 1.5,
+                      borderRadius: 30,
+                    }}
+                    onSubmitEditing={() => handleMessageSend()}
+                    maxLength={160}
+                    multiline
+                  />
+                </View>
+                <View className="w-[15]" />
+                <View className="flex-[1] relative">
+                  <Pressable onPress={() => setIsClickedEmotion(prev => !prev)}>
+                    {isClickedEmotion ? <SmileGrayIcon /> : <SmileIcon />}
+                  </Pressable>
+
+                  {/* 전송버튼은 absolute 로 위치 조정 */}
+                  {message !== '' && (
+                    <Pressable
+                      className={`absolute -left-[51] bottom-[5]`}
+                      onPress={() => handleMessageSend()}>
+                      <SendIcon />
+                    </Pressable>
+                  )}
+                </View>
+              </View>
+              {Platform.OS === 'ios' && <View className="h-[24] bg-blue500" />}
+            </View>
+          </View>
+        </DismissKeyboardView>
+      </BG>
+      <Modal
+        type="info"
+        visible={visibleReport}
+        onCancel={closeModalReport}
+        onConfirm={handleReportClick}
+        buttonRatio="1:1"
+        confirmText="신고">
+        <CustomText
+          type="title4"
+          text={`[${voiceFile.member.name}]의 녹음을 신고하시겠어요?`}
+          className="text-white mt-[26] mb-[13] text-center"
+        />
+        <CustomText
+          type="caption1"
+          text={`신고한 글은 삭제되며,\n작성자는 이용이 제한될 수 있어요`}
+          className="text-gray300 mb-[29] text-center"
+        />
+      </Modal>
+
+      <Portal>
+        <Pressable
+          onPress={() => setClickedMoreDot(false)}
+          className={`absolute left-0 bottom-0 w-full h-full bg-black/50 px-[30] ${
+            Platform.OS === 'ios' ? 'pb-[79]' : 'pb-[55]'
+          } justify-end ${clickedMoreDot ? '' : 'hidden'}`}>
+          {/* 내부 컴포넌트에는 상위 onPress 이벤트가 전파되지 않도록 함 */}
+          <Pressable onPress={() => {}} className="w-full">
+            <AnimatedView visible={clickedMoreDot}>
+              <BottomMenu data={bottomMenuData} />
+            </AnimatedView>
+            <View className="h-[24]" />
+            <Button text="취소" onPress={() => setClickedMoreDot(false)} />
+          </Pressable>
+        </Pressable>
+      </Portal>
+    </>
   );
 };
