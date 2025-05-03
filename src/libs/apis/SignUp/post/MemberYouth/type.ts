@@ -1,6 +1,6 @@
 export type postMemberYouthRequest = {
-  latitude: number;
-  longitude: number;
+  latitude: number | null;
+  longitude: number | null;
   wakeUpTime: string;
   sleepTime: string;
   breakfast: string;

@@ -157,69 +157,103 @@ const YouthNoticeScreen = ({ route, navigation }: Readonly<Props>) => {
     //   return;
     // }
 
-    if (!locationGranted) {
-      Alert.alert(
-        '권한 필요',
-        '위치 정보 권한이 필요합니다. 설정에서 권한을 허용해주세요.',
-        [
-          {
-            text: '확인',
-            onPress: () => console.log('확인 버튼 클릭'),
-          },
-        ],
+    // 푸시 알림이 선택 사항이므로, 위치 권한도 선택 사항이 되어야 함
+    // if (!locationGranted) {
+    //   Alert.alert(
+    //     '권한 필요',
+    //     '위치 정보 권한이 필요합니다. 설정에서 권한을 허용해주세요.',
+    //     [
+    //       {
+    //         text: '확인',
+    //         onPress: () => console.log('확인 버튼 클릭'),
+    //       },
+    //     ],
+    //   );
+
+    //   return;
+    // }
+
+    if (locationGranted) {
+      Geolocation.getCurrentPosition(
+        pos => {
+          console.log('pos', pos);
+
+          (async () => {
+            const data: YouthRequestData = {
+              latitude: pos.coords.latitude,
+              longitude: pos.coords.longitude,
+              wakeUpTime,
+              sleepTime,
+              breakfast,
+              lunch,
+              dinner,
+            };
+
+            try {
+              postYouth(data);
+
+              if (pos.coords.latitude && pos.coords.longitude) {
+                await AsyncStorage.setItem('lat', String(pos.coords.latitude));
+                await AsyncStorage.setItem('lng', String(pos.coords.longitude));
+              }
+
+              const endTime = new Date().getTime();
+              const viewTime = endTime - startTime.current;
+
+              trackEvent('onboarding_viewtime', {
+                step: '3.8',
+                view_time: viewTime, // 밀리초 단위
+              });
+
+              navigation.navigate('YouthStackNav', {
+                screen: 'YouthHomeScreen',
+              });
+            } catch (error) {
+              console.log(error);
+              Alert.alert('오류', '회원가입 중 오류가 발생했어요');
+            }
+          })();
+        },
+        error => {
+          console.log('error', error);
+        },
+        {
+          enableHighAccuracy: false,
+          timeout: 3600,
+        },
       );
 
       return;
     }
 
-    Geolocation.getCurrentPosition(
-      pos => {
-        console.log('pos', pos);
+    const data: YouthRequestData = {
+      latitude: null,
+      longitude: null,
+      wakeUpTime,
+      sleepTime,
+      breakfast,
+      lunch,
+      dinner,
+    };
 
-        (async () => {
-          const data: YouthRequestData = {
-            latitude: pos.coords.latitude,
-            longitude: pos.coords.longitude,
-            wakeUpTime,
-            sleepTime,
-            breakfast,
-            lunch,
-            dinner,
-          };
+    try {
+      postYouth(data);
 
-          try {
-            postYouth(data);
+      const endTime = new Date().getTime();
+      const viewTime = endTime - startTime.current;
 
-            if (pos.coords.latitude && pos.coords.longitude) {
-              await AsyncStorage.setItem('lat', String(pos.coords.latitude));
-              await AsyncStorage.setItem('lng', String(pos.coords.longitude));
-            }
+      trackEvent('onboarding_viewtime', {
+        step: '3.8',
+        view_time: viewTime, // 밀리초 단위
+      });
 
-            const endTime = new Date().getTime();
-            const viewTime = endTime - startTime.current;
-
-            trackEvent('onboarding_viewtime', {
-              step: '3.8',
-              view_time: viewTime, // 밀리초 단위
-            });
-
-            navigation.navigate('YouthStackNav', {
-              screen: 'YouthHomeScreen',
-            });
-          } catch (error) {
-            console.log(error);
-            Alert.alert('오류', '회원가입 중 오류가 발생했어요');
-          }
-        })();
-      },
-      error => {
-        console.log('error', error);
-      },
-      {
-        enableHighAccuracy: false,
-        timeout: 3600,
-      },
-    );
+      navigation.navigate('YouthStackNav', {
+        screen: 'YouthHomeScreen',
+      });
+    } catch (error) {
+      console.log(error);
+      Alert.alert('오류', '회원가입 중 오류가 발생했어요');
+    }
   };
 
   return (
