@@ -364,38 +364,39 @@ export const YouthListenScreen = ({
             className="absolute top-[0] w-full"
           />
 
-          <Pressable
-            className="absolute top-[2] left-[0] p-[16] z-20"
-            onPress={handleMoreDotPress}>
-            <MoreDotIcon />
-          </Pressable>
-
           <View className="h-[100] " />
 
           <View className="flex-1 items-center">
             {/* 프로필 */}
-            <View className="flex-row self-start px-[30]">
-              <View className="relative w-[31] h-[31] justify-center items-center">
-                <Image
-                  source={
-                    voiceFile?.member?.profileImage
-                      ? { uri: voiceFile?.member?.profileImage }
-                      : require('@assets/pngs/logo/app/app_logo_yellow.png')
-                  }
-                  className="w-[25] h-[25]"
-                  style={{ borderRadius: 25 }}
-                />
-                <View
-                  className="absolute left-0 bottom-0 w-[31] h-[31] border border-yellowPrimary"
-                  style={{ borderRadius: 31 }}
+            <View className="flex-row self-start px-[30] justify-between w-full">
+              <View className="flex-row items-center">
+                <View className="relative w-[31] h-[31] justify-center items-center">
+                  <Image
+                    source={
+                      voiceFile?.member?.profileImage
+                        ? { uri: voiceFile?.member?.profileImage }
+                        : require('@assets/pngs/logo/app/app_logo_yellow.png')
+                    }
+                    className="w-[25] h-[25]"
+                    style={{ borderRadius: 25 }}
+                  />
+                  <View
+                    className="absolute left-0 bottom-0 w-[31] h-[31] border border-yellowPrimary"
+                    style={{ borderRadius: 31 }}
+                  />
+                </View>
+                <View className="w-[10]" />
+                <CustomText
+                  type="title4"
+                  text={voiceFile?.member?.name}
+                  className="text-yellowPrimary"
                 />
               </View>
-              <View className="w-[10]" />
-              <CustomText
-                type="title4"
-                text={voiceFile?.member?.name}
-                className="text-yellowPrimary"
-              />
+              <Pressable
+                className="py-[16] pl-[16]"
+                onPress={handleMoreDotPress}>
+                <MoreDotIcon />
+              </Pressable>
             </View>
 
             <View className="h-[33] " />
@@ -518,7 +519,7 @@ export const YouthListenScreen = ({
         />
         <CustomText
           type="caption1"
-          text={`신고한 글은 삭제되며,\n작성자는 이용이 제한될 수 있어요`}
+          text={`신고한 녹음은 삭제되며,\n녹음한 사람은 이용이 제한될 수 있어요`}
           className="text-gray300 mb-[29] text-center"
         />
       </Modal>
