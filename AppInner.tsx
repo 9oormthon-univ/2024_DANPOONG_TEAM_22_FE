@@ -21,6 +21,9 @@ import { navigateToYouthOnboardingScreen } from '@utils/navigateToYouthOnboardin
 import { trackEvent } from '@utils/tracker';
 import { navigationRef } from 'App';
 
+/** 스플래시 화면 대기 시간 */
+const SPLASH_WAIT_TIME = 2000;
+
 // 네비게이션 스택 생성
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -56,7 +59,10 @@ export const AppInner = () => {
       setToken(token);
 
       if (!token) {
-        setIsInitializing(false); // 비로그인 상태에서도 스플래시 숨기기
+        setTimeout(() => {
+          // 비로그인 상태에서도 스플래시 숨기기
+          setIsInitializing(false);
+        }, SPLASH_WAIT_TIME);
         RNSplashScreen.hide();
       }
     })();
@@ -86,7 +92,10 @@ export const AppInner = () => {
 
     // Alert.alert('오류', '사용자 정보를 가져오는데 실패했어요');
     console.log({ memberError });
-    setIsInitializing(false); // 데이터 로드 완료 후 스플래시 숨기기
+    setTimeout(() => {
+      // 데이터 로드 완료 후 스플래시 숨기기
+      setIsInitializing(false);
+    }, SPLASH_WAIT_TIME);
     RNSplashScreen.hide();
   }, [isMemberError]);
 
@@ -100,7 +109,10 @@ export const AppInner = () => {
     setRole(role);
 
     if (role !== 'HELPER' && role !== 'YOUTH') {
-      setIsInitializing(false); // 데이터 로드 완료 후 스플래시 숨기기
+      setTimeout(() => {
+        // 데이터 로드 완료 후 스플래시 숨기기
+        setIsInitializing(false);
+      }, SPLASH_WAIT_TIME);
       RNSplashScreen.hide();
 
       return;
@@ -119,7 +131,10 @@ export const AppInner = () => {
       } catch (error) {
         console.error('Error saving member data to AsyncStorage:', error);
       } finally {
-        setIsInitializing(false); // 데이터 로드 완료 후 스플래시 숨기기
+        setTimeout(() => {
+          // 데이터 로드 완료 후 스플래시 숨기기
+          setIsInitializing(false);
+        }, SPLASH_WAIT_TIME);
         RNSplashScreen.hide();
       }
     };
