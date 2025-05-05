@@ -31,13 +31,7 @@ import { trackAppStart, trackEvent, trackScreenView } from '@utils/tracker';
 import { AppInner } from 'AppInner';
 
 // 쿼리 클라이언트 설정
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 30, // 30초 동안 데이터를 신선한 상태로 유지
-    },
-  },
-});
+const queryClient = new QueryClient();
 
 const DEFAULT_YOUTH_ALARM_TITLE = '따뜻한 목소리가 도착했어요!';
 const DEFAULT_VOLUNTEER_ALARM_TITLE = '청년들이 당신의 목소리를 기다려요!';
