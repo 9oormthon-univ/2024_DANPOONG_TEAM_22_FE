@@ -7,7 +7,7 @@ export const postVoiceFilesReportByVoiceFileId = async ({
   reason,
 }: PostVoiceFilesReportByVoiceFileIdRequest) => {
   const res = await client.post<ResultResponseData<boolean>>(
-    `/api/v1/${voiceFileId}/report`,
+    `/api/v1/voicefiles/${voiceFileId}/report`,
     {
       reason,
     },

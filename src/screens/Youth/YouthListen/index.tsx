@@ -319,9 +319,8 @@ export const YouthListenScreen = ({
         },
         onError: error => {
           console.log(error);
-          // TODO: 에러 처리
           showToast({
-            text: '신고가 완료되었어요',
+            text: '신고에 실패했어요',
             type: 'text',
             position: 'left',
           });
