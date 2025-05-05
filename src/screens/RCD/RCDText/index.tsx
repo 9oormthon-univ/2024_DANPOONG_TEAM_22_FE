@@ -14,12 +14,13 @@ import { AppBar } from '@components/AppBar';
 import { BG } from '@components/BG';
 import { Button } from '@components/Button';
 import { CustomText } from '@components/CustomText';
+// 네비게이션 관련 임포트
+import { DismissKeyboardView } from '@components/DismissKeyboardView';
 // 유틸리티 임포트
 import { FlexableMargin } from '@components/FlexableMargin';
 import { ShadowView } from '@components/ShadowView';
 import { StarIMG } from '@components/StarIMG';
 import { Toast } from '@components/Toast';
-// 네비게이션 관련 임포트
 import {
   type NavigationProp,
   type RouteProp,
@@ -122,60 +123,61 @@ export const RCDTextScreen = ({
 
   return (
     <BG type="solid">
-      {/* TODO: DismissKeyboardView 적용해야 함 */}
-      {/* 상단 앱바 */}
-      <AppBar
-        title="녹음 내용 작성"
-        goBackCallbackFn={() => {
-          navigation.goBack();
-        }}
-        className="absolute top-[0] w-full"
-      />
-      {/* 에러 토스트 메시지 */}
-      <Toast
-        text={errorMessage}
-        isToast={isToast}
-        setIsToast={() => setIsToast(false)}
-      />
-      <FlexableMargin flexGrow={130} />
-      {/* 이미지 섹션 */}
-      <View className="items-center">
-        <StarIMG />
-      </View>
-      <FlexableMargin flexGrow={29} />
-      {/* 헤더 섹션 */}
-      <View className="h-auto items-center">
-        <CustomText
-          type="title2"
-          text={item.title}
-          className="text-white text-center"
+      <DismissKeyboardView>
+        {/* 상단 앱바 */}
+        <AppBar
+          title="녹음 내용 작성"
+          goBackCallbackFn={() => {
+            navigation.goBack();
+          }}
+          className="absolute top-[0] w-full"
         />
-      </View>
-      <FlexableMargin flexGrow={50} />
-      {/* 텍스트 입력 섹션 */}
-      <View className="px-px w-full h-[340]">
-        <ShadowTextInput
-          value={text}
-          onChangeText={onChangeText}
-          placeholder={`${
-            type === 'DAILY' ? '15' : '30'
-          }초 동안 녹음할 말을 작성해주세요`}
-          isError={isError}
-          maxLength={type === 'DAILY' ? 150 : 300}
+        {/* 에러 토스트 메시지 */}
+        <Toast
+          text={errorMessage}
+          isToast={isToast}
+          setIsToast={() => setIsToast(false)}
         />
-      </View>
-      <FlexableMargin flexGrow={51} />
+        <FlexableMargin flexGrow={130} />
+        {/* 이미지 섹션 */}
+        <View className="items-center">
+          <StarIMG />
+        </View>
+        <FlexableMargin flexGrow={29} />
+        {/* 헤더 섹션 */}
+        <View className="h-auto items-center">
+          <CustomText
+            type="title2"
+            text={item.title}
+            className="text-white text-center"
+          />
+        </View>
+        <FlexableMargin flexGrow={50} />
+        {/* 텍스트 입력 섹션 */}
+        <View className="px-px w-full h-[340]">
+          <ShadowTextInput
+            value={text}
+            onChangeText={onChangeText}
+            placeholder={`${
+              type === 'DAILY' ? '15' : '30'
+            }초 동안 녹음할 말을 작성해주세요`}
+            isError={isError}
+            maxLength={type === 'DAILY' ? 150 : 300}
+          />
+        </View>
+        <FlexableMargin flexGrow={51} />
 
-      {/* 버튼 섹션 */}
-      <View className="w-full px-px">
-        <Button
-          text="녹음하기"
-          onPress={scriptSubmitHandler}
-          disabled={text.length === 0 || isLoading}
-          isLoading={isLoading}
-        />
-      </View>
-      <FlexableMargin flexGrow={Platform.OS === 'ios' ? 79 : 55} />
+        {/* 버튼 섹션 */}
+        <View className="w-full px-px">
+          <Button
+            text="녹음하기"
+            onPress={scriptSubmitHandler}
+            disabled={text.length === 0 || isLoading}
+            isLoading={isLoading}
+          />
+        </View>
+        <FlexableMargin flexGrow={Platform.OS === 'ios' ? 79 : 55} />
+      </DismissKeyboardView>
     </BG>
   );
 };
