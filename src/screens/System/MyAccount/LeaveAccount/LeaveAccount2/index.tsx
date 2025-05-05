@@ -98,8 +98,24 @@ export const LeaveAccount2Screen = ({
         reasonList: [...reasons, otherReason],
       };
 
-      // TODO: 로컬스토리지에 저장된 정보 삭제
       await deleteMember(data);
+
+      // 사용자에 대한 모든 데이터 제거
+      await AsyncStorage.multiRemove([
+        'accessToken',
+        'refreshToken',
+        'role',
+        'profileImage',
+        'nickname',
+        'birth',
+        'gender',
+        'memberId',
+        'email',
+        'loginType',
+        'lat',
+        'lng',
+      ]);
+
       await redirectToAuthScreen();
     } catch (error) {
       if (__DEV__) {

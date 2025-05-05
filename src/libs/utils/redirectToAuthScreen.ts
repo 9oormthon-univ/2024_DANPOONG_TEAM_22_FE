@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { navigationRef } from 'App';
 
 /**
@@ -26,7 +25,4 @@ export const redirectToAuthScreen = async () => {
       routes: [{ name: 'AuthStackNav' }],
     });
   }
-
-  // 모든 인증 관련 데이터 제거
-  await AsyncStorage.multiRemove(['accessToken', 'refreshToken', 'role']);
 };
