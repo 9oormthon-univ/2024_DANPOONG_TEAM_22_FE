@@ -20,6 +20,7 @@ import {
   type RouteProp,
   useNavigation,
 } from '@react-navigation/native';
+import { useQueryClient } from '@tanstack/react-query';
 import { type SystemStackParamList } from '@type/nav/SystemStackParamList';
 // utils
 import { redirectToAuthScreen } from '@utils/redirectToAuthScreen';
@@ -49,6 +50,8 @@ export const LeaveAccount2Screen = ({
     thanksCount: 0,
     messageCount: 0,
   });
+
+  const queryClient = useQueryClient();
 
   // 회원 역할, 닉네임 조회, 음성 파일 보유 현황 조회
   useEffect(() => {
@@ -99,24 +102,12 @@ export const LeaveAccount2Screen = ({
       };
 
       await deleteMember(data);
-
-      // 사용자에 대한 모든 데이터 제거
-      await AsyncStorage.multiRemove([
-        'accessToken',
-        'refreshToken',
-        'role',
-        'profileImage',
-        'nickname',
-        'birth',
-        'gender',
-        'memberId',
-        'email',
-        'loginType',
-        'lat',
-        'lng',
-      ]);
-
       await redirectToAuthScreen();
+
+      // 이전 사용자 정보 캐시 무효화
+      queryClient.removeQueries({
+        queryKey: ['getMember'],
+      });
     } catch (error) {
       if (__DEV__) {
         console.error('회원 탈퇴 실패:', error);

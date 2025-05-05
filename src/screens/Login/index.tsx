@@ -56,12 +56,21 @@ export const LoginScreen = ({ navigation }: Readonly<Props>) => {
         memberId,
         role,
         infoRegistered,
-        locationRegistered,
+        pushTimeRegistered,
+        nickname,
       } = result;
 
       await AsyncStorage.setItem('accessToken', accessToken);
       await AsyncStorage.setItem('refreshToken', refreshToken);
       await AsyncStorage.setItem('memberId', String(memberId));
+
+      if (role) {
+        await AsyncStorage.setItem('role', role);
+      }
+
+      if (nickname) {
+        await AsyncStorage.setItem('nickname', nickname);
+      }
 
       setToken(accessToken);
       await refetchMember();
@@ -72,14 +81,18 @@ export const LoginScreen = ({ navigation }: Readonly<Props>) => {
         return;
       }
 
+      if (role === 'HELPER') {
+        navigation.navigate('AppTabNav');
+
+        return;
+      }
+
       if (role === 'YOUTH') {
-        if (locationRegistered) {
+        if (pushTimeRegistered) {
           navigation.navigate('YouthStackNav', { screen: 'YouthHomeScreen' });
         } else {
           navigation.navigate('YouthOnboardingScreen');
         }
-      } else if (role === 'HELPER') {
-        navigation.navigate('AppTabNav');
       }
     } catch (error) {
       console.log('login error in handleLogin:', error);

@@ -77,13 +77,15 @@ export const AppInner = () => {
   }, [navigationRef]);
 
   useEffect(() => {
-    if (role !== 'YOUTH' || !isNavigationReady || !memberData) return;
+    if (!isNavigationReady || !memberData) return;
 
-    const isSignupAllCompleted =
-      memberData?.result.youthMemberInfoDto?.wakeUpTime;
+    if (role === 'YOUTH') {
+      const isSignupAllCompleted =
+        memberData?.result.youthMemberInfoDto?.wakeUpTime;
 
-    if (!isSignupAllCompleted) {
-      navigateToYouthOnboardingScreen(); // 네비게이션 준비 후 실행
+      if (!isSignupAllCompleted) {
+        navigateToYouthOnboardingScreen(); // 네비게이션 준비 후 실행
+      }
     }
   }, [role, isNavigationReady, memberData]);
 
@@ -197,6 +199,7 @@ export const AppInner = () => {
         <Stack.Group>
           <Stack.Screen name="AppTabNav" component={AppTabNav} />
           <Stack.Screen name="AuthStackNav" component={AuthStackNav} />
+          <Stack.Screen name="YouthStackNav" component={YouthStackNav} />
         </Stack.Group>
       );
     }
@@ -206,6 +209,7 @@ export const AppInner = () => {
         <Stack.Group>
           <Stack.Screen name="YouthStackNav" component={YouthStackNav} />
           <Stack.Screen name="AuthStackNav" component={AuthStackNav} />
+          <Stack.Screen name="AppTabNav" component={AppTabNav} />
         </Stack.Group>
       );
     }

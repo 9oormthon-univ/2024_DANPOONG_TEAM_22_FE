@@ -8,6 +8,7 @@ import { SystemButton } from '@components/SystemButton';
 import { useModal } from '@hooks/useModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { type NavigationProp, useNavigation } from '@react-navigation/native';
+import { useQueryClient } from '@tanstack/react-query';
 import { type SystemStackParamList } from '@type/nav/SystemStackParamList';
 import { handleLogout } from '@utils/handleLogout';
 
@@ -15,6 +16,8 @@ export const MyAccountScreen = () => {
   const navigation = useNavigation<NavigationProp<SystemStackParamList>>();
   const { visible, openModal, closeModal } = useModal();
   const [loginType, setLoginType] = useState('');
+
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     (async () => {
@@ -59,7 +62,14 @@ export const MyAccountScreen = () => {
       <Modal
         visible={visible}
         onCancel={closeModal}
-        onConfirm={handleLogout}
+        onConfirm={() => {
+          handleLogout();
+
+          // 이전 사용자 정보 캐시 무효화
+          queryClient.removeQueries({
+            queryKey: ['getMember'],
+          });
+        }}
         confirmText="로그아웃"
         cancelText="취소"
         buttonRatio="1:1">

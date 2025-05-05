@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { navigationRef } from 'App';
 
 /**
@@ -18,6 +19,22 @@ export const redirectToAuthScreen = async () => {
 
     return;
   }
+
+  // 사용자에 대한 모든 데이터 제거
+  await AsyncStorage.multiRemove([
+    'accessToken',
+    'refreshToken',
+    'role',
+    'profileImage',
+    'nickname',
+    'birth',
+    'gender',
+    'memberId',
+    'email',
+    'loginType',
+    'lat',
+    'lng',
+  ]);
 
   if (navigationRef) {
     navigationRef.reset({

@@ -14,4 +14,5 @@ export type postAuthLoginWithAccessTokenAndLoginTypeResponse = {
   infoRegistered: boolean;
   locationRegistered: boolean;
   pushTimeRegistered: boolean;
+  nickname: string;
 };
