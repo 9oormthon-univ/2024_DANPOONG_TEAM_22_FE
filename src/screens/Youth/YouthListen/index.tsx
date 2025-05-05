@@ -155,6 +155,9 @@ export const YouthListenScreen = ({
           if (e.currentPosition >= e.duration) {
             console.log('재생 끝');
             setIsPlaying(false);
+            playTimeRef.current = 0; // 재생 위치 초기화
+            audioPlayer.current.stopPlayer(); // 명시적 stop
+            audioPlayer.current.removePlayBackListener();
           }
         });
       } catch (error) {
@@ -276,13 +279,41 @@ export const YouthListenScreen = ({
       if (isPlaying) {
         await audioPlayer.current.pausePlayer();
         setIsPlaying(false);
-      } else {
+
+        return;
+      }
+
+      if (playTimeRef.current !== 0) {
         await audioPlayer.current.resumePlayer();
 
         // 저장한 위치로 이동
         await audioPlayer.current.seekToPlayer(playTimeRef.current);
+
         setIsPlaying(true);
+
+        return;
       }
+
+      // 만약 녹음을 모두 듣고 stop된 이후라면 새로 startPlayer 호출 필요
+      const playResult = await audioPlayer.current.startPlayer(
+        voiceFile.fileUrl,
+      );
+
+      console.log('재생 재시작:', playResult);
+
+      audioPlayer.current.addPlayBackListener(e => {
+        playTimeRef.current = e.currentPosition;
+
+        if (e.currentPosition >= e.duration) {
+          console.log('재생 끝');
+          setIsPlaying(false);
+          playTimeRef.current = 0; // 재생 위치 초기화
+          audioPlayer.current.stopPlayer(); // 명시적 stop
+          audioPlayer.current.removePlayBackListener();
+        }
+      });
+
+      setIsPlaying(true);
     } catch (error) {
       console.log(error);
       Alert.alert('오류', '오디오 재생 중 오류가 발생했어요');
