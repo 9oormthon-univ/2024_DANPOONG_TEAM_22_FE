@@ -70,8 +70,11 @@ export const LeaveAccountScreen = () => {
               reason="기타"
               isSelected={selectedReasons.includes('기타')}
               onPress={() => {
+                if (!selectedReasons.includes('기타')) {
+                  setIsDetailTyping(true);
+                }
+
                 toggleReason('기타');
-                setIsDetailTyping(true);
               }}
             />
             {selectedReasons.includes('기타') && (
