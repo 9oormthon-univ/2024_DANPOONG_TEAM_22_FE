@@ -1,6 +1,7 @@
 // React 관련 임포트
 import React, { useEffect, useRef, useState } from 'react';
-import { Platform, ScrollView, View } from 'react-native';
+import { Alert, Platform, ScrollView, View } from 'react-native';
+import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 
 import { postVoicefilesAnalysisByVoiceFileId } from '@apis/VolunteerRecord/post/VoicefilesAnalysisByVoiceFileId/fetch';
 // API 임포트
@@ -22,6 +23,7 @@ import { RCDBtnBar } from '@screens/RCD/RCDRecord/components/RCDBtnBar';
 import { RCDTimer } from '@screens/RCD/RCDRecord/components/RCDTimer';
 import { RCDWave } from '@screens/RCD/RCDRecord/components/RCDWave';
 import { type HomeStackParamList } from '@type/nav/HomeStackParamList';
+import { showToast } from '@utils/showToast';
 // 녹음 관련 임포트
 import { trackEvent } from '@utils/tracker';
 
@@ -301,6 +303,74 @@ export const RCDRecordScreen = ({
     }
   };
 
+  // 오디오 녹음 권한 요청
+  const requestAudioPermission = async () => {
+    try {
+      const permission =
+        Platform.OS === 'ios'
+          ? PERMISSIONS.IOS.MICROPHONE
+          : PERMISSIONS.ANDROID.RECORD_AUDIO;
+
+      const status = await check(permission);
+
+      if (status === RESULTS.GRANTED) {
+        return true;
+      } else if (status === RESULTS.DENIED) {
+        const result = await request(permission);
+
+        if (result === RESULTS.GRANTED) {
+          showToast({
+            text: '오디오 녹음 권한이 허용되었어요',
+            type: 'text',
+            position: 'bottom',
+          });
+
+          return true;
+        } else {
+          showToast({
+            text: '오디오 녹음 권한이 거부되었어요',
+            type: 'text',
+            position: 'bottom',
+          });
+
+          return false;
+        }
+      } else {
+        showToast({
+          text: '오디오 녹음 권한을 요청할 수 없어요',
+          type: 'text',
+          position: 'bottom',
+        });
+
+        return false;
+      }
+    } catch (error) {
+      console.error('오디오 녹음 권한 요청 중 오류 발생:', error);
+
+      return false;
+    }
+  };
+
+  // 오디오 녹음 권한이 없으면 권한 요청
+  useEffect(() => {
+    (async () => {
+      const audioGranted = await requestAudioPermission();
+
+      if (!audioGranted) {
+        Alert.alert(
+          '권한 필요',
+          '오디오 녹음 및 마이크 권한이 필요합니다. 설정에서 권한을 허용해주세요.',
+          [
+            {
+              text: '확인',
+              onPress: () => console.log('확인 버튼 클릭'),
+            },
+          ],
+        );
+      }
+    })();
+  }, []);
+
   return (
     <BG type="solid">
       {!isUploading ? (
@@ -360,7 +430,24 @@ export const RCDRecordScreen = ({
 
           <View className="w-full px-px">
             <RCDBtnBar
-              record={() => {
+              record={async () => {
+                const audioGranted = await requestAudioPermission();
+
+                if (!audioGranted) {
+                  Alert.alert(
+                    '권한 필요',
+                    '오디오 녹음 및 마이크 권한이 필요합니다. 설정에서 권한을 허용해주세요.',
+                    [
+                      {
+                        text: '확인',
+                        onPress: () => console.log('확인 버튼 클릭'),
+                      },
+                    ],
+                  );
+
+                  return;
+                }
+
                 startRecording();
                 trackEvent('recording_start');
               }}
