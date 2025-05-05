@@ -197,55 +197,38 @@ const SelectBtn = ({ type }: { type: RecordType }) => {
         navigation.navigate('RCDList', { type });
         trackEvent('recording_type_select', { type });
       }}
-      className=" bg-blue700 border border-white/10"
+      className=" bg-blue700 border border-white/10 p-[20]"
       style={{ borderRadius: 10, width: '47.5%', aspectRatio: 168 / 207 }}>
-      <FlexableMargin flexGrow={20} />
       {/* 아이콘 */}
-      <View className="flex flex-row">
-        <FlexableMargin flexGrow={28} />
-        <View style={{ flexGrow: 112 }}>
-          {type === RecordTypeConstant.DAILY ? <Main1 /> : <Main2 />}
-        </View>
-        <FlexableMargin flexGrow={28} />
-      </View>
+      <View>{type === RecordTypeConstant.DAILY ? <Main1 /> : <Main2 />}</View>
       <FlexableMargin flexGrow={20} />
 
       {/* 텍스트 */}
-      <View className="flex flex-row">
-        <FlexableMargin flexGrow={78} />
-        <View style={{ flexDirection: 'row', flexGrow: 112 }}>
-          <CustomText
-            type="title3"
-            text={`${type === RecordTypeConstant.DAILY ? '일상' : '위로'}`}
-            className="text-white"
-          />
-          <CustomText
-            type="title3"
-            text={`${type === RecordTypeConstant.COMFORT ? '의 말' : ' 알림'}`}
-            className="text-white "
-          />
-        </View>
-        <FlexableMargin flexGrow={78} />
+      <View style={{ flexDirection: 'row' }}>
+        <CustomText
+          type="title3"
+          text={`${type === RecordTypeConstant.DAILY ? '일상' : '위로'}`}
+          className="text-white"
+        />
+        <CustomText
+          type="title3"
+          text={`${type === RecordTypeConstant.COMFORT ? '의 말' : ' 알림'}`}
+          className="text-white "
+        />
       </View>
       <FlexableMargin flexGrow={43} />
 
       {/* 녹음하기 텍스트와 화살표 */}
-      <View className="flex flex-row w-full">
-        <FlexableMargin flexGrow={78} />
-
+      <View className="flex flex-row w-full justify-between items-center">
         <CustomText
           type="title3"
           text="녹음하기"
           className="text-yellowPrimary"
         />
-        <FlexableMargin flexGrow={28} />
-
         <View className="flex justify-center items-center">
           <MainArrow2 />
         </View>
-        <FlexableMargin flexGrow={78} />
       </View>
-      <FlexableMargin flexGrow={20} />
     </TouchableOpacity>
   );
 };
