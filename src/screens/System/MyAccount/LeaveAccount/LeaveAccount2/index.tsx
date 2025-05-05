@@ -13,6 +13,7 @@ import { Button } from '@components/Button';
 // components
 import { CustomText } from '@components/CustomText';
 import { FlexableMargin } from '@components/FlexableMargin';
+import { useDebounce } from '@hooks/useDebounce';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   type NavigationProp,
@@ -91,12 +92,13 @@ export const LeaveAccount2Screen = ({
     }
   }, [role]);
 
-  const handleDeleteMember = async () => {
+  const handleDeleteMember = useDebounce(async () => {
     try {
       const data: deleteMemberRequest = {
         reasonList: [...reasons, otherReason],
       };
 
+      // TODO: 로컬스토리지에 저장된 정보 삭제
       await deleteMember(data);
       await redirectToAuthScreen();
     } catch (error) {
@@ -104,7 +106,7 @@ export const LeaveAccount2Screen = ({
         console.error('회원 탈퇴 실패:', error);
       }
     }
-  };
+  });
 
   return (
     <BG type="solid">
