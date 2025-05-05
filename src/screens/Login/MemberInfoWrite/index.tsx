@@ -214,6 +214,7 @@ export const MemberInfoWriteScreen = ({
         cancelText="취소"
         confirmText="확인"
         title={'생년월일'}
+        locale="ko"
       />
 
       <Modal
