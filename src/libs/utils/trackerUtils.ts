@@ -1,7 +1,10 @@
 import { Platform } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { encryptUserId } from '@utils/encryptUserId';
+
+const CURRENT_APP_VERSION = DeviceInfo.getVersion();
 
 /**
  * 이벤트 추적에 사용되는 공통 매개변수를 가져오는 유틸리티 함수
@@ -25,7 +28,7 @@ export const getCommonParams = async () => {
     return {
       timestamp: new Date().toISOString(), // 공통 매개변수: 앱 시작 시간
       user_id: hashedUserId, // 공통 매개변수: 사용자 ID (SHA256 암호화)
-      app_version: '1.0.0', // 공통 매개변수: 앱 버전
+      app_version: CURRENT_APP_VERSION, // 공통 매개변수: 앱 버전
       platform: Platform.OS, // 공통 매개변수: 플랫폼 (iOS/Android)
       user_type: role,
     };
@@ -35,7 +38,7 @@ export const getCommonParams = async () => {
     return {
       timestamp: new Date().toISOString(),
       user_id: 'guest', // 에러 발생 시 기본값
-      app_version: '1.0.0',
+      app_version: CURRENT_APP_VERSION,
       platform: Platform.OS,
     };
   }
