@@ -27,7 +27,7 @@ export const useAppVersion = () => {
     if (!isUpdateAvailable) return;
 
     const storeUrl = Platform.select({
-      ios: 'https://apps.apple.com/app/[YOUR_APP_ID]', // 앱스토어 URL
+      ios: 'https://apps.apple.com/kr/app/내일모래/id6744867439', // 앱스토어 URL
       android: 'market://details?id=com.jeong.naeilmorae', // 플레이스토어 URL
     });
 
