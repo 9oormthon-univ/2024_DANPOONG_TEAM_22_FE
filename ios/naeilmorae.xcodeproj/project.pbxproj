@@ -18,6 +18,7 @@
 		361745C714A34022A514D7EF /* WantedSans-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 50F00B26392248F5BDED8C9D /* WantedSans-SemiBold.otf */; };
 		4F36F58023BD46DFAE59CC0A /* AppleSDGothicNeoR.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E5C57CB58F24CF6975B3B60 /* AppleSDGothicNeoR.ttf */; };
 		55D75AF4B39045A5A1CDB47F /* Voltaire-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5E396AB4C3454F718924D651 /* Voltaire-Regular.ttf */; };
+		6880EFE62DBCAB4900763761 /* WavRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6880EFE42DBCAB4900763761 /* WavRecorder.m */; };
 		68D03D152DA6E3F400341FD9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68D03D142DA6E3F400341FD9 /* GoogleService-Info.plist */; };
 		7699B88040F8A987B510C191 /* libPods-naeilmorae-naeilmoraeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-naeilmorae-naeilmoraeTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -54,6 +55,8 @@
 		5B7EB9410499542E8C5724F5 /* Pods-naeilmorae-naeilmoraeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-naeilmorae-naeilmoraeTests.debug.xcconfig"; path = "Target Support Files/Pods-naeilmorae-naeilmoraeTests/Pods-naeilmorae-naeilmoraeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-naeilmorae.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-naeilmorae.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E396AB4C3454F718924D651 /* Voltaire-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Voltaire-Regular.ttf"; path = "../assets/fonts/Voltaire-Regular.ttf"; sourceTree = "<group>"; };
+		6880EFE32DBCAB4900763761 /* WavRecorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WavRecorder.h; sourceTree = "<group>"; };
+		6880EFE42DBCAB4900763761 /* WavRecorder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WavRecorder.m; sourceTree = "<group>"; };
 		68D03D132DA6E27B00341FD9 /* naeilmorae.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = naeilmorae.entitlements; path = naeilmorae/naeilmorae.entitlements; sourceTree = "<group>"; };
 		68D03D142DA6E3F400341FD9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6E5C57CB58F24CF6975B3B60 /* AppleSDGothicNeoR.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AppleSDGothicNeoR.ttf; path = ../assets/fonts/AppleSDGothicNeoR.ttf; sourceTree = "<group>"; };
@@ -103,6 +106,7 @@
 		13B07FAE1A68108700A75B9A /* naeilmorae */ = {
 			isa = PBXGroup;
 			children = (
+				6880EFE52DBCAB4900763761 /* WavRecorder */,
 				68D03D132DA6E27B00341FD9 /* naeilmorae.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				68D03D142DA6E3F400341FD9 /* GoogleService-Info.plist */,
@@ -137,6 +141,15 @@
 				19F6CBCC0A4E27FBF8BF4A61 /* libPods-naeilmorae-naeilmoraeTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6880EFE52DBCAB4900763761 /* WavRecorder */ = {
+			isa = PBXGroup;
+			children = (
+				6880EFE32DBCAB4900763761 /* WavRecorder.h */,
+				6880EFE42DBCAB4900763761 /* WavRecorder.m */,
+			);
+			path = WavRecorder;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -450,6 +463,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				6880EFE62DBCAB4900763761 /* WavRecorder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
