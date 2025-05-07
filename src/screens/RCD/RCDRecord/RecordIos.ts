@@ -1,6 +1,6 @@
-import { NativeModules, Platform } from 'react-native';
+import { NativeModules } from 'react-native';
 
-/** Android 전용 WavRecorder 네이티브 모듈 */
+/** iOS 전용 WavRecorder 네이티브 모듈 */
 const { WavRecorder } = NativeModules;
 
 // WavRecorder가 addListener, removeListeners 제공하지 않으면 Dummy 메서드로 채워줍니다.
@@ -16,7 +16,7 @@ if (WavRecorder && !WavRecorder.removeListeners) {
  * 마이크 권한 상태를 확인합니다.
  * @returns 권한이 있으면 true, 없으면 false
  */
-export async function checkMicrophonePermissionAndroid(): Promise<boolean> {
+export async function checkMicrophonePermissionIOS(): Promise<boolean> {
   try {
     const hasPermission = await WavRecorder.checkPermissionStatus();
 
@@ -32,31 +32,27 @@ export async function checkMicrophonePermissionAndroid(): Promise<boolean> {
  * 마이크 권한을 요청합니다.
  * @returns 권한이 부여되면 true, 거부되면 false
  */
-export async function requestMicrophonePermissionAndroid(): Promise<boolean> {
-  if (Platform.OS === 'android') {
-    try {
-      const granted = await WavRecorder.requestRecordAudioPermission();
+export async function requestMicrophonePermissionIOS(): Promise<boolean> {
+  try {
+    const granted = await WavRecorder.requestRecordAudioPermission();
 
-      return granted;
-    } catch (error) {
-      console.error('마이크 권한 요청 오류:', error);
+    return granted;
+  } catch (error) {
+    console.error('마이크 권한 요청 오류:', error);
 
-      return false;
-    }
+    return false;
   }
-
-  return false;
 }
 
 /** 녹음 시작 함수 */
-export async function startRecordingAndroid(): Promise<string | null> {
+export async function startRecordingIOS(): Promise<string | null> {
   try {
     // 마이크 권한 확인
-    const hasPermission = await checkMicrophonePermissionAndroid();
+    const hasPermission = await checkMicrophonePermissionIOS();
 
     // 권한이 없는 경우 권한 요청
     if (!hasPermission) {
-      const granted = await requestMicrophonePermissionAndroid();
+      const granted = await requestMicrophonePermissionIOS();
 
       if (!granted) {
         console.log('마이크 권한이 거부되었습니다.');
@@ -81,7 +77,7 @@ export async function startRecordingAndroid(): Promise<string | null> {
  * 녹음 중지 함수
  * @returns 녹음 파일 경로
  */
-export async function stopRecordingAndroid(): Promise<string | null> {
+export async function stopRecordingIOS(): Promise<string | null> {
   try {
     const filePath = await WavRecorder.stopRecording();
 
@@ -96,7 +92,7 @@ export async function stopRecordingAndroid(): Promise<string | null> {
 }
 
 /** 녹음 파일 재생 함수 */
-export async function playRecordingAndroid(): Promise<unknown> {
+export async function playRecordingIOS(): Promise<unknown> {
   try {
     const result = await WavRecorder.playRecording();
 
@@ -109,7 +105,7 @@ export async function playRecordingAndroid(): Promise<unknown> {
 }
 
 /** 모든 녹음 중지 함수 */
-export async function stopEverythingAndroid(): Promise<void> {
+export async function stopEverythingIOS(): Promise<void> {
   try {
     // 녹음 중인 상태라면 녹음을 중지합니다.
     if (WavRecorder && typeof WavRecorder.stopRecording === 'function') {
@@ -129,9 +125,7 @@ export async function stopEverythingAndroid(): Promise<void> {
 }
 
 /** 현재 볼륨 레벨 반환 함수 */
-export const getCurrentMeteringAndroid = async (): Promise<
-  number | undefined
-> => {
+export const getCurrentMeteringIOS = async (): Promise<number | undefined> => {
   try {
     const currentMetering = await WavRecorder.getCurrentMetering();
 

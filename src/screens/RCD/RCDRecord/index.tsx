@@ -1,6 +1,6 @@
 // React 관련 임포트
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, Platform, ScrollView, View } from 'react-native';
+import { Platform, ScrollView, View } from 'react-native';
 
 import { postVoicefilesAnalysisByVoiceFileId } from '@apis/VolunteerRecord/post/VoicefilesAnalysisByVoiceFileId/fetch';
 // API 임포트
@@ -26,19 +26,21 @@ import { type HomeStackParamList } from '@type/nav/HomeStackParamList';
 import { trackEvent } from '@utils/tracker';
 
 import {
-  getCurrentMeteringIOS,
-  playSoundIOS,
-  startRecordingIOS,
-  stopEverythingIOS,
-  stopRecordingIOS,
-} from './Record';
-import {
   getCurrentMeteringAndroid,
   playRecordingAndroid,
   startRecordingAndroid,
   stopEverythingAndroid,
   stopRecordingAndroid,
 } from './RecordAndroid';
+import {
+  getCurrentMeteringIOS,
+  playRecordingIOS,
+  startRecordingIOS,
+  stopEverythingIOS,
+  stopRecordingIOS,
+} from './RecordIos';
+
+const isIOS = Platform.OS === 'ios';
 
 // 녹음 화면 컴포넌트
 export const RCDRecordScreen = ({
@@ -47,7 +49,6 @@ export const RCDRecordScreen = ({
   route: RouteProp<HomeStackParamList, 'RCDRecord'>;
 }) => {
   const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
-  const windowHeight = Dimensions.get('window').height;
 
   // 라우트 파라미터 추출
   const { type, voiceFileId, content } = route.params;
@@ -63,7 +64,7 @@ export const RCDRecordScreen = ({
   // 컴포넌트 언마운트 여부 및 재시도 타이머 관리 ref
   const isMountedRef = useRef(true);
   const analysisTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [isAndroid] = useState<boolean>(Platform.OS === 'android');
+
   // 경과 시간 관리
   const [elapsedTime, setElapsedTime] = useState<number>(0);
   // 로딩 시간 관리
@@ -75,10 +76,10 @@ export const RCDRecordScreen = ({
 
     return () => {
       // 컴포넌트 언마운트 시 녹음 중지
-      if (isAndroid) {
-        stopEverythingAndroid();
-      } else {
+      if (isIOS) {
         stopEverythingIOS();
+      } else {
+        stopEverythingAndroid();
       }
 
       // 언마운트 되었음을 표시하고, 재시도 타이머가 있으면 해제
@@ -96,15 +97,16 @@ export const RCDRecordScreen = ({
       refreshRCDStates();
     }, []),
   );
+
   useEffect(() => {
     const monitorVolume = async () => {
       if (!isRecording) return;
 
-      // 100ms마다 볼륨 측정
+      // 50ms마다 볼륨 측정
       setTimeout(async () => {
-        const currentMetering = await (isAndroid
-          ? getCurrentMeteringAndroid()
-          : getCurrentMeteringIOS());
+        const currentMetering = await (isIOS
+          ? getCurrentMeteringIOS()
+          : getCurrentMeteringAndroid());
 
         // console.log('currentMetering', currentMetering);
         if (currentMetering !== undefined) {
@@ -119,10 +121,10 @@ export const RCDRecordScreen = ({
   // 녹음 관련 상태 초기화 함수
   const refreshRCDStates = async () => {
     try {
-      if (isAndroid) {
-        await stopEverythingAndroid();
-      } else {
+      if (isIOS) {
         await stopEverythingIOS();
+      } else {
+        await stopEverythingAndroid();
       }
 
       setIsDone(false);
@@ -135,16 +137,17 @@ export const RCDRecordScreen = ({
       console.log('refresh error', e);
     }
   };
+
   const startRecording = async () => {
     // 이미 녹음 중인 경우 중지
     if (isRecording) await stopRecording();
 
     let tmpPath: string | null = null;
 
-    if (isAndroid) {
-      tmpPath = await startRecordingAndroid();
-    } else {
+    if (isIOS) {
       tmpPath = await startRecordingIOS();
+    } else {
+      tmpPath = await startRecordingAndroid();
     }
 
     if (tmpPath) {
@@ -162,10 +165,10 @@ export const RCDRecordScreen = ({
 
     let tmpPath: string | null = null;
 
-    if (isAndroid) {
-      tmpPath = await stopRecordingAndroid();
-    } else {
+    if (isIOS) {
       await stopRecordingIOS();
+    } else {
+      tmpPath = await stopRecordingAndroid();
     }
 
     if (tmpPath) {
@@ -175,15 +178,16 @@ export const RCDRecordScreen = ({
     setIsRecording(false);
     setIsDone(true);
   };
+
   const playRecording = async () => {
     if (!uri || isPlaying) return;
 
     setIsPlaying(true);
 
-    if (isAndroid) {
-      await playRecordingAndroid();
+    if (isIOS) {
+      await playRecordingIOS();
     } else {
-      await playSoundIOS(uri);
+      await playRecordingAndroid();
     }
 
     await new Promise(resolve => setTimeout(resolve, volumeList.length * 100));
@@ -198,16 +202,16 @@ export const RCDRecordScreen = ({
     startTime.current = new Date().getTime();
 
     try {
-      if (isAndroid) {
-        await stopEverythingAndroid();
-      } else {
+      if (isIOS) {
         await stopEverythingIOS();
+      } else {
+        await stopEverythingAndroid();
       }
 
       const formData = new FormData();
 
       formData.append('file', {
-        uri: Platform.OS === 'android' ? `file://${uri}` : uri,
+        uri: `file://${uri}`,
         name: 'recording.wav',
         type: 'audio/wav',
       } as { uri: string; name: string; type: string });
@@ -312,71 +316,64 @@ export const RCDRecordScreen = ({
             goBackCallbackFn={() => {
               navigation.goBack();
             }}
-            className="absolute top-0 left-0 w-full"
           />
-          <View
-            className="mt-[64] justify-between"
-            style={{ height: windowHeight - 64 }}>
-            {/* 상단 텍스트 영역 - 자막 */}
-            <View className="px-px h-2/5">
-              <ScrollView className="h-full">
-                <View className="mt-[53]" />
-                <CustomText
-                  type="body4"
-                  text={
-                    type === 'INFO'
-                      ? '준비된 문장을 시간 내에 또박또박 발음해주세요'
-                      : '준비한 문장을 시간 내에 또박또박 발음해주세요'
-                  }
-                  className="text-gray200"
-                />
-                <View className="mt-[28] pb-[20]">
-                  <CustomText
-                    type={type === 'DAILY' ? 'title2' : 'body3'}
-                    text={content}
-                    className="text-white"
-                  />
-                </View>
-              </ScrollView>
-            </View>
-            {/* 하단 녹음 wave , 버튼 영역 */}
-            <View className="h-3/5">
-              <RCDWave
-                volumeList={volumeList}
-                isPlaying={isPlaying}
-                recording={isRecording}
-                isDone={isDone}
-                elapsedTime={elapsedTime}
-              />
-              <FlexableMargin flexGrow={25} />
-              <RCDTimer
-                recording={isRecording}
-                stop={stopRecording}
-                type={type}
-                onTimeUpdate={elapsedTime => setElapsedTime(elapsedTime)}
-                shouldRefresh={shouldRefresh}
-                setShouldRefresh={setShouldRefresh}
-              />
-              <FlexableMargin flexGrow={45} />
+          <FlexableMargin flexGrow={123} />
+          <CustomText
+            type="body4"
+            text={
+              type === 'INFO'
+                ? '준비된 문장을 시간 내에 또박또박 발음해주세요'
+                : '준비한 문장을 시간 내에 또박또박 발음해주세요'
+            }
+            className="text-gray200 px-px"
+          />
+          <FlexableMargin flexGrow={29} />
 
-              <View className="w-full px-px">
-                <RCDBtnBar
-                  record={() => {
-                    startRecording();
-                    trackEvent('recording_start');
-                  }}
-                  play={playRecording}
-                  upload={uploadRecording}
-                  isPlaying={isPlaying}
-                  recording={isRecording}
-                  isDone={isDone}
-                  refresh={refreshRCDStates}
-                  stop={stopRecording}
-                />
-              </View>
-              <FlexableMargin flexGrow={Platform.OS === 'ios' ? 79 : 55} />
-            </View>
+          {/* 상단 텍스트 영역 - 자막 */}
+          <ScrollView className="px-px h-[189]">
+            <CustomText
+              type={type === 'DAILY' ? 'title2' : 'body3'}
+              text={content}
+              className="text-white"
+            />
+          </ScrollView>
+          <FlexableMargin flexGrow={41} />
+
+          {/* 하단 녹음 wave , 버튼 영역 */}
+          <RCDWave
+            volumeList={volumeList}
+            isPlaying={isPlaying}
+            recording={isRecording}
+            isDone={isDone}
+            elapsedTime={elapsedTime}
+          />
+          <FlexableMargin flexGrow={28} />
+          <RCDTimer
+            recording={isRecording}
+            stop={stopRecording}
+            type={type}
+            onTimeUpdate={elapsedTime => setElapsedTime(elapsedTime)}
+            shouldRefresh={shouldRefresh}
+            setShouldRefresh={setShouldRefresh}
+          />
+          <FlexableMargin flexGrow={44} />
+
+          <View className="w-full px-px">
+            <RCDBtnBar
+              record={() => {
+                startRecording();
+                trackEvent('recording_start');
+              }}
+              play={playRecording}
+              upload={uploadRecording}
+              isPlaying={isPlaying}
+              recording={isRecording}
+              isDone={isDone}
+              refresh={refreshRCDStates}
+              stop={stopRecording}
+            />
           </View>
+          <FlexableMargin flexGrow={Platform.OS === 'ios' ? 79 : 55} />
         </>
       ) : (
         <View className="flex-1 justify-center items-center">
@@ -385,13 +382,13 @@ export const RCDRecordScreen = ({
             text="듣고 있어요..."
             className="text-white"
           />
-          <View className="mt-[23]" />
+          <View className="h-[23]" />
           <CustomText
             type="body3"
             text={`세심한 확인이 필요할 때는\n시간이 조금 더 소요될 수 있어요`}
             className="text-gray200 text-center"
           />
-          <View className="mt-[54]" />
+          <View className="h-[54]" />
           <Spinner />
         </View>
       )}

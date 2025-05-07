@@ -1,5 +1,4 @@
-import { Dimensions } from 'react-native';
-import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Dimensions, FlatList, View } from 'react-native';
 
 import { type AlarmListByCategoryTypeType } from '@apis/VolunteerRecord/get/AlarmListByCategoryType/type';
 import { Card } from '@screens/RCD/RCDList/components/Card';
@@ -19,7 +18,7 @@ export const Carousel = ({
   //gap + offset = 30 이 되어야 함 , 화면너비 - 30*2 = 페이지(카드) 너비
 
   return (
-    <GestureHandlerRootView style={{ width: windowWidth, height: 333 }}>
+    <View style={{ width: windowWidth, height: 333 }}>
       <FlatList
         automaticallyAdjustContentInsets={false}
         contentContainerStyle={{
@@ -31,22 +30,15 @@ export const Carousel = ({
         decelerationRate="fast"
         horizontal
         pagingEnabled
-        renderItem={({ item, index }) => {
-          return (
-            <Card
-              key={index}
-              item={item}
-              gap={gap}
-              type={type}
-              width={pageWidth}
-            />
-          );
+        keyExtractor={item => item.alarmCategory}
+        renderItem={({ item }) => {
+          return <Card item={item} gap={gap} type={type} width={pageWidth} />;
         }}
         snapToInterval={pageWidth + gap}
         snapToAlignment="start"
         showsHorizontalScrollIndicator={false}
         removeClippedSubviews={false}
       />
-    </GestureHandlerRootView>
+    </View>
   );
 };

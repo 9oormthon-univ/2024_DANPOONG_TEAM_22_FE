@@ -1,7 +1,12 @@
 // React Native 기본 컴포넌트 import
 // React Hooks import
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, ImageBackground, View } from 'react-native';
+import {
+  ActivityIndicator,
+  ImageBackground,
+  Platform,
+  View,
+} from 'react-native';
 
 import { getAlarmListByCategoryType } from '@apis/VolunteerRecord/get/AlarmListByCategoryType/fetch';
 import { type AlarmListByCategoryTypeType } from '@apis/VolunteerRecord/get/AlarmListByCategoryType/type';
@@ -112,13 +117,15 @@ export const RCDListScreen = ({
       </View>
 
       {/* RCD 목록 섹션 - 로딩 중이면 로딩 인디케이터 표시, 아니면 캐러셀 표시 */}
-      {isLoading ? (
-        <View className="h-[40vh] justify-center items-center">
-          <ActivityIndicator size="large" color={COLORS.white} />
-        </View>
-      ) : (
-        <Carousel entries={rcdList} type={type} />
-      )}
+      {Platform.OS === 'ios' && <Carousel entries={rcdList} type={type} />}
+      {Platform.OS === 'android' &&
+        (isLoading ? (
+          <View className="h-[40vh] justify-center items-center">
+            <ActivityIndicator size="large" color={COLORS.white} />
+          </View>
+        ) : (
+          <Carousel entries={rcdList} type={type} />
+        ))}
     </BG>
   );
 };
