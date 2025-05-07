@@ -40,7 +40,9 @@
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #else
-  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  // return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  // Code Push via CDN
+  return [NSURL URLWithString:@"https://ip-file-upload-test.s3.ap-northeast-2.amazonaws.com/naeilmorae-bundle/index.ios.bundle"];
 #endif
 }
 
