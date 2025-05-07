@@ -64,6 +64,7 @@ export const YouthListenScreen = ({
   ); // 음성 파일 데이터
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태
   const audioPlayer = useRef(new AudioRecorderPlayer()); // 오디오 플레이어 ref
+  const playTimeRef = useRef(0); // 현재 오디오 재생 위치 ref
   const [sentEmotions, setSentEmotions] = useState<{
     [key in EmotionType]?: boolean;
   }>({}); // 전송된 감정 표현
@@ -129,6 +130,9 @@ export const YouthListenScreen = ({
         setIsPlaying(true);
 
         audioPlayer.current.addPlayBackListener(e => {
+          // 현재 재생 위치 저장
+          playTimeRef.current = e.currentPosition;
+
           console.log('재생 위치:', e.currentPosition, '총 길이:', e.duration);
 
           if (e.currentPosition >= e.duration) {
@@ -256,7 +260,10 @@ export const YouthListenScreen = ({
         await audioPlayer.current.pausePlayer();
         setIsPlaying(false);
       } else {
-        await audioPlayer.current.startPlayer(voiceFile.fileUrl);
+        await audioPlayer.current.resumePlayer();
+
+        // 저장한 위치로 이동
+        await audioPlayer.current.seekToPlayer(playTimeRef.current);
         setIsPlaying(true);
       }
     } catch (error) {
