@@ -312,71 +312,64 @@ export const RCDRecordScreen = ({
             goBackCallbackFn={() => {
               navigation.goBack();
             }}
-            className="absolute top-0 left-0 w-full"
           />
-          <View
-            className="mt-[64] justify-between"
-            style={{ height: windowHeight - 64 }}>
-            {/* 상단 텍스트 영역 - 자막 */}
-            <View className="px-px h-2/5">
-              <ScrollView className="h-full">
-                <View className="mt-[53]" />
-                <CustomText
-                  type="body4"
-                  text={
-                    type === 'INFO'
-                      ? '준비된 문장을 시간 내에 또박또박 발음해주세요'
-                      : '준비한 문장을 시간 내에 또박또박 발음해주세요'
-                  }
-                  className="text-gray200"
-                />
-                <View className="mt-[28] pb-[20]">
-                  <CustomText
-                    type={type === 'DAILY' ? 'title2' : 'body3'}
-                    text={content}
-                    className="text-white"
-                  />
-                </View>
-              </ScrollView>
-            </View>
-            {/* 하단 녹음 wave , 버튼 영역 */}
-            <View className="h-3/5">
-              <RCDWave
-                volumeList={volumeList}
-                isPlaying={isPlaying}
-                recording={isRecording}
-                isDone={isDone}
-                elapsedTime={elapsedTime}
-              />
-              <FlexableMargin flexGrow={25} />
-              <RCDTimer
-                recording={isRecording}
-                stop={stopRecording}
-                type={type}
-                onTimeUpdate={elapsedTime => setElapsedTime(elapsedTime)}
-                shouldRefresh={shouldRefresh}
-                setShouldRefresh={setShouldRefresh}
-              />
-              <FlexableMargin flexGrow={45} />
+          <FlexableMargin flexGrow={123} />
+          <CustomText
+            type="body4"
+            text={
+              type === 'INFO'
+                ? '준비된 문장을 시간 내에 또박또박 발음해주세요'
+                : '준비한 문장을 시간 내에 또박또박 발음해주세요'
+            }
+            className="text-gray200 px-px"
+          />
+          <FlexableMargin flexGrow={29} />
 
-              <View className="w-full px-px">
-                <RCDBtnBar
-                  record={() => {
-                    startRecording();
-                    trackEvent('recording_start');
-                  }}
-                  play={playRecording}
-                  upload={uploadRecording}
-                  isPlaying={isPlaying}
-                  recording={isRecording}
-                  isDone={isDone}
-                  refresh={refreshRCDStates}
-                  stop={stopRecording}
-                />
-              </View>
-              <FlexableMargin flexGrow={Platform.OS === 'ios' ? 79 : 55} />
-            </View>
+          {/* 상단 텍스트 영역 - 자막 */}
+          <ScrollView className="px-px h-[189]">
+            <CustomText
+              type={type === 'DAILY' ? 'title2' : 'body3'}
+              text={content}
+              className="text-white"
+            />
+          </ScrollView>
+          <FlexableMargin flexGrow={41} />
+
+          {/* 하단 녹음 wave , 버튼 영역 */}
+          <RCDWave
+            volumeList={volumeList}
+            isPlaying={isPlaying}
+            recording={isRecording}
+            isDone={isDone}
+            elapsedTime={elapsedTime}
+          />
+          <FlexableMargin flexGrow={28} />
+          <RCDTimer
+            recording={isRecording}
+            stop={stopRecording}
+            type={type}
+            onTimeUpdate={elapsedTime => setElapsedTime(elapsedTime)}
+            shouldRefresh={shouldRefresh}
+            setShouldRefresh={setShouldRefresh}
+          />
+          <FlexableMargin flexGrow={44} />
+
+          <View className="w-full px-px">
+            <RCDBtnBar
+              record={() => {
+                startRecording();
+                trackEvent('recording_start');
+              }}
+              play={playRecording}
+              upload={uploadRecording}
+              isPlaying={isPlaying}
+              recording={isRecording}
+              isDone={isDone}
+              refresh={refreshRCDStates}
+              stop={stopRecording}
+            />
           </View>
+          <FlexableMargin flexGrow={Platform.OS === 'ios' ? 79 : 55} />
         </>
       ) : (
         <View className="flex-1 justify-center items-center">
@@ -385,13 +378,13 @@ export const RCDRecordScreen = ({
             text="듣고 있어요..."
             className="text-white"
           />
-          <View className="mt-[23]" />
+          <View className="h-[23]" />
           <CustomText
             type="body3"
             text={`세심한 확인이 필요할 때는\n시간이 조금 더 소요될 수 있어요`}
             className="text-gray200 text-center"
           />
-          <View className="mt-[54]" />
+          <View className="h-[54]" />
           <Spinner />
         </View>
       )}
