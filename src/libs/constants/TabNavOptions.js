@@ -1,16 +1,18 @@
 import { Platform } from 'react-native';
 
+import { COLORS } from './Colors';
+
 const isIOS = Platform.OS === 'ios';
 
 export const TabNavOptions = {
   headerShown: false,
   tabBarStyle: {
     borderTopColor: 'transparent',
-    backgroundColor: '#36384E',
-    height: isIOS ? 100 : 78,
+    backgroundColor: COLORS.blue500,
+    height: isIOS ? 110 : 76,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    padding: 10,
+    padding: 14,
     position: 'absolute',
   },
   tabBarItemStyle: { flex: 1 },
@@ -22,6 +24,6 @@ export const TabNavOptions = {
     lineHeight: 16.5,
     letterSpacing: -0.275,
   },
-  tabBarActiveTintColor: '#fafafa',
-  tabBarInactiveTintColor: '#585a6c',
+  tabBarActiveTintColor: COLORS.white,
+  tabBarInactiveTintColor: COLORS.blue400,
 };
