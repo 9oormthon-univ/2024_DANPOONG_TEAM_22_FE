@@ -11,7 +11,16 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint --ext .tsx --ext .ts src/"
+    "lint": "eslint --ext .tsx --ext .ts src/",
+    "bundle:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output dist/android/index.android.bundle --assets-dest dist/android/assets",
+    "bundle:ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output dist/ios/index.ios.bundle --assets-dest dist/ios/assets",
+    "zip:android": "cd dist/android && zip -r ../bundle.android.zip .",
+    "zip:ios": "cd dist/ios && zip -r ../bundle.ios.zip .",
+    "upload:android": "aws s3 cp dist/bundle.android.zip s3://ip-file-upload-test/naeilmorae-bundle/bundle.android.zip",
+    "upload:ios": "aws s3 cp dist/bundle.ios.zip s3://ip-file-upload-test/naeilmorae-bundle/bundle.ios.zip",
+    "deploy:android": "yarn bundle:android && yarn zip:android && yarn upload:android",
+    "deploy:ios": "yarn bundle:ios && yarn zip:ios && yarn upload:ios",
+    "deploy": "yarn deploy:android && yarn deploy:ios"
   },
   "dependencies": {
     "@amplitude/analytics-react-native": "^1.4.11",
@@ -57,6 +66,7 @@
     "react-native-screens": "^4.1.0",
     "react-native-splash-screen": "^3.3.0",
     "react-native-toast-message": "^2.2.1",
+    "react-native-zip-archive": "^7.0.1",
     "tailwindcss": "3.3.2"
   },
   "devDependencies": {
