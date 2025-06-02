@@ -84,6 +84,8 @@ export function App(): React.JSX.Element {
   // 포그라운드 상태에서 푸시 알림 처리
   useEffect(() => {
     (async () => {
+      // TODO: 처음 실행되었을 때 role 에 청년이 아니었다가 회원가입 이후에 청년으로 바뀌고 푸시알림 받았을 때를 커버 못함
+      // TODO: 백그라운드에서 알림은 오는데 클릭하면 청년페이지로 랜딩하지 못하는 이유
       const role = (await AsyncStorage.getItem('role')) as Role;
 
       let lastMessageId: string | null = null;

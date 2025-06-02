@@ -171,7 +171,10 @@ export const RCDTextScreen = ({
         <View className="w-full px-px">
           <Button
             text="녹음하기"
-            onPress={scriptSubmitHandler}
+            onPress={() => {
+              // TODO: 버튼 눌렀는지 클릭 이벤트 트래킹
+              scriptSubmitHandler();
+            }}
             disabled={text.length === 0 || isLoading}
             isLoading={isLoading}
           />
