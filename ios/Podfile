@@ -11,7 +11,8 @@ end
 node_require('react-native/scripts/react_native_pods.rb')
 node_require('react-native-permissions/scripts/setup.rb')
 
-platform :ios, min_ios_version_supported
+# RNZipArchive 의 ios min version 은 15.5 이다. (react-native-zip-archive 깃헙 issue 참고)
+platform :ios, '15.5'
 prepare_react_native_project!
 
 # ⬇️ uncomment the permissions you need
