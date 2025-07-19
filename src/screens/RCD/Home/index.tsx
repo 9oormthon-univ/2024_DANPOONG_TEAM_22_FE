@@ -8,13 +8,14 @@ import { FlexableMargin } from '@components/FlexableMargin';
 import { Modal } from '@components/Modal';
 import { RecordTypeConstant } from '@constants/RecordType';
 import { Portal } from '@gorhom/portal';
-import { useAppVersion } from '@hooks/useAppVersion';
+// import { useAppVersion } from '@hooks/useAppVersion';
 import { useModal } from '@hooks/useModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { NavigationProp } from '@react-navigation/native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import type { HomeStackParamList } from '@type/nav/HomeStackParamList';
 import type { RecordType } from '@type/RecordType';
+import { goToForm } from '@utils/goToForm';
 import { trackEvent } from '@utils/tracker';
 
 import Main1 from '@assets/svgs/Main1.svg';
@@ -29,13 +30,20 @@ export const HomeScreen = () => {
   const [nickname, setNickname] = useState('');
   const [youthNum, setYouthNum] = useState<number>(999);
   const { visible, openModal, closeModal } = useModal();
-  const { isUpdateAvailable, goToStore } = useAppVersion();
+  // TODO: 앱 업데이트 모달 기능 안정화 시 주석 해제
+  // const { isUpdateAvailable, goToStore } = useAppVersion();
 
+  // TODO: 앱 업데이트 모달 기능 안정화 시 주석 해제
+  // useEffect(() => {
+  //   if (isUpdateAvailable) {
+  //     openModal();
+  //   }
+  // }, [isUpdateAvailable]);
+
+  // 설문조사 모달 열기
   useEffect(() => {
-    if (isUpdateAvailable) {
-      openModal();
-    }
-  }, [isUpdateAvailable]);
+    openModal();
+  }, []);
 
   // 닉네임 불러오기 - 화면이 포커싱될 때마다 실행
   useFocusEffect(
@@ -99,7 +107,8 @@ export const HomeScreen = () => {
           ))} */}
         </View>
       </View>
-      <Portal>
+      {/* TODO: 앱 업데이트 모달 기능 안정화 시 주석 해제 */}
+      {/* <Portal>
         <Modal
           type="info"
           visible={visible}
@@ -119,6 +128,33 @@ export const HomeScreen = () => {
           <CustomText
             type="caption1"
             text={`더 나은 내일모래가 준비됐어요\n스토어에서 최신 버전으로 업데이트 해주세요`}
+            className="text-gray300 text-center"
+          />
+          <View className="mt-[29]" />
+        </Modal>
+      </Portal> */}
+
+      {/* 설문조사 모달 */}
+      <Portal>
+        <Modal
+          type="info"
+          visible={visible}
+          buttonRatio="1:2"
+          cancelText="나중에"
+          confirmText="의견 주러 가기"
+          onCancel={closeModal}
+          onConfirm={goToForm}>
+          <View className="mt-[26]" />
+          <CustomText
+            type="title4"
+            text={`[${nickname}]님의 의견이 필요해요.`}
+            className="text-white"
+          />
+          <View className="mt-[13]" />
+
+          <CustomText
+            type="caption1"
+            text={`여러분의 솔직한 경험을 듣고,\n더 나은 내일모래로 성장하겠습니다 :)`}
             className="text-gray300 text-center"
           />
           <View className="mt-[29]" />

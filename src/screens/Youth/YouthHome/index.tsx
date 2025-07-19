@@ -13,15 +13,19 @@ import {
 import { getAlarmAlarmCategoryDetailByChildrenAlarmCategory } from '@apis/VolunteerRecord/get/AlarmAlarmCategoryDetailByChildrenAlarmCategory/fetch';
 // 컴포넌트
 import { CustomText } from '@components/CustomText';
+import { Modal } from '@components/Modal';
 // 상수
 import { COLORS } from '@constants/Colors';
+import { Portal } from '@gorhom/portal';
 // 훅
 import { useGetAlarmComfort } from '@hooks/alarm/useGetAlarmComfort';
 import { useGetHelperNum } from '@hooks/member/useGetHelperNum';
+import { useModal } from '@hooks/useModal';
 // 라이브러리
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { type NativeStackScreenProps } from '@react-navigation/native-stack';
 import { type YouthStackParamList } from '@stackNav/Youth';
+import { goToForm } from '@utils/goToForm';
 
 // 아이콘
 import CloseBlackIcon from '@assets/svgs/closeBlack.svg';
@@ -67,6 +71,12 @@ export const YouthHomeScreen = ({ navigation }: Readonly<YouthProps>) => {
     VOICE_MENU.map(() => new Animated.Value(0)),
   ).current;
   const textOpacity = useRef(new Animated.Value(1)).current;
+  const { visible, openModal, closeModal } = useModal();
+
+  // 설문조사 모달 열기
+  useEffect(() => {
+    openModal();
+  }, []);
 
   console.log('alarmComfortData', alarmComfortData);
   useEffect(() => {
@@ -264,6 +274,33 @@ export const YouthHomeScreen = ({ navigation }: Readonly<YouthProps>) => {
           </Pressable>
         </View>
       </View>
+
+      {/* 설문조사 모달 */}
+      <Portal>
+        <Modal
+          type="info"
+          visible={visible}
+          buttonRatio="1:2"
+          cancelText="나중에"
+          confirmText="의견 주러 가기"
+          onCancel={closeModal}
+          onConfirm={goToForm}>
+          <View className="mt-[26]" />
+          <CustomText
+            type="title4"
+            text={`[${nickname}]님의 의견이 필요해요.`}
+            className="text-white"
+          />
+          <View className="mt-[13]" />
+
+          <CustomText
+            type="caption1"
+            text={`여러분의 솔직한 경험을 듣고,\n더 나은 내일모래로 성장하겠습니다 :)`}
+            className="text-gray300 text-center"
+          />
+          <View className="mt-[29]" />
+        </Modal>
+      </Portal>
     </ImageBackground>
   );
 };
